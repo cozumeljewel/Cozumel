@@ -59,3 +59,9 @@ de cuentas de Google y vuelve con la sesión iniciada. Si da un error de
 `redirect_uri_mismatch`, casi siempre es que la URI del paso 1 no coincide
 carácter por carácter con la de Supabase, o que falta añadir la URL de la
 página en el paso 2.
+
+**Si pruebas el botón antes de terminar el paso 2** (activar el proveedor
+en Supabase), no aparece ningún aviso en la propia página: el navegador te
+saca del sitio y aterriza en una pantalla de error de Supabase, fuera de
+`cozumeljewelry.es`. Es normal, significa que aún falta ese paso, no que
+algo esté roto.

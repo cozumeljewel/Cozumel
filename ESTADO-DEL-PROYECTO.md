@@ -11,9 +11,14 @@ Prueba de validación de demanda para una marca de joyería personalizada,
 vinculada a la influencer **Adriana Carballo**. El tráfico vendrá de una
 story de Instagram suya.
 
-**No es una tienda.** No hay pagos, ni Stripe, ni envíos, ni login. El
-objetivo es medir **intención de compra**: cuánta gente llega y cuánta deja
-sus datos en una **reserva gratuita**.
+**No es una tienda.** No hay pagos ni Stripe. El objetivo es medir
+**intención de compra**: cuánta gente llega y cuánta deja sus datos en una
+**reserva gratuita**.
+
+**Reservar exige iniciar sesión con Google** (añadido el 2026-08-26, ver
+sección 4). Está en el código pero todavía no en producción: falta
+completar la configuración manual y ejecutar la migración v6, ver
+sección 8.
 
 Métrica que manda: **reservas ÷ visitas**.
 
@@ -92,6 +97,32 @@ tocar los HTML: aparece en todas las páginas automáticamente.
 usar `requestAnimationFrame` — no se ejecuta en pestañas en segundo plano,
 y el pop-up se quedaría invisible bloqueando el scroll. Se fuerza un
 reflow (`void capa.offsetWidth`) en su lugar.
+
+### Login con Google (reservar.html, añadido el 2026-08-26)
+
+Reservar exige haber iniciado sesión con Google. Encima del formulario hay
+un aviso ("Continuar con Google") que tapa los campos hasta que hay
+sesión; nombre y email se autocompletan desde la cuenta de Google
+(editables), y hay un enlace de "Cerrar sesión" junto al formulario.
+
+Esto es solo la primera de tres piezas hacia gestionar pedidos reales, ver
+[el diseño](docs/superpowers/specs/2026-08-26-google-login-design.md) y
+[el plan de implementación](docs/superpowers/plans/2026-08-26-google-login.md).
+Las otras dos (email de "pedido recibido" y el paso de "reserva" a
+"pedido") no están empezadas.
+
+**El bloqueo no es solo visual.** La política de Supabase también cambió:
+sin sesión, la base de datos rechaza el insert aunque alguien manipule el
+JavaScript para forzar el formulario a mostrarse. Ver "Migraciones" en la
+sección 6.
+
+**Para activar esto en producción hacen falta dos cosas, las dos
+pendientes** (sección 8): ejecutar `supabase-migracion-v6.sql`, y que el
+cliente complete `configurar-login-google.md` (crear credenciales en
+Google Cloud y activar el proveedor en Supabase). **`deploy/` ya lleva
+el login integrado**: subirlo a Netlify antes de terminar esas dos cosas
+deja el formulario de reserva inservible para todo el mundo, porque el
+botón de Google no tendría con qué autenticar.
 
 ### Página de producto (estructura actual, rehecha el 2026-08-26)
 
@@ -287,9 +318,21 @@ horizontal y errores de JS. El objetivo siempre es **0 fallos**.
 ## 8. Lo que falta
 
 ### Bloqueante
-- **Migración v6:** ejecutar `supabase-migracion-v6.sql` en Supabase antes de
-  activar el login (sección 4, `reservar.html`). Sin ella, todas las reservas
-  fallarán en cuanto alguien intente guardar un formulario con sesión iniciada.
+**No subir `deploy/` a Netlify hasta que las dos cosas de abajo estén
+hechas.** El login de Google ya está en `deploy/`: sin estos dos pasos, el
+formulario de reserva queda inservible para todo el mundo en cuanto se
+publique (ver sección 4).
+
+1. **Ejecutar `supabase-migracion-v6.sql`** en el SQL Editor de Supabase.
+   Sin ella, todas las reservas fallarán al guardar, no solo las de un
+   producto.
+2. **Completar `configurar-login-google.md`.** Son pasos manuales que solo
+   puede hacer el cliente (crear credenciales OAuth en Google Cloud,
+   activar el proveedor en Supabase). Sin esto, el botón "Continuar con
+   Google" no lleva a ningún sitio: se pulsa y no pasa nada.
+3. Una vez hechas las dos, probar una reserva real de principio a fin
+   antes de anunciar el lanzamiento (ver la Tarea 6 del plan de
+   implementación, todavía sin hacer).
 
 ### Contenido (decisiones del cliente)
 2. **Fotos de 6 de los 7 productos.** Solo Collar Destino tiene
