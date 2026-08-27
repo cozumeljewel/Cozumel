@@ -15,10 +15,8 @@ story de Instagram suya.
 **intención de compra**: cuánta gente llega y cuánta deja sus datos en una
 **reserva gratuita**.
 
-**Reservar exige iniciar sesión con Google** (añadido el 2026-08-26, ver
-sección 4). Está en el código pero todavía no en producción: falta
-completar la configuración manual y ejecutar la migración v6, ver
-sección 8.
+**Reservar exige iniciar sesión con Google** (añadido el 2026-08-26,
+probado con una cuenta real el 2026-08-27, ver sección 4).
 
 Métrica que manda: **reservas ÷ visitas**.
 
@@ -28,7 +26,11 @@ México es el 36,9% de su audiencia de Instagram; el 66% tiene 18–34 años.
 
 ---
 
-## 2. Estado: NO SUBIR deploy/ TODAVÍA (login de Google a medio activar)
+## 2. Estado: LISTO PARA DESPLEGAR (con contenido pendiente)
+
+**Login con Google probado de principio a fin el 2026-08-27**, con una
+cuenta real: entra, precarga nombre y email, reserva, guarda con
+`user_id`, cierra sesión. Ya se puede subir `deploy/` a Netlify.
 
 - **Dominio:** `cozumeljewelry.es` — DNS propagado, HTTPS con certificado
   Let's Encrypt válido, sirviendo desde Netlify. **Funcionando.**
@@ -116,13 +118,15 @@ sin sesión, la base de datos rechaza el insert aunque alguien manipule el
 JavaScript para forzar el formulario a mostrarse. Ver "Migraciones" en la
 sección 6.
 
-**Para activar esto en producción hacen falta dos cosas, las dos
-pendientes** (sección 8): ejecutar `supabase-migracion-v6.sql`, y que el
-cliente complete `configurar-login-google.md` (crear credenciales en
-Google Cloud y activar el proveedor en Supabase). **`deploy/` ya lleva
-el login integrado**: subirlo a Netlify antes de terminar esas dos cosas
-deja el formulario de reserva inservible para todo el mundo, porque el
-botón de Google no tendría con qué autenticar.
+**Probado de principio a fin con una cuenta real (2026-08-27):** entra,
+precarga nombre y email, reserva, guarda con `user_id` en Supabase, cierra
+sesión. Migración v6 ejecutada y `configurar-login-google.md` completado.
+Ya se puede subir `deploy/` a Netlify.
+
+**No hay página de "mis pedidos".** Se decidió adrede al diseñar esta
+pieza: la cuenta solo identifica el pedido, nada más. El cliente lo
+volvió a preguntar el 2026-08-27 tras probarlo; si se quiere añadir,
+es un diseño aparte (no una extensión rápida de esto).
 
 ### Página de producto (estructura actual, rehecha el 2026-08-26)
 
@@ -318,24 +322,13 @@ horizontal y errores de JS. El objetivo siempre es **0 fallos**.
 ## 8. Lo que falta
 
 ### Bloqueante
-**No subir `deploy/` a Netlify hasta que estos dos pasos estén hechos.**
-El login de Google ya está en `deploy/`: sin ellos, el formulario de
-reserva queda inservible para todo el mundo en cuanto se publique (ver
-sección 4).
+Ninguno. Migración v6 ejecutada, login de Google configurado y **probado
+de principio a fin con una cuenta real** (2026-08-27): entra, precarga
+nombre y email, reserva, guarda con `user_id`, cierra sesión. Ya se puede
+subir `deploy/` a Netlify.
 
-1. **Ejecutar `supabase-migracion-v6.sql`** en el SQL Editor de Supabase.
-   Sin ella, todas las reservas fallarán al guardar, no solo las de un
-   producto.
-2. **Completar `configurar-login-google.md`.** Son pasos manuales que solo
-   puede hacer el cliente (crear credenciales OAuth en Google Cloud,
-   activar el proveedor en Supabase). Sin esto, pulsar "Continuar con
-   Google" saca al visitante del sitio y lo deja en una pantalla de error
-   de Supabase, fuera de `cozumeljewelry.es` (ver el final de
-   `configurar-login-google.md`).
-
-Hecho lo anterior, falta un paso más antes de anunciar el lanzamiento:
-probar una reserva real de principio a fin (ver la Tarea 6 del plan de
-implementación, todavía sin hacer).
+Queda una fila de prueba en `reservas` de esa prueba real, pendiente de
+borrar junto con las demás (ver el punto de filas de prueba, más abajo).
 
 ### Contenido (decisiones del cliente)
 2. **Fotos de 6 de los 7 productos.** Solo Collar Destino tiene
@@ -369,8 +362,9 @@ implementación, todavía sin hacer).
    de consumo, no solo de marketing.
 10. **El formulario de Contacto no envía nada.** Es solo maqueta.
 11. **Filas de prueba en Supabase** pendientes de borrar: `TEST — borrar`
-    y `TEST MIGRACION — borrar` en `reservas`, y algún `view` de prueba
-    en `eventos`.
+    y `TEST MIGRACION — borrar` en `reservas`, la reserva real de prueba
+    de la Tarea 6 del login (2026-08-27, con `user_id` relleno), y algún
+    `view` de prueba en `eventos`.
 12. ~~La caja de regalo del Kit Mi Consentida~~ **DECIDIDO (2026-08-26).**
     Se arranca con el packaging estándar de EMANCO, que ya sirve como caja
     de regalo, y se pasa al personalizado con el logo cuando suba el
