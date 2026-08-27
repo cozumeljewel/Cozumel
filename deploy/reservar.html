@@ -98,6 +98,10 @@
         Todavía no has elegido pieza. Entra en <a href="productos.html">la colección</a> y elige la tuya
       </p>
 
+      <p class="reserva-config-warning" id="reserva-config-warning" hidden>
+        Supabase no está conectado todavía: rellena <code>supabase-config.js</code> para activar las reservas
+      </p>
+
       <!-- Tapa el formulario hasta que hay sesión. script.js decide cuál
            de los dos se ve, comprobando sb.auth.getSession(). -->
       <div class="login-gate" id="login-gate">
@@ -136,13 +140,9 @@
           <span>Acepto que guarden estos datos para contactarme sobre esta reserva</span>
         </label>
 
-        <p class="reserva-config-warning" id="reserva-config-warning" hidden>
-          Supabase no está conectado todavía: rellena <code>supabase-config.js</code> para activar las reservas
-        </p>
-
         <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Reservar mi joya, gratis</button>
-        <p class="reserva-error" id="reserva-error" hidden></p>
       </form>
+      <p class="reserva-error" id="reserva-error" hidden></p>
       <button type="button" class="link-logout" id="btn-logout" hidden>Cerrar sesión</button>
     </div>
 
