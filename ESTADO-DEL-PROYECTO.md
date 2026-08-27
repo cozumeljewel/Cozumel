@@ -113,6 +113,13 @@ Esto es solo la primera de tres piezas hacia gestionar pedidos reales, ver
 Las otras dos (email de "pedido recibido" y el paso de "reserva" a
 "pedido") no están empezadas.
 
+**Nota para cuando se construya el email de "pedido recibido":** el
+cliente indicó (2026-08-27) que las notificaciones internas de pedidos
+tienen que llegar a `cozumeljewel@gmail.com`. Es distinto del email de
+`auth.users` de cada comprador (ese es a quien se le confirmaría SU
+pedido); `cozumeljewel@gmail.com` es la bandeja de la marca, donde se
+enteran de que ha entrado uno nuevo.
+
 **El bloqueo no es solo visual.** La política de Supabase también cambió:
 sin sesión, la base de datos rechaza el insert aunque alguien manipule el
 JavaScript para forzar el formulario a mostrarse. Ver "Migraciones" en la
@@ -339,7 +346,8 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
    pieza**: conviene pedirlas cuadradas, que la galería las muestra así.
 3. **Precios.** Todos en `null` → sale "Precio pendiente". Ojo: el Kit
    promete "10% de descuento", así que su precio debe cuadrar con eso.
-4. **Email e Instagram** reales en Contacto.
+4. **Email real en Contacto: hecho (2026-08-27)**, `cozumeljewel@gmail.com`.
+   **Instagram** sigue pendiente de definir.
 5. **Imagen de previsualización al compartir** (og:image, 1200×630). Sin
    ella, el enlace en la story sale con texto pero sin imagen.
 

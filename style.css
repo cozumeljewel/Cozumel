@@ -869,6 +869,8 @@ details p{margin-top:10px; font-size:13.5px; color:var(--ink); line-height:1.55;
   color:var(--sea-dark); margin-bottom:5px;
 }
 .contact-item p{font-size:14.5px; color:var(--ink);}
+.contact-link{color:var(--sea-dark); text-decoration:underline; text-underline-offset:2px;}
+.contact-link:hover{color:var(--deep);}
 
 /* ---------- FOOTER ---------- */
 footer{
