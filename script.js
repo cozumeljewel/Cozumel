@@ -627,6 +627,9 @@ if (reservaForm) {
   const reservaConfigWarning = document.getElementById('reserva-config-warning');
   const reservaError = document.getElementById('reserva-error');
   const sinPiezaAviso = document.getElementById('sin-pieza');
+  const loginGate = document.getElementById('login-gate');
+  const btnLoginGoogle = document.getElementById('btn-login-google');
+  const btnLogout = document.getElementById('btn-logout');
 
   if (!SUPA_READY) {
     reservaConfigWarning.hidden = false;
@@ -643,6 +646,53 @@ if (reservaForm) {
   const showReservaError = (msg) => { reservaError.textContent = msg; reservaError.hidden = false; };
   const hideReservaError = () => { reservaError.hidden = true; };
 
+  /* ---- Login con Google ----
+     Guarda la sesión en un cierre (no en window) para que el envío del
+     formulario pueda leer el user_id sin volver a preguntarle a Supabase. */
+  let sesionActual = null;
+
+  const mostrarSegunSesion = (session) => {
+    sesionActual = session || null;
+    const haySesion = !!sesionActual;
+
+    loginGate.hidden = haySesion;
+    reservaForm.hidden = !haySesion;
+    btnLogout.hidden = !haySesion;
+
+    if (haySesion) {
+      const meta = sesionActual.user.user_metadata || {};
+      // Solo precarga si el campo está vacío: si la persona ya escribió
+      // algo (o volvió a la página con datos guardados), no se lo pisa.
+      if (!reservaForm.nombre.value) reservaForm.nombre.value = meta.full_name || meta.name || '';
+      if (!reservaForm.email.value) reservaForm.email.value = sesionActual.user.email || '';
+    }
+  };
+
+  if (SUPA_READY && sb) {
+    sb.auth.getSession().then(({ data }) => mostrarSegunSesion(data.session));
+    sb.auth.onAuthStateChange((_evento, session) => mostrarSegunSesion(session));
+  } else {
+    // Sin Supabase configurado no hay nada que pedir: el aviso de
+    // "Supabase no está conectado todavía" ya cubre este caso.
+    loginGate.hidden = true;
+  }
+
+  if (btnLoginGoogle) {
+    btnLoginGoogle.addEventListener('click', () => {
+      if (!sb) return;
+      sb.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.href },
+      });
+    });
+  }
+
+  if (btnLogout) {
+    btnLogout.addEventListener('click', () => {
+      if (sb) sb.auth.signOut();
+    });
+  }
+
   reservaForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     hideReservaError();
@@ -656,8 +706,17 @@ if (reservaForm) {
       showReservaError('Ahora mismo no podemos guardar tu reserva. Inténtalo de nuevo en unos minutos');
       return;
     }
+    if (!sesionActual) {
+      // No debería pasar (el formulario está oculto sin sesión), pero
+      // cubre el caso de una sesión que caduca mientras la persona tenía
+      // la pestaña abierta.
+      showReservaError('Tu sesión ha caducado. Vuelve a identificarte con Google');
+      mostrarSegunSesion(null);
+      return;
+    }
 
     const payload = {
+      user_id: sesionActual.user.id,
       nombre: reservaForm.nombre.value.trim(),
       apellidos: reservaForm.apellidos.value.trim(),
       email: reservaForm.email.value.trim(),
