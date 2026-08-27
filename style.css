@@ -796,6 +796,29 @@ details p{margin-top:10px; font-size:13.5px; color:var(--ink); line-height:1.55;
 }
 .consent input{width:16px; height:16px; margin-top:2px; accent-color:var(--deep); flex:none;}
 
+/* ---------- LOGIN CON GOOGLE (reservar.html) ----------
+   Tapa el formulario hasta que hay sesión. Mismo ancho que
+   .reserva-content, para que no salte al aparecer el formulario debajo. */
+.login-gate{
+  margin:26px auto 0; max-width:340px; padding:24px 20px;
+  background:var(--white); border:1px solid var(--line-2); border-radius:2px;
+  text-align:center;
+}
+.login-gate-texto{
+  font-size:13.5px; color:var(--ink); margin-bottom:16px;
+}
+.login-gate .btn{width:100%;}
+
+/* Enlace de cerrar sesión: texto, no botón, para no competir con el CTA
+   principal del formulario. */
+.link-logout{
+  display:block; margin:16px auto 0; padding:4px;
+  background:none; border:none; cursor:pointer;
+  font-family:'Jost'; font-size:12px; letter-spacing:.03em;
+  color:var(--sea-dark); text-decoration:underline; text-underline-offset:2px;
+}
+.link-logout:hover{color:var(--deep);}
+
 /* Aviso y error se mantienen en tono cálido a propósito:
    sobre una paleta azul destacan de inmediato. */
 .reserva-config-warning{
