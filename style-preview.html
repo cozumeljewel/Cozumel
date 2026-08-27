@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estilo · Joyería personalizada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F3EAE1;
+    --cream-2:#EFE3D6;
+    --dark:#1C1815;
+    --taupe:#8A7160;
+    --taupe-light:#B79E8C;
+    --gold:#C9A876;
+    --white:#FFFFFF;
+    --ink:#2A231D;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Jost', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:480px; margin:0 auto; background:var(--cream);}
+
+  .label{
+    font-family:'Jost', sans-serif;
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--taupe);
+    font-weight:500;
+  }
+  .label.on-dark{color:var(--gold);}
+
+  .rule{
+    width:44px; height:2px; background:var(--gold); margin:14px 0 18px;
+  }
+
+  /* ---- Meta header (guía interna, no es parte del producto) ---- */
+  .meta{
+    padding:22px 24px 14px;
+    background:var(--dark);
+    color:var(--cream);
+    text-align:center;
+  }
+  .meta p{font-family:'Jost'; font-size:12px; letter-spacing:.12em; color:var(--taupe-light); text-transform:uppercase;}
+
+  /* ---- Section: intro ---- */
+  section{padding:40px 24px;}
+  h1.display{
+    font-family:'Playfair Display', serif;
+    font-weight:900;
+    font-size:clamp(34px, 10vw, 46px);
+    line-height:1.02;
+    letter-spacing:-.01em;
+    color:var(--dark);
+  }
+  h1.display em{
+    font-style:italic;
+    font-weight:500;
+    display:block;
+    font-size:.72em;
+    color:var(--taupe);
+    margin-top:4px;
+  }
+  .lede{
+    margin-top:18px;
+    font-size:15.5px;
+    color:var(--ink);
+    max-width:38ch;
+  }
+  .lede b{color:var(--dark); font-weight:600;}
+
+  /* ---- Palette ---- */
+  .palette-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:8px;
+  }
+  .swatch{
+    border-radius:2px;
+    padding:16px 14px;
+    min-height:92px;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    font-family:'Jost';
+  }
+  .swatch .name{font-size:13px; font-weight:600; letter-spacing:.02em;}
+  .swatch .hex{font-size:11px; letter-spacing:.06em; opacity:.75; margin-top:2px;}
+  .sw-cream{background:var(--cream-2); color:var(--dark); border:1px solid #e2d2c0;}
+  .sw-dark{background:var(--dark); color:var(--cream);}
+  .sw-taupe{background:var(--taupe); color:var(--white);}
+  .sw-gold{background:var(--gold); color:var(--dark);}
+
+  /* ---- Typography specimen ---- */
+  .type-dark{background:var(--dark); color:var(--cream);}
+  .specimen-row{padding:18px 0; border-bottom:1px solid rgba(255,255,255,.12);}
+  .type-dark .specimen-row:last-child{border-bottom:none;}
+  .specimen-row .tag{font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; font-family:'Jost';}
+  .spec-h1{font-family:'Playfair Display'; font-weight:900; font-size:38px; line-height:1.05;}
+  .spec-h2{font-family:'Playfair Display'; font-weight:600; font-style:italic; font-size:24px;}
+  .spec-label{font-family:'Jost'; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--taupe-light);}
+  .spec-body{font-family:'Jost'; font-size:15px; color:#EFE6DC; max-width:34ch;}
+
+  /* ---- Buttons ---- */
+  .btn-row{display:flex; flex-direction:column; gap:12px; margin-top:8px;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    font-family:'Jost'; font-size:14.5px; font-weight:500; letter-spacing:.03em;
+    padding:15px 22px; border-radius:2px; text-decoration:none; cursor:pointer;
+    border:1px solid transparent;
+  }
+  .btn-primary{background:var(--dark); color:var(--cream);}
+  .btn-accent{background:var(--gold); color:var(--dark);}
+  .btn-outline{background:transparent; color:var(--dark); border:1px solid var(--dark);}
+
+  /* ---- Mock hero card ---- */
+  .hero-card{
+    border-radius:2px;
+    overflow:hidden;
+    background:var(--white);
+    border:1px solid #e6d8c8;
+  }
+  .hero-img{
+    height:220px;
+    background:
+      radial-gradient(circle at 32% 30%, rgba(255,255,255,.5), transparent 55%),
+      linear-gradient(135deg, #d9c3ab, #b79e8c 55%, #8a7160);
+    position:relative;
+  }
+  .hero-img::after{
+    content:"foto pieza / mano modelo";
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Jost'; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:rgba(28,24,21,.55);
+  }
+  .hero-body{padding:24px 22px 26px;}
+  .hero-body h2{
+    font-family:'Playfair Display'; font-weight:800; font-size:26px; color:var(--dark); line-height:1.1;
+  }
+  .hero-body .sub{font-size:14px; color:var(--taupe); margin-top:6px; font-style:italic; font-family:'Playfair Display';}
+  .hero-body .price{
+    margin-top:14px; font-family:'Playfair Display'; font-weight:600; font-size:20px; color:var(--dark);
+  }
+  .hero-body .price span{font-family:'Jost'; font-size:12px; color:var(--taupe); font-weight:400; margin-left:6px;}
+  .hero-body .btn{width:100%; margin-top:16px;}
+
+  /* ---- Trust strip ---- */
+  .trust{
+    background:var(--cream-2);
+    padding:28px 24px;
+    text-align:center;
+  }
+  .trust-items{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:16px;
+  }
+  .trust-items div{font-size:12px; color:var(--ink); font-family:'Jost';}
+  .trust-items .ico{font-size:18px; display:block; margin-bottom:6px;}
+
+  /* ---- Divider stat block, media-kit style ---- */
+  .stat-block{
+    background:var(--taupe);
+    color:var(--white);
+    padding:20px;
+    border-radius:2px;
+  }
+  .stat-block .num{font-family:'Playfair Display'; font-weight:700; font-size:30px;}
+  .stat-block .cap{font-family:'Jost'; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; opacity:.85; margin-top:2px;}
+
+  footer{
+    padding:26px 24px 40px;
+    text-align:center;
+    color:var(--taupe);
+  }
+  footer p{font-family:'Jost'; font-size:11px; letter-spacing:.1em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="meta">
+    <p>Guía de estilo · no es la landing final</p>
+  </div>
+
+  <section>
+    <p class="label">Dirección visual</p>
+    <div class="rule"></div>
+    <h1 class="display">El regalo<em>que no falla</em></h1>
+    <p class="lede">Basado en el media kit: paleta cálida neutra, serif editorial de contraste alto para titulares, sans limpia para el resto. <b>Artesanal, honesto, cercano</b> — lo contrario del bazar.</p>
+  </section>
+
+  <section style="padding-top:0;">
+    <p class="label">Paleta</p>
+    <div class="rule"></div>
+    <div class="palette-grid">
+      <div class="swatch sw-cream"><span class="name">Crema</span><span class="hex">#F3EAE1</span></div>
+      <div class="swatch sw-dark"><span class="name">Negro cálido</span><span class="hex">#1C1815</span></div>
+      <div class="swatch sw-taupe"><span class="name">Taupe</span><span class="hex">#8A7160</span></div>
+      <div class="swatch sw-gold"><span class="name">Dorado tostado</span><span class="hex">#C9A876</span></div>
+    </div>
+  </section>
+
+  <section class="type-dark" style="padding-top:36px;">
+    <p class="label on-dark">Tipografía</p>
+    <div class="rule"></div>
+
+    <div class="specimen-row">
+      <p class="tag">Titular · Playfair Display 900</p>
+      <p class="spec-h1">Hecho a mano,<br>pieza por pieza</p>
+    </div>
+    <div class="specimen-row">
+      <p class="tag">Subtitular · Playfair Display italic</p>
+      <p class="spec-h2">para ella, con su nombre</p>
+    </div>
+    <div class="specimen-row">
+      <p class="tag">Etiqueta · Jost 500, versalitas</p>
+      <p class="spec-label">Grabado a mano · pieza única</p>
+    </div>
+    <div class="specimen-row">
+      <p class="tag">Cuerpo de texto · Jost 400</p>
+      <p class="spec-body">Un taller local graba cada pieza a mano. Sin intermediarios, sin bazar — solo el regalo que de verdad importa.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Botones</p>
+    <div class="rule"></div>
+    <div class="btn-row">
+      <a class="btn btn-primary">Personalizar el mío</a>
+      <a class="btn btn-accent">Ver el collar</a>
+      <a class="btn btn-outline">Cómo funciona el grabado</a>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <p class="label">Mock de tarjeta hero</p>
+    <div class="rule"></div>
+    <div class="hero-card">
+      <div class="hero-img"></div>
+      <div class="hero-body">
+        <h2>Collar Nombre &amp; Fecha</h2>
+        <p class="sub">grabado a mano, en el día</p>
+        <p class="price">29,90 € <span>envío incluido</span></p>
+        <a class="btn btn-primary">Personalizar el mío</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust" style="padding-top:8px;">
+    <p class="label">Confianza</p>
+    <div class="trust-items">
+      <div><span class="ico">✍️</span>Grabado<br>a mano</div>
+      <div><span class="ico">💛</span>Pieza<br>única</div>
+      <div><span class="ico">🔄</span>Garantía de<br>grabado</div>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <p class="label">Bloque estadístico (estilo media kit)</p>
+    <div class="rule"></div>
+    <div class="stat-block">
+      <div class="num">100%</div>
+      <div class="cap">grabado a mano</div>
+    </div>
+  </section>
+
+  <footer>
+    <p>ESTILO PRELIMINAR · PENDIENTE DE NOMBRE DE MARCA</p>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+Guarda aqui la foto de Adriana con el nombre EXACTO:
+
+    hero-adriana.jpg
+
+Ruta completa:
+    C:\Users\udetr\Desktop\ADRI 2\img\hero-adriana.jpg
+
+Y copia el mismo archivo tambien en:
+    C:\Users\udetr\Desktop\ADRI 2\deploy\img\hero-adriana.jpg
+
+Mientras el archivo no exista, el hero muestra el degradado turquesa
+(no sale ningun hueco roto).
+
+Consejo: exportala a ~1600px de ancho y comprimida (200-400 KB).
+La original de movil puede pesar varios MB y ralentiza la carga en
+moviles con datos, que es de donde va a venir casi todo el trafico.

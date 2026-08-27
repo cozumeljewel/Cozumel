@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collar Flor Natal — selector de mes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --foam:#F2F8F8; --shallow:#E3EFF1; --shallow-2:#D3E7EA;
+    --sea:#4E9A9B; --sea-dark:#2E6D70; --deep:#14454A; --abyss:#0B2E33;
+    --gold:#C6A664; --gold-deep:#A8873F; --gold-soft:#E0C88F;
+    --ink:#12333A; --ink-soft:#4A6B6E;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--foam); color:var(--ink); font-family:'Jost',sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:480px; margin:0 auto; padding:40px 24px 60px; text-align:center;}
+
+  .banner{
+    background:var(--deep); color:var(--gold-soft); text-align:center;
+    padding:8px 16px; font-size:11px; letter-spacing:.08em;
+    margin:-40px -24px 36px;
+  }
+
+  .eyebrow{
+    font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--sea-dark); font-weight:500;
+  }
+  h1{
+    font-family:'Playfair Display'; font-weight:700; font-size:28px; color:var(--deep);
+    margin-top:10px; line-height:1.15;
+  }
+  h1 em{font-style:italic; font-weight:500; color:var(--sea-dark);}
+  .sub{margin:12px auto 0; max-width:36ch; font-size:14px; color:var(--ink-soft);}
+
+  .stage{
+    margin:34px auto 0; padding:40px 20px 30px; border-radius:2px;
+    background:linear-gradient(180deg, var(--shallow) 0%, var(--shallow-2) 100%);
+    border:1px solid rgba(198,166,100,.4);
+  }
+
+  .pendant{width:170px; height:170px; margin:0 auto; position:relative;}
+  .pendant svg{width:100%; height:100%; display:block;}
+  .gema{ transition:fill .25s ease, filter .25s ease; }
+
+  .seleccion{margin-top:22px;}
+  .seleccion .mes{
+    font-family:'Playfair Display'; font-weight:700; font-size:20px; color:var(--deep);
+  }
+  .seleccion .piedra{
+    margin-top:2px; font-size:12.5px; letter-spacing:.06em; color:var(--ink-soft);
+    text-transform:uppercase;
+  }
+
+  .picker{
+    margin-top:30px; display:grid; grid-template-columns:repeat(4, 1fr); gap:14px 10px;
+  }
+  .swatch{
+    background:none; border:none; cursor:pointer; padding:6px 2px;
+    display:flex; flex-direction:column; align-items:center; gap:7px;
+    font-family:'Jost'; color:var(--ink-soft);
+  }
+  .swatch .dot{
+    width:30px; height:30px; border-radius:50%;
+    border:2px solid transparent; box-shadow:0 2px 6px rgba(20,69,74,.25);
+    transition:border-color .2s, transform .2s;
+  }
+  .swatch .mes-abr{font-size:11px; letter-spacing:.03em;}
+  .swatch:hover .dot{transform:translateY(-2px);}
+  .swatch.activo .dot{border-color:var(--deep);}
+  .swatch.activo .mes-abr{color:var(--deep); font-weight:600;}
+
+  .nota{margin-top:28px; font-size:12px; color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="banner">BOCETO — selector de mes/piedra, para revisar antes de meterlo en la tienda</div>
+
+  <p class="eyebrow">Personalización por color</p>
+  <h1>Collar Flor Natal<br><em>su mes, su piedra</em></h1>
+  <p class="sub">No se graba texto — se elige el color de la piedra según el mes de nacimiento. Doce opciones, la misma flor.</p>
+
+  <div class="stage">
+    <div class="pendant">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="petaloOro" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#F6E7C4"/>
+            <stop offset="68%" stop-color="#C6A664"/>
+            <stop offset="100%" stop-color="#A8873F"/>
+          </radialGradient>
+        </defs>
+        <g transform="translate(50,50)">
+          <g id="petalos">
+            <!-- 5 petalos, cada uno rotado 72 grados -->
+            <ellipse cx="0" cy="-22" rx="13" ry="20" fill="url(#petaloOro)" stroke="#8A6E33" stroke-width="0.6"/>
+            <ellipse cx="0" cy="-22" rx="13" ry="20" fill="url(#petaloOro)" stroke="#8A6E33" stroke-width="0.6" transform="rotate(72)"/>
+            <ellipse cx="0" cy="-22" rx="13" ry="20" fill="url(#petaloOro)" stroke="#8A6E33" stroke-width="0.6" transform="rotate(144)"/>
+            <ellipse cx="0" cy="-22" rx="13" ry="20" fill="url(#petaloOro)" stroke="#8A6E33" stroke-width="0.6" transform="rotate(216)"/>
+            <ellipse cx="0" cy="-22" rx="13" ry="20" fill="url(#petaloOro)" stroke="#8A6E33" stroke-width="0.6" transform="rotate(288)"/>
+          </g>
+          <!-- la piedra central: esto es lo que cambia de color -->
+          <circle class="gema" id="gema" cx="0" cy="0" r="11" fill="#E0616E" stroke="#ffffff" stroke-width="1.4" fill-opacity="0.92"/>
+          <circle cx="0" cy="0" r="11" fill="none" stroke="#8A6E33" stroke-width="0.8"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="seleccion">
+      <p class="mes" id="mesActivo">Enero</p>
+      <p class="piedra" id="piedraActiva">Siam Claro</p>
+    </div>
+  </div>
+
+  <div class="picker" id="picker"></div>
+
+  <p class="nota">Colores tomados de la referencia que pasaste (12 Months Birthstones). Si el proveedor no tiene exactamente estos 12 tonos de piedra, habrá que ajustar la paleta a lo que sí pueda fabricar.</p>
+</div>
+
+<script>
+  const MESES = [
+    { mes: 'Enero',      piedra: 'Siam Claro',   color: '#E0616E' },
+    { mes: 'Febrero',    piedra: 'Violeta',      color: '#7B68B5' },
+    { mes: 'Marzo',      piedra: 'Zafiro Claro', color: '#A9C6E8' },
+    { mes: 'Abril',      piedra: 'Cristal',      color: '#F2F5F7' },
+    { mes: 'Mayo',       piedra: 'Esmeralda',    color: '#3FAE72' },
+    { mes: 'Junio',      piedra: 'Amatista',     color: '#9B59B6' },
+    { mes: 'Julio',      piedra: 'Rosa',         color: '#E8A0BB' },
+    { mes: 'Agosto',     piedra: 'Peridoto',     color: '#B5CC5A' },
+    { mes: 'Septiembre', piedra: 'Zafiro',       color: '#3F6FB5' },
+    { mes: 'Octubre',    piedra: 'Rosa Claro',   color: '#F2C6D6' },
+    { mes: 'Noviembre',  piedra: 'Junquillo',    color: '#E8D45A' },
+    { mes: 'Diciembre',  piedra: 'Aguamarina',   color: '#7FCFC7' },
+  ];
+
+  const picker = document.getElementById('picker');
+  const gema = document.getElementById('gema');
+  const mesActivo = document.getElementById('mesActivo');
+  const piedraActiva = document.getElementById('piedraActiva');
+
+  function seleccionar(idx) {
+    const m = MESES[idx];
+    gema.setAttribute('fill', m.color);
+    mesActivo.textContent = m.mes;
+    piedraActiva.textContent = m.piedra;
+    [...picker.children].forEach((b, i) => b.classList.toggle('activo', i === idx));
+  }
+
+  MESES.forEach((m, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'swatch';
+    btn.innerHTML = `<span class="dot" style="background:${m.color}"></span><span class="mes-abr">${m.mes.slice(0,3)}</span>`;
+    btn.addEventListener('click', () => seleccionar(i));
+    picker.appendChild(btn);
+  });
+
+  seleccionar(0);
+</script>
+
+</body>
+</html>

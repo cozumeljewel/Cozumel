@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozumel Jewelry</title>
+<meta name="description" content="Joyas para regalar algo más que un accesorio: una memoria, un momento, una historia">
+<meta name="theme-color" content="#14454A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
+
+<!-- Previsualizacion al compartir el enlace (Instagram, WhatsApp, etc.)
+     PENDIENTE: anadir <meta property="og:image"> con una imagen real de
+     1200x630 px cuando haya fotos de producto. Sin ella, la tarjeta sale
+     con texto pero sin imagen. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cozumel">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Cozumel Jewelry · Regala un pedacito de ti">
+<meta property="og:description" content="Joyas para regalar algo más que un accesorio: una memoria, un momento, una historia">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cozumel Jewelry · Regala un pedacito de ti">
+<meta name="twitter:description" content="Joyas para regalar algo más que un accesorio: una memoria, un momento, una historia">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+</head>
+<body data-page="inicio">
+
+<div class="page">
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <!-- LOGO — emblema + wordmark en SVG inline (para editar el trazo, tocar aquí directamente) -->
+      <a class="logo" href="index.html" aria-label="Inicio">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="-15 -15 130 140" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round">
+              <line x1="84" y1="52" x2="95.9" y2="52"/>
+              <line x1="79.4" y1="72" x2="89.7" y2="79"/>
+              <line x1="67" y1="86.6" x2="72.95" y2="98.8"/>
+              <line x1="50" y1="92" x2="50" y2="106"/>
+              <line x1="33" y1="86.6" x2="27.05" y2="98.8"/>
+              <line x1="20.6" y1="72" x2="10.25" y2="79"/>
+              <line x1="16" y1="52" x2="4.1" y2="52"/>
+              <line x1="20.6" y1="32" x2="10.25" y2="25"/>
+              <line x1="33" y1="17.4" x2="27.05" y2="5.2"/>
+              <line x1="50" y1="12" x2="50" y2="-2"/>
+              <line x1="67" y1="17.4" x2="72.95" y2="5.2"/>
+              <line x1="79.4" y1="32" x2="89.7" y2="25"/>
+            </g>
+            <ellipse cx="50" cy="52" rx="34" ry="40" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M18,52 C30,36 70,36 82,52 C70,66 30,66 18,52 Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <circle cx="50" cy="52" r="7" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="logo-word">
+          <span class="logo-name">Cozumel</span>
+          <span class="logo-sub">Jewelry</span>
+          <span class="logo-olas" aria-hidden="true"></span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">La colección</a>
+        <a href="historia.html">Quiénes somos</a>
+        <a href="reservar.html">Reservar</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- ===== HERO / INICIO ===== -->
+  <section class="hero">
+    <div class="hero-media" role="img" aria-label="Adriana llevando piezas de Cozumel Jewelry"></div>
+    <div class="hero-copy">
+      <h1>Regala un<br><em>pedacito de ti</em></h1>
+      <p class="hero-sub">Un collar con su nombre, su fecha o tu mensaje, grabado a mano, para que siempre lleven un pedacito de ti</p>
+      <a class="btn btn-primary" href="productos.html">Ver la colección</a>
+      <p class="hero-puente">Porque somos un pedacito de lo que regalamos</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-olas" aria-hidden="true"></span>
+      <nav class="footer-nav">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">La colección</a>
+        <a href="historia.html">Quiénes somos</a>
+        <a href="reservar.html">Reservar</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+      <p class="footer-tagline">Cozumel, somos un pedacito de lo que regalamos</p>
+    </div>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
