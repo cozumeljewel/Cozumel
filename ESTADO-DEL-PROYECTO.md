@@ -222,6 +222,11 @@ consentimiento, session_id
   productos permitidos; sustituye a la política de la v3, su lista ya trae
   los 7): según el cliente, ya ejecutada (confirmado 2026-08-26). No
   verificable desde aquí por el mismo motivo que las anteriores.
+- **⚠️ `supabase-migracion-v6.sql` NO se ha ejecutado.** Añade `user_id` a
+  `reservas` y cambia la política de INSERT: de aquí en adelante hace falta
+  sesión de Google para reservar (ver el login en la sección 4). Sin esta
+  migración, en cuanto el login esté activo en el sitio, **todas** las
+  reservas fallarán al guardar, no solo las de un producto.
 
 Regla: **cada vez que se añade o renombra un `id` en `productos.js`, hay que
 repetir la migración v3** con la lista actualizada.
@@ -282,8 +287,9 @@ horizontal y errores de JS. El objetivo siempre es **0 fallos**.
 ## 8. Lo que falta
 
 ### Bloqueante
-Ninguno pendiente: v3, v4 y v5 confirmadas como ejecutadas por el cliente
-(2026-08-26). Si al probar una reserva real da error, comprobar aquí primero.
+- **Migración v6:** ejecutar `supabase-migracion-v6.sql` en Supabase antes de
+  activar el login (sección 4, `reservar.html`). Sin ella, todas las reservas
+  fallarán en cuanto alguien intente guardar un formulario con sesión iniciada.
 
 ### Contenido (decisiones del cliente)
 2. **Fotos de 6 de los 7 productos.** Solo Collar Destino tiene
