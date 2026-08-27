@@ -126,8 +126,24 @@
         <div class="field">
           <label for="r-whatsapp">WhatsApp</label>
           <div class="field-tel">
-            <!-- Las opciones las rellena script.js desde PAISES_TELEFONO -->
-            <select id="r-whatsapp-prefijo" aria-label="Prefijo del país"></select>
+            <!-- El botón, el panel y la lista los rellena script.js desde
+                 PAISES_TELEFONO. El valor real vive en el input oculto:
+                 el resto del formulario lo lee igual que antes leía el
+                 <select>. -->
+            <div class="tel-combo" id="tel-combo">
+              <button type="button" class="tel-combo-toggle" id="tel-combo-toggle"
+                      aria-haspopup="listbox" aria-expanded="false" aria-controls="tel-combo-lista">
+                <img class="tel-combo-bandera" id="tel-combo-bandera" alt="" width="20" height="15">
+                <span id="tel-combo-codigo"></span>
+              </button>
+              <div class="tel-combo-panel" id="tel-combo-panel" hidden>
+                <input type="text" class="tel-combo-buscar" id="tel-combo-buscar"
+                       placeholder="Buscar país" autocomplete="off"
+                       role="combobox" aria-expanded="true" aria-controls="tel-combo-lista">
+                <ul class="tel-combo-lista" id="tel-combo-lista" role="listbox" aria-label="Países"></ul>
+              </div>
+            </div>
+            <input type="hidden" id="r-whatsapp-prefijo" value="+52">
             <input id="r-whatsapp" name="whatsapp" type="tel" required placeholder="Tu número">
           </div>
         </div>

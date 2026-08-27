@@ -472,16 +472,59 @@ section[id]{scroll-margin-top:var(--header-h);}
 }
 
 /* Prefijo de país + número, en una sola fila */
-.field-tel{display:flex; gap:8px;}
-.field-tel select{
-  flex:0 0 112px; min-width:0;
-  padding:14px 8px; border:1px solid var(--line-3); border-radius:2px;
-  background:var(--foam); font-family:'Jost'; font-size:13.5px; color:var(--ink);
+.field-tel{display:flex; gap:8px; position:relative;}
+.field-tel input{flex:1; min-width:0;}
+
+/* ---------- Combo de prefijo (bandera + código, con buscador) ----------
+   Reemplaza al <select> nativo: un select no puede mostrar banderas ni
+   buscar por texto libre, solo saltar por la primera letra. */
+.tel-combo{position:relative; flex:0 0 96px;}
+.tel-combo-toggle{
+  width:100%; height:100%; display:flex; align-items:center; gap:7px;
+  padding:0 10px; border:1px solid var(--line-3); border-radius:2px;
+  background:var(--foam); cursor:pointer;
 }
-.field-tel select:focus{
+.tel-combo-toggle:focus-visible, .tel-combo-toggle[aria-expanded="true"]{
   outline:none; border-color:var(--sea); box-shadow:0 0 0 3px rgba(78,154,155,.15);
 }
-.field-tel input{flex:1; min-width:0;}
+.tel-combo-bandera{
+  display:block; width:20px; height:15px; object-fit:cover; border-radius:1px;
+  box-shadow:0 0 0 1px rgba(20,69,74,.12);
+}
+.tel-combo-toggle span{font-family:'Jost'; font-size:13.5px; color:var(--ink); white-space:nowrap;}
+
+.tel-combo-panel{
+  position:absolute; z-index:5; top:calc(100% + 6px); left:0;
+  width:min(300px, 80vw); max-width:calc(100vw - 48px);
+  background:var(--white); border:1px solid var(--line-2); border-radius:2px;
+  box-shadow:0 12px 30px rgba(20,69,74,.18);
+  display:flex; flex-direction:column;
+}
+.tel-combo-buscar{
+  margin:10px; padding:10px 12px; border:1px solid var(--line-3); border-radius:2px;
+  background:var(--foam); font-family:'Jost'; font-size:14px; color:var(--ink);
+}
+.tel-combo-buscar:focus{
+  outline:none; border-color:var(--sea); box-shadow:0 0 0 3px rgba(78,154,155,.15);
+}
+.tel-combo-lista{
+  list-style:none; margin:0 0 10px; padding:0 6px;
+  max-height:238px; overflow-y:auto;
+}
+.tel-combo-lista li{
+  display:flex; align-items:center; gap:9px;
+  padding:9px 8px; border-radius:2px; cursor:pointer;
+  font-family:'Jost'; font-size:14px; color:var(--ink);
+}
+.tel-combo-lista li img{
+  display:block; width:20px; height:15px; object-fit:cover; border-radius:1px;
+  box-shadow:0 0 0 1px rgba(20,69,74,.12); flex:none;
+}
+.tel-combo-lista li .tel-combo-nombre{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.tel-combo-lista li .tel-combo-codigo{color:var(--ink-soft); font-size:12.5px; flex:none;}
+.tel-combo-lista li:hover, .tel-combo-lista li.activa{background:var(--shallow);}
+.tel-combo-lista .tel-combo-vacio{color:var(--ink-soft); font-size:13px; padding:14px 8px; cursor:default;}
+.tel-combo-lista .tel-combo-vacio:hover{background:none;}
 
 .preview-note{margin-top:18px; font-size:12px; color:var(--ink-soft);}
 

@@ -624,230 +624,230 @@ if (ctaReservar) {
    (+1 para EE. UU., Canada y el Caribe angloparlante; +7 para Rusia y
    Kazajistan): no es un error, es como funciona la numeracion E.164. */
 const PAISES_TELEFONO = [
-  { pais: 'México', codigo: '+52' },
-  { pais: 'España', codigo: '+34' },
-  { pais: 'Estados Unidos', codigo: '+1' },
-  { pais: 'Colombia', codigo: '+57' },
-  { pais: 'Argentina', codigo: '+54' },
-  { pais: 'Chile', codigo: '+56' },
-  { pais: 'Perú', codigo: '+51' },
-  { pais: 'Ecuador', codigo: '+593' },
-  { pais: 'Venezuela', codigo: '+58' },
-  { pais: 'Guatemala', codigo: '+502' },
-  { pais: 'Costa Rica', codigo: '+506' },
-  { pais: 'Panamá', codigo: '+507' },
-  { pais: 'República Dominicana', codigo: '+1' },
-  { pais: 'Puerto Rico', codigo: '+1' },
-  { pais: 'Canadá', codigo: '+1' },
-  { pais: 'Bolivia', codigo: '+591' },
-  { pais: 'Uruguay', codigo: '+598' },
-  { pais: 'Paraguay', codigo: '+595' },
-  { pais: 'El Salvador', codigo: '+503' },
-  { pais: 'Honduras', codigo: '+504' },
-  { pais: 'Nicaragua', codigo: '+505' },
-  { pais: 'Cuba', codigo: '+53' },
-  { pais: 'Afganistán', codigo: '+93' },
-  { pais: 'Albania', codigo: '+355' },
-  { pais: 'Alemania', codigo: '+49' },
-  { pais: 'Andorra', codigo: '+376' },
-  { pais: 'Angola', codigo: '+244' },
-  { pais: 'Anguila', codigo: '+1' },
-  { pais: 'Antigua y Barbuda', codigo: '+1' },
-  { pais: 'Arabia Saudita', codigo: '+966' },
-  { pais: 'Argelia', codigo: '+213' },
-  { pais: 'Armenia', codigo: '+374' },
-  { pais: 'Aruba', codigo: '+297' },
-  { pais: 'Australia', codigo: '+61' },
-  { pais: 'Austria', codigo: '+43' },
-  { pais: 'Azerbaiyán', codigo: '+994' },
-  { pais: 'Bahamas', codigo: '+1' },
-  { pais: 'Bangladés', codigo: '+880' },
-  { pais: 'Baréin', codigo: '+973' },
-  { pais: 'Barbados', codigo: '+1' },
-  { pais: 'Bélgica', codigo: '+32' },
-  { pais: 'Belice', codigo: '+501' },
-  { pais: 'Benín', codigo: '+229' },
-  { pais: 'Bermudas', codigo: '+1' },
-  { pais: 'Bielorrusia', codigo: '+375' },
-  { pais: 'Bosnia y Herzegovina', codigo: '+387' },
-  { pais: 'Botsuana', codigo: '+267' },
-  { pais: 'Brasil', codigo: '+55' },
-  { pais: 'Brunéi', codigo: '+673' },
-  { pais: 'Bulgaria', codigo: '+359' },
-  { pais: 'Burkina Faso', codigo: '+226' },
-  { pais: 'Burundi', codigo: '+257' },
-  { pais: 'Bután', codigo: '+975' },
-  { pais: 'Cabo Verde', codigo: '+238' },
-  { pais: 'Camboya', codigo: '+855' },
-  { pais: 'Camerún', codigo: '+237' },
-  { pais: 'Catar', codigo: '+974' },
-  { pais: 'Chad', codigo: '+235' },
-  { pais: 'China', codigo: '+86' },
-  { pais: 'Chipre', codigo: '+357' },
-  { pais: 'Ciudad del Vaticano', codigo: '+379' },
-  { pais: 'Comoras', codigo: '+269' },
-  { pais: 'Congo (Brazzaville)', codigo: '+242' },
-  { pais: 'Congo (Kinshasa)', codigo: '+243' },
-  { pais: 'Corea del Norte', codigo: '+850' },
-  { pais: 'Corea del Sur', codigo: '+82' },
-  { pais: 'Costa de Marfil', codigo: '+225' },
-  { pais: 'Croacia', codigo: '+385' },
-  { pais: 'Dinamarca', codigo: '+45' },
-  { pais: 'Yibuti', codigo: '+253' },
-  { pais: 'Dominica', codigo: '+1' },
-  { pais: 'Egipto', codigo: '+20' },
-  { pais: 'Emiratos Árabes Unidos', codigo: '+971' },
-  { pais: 'Eritrea', codigo: '+291' },
-  { pais: 'Eslovaquia', codigo: '+421' },
-  { pais: 'Eslovenia', codigo: '+386' },
-  { pais: 'Estonia', codigo: '+372' },
-  { pais: 'Esuatini', codigo: '+268' },
-  { pais: 'Etiopía', codigo: '+251' },
-  { pais: 'Filipinas', codigo: '+63' },
-  { pais: 'Finlandia', codigo: '+358' },
-  { pais: 'Fiyi', codigo: '+679' },
-  { pais: 'Francia', codigo: '+33' },
-  { pais: 'Gabón', codigo: '+241' },
-  { pais: 'Gambia', codigo: '+220' },
-  { pais: 'Georgia', codigo: '+995' },
-  { pais: 'Ghana', codigo: '+233' },
-  { pais: 'Gibraltar', codigo: '+350' },
-  { pais: 'Granada', codigo: '+1' },
-  { pais: 'Grecia', codigo: '+30' },
-  { pais: 'Groenlandia', codigo: '+299' },
-  { pais: 'Guadalupe', codigo: '+590' },
-  { pais: 'Guam', codigo: '+1' },
-  { pais: 'Guayana Francesa', codigo: '+594' },
-  { pais: 'Guinea', codigo: '+224' },
-  { pais: 'Guinea-Bisáu', codigo: '+245' },
-  { pais: 'Guinea Ecuatorial', codigo: '+240' },
-  { pais: 'Guyana', codigo: '+592' },
-  { pais: 'Haití', codigo: '+509' },
-  { pais: 'Hong Kong', codigo: '+852' },
-  { pais: 'Hungría', codigo: '+36' },
-  { pais: 'India', codigo: '+91' },
-  { pais: 'Indonesia', codigo: '+62' },
-  { pais: 'Irak', codigo: '+964' },
-  { pais: 'Irán', codigo: '+98' },
-  { pais: 'Irlanda', codigo: '+353' },
-  { pais: 'Islandia', codigo: '+354' },
-  { pais: 'Islas Caimán', codigo: '+1' },
-  { pais: 'Islas Cook', codigo: '+682' },
-  { pais: 'Islas Feroe', codigo: '+298' },
-  { pais: 'Islas Malvinas', codigo: '+500' },
-  { pais: 'Islas Marshall', codigo: '+692' },
-  { pais: 'Islas Salomón', codigo: '+677' },
-  { pais: 'Islas Turcas y Caicos', codigo: '+1' },
-  { pais: 'Islas Vírgenes Británicas', codigo: '+1' },
-  { pais: 'Islas Vírgenes de EE. UU.', codigo: '+1' },
-  { pais: 'Israel', codigo: '+972' },
-  { pais: 'Italia', codigo: '+39' },
-  { pais: 'Jamaica', codigo: '+1' },
-  { pais: 'Japón', codigo: '+81' },
-  { pais: 'Jordania', codigo: '+962' },
-  { pais: 'Kazajistán', codigo: '+7' },
-  { pais: 'Kenia', codigo: '+254' },
-  { pais: 'Kirguistán', codigo: '+996' },
-  { pais: 'Kiribati', codigo: '+686' },
-  { pais: 'Kosovo', codigo: '+383' },
-  { pais: 'Kuwait', codigo: '+965' },
-  { pais: 'Laos', codigo: '+856' },
-  { pais: 'Lesoto', codigo: '+266' },
-  { pais: 'Letonia', codigo: '+371' },
-  { pais: 'Líbano', codigo: '+961' },
-  { pais: 'Liberia', codigo: '+231' },
-  { pais: 'Libia', codigo: '+218' },
-  { pais: 'Liechtenstein', codigo: '+423' },
-  { pais: 'Lituania', codigo: '+370' },
-  { pais: 'Luxemburgo', codigo: '+352' },
-  { pais: 'Macao', codigo: '+853' },
-  { pais: 'Macedonia del Norte', codigo: '+389' },
-  { pais: 'Madagascar', codigo: '+261' },
-  { pais: 'Malasia', codigo: '+60' },
-  { pais: 'Malaui', codigo: '+265' },
-  { pais: 'Maldivas', codigo: '+960' },
-  { pais: 'Malí', codigo: '+223' },
-  { pais: 'Malta', codigo: '+356' },
-  { pais: 'Marruecos', codigo: '+212' },
-  { pais: 'Martinica', codigo: '+596' },
-  { pais: 'Mauricio', codigo: '+230' },
-  { pais: 'Mauritania', codigo: '+222' },
-  { pais: 'Mayotte', codigo: '+262' },
-  { pais: 'Micronesia', codigo: '+691' },
-  { pais: 'Moldavia', codigo: '+373' },
-  { pais: 'Mónaco', codigo: '+377' },
-  { pais: 'Mongolia', codigo: '+976' },
-  { pais: 'Montenegro', codigo: '+382' },
-  { pais: 'Montserrat', codigo: '+1' },
-  { pais: 'Mozambique', codigo: '+258' },
-  { pais: 'Myanmar (Birmania)', codigo: '+95' },
-  { pais: 'Namibia', codigo: '+264' },
-  { pais: 'Nauru', codigo: '+674' },
-  { pais: 'Nepal', codigo: '+977' },
-  { pais: 'Nigeria', codigo: '+234' },
-  { pais: 'Níger', codigo: '+227' },
-  { pais: 'Noruega', codigo: '+47' },
-  { pais: 'Nueva Caledonia', codigo: '+687' },
-  { pais: 'Nueva Zelanda', codigo: '+64' },
-  { pais: 'Omán', codigo: '+968' },
-  { pais: 'Países Bajos', codigo: '+31' },
-  { pais: 'Pakistán', codigo: '+92' },
-  { pais: 'Palaos', codigo: '+680' },
-  { pais: 'Palestina', codigo: '+970' },
-  { pais: 'Papúa Nueva Guinea', codigo: '+675' },
-  { pais: 'Polinesia Francesa', codigo: '+689' },
-  { pais: 'Polonia', codigo: '+48' },
-  { pais: 'Portugal', codigo: '+351' },
-  { pais: 'Reino Unido', codigo: '+44' },
-  { pais: 'República Centroafricana', codigo: '+236' },
-  { pais: 'República Checa', codigo: '+420' },
-  { pais: 'Ruanda', codigo: '+250' },
-  { pais: 'Rumanía', codigo: '+40' },
-  { pais: 'Rusia', codigo: '+7' },
-  { pais: 'Samoa', codigo: '+685' },
-  { pais: 'Samoa Americana', codigo: '+1' },
-  { pais: 'San Cristóbal y Nieves', codigo: '+1' },
-  { pais: 'San Marino', codigo: '+378' },
-  { pais: 'San Pedro y Miquelón', codigo: '+508' },
-  { pais: 'San Vicente y las Granadinas', codigo: '+1' },
-  { pais: 'Santa Elena', codigo: '+290' },
-  { pais: 'Santa Lucía', codigo: '+1' },
-  { pais: 'Santo Tomé y Príncipe', codigo: '+239' },
-  { pais: 'Senegal', codigo: '+221' },
-  { pais: 'Serbia', codigo: '+381' },
-  { pais: 'Seychelles', codigo: '+248' },
-  { pais: 'Sierra Leona', codigo: '+232' },
-  { pais: 'Singapur', codigo: '+65' },
-  { pais: 'Siria', codigo: '+963' },
-  { pais: 'Somalia', codigo: '+252' },
-  { pais: 'Sri Lanka', codigo: '+94' },
-  { pais: 'Sudáfrica', codigo: '+27' },
-  { pais: 'Sudán', codigo: '+249' },
-  { pais: 'Sudán del Sur', codigo: '+211' },
-  { pais: 'Suecia', codigo: '+46' },
-  { pais: 'Suiza', codigo: '+41' },
-  { pais: 'Surinam', codigo: '+597' },
-  { pais: 'Tailandia', codigo: '+66' },
-  { pais: 'Taiwán', codigo: '+886' },
-  { pais: 'Tanzania', codigo: '+255' },
-  { pais: 'Tayikistán', codigo: '+992' },
-  { pais: 'Timor Oriental', codigo: '+670' },
-  { pais: 'Togo', codigo: '+228' },
-  { pais: 'Tonga', codigo: '+676' },
-  { pais: 'Trinidad y Tobago', codigo: '+1' },
-  { pais: 'Túnez', codigo: '+216' },
-  { pais: 'Turkmenistán', codigo: '+993' },
-  { pais: 'Turquía', codigo: '+90' },
-  { pais: 'Tuvalu', codigo: '+688' },
-  { pais: 'Ucrania', codigo: '+380' },
-  { pais: 'Uganda', codigo: '+256' },
-  { pais: 'Uzbekistán', codigo: '+998' },
-  { pais: 'Vanuatu', codigo: '+678' },
-  { pais: 'Vietnam', codigo: '+84' },
-  { pais: 'Wallis y Futuna', codigo: '+681' },
-  { pais: 'Yemen', codigo: '+967' },
-  { pais: 'Zambia', codigo: '+260' },
-  { pais: 'Zimbabue', codigo: '+263' },
+  { pais: 'México', codigo: '+52', iso: 'mx' },
+  { pais: 'España', codigo: '+34', iso: 'es' },
+  { pais: 'Estados Unidos', codigo: '+1', iso: 'us' },
+  { pais: 'Colombia', codigo: '+57', iso: 'co' },
+  { pais: 'Argentina', codigo: '+54', iso: 'ar' },
+  { pais: 'Chile', codigo: '+56', iso: 'cl' },
+  { pais: 'Perú', codigo: '+51', iso: 'pe' },
+  { pais: 'Ecuador', codigo: '+593', iso: 'ec' },
+  { pais: 'Venezuela', codigo: '+58', iso: 've' },
+  { pais: 'Guatemala', codigo: '+502', iso: 'gt' },
+  { pais: 'Costa Rica', codigo: '+506', iso: 'cr' },
+  { pais: 'Panamá', codigo: '+507', iso: 'pa' },
+  { pais: 'República Dominicana', codigo: '+1', iso: 'do' },
+  { pais: 'Puerto Rico', codigo: '+1', iso: 'pr' },
+  { pais: 'Canadá', codigo: '+1', iso: 'ca' },
+  { pais: 'Bolivia', codigo: '+591', iso: 'bo' },
+  { pais: 'Uruguay', codigo: '+598', iso: 'uy' },
+  { pais: 'Paraguay', codigo: '+595', iso: 'py' },
+  { pais: 'El Salvador', codigo: '+503', iso: 'sv' },
+  { pais: 'Honduras', codigo: '+504', iso: 'hn' },
+  { pais: 'Nicaragua', codigo: '+505', iso: 'ni' },
+  { pais: 'Cuba', codigo: '+53', iso: 'cu' },
+  { pais: 'Afganistán', codigo: '+93', iso: 'af' },
+  { pais: 'Albania', codigo: '+355', iso: 'al' },
+  { pais: 'Alemania', codigo: '+49', iso: 'de' },
+  { pais: 'Andorra', codigo: '+376', iso: 'ad' },
+  { pais: 'Angola', codigo: '+244', iso: 'ao' },
+  { pais: 'Anguila', codigo: '+1', iso: 'ai' },
+  { pais: 'Antigua y Barbuda', codigo: '+1', iso: 'ag' },
+  { pais: 'Arabia Saudita', codigo: '+966', iso: 'sa' },
+  { pais: 'Argelia', codigo: '+213', iso: 'dz' },
+  { pais: 'Armenia', codigo: '+374', iso: 'am' },
+  { pais: 'Aruba', codigo: '+297', iso: 'aw' },
+  { pais: 'Australia', codigo: '+61', iso: 'au' },
+  { pais: 'Austria', codigo: '+43', iso: 'at' },
+  { pais: 'Azerbaiyán', codigo: '+994', iso: 'az' },
+  { pais: 'Bahamas', codigo: '+1', iso: 'bs' },
+  { pais: 'Bangladés', codigo: '+880', iso: 'bd' },
+  { pais: 'Baréin', codigo: '+973', iso: 'bh' },
+  { pais: 'Barbados', codigo: '+1', iso: 'bb' },
+  { pais: 'Bélgica', codigo: '+32', iso: 'be' },
+  { pais: 'Belice', codigo: '+501', iso: 'bz' },
+  { pais: 'Benín', codigo: '+229', iso: 'bj' },
+  { pais: 'Bermudas', codigo: '+1', iso: 'bm' },
+  { pais: 'Bielorrusia', codigo: '+375', iso: 'by' },
+  { pais: 'Bosnia y Herzegovina', codigo: '+387', iso: 'ba' },
+  { pais: 'Botsuana', codigo: '+267', iso: 'bw' },
+  { pais: 'Brasil', codigo: '+55', iso: 'br' },
+  { pais: 'Brunéi', codigo: '+673', iso: 'bn' },
+  { pais: 'Bulgaria', codigo: '+359', iso: 'bg' },
+  { pais: 'Burkina Faso', codigo: '+226', iso: 'bf' },
+  { pais: 'Burundi', codigo: '+257', iso: 'bi' },
+  { pais: 'Bután', codigo: '+975', iso: 'bt' },
+  { pais: 'Cabo Verde', codigo: '+238', iso: 'cv' },
+  { pais: 'Camboya', codigo: '+855', iso: 'kh' },
+  { pais: 'Camerún', codigo: '+237', iso: 'cm' },
+  { pais: 'Catar', codigo: '+974', iso: 'qa' },
+  { pais: 'Chad', codigo: '+235', iso: 'td' },
+  { pais: 'China', codigo: '+86', iso: 'cn' },
+  { pais: 'Chipre', codigo: '+357', iso: 'cy' },
+  { pais: 'Ciudad del Vaticano', codigo: '+379', iso: 'va' },
+  { pais: 'Comoras', codigo: '+269', iso: 'km' },
+  { pais: 'Congo (Brazzaville)', codigo: '+242', iso: 'cg' },
+  { pais: 'Congo (Kinshasa)', codigo: '+243', iso: 'cd' },
+  { pais: 'Corea del Norte', codigo: '+850', iso: 'kp' },
+  { pais: 'Corea del Sur', codigo: '+82', iso: 'kr' },
+  { pais: 'Costa de Marfil', codigo: '+225', iso: 'ci' },
+  { pais: 'Croacia', codigo: '+385', iso: 'hr' },
+  { pais: 'Dinamarca', codigo: '+45', iso: 'dk' },
+  { pais: 'Yibuti', codigo: '+253', iso: 'dj' },
+  { pais: 'Dominica', codigo: '+1', iso: 'dm' },
+  { pais: 'Egipto', codigo: '+20', iso: 'eg' },
+  { pais: 'Emiratos Árabes Unidos', codigo: '+971', iso: 'ae' },
+  { pais: 'Eritrea', codigo: '+291', iso: 'er' },
+  { pais: 'Eslovaquia', codigo: '+421', iso: 'sk' },
+  { pais: 'Eslovenia', codigo: '+386', iso: 'si' },
+  { pais: 'Estonia', codigo: '+372', iso: 'ee' },
+  { pais: 'Esuatini', codigo: '+268', iso: 'sz' },
+  { pais: 'Etiopía', codigo: '+251', iso: 'et' },
+  { pais: 'Filipinas', codigo: '+63', iso: 'ph' },
+  { pais: 'Finlandia', codigo: '+358', iso: 'fi' },
+  { pais: 'Fiyi', codigo: '+679', iso: 'fj' },
+  { pais: 'Francia', codigo: '+33', iso: 'fr' },
+  { pais: 'Gabón', codigo: '+241', iso: 'ga' },
+  { pais: 'Gambia', codigo: '+220', iso: 'gm' },
+  { pais: 'Georgia', codigo: '+995', iso: 'ge' },
+  { pais: 'Ghana', codigo: '+233', iso: 'gh' },
+  { pais: 'Gibraltar', codigo: '+350', iso: 'gi' },
+  { pais: 'Granada', codigo: '+1', iso: 'gd' },
+  { pais: 'Grecia', codigo: '+30', iso: 'gr' },
+  { pais: 'Groenlandia', codigo: '+299', iso: 'gl' },
+  { pais: 'Guadalupe', codigo: '+590', iso: 'gp' },
+  { pais: 'Guam', codigo: '+1', iso: 'gu' },
+  { pais: 'Guayana Francesa', codigo: '+594', iso: 'gf' },
+  { pais: 'Guinea', codigo: '+224', iso: 'gn' },
+  { pais: 'Guinea-Bisáu', codigo: '+245', iso: 'gw' },
+  { pais: 'Guinea Ecuatorial', codigo: '+240', iso: 'gq' },
+  { pais: 'Guyana', codigo: '+592', iso: 'gy' },
+  { pais: 'Haití', codigo: '+509', iso: 'ht' },
+  { pais: 'Hong Kong', codigo: '+852', iso: 'hk' },
+  { pais: 'Hungría', codigo: '+36', iso: 'hu' },
+  { pais: 'India', codigo: '+91', iso: 'in' },
+  { pais: 'Indonesia', codigo: '+62', iso: 'id' },
+  { pais: 'Irak', codigo: '+964', iso: 'iq' },
+  { pais: 'Irán', codigo: '+98', iso: 'ir' },
+  { pais: 'Irlanda', codigo: '+353', iso: 'ie' },
+  { pais: 'Islandia', codigo: '+354', iso: 'is' },
+  { pais: 'Islas Caimán', codigo: '+1', iso: 'ky' },
+  { pais: 'Islas Cook', codigo: '+682', iso: 'ck' },
+  { pais: 'Islas Feroe', codigo: '+298', iso: 'fo' },
+  { pais: 'Islas Malvinas', codigo: '+500', iso: 'fk' },
+  { pais: 'Islas Marshall', codigo: '+692', iso: 'mh' },
+  { pais: 'Islas Salomón', codigo: '+677', iso: 'sb' },
+  { pais: 'Islas Turcas y Caicos', codigo: '+1', iso: 'tc' },
+  { pais: 'Islas Vírgenes Británicas', codigo: '+1', iso: 'vg' },
+  { pais: 'Islas Vírgenes de EE. UU.', codigo: '+1', iso: 'vi' },
+  { pais: 'Israel', codigo: '+972', iso: 'il' },
+  { pais: 'Italia', codigo: '+39', iso: 'it' },
+  { pais: 'Jamaica', codigo: '+1', iso: 'jm' },
+  { pais: 'Japón', codigo: '+81', iso: 'jp' },
+  { pais: 'Jordania', codigo: '+962', iso: 'jo' },
+  { pais: 'Kazajistán', codigo: '+7', iso: 'kz' },
+  { pais: 'Kenia', codigo: '+254', iso: 'ke' },
+  { pais: 'Kirguistán', codigo: '+996', iso: 'kg' },
+  { pais: 'Kiribati', codigo: '+686', iso: 'ki' },
+  { pais: 'Kosovo', codigo: '+383', iso: 'xk' },
+  { pais: 'Kuwait', codigo: '+965', iso: 'kw' },
+  { pais: 'Laos', codigo: '+856', iso: 'la' },
+  { pais: 'Lesoto', codigo: '+266', iso: 'ls' },
+  { pais: 'Letonia', codigo: '+371', iso: 'lv' },
+  { pais: 'Líbano', codigo: '+961', iso: 'lb' },
+  { pais: 'Liberia', codigo: '+231', iso: 'lr' },
+  { pais: 'Libia', codigo: '+218', iso: 'ly' },
+  { pais: 'Liechtenstein', codigo: '+423', iso: 'li' },
+  { pais: 'Lituania', codigo: '+370', iso: 'lt' },
+  { pais: 'Luxemburgo', codigo: '+352', iso: 'lu' },
+  { pais: 'Macao', codigo: '+853', iso: 'mo' },
+  { pais: 'Macedonia del Norte', codigo: '+389', iso: 'mk' },
+  { pais: 'Madagascar', codigo: '+261', iso: 'mg' },
+  { pais: 'Malasia', codigo: '+60', iso: 'my' },
+  { pais: 'Malaui', codigo: '+265', iso: 'mw' },
+  { pais: 'Maldivas', codigo: '+960', iso: 'mv' },
+  { pais: 'Malí', codigo: '+223', iso: 'ml' },
+  { pais: 'Malta', codigo: '+356', iso: 'mt' },
+  { pais: 'Marruecos', codigo: '+212', iso: 'ma' },
+  { pais: 'Martinica', codigo: '+596', iso: 'mq' },
+  { pais: 'Mauricio', codigo: '+230', iso: 'mu' },
+  { pais: 'Mauritania', codigo: '+222', iso: 'mr' },
+  { pais: 'Mayotte', codigo: '+262', iso: 'yt' },
+  { pais: 'Micronesia', codigo: '+691', iso: 'fm' },
+  { pais: 'Moldavia', codigo: '+373', iso: 'md' },
+  { pais: 'Mónaco', codigo: '+377', iso: 'mc' },
+  { pais: 'Mongolia', codigo: '+976', iso: 'mn' },
+  { pais: 'Montenegro', codigo: '+382', iso: 'me' },
+  { pais: 'Montserrat', codigo: '+1', iso: 'ms' },
+  { pais: 'Mozambique', codigo: '+258', iso: 'mz' },
+  { pais: 'Myanmar (Birmania)', codigo: '+95', iso: 'mm' },
+  { pais: 'Namibia', codigo: '+264', iso: 'na' },
+  { pais: 'Nauru', codigo: '+674', iso: 'nr' },
+  { pais: 'Nepal', codigo: '+977', iso: 'np' },
+  { pais: 'Nigeria', codigo: '+234', iso: 'ng' },
+  { pais: 'Níger', codigo: '+227', iso: 'ne' },
+  { pais: 'Noruega', codigo: '+47', iso: 'no' },
+  { pais: 'Nueva Caledonia', codigo: '+687', iso: 'nc' },
+  { pais: 'Nueva Zelanda', codigo: '+64', iso: 'nz' },
+  { pais: 'Omán', codigo: '+968', iso: 'om' },
+  { pais: 'Países Bajos', codigo: '+31', iso: 'nl' },
+  { pais: 'Pakistán', codigo: '+92', iso: 'pk' },
+  { pais: 'Palaos', codigo: '+680', iso: 'pw' },
+  { pais: 'Palestina', codigo: '+970', iso: 'ps' },
+  { pais: 'Papúa Nueva Guinea', codigo: '+675', iso: 'pg' },
+  { pais: 'Polinesia Francesa', codigo: '+689', iso: 'pf' },
+  { pais: 'Polonia', codigo: '+48', iso: 'pl' },
+  { pais: 'Portugal', codigo: '+351', iso: 'pt' },
+  { pais: 'Reino Unido', codigo: '+44', iso: 'gb' },
+  { pais: 'República Centroafricana', codigo: '+236', iso: 'cf' },
+  { pais: 'República Checa', codigo: '+420', iso: 'cz' },
+  { pais: 'Ruanda', codigo: '+250', iso: 'rw' },
+  { pais: 'Rumanía', codigo: '+40', iso: 'ro' },
+  { pais: 'Rusia', codigo: '+7', iso: 'ru' },
+  { pais: 'Samoa', codigo: '+685', iso: 'ws' },
+  { pais: 'Samoa Americana', codigo: '+1', iso: 'as' },
+  { pais: 'San Cristóbal y Nieves', codigo: '+1', iso: 'kn' },
+  { pais: 'San Marino', codigo: '+378', iso: 'sm' },
+  { pais: 'San Pedro y Miquelón', codigo: '+508', iso: 'pm' },
+  { pais: 'San Vicente y las Granadinas', codigo: '+1', iso: 'vc' },
+  { pais: 'Santa Elena', codigo: '+290', iso: 'sh' },
+  { pais: 'Santa Lucía', codigo: '+1', iso: 'lc' },
+  { pais: 'Santo Tomé y Príncipe', codigo: '+239', iso: 'st' },
+  { pais: 'Senegal', codigo: '+221', iso: 'sn' },
+  { pais: 'Serbia', codigo: '+381', iso: 'rs' },
+  { pais: 'Seychelles', codigo: '+248', iso: 'sc' },
+  { pais: 'Sierra Leona', codigo: '+232', iso: 'sl' },
+  { pais: 'Singapur', codigo: '+65', iso: 'sg' },
+  { pais: 'Siria', codigo: '+963', iso: 'sy' },
+  { pais: 'Somalia', codigo: '+252', iso: 'so' },
+  { pais: 'Sri Lanka', codigo: '+94', iso: 'lk' },
+  { pais: 'Sudáfrica', codigo: '+27', iso: 'za' },
+  { pais: 'Sudán', codigo: '+249', iso: 'sd' },
+  { pais: 'Sudán del Sur', codigo: '+211', iso: 'ss' },
+  { pais: 'Suecia', codigo: '+46', iso: 'se' },
+  { pais: 'Suiza', codigo: '+41', iso: 'ch' },
+  { pais: 'Surinam', codigo: '+597', iso: 'sr' },
+  { pais: 'Tailandia', codigo: '+66', iso: 'th' },
+  { pais: 'Taiwán', codigo: '+886', iso: 'tw' },
+  { pais: 'Tanzania', codigo: '+255', iso: 'tz' },
+  { pais: 'Tayikistán', codigo: '+992', iso: 'tj' },
+  { pais: 'Timor Oriental', codigo: '+670', iso: 'tl' },
+  { pais: 'Togo', codigo: '+228', iso: 'tg' },
+  { pais: 'Tonga', codigo: '+676', iso: 'to' },
+  { pais: 'Trinidad y Tobago', codigo: '+1', iso: 'tt' },
+  { pais: 'Túnez', codigo: '+216', iso: 'tn' },
+  { pais: 'Turkmenistán', codigo: '+993', iso: 'tm' },
+  { pais: 'Turquía', codigo: '+90', iso: 'tr' },
+  { pais: 'Tuvalu', codigo: '+688', iso: 'tv' },
+  { pais: 'Ucrania', codigo: '+380', iso: 'ua' },
+  { pais: 'Uganda', codigo: '+256', iso: 'ug' },
+  { pais: 'Uzbekistán', codigo: '+998', iso: 'uz' },
+  { pais: 'Vanuatu', codigo: '+678', iso: 'vu' },
+  { pais: 'Vietnam', codigo: '+84', iso: 'vn' },
+  { pais: 'Wallis y Futuna', codigo: '+681', iso: 'wf' },
+  { pais: 'Yemen', codigo: '+967', iso: 'ye' },
+  { pais: 'Zambia', codigo: '+260', iso: 'zm' },
+  { pais: 'Zimbabue', codigo: '+263', iso: 'zw' },
 ];
 
 /* ---------- Formulario de reserva (reservar.html) ---------- */
@@ -856,16 +856,126 @@ const reservaForm = document.getElementById('reserva-form');
 if (reservaForm) {
   reservaForm.addEventListener('focusin', trackReservaIniciada, { once: true });
 
-  // Desplegable de prefijos: se rellena aquí en vez de a mano en el HTML
-  // para que PAISES_TELEFONO sea la única fuente de la lista.
+  // Desplegable de prefijos: no se puede usar un <select> nativo porque
+  // no admite bandera ni buscar por texto libre (solo salta a la primera
+  // letra). El valor real vive en el input oculto #r-whatsapp-prefijo;
+  // el resto del formulario lo lee igual que antes leía el <select>.
   const prefijoSelect = document.getElementById('r-whatsapp-prefijo');
-  if (prefijoSelect) {
-    PAISES_TELEFONO.forEach(({ pais, codigo }) => {
-      const opt = document.createElement('option');
-      opt.value = codigo;
-      opt.textContent = `${codigo} ${pais}`;
-      prefijoSelect.appendChild(opt);
+  const telCombo = document.getElementById('tel-combo');
+  if (prefijoSelect && telCombo) {
+    const toggle = document.getElementById('tel-combo-toggle');
+    const bandera = document.getElementById('tel-combo-bandera');
+    const codigoTxt = document.getElementById('tel-combo-codigo');
+    const panel = document.getElementById('tel-combo-panel');
+    const buscar = document.getElementById('tel-combo-buscar');
+    const lista = document.getElementById('tel-combo-lista');
+
+    const banderaUrl = iso => `https://cdn.jsdelivr.net/npm/flag-icons@7/flags/4x3/${iso}.svg`;
+
+    // Sin tildes y en minúsculas, para que "espana" encuentre "España".
+    const normalizar = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+    let indiceActivo = -1;
+    let opciones = [];
+
+    const marcarActiva = i => {
+      indiceActivo = i;
+      [...lista.children].forEach((li, idx) => li.classList.toggle('activa', idx === i));
+      if (i >= 0) lista.children[i].scrollIntoView({ block: 'nearest' });
+    };
+
+    const seleccionar = pais => {
+      bandera.src = banderaUrl(pais.iso);
+      bandera.alt = pais.pais;
+      codigoTxt.textContent = pais.codigo;
+      prefijoSelect.value = pais.codigo;
+      cerrar();
+      toggle.focus();
+    };
+
+    const renderLista = filtro => {
+      lista.textContent = '';
+      const f = normalizar(filtro.trim());
+      opciones = !f
+        ? PAISES_TELEFONO
+        : PAISES_TELEFONO.filter(p => normalizar(p.pais).includes(f) || p.codigo.includes(f));
+
+      if (!opciones.length) {
+        const vacio = document.createElement('li');
+        vacio.className = 'tel-combo-vacio';
+        vacio.textContent = 'Ningún país coincide';
+        lista.appendChild(vacio);
+        indiceActivo = -1;
+        return;
+      }
+
+      opciones.forEach(pais => {
+        const li = document.createElement('li');
+        li.setAttribute('role', 'option');
+        const img = document.createElement('img');
+        img.src = banderaUrl(pais.iso);
+        img.alt = '';
+        const nombre = document.createElement('span');
+        nombre.className = 'tel-combo-nombre';
+        nombre.textContent = pais.pais;
+        const codigo = document.createElement('span');
+        codigo.className = 'tel-combo-codigo';
+        codigo.textContent = pais.codigo;
+        li.append(img, nombre, codigo);
+        li.addEventListener('click', () => seleccionar(pais));
+        lista.appendChild(li);
+      });
+      marcarActiva(-1);
+    };
+
+    function abrir() {
+      panel.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+      buscar.value = '';
+      renderLista('');
+      buscar.focus();
+      document.addEventListener('click', alClicFuera);
+    }
+
+    function cerrar() {
+      panel.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', alClicFuera);
+    }
+
+    function alClicFuera(e) {
+      if (!telCombo.contains(e.target)) cerrar();
+    }
+
+    toggle.addEventListener('click', () => {
+      if (panel.hidden) abrir(); else cerrar();
     });
+
+    buscar.addEventListener('input', () => renderLista(buscar.value));
+
+    buscar.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        cerrar();
+        toggle.focus();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (opciones.length) marcarActiva(Math.min(indiceActivo + 1, opciones.length - 1));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (opciones.length) marcarActiva(Math.max(indiceActivo - 1, 0));
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const elegido = opciones[indiceActivo] || opciones[0];
+        if (elegido) seleccionar(elegido);
+      }
+    });
+
+    // Selección inicial: el valor por defecto del input oculto (+52).
+    const inicial = PAISES_TELEFONO.find(p => p.codigo === prefijoSelect.value) || PAISES_TELEFONO[0];
+    bandera.src = banderaUrl(inicial.iso);
+    bandera.alt = inicial.pais;
+    codigoTxt.textContent = inicial.codigo;
   }
 
   const reservaSubmitBtn = document.getElementById('reserva-submit');
