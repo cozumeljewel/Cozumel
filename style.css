@@ -500,16 +500,9 @@ section[id]{scroll-margin-top:var(--header-h);}
   box-shadow:0 12px 30px rgba(20,69,74,.18);
   display:flex; flex-direction:column;
 }
-.tel-combo-buscar{
-  margin:10px; padding:10px 12px; border:1px solid var(--line-3); border-radius:2px;
-  background:var(--foam); font-family:'Jost'; font-size:14px; color:var(--ink);
-}
-.tel-combo-buscar:focus{
-  outline:none; border-color:var(--sea); box-shadow:0 0 0 3px rgba(78,154,155,.15);
-}
 .tel-combo-lista{
-  list-style:none; margin:0 0 10px; padding:0 6px;
-  max-height:238px; overflow-y:auto;
+  list-style:none; margin:0; padding:8px 6px;
+  max-height:264px; overflow-y:auto;
 }
 .tel-combo-lista li{
   display:flex; align-items:center; gap:9px;
@@ -523,8 +516,6 @@ section[id]{scroll-margin-top:var(--header-h);}
 .tel-combo-lista li .tel-combo-nombre{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 .tel-combo-lista li .tel-combo-codigo{color:var(--ink-soft); font-size:12.5px; flex:none;}
 .tel-combo-lista li:hover, .tel-combo-lista li.activa{background:var(--shallow);}
-.tel-combo-lista .tel-combo-vacio{color:var(--ink-soft); font-size:13px; padding:14px 8px; cursor:default;}
-.tel-combo-lista .tel-combo-vacio:hover{background:none;}
 
 .preview-note{margin-top:18px; font-size:12px; color:var(--ink-soft);}
 

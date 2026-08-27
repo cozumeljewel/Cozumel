@@ -875,16 +875,11 @@ if (reservaForm) {
     const bandera = document.getElementById('tel-combo-bandera');
     const codigoTxt = document.getElementById('tel-combo-codigo');
     const panel = document.getElementById('tel-combo-panel');
-    const buscar = document.getElementById('tel-combo-buscar');
     const lista = document.getElementById('tel-combo-lista');
 
     const banderaUrl = iso => `https://cdn.jsdelivr.net/npm/flag-icons@7/flags/4x3/${iso}.svg`;
 
-    // Sin tildes y en minúsculas, para que "espana" encuentre "España".
-    const normalizar = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-
     let indiceActivo = -1;
-    let opciones = [];
 
     const marcarActiva = i => {
       indiceActivo = i;
@@ -901,47 +896,33 @@ if (reservaForm) {
       toggle.focus();
     };
 
-    const renderLista = filtro => {
-      lista.textContent = '';
-      const f = normalizar(filtro.trim());
-      opciones = !f
-        ? PAISES_TELEFONO
-        : PAISES_TELEFONO.filter(p => normalizar(p.pais).includes(f) || p.codigo.includes(f));
-
-      if (!opciones.length) {
-        const vacio = document.createElement('li');
-        vacio.className = 'tel-combo-vacio';
-        vacio.textContent = 'Ningún país coincide';
-        lista.appendChild(vacio);
-        indiceActivo = -1;
-        return;
-      }
-
-      opciones.forEach(pais => {
-        const li = document.createElement('li');
-        li.setAttribute('role', 'option');
-        const img = document.createElement('img');
-        img.src = banderaUrl(pais.iso);
-        img.alt = '';
-        const nombre = document.createElement('span');
-        nombre.className = 'tel-combo-nombre';
-        nombre.textContent = pais.pais;
-        const codigo = document.createElement('span');
-        codigo.className = 'tel-combo-codigo';
-        codigo.textContent = pais.codigo;
-        li.append(img, nombre, codigo);
-        li.addEventListener('click', () => seleccionar(pais));
-        lista.appendChild(li);
-      });
-      marcarActiva(-1);
-    };
+    // La lista se construye UNA sola vez (no en cada apertura): rehacer
+    // 224 filas con su bandera cada vez que se abría el panel era lo que
+    // se sentía "pillado".
+    PAISES_TELEFONO.forEach((pais, i) => {
+      const li = document.createElement('li');
+      li.setAttribute('role', 'option');
+      const img = document.createElement('img');
+      img.src = banderaUrl(pais.iso);
+      img.alt = '';
+      img.loading = 'lazy';
+      const nombre = document.createElement('span');
+      nombre.className = 'tel-combo-nombre';
+      nombre.textContent = pais.pais;
+      const codigo = document.createElement('span');
+      codigo.className = 'tel-combo-codigo';
+      codigo.textContent = pais.codigo;
+      li.append(img, nombre, codigo);
+      li.addEventListener('click', () => seleccionar(pais));
+      li.addEventListener('mouseenter', () => marcarActiva(i));
+      lista.appendChild(li);
+    });
 
     function abrir() {
       panel.hidden = false;
       toggle.setAttribute('aria-expanded', 'true');
-      buscar.value = '';
-      renderLista('');
-      buscar.focus();
+      const iActual = PAISES_TELEFONO.findIndex(p => p.codigo === prefijoSelect.value);
+      marcarActiva(iActual >= 0 ? iActual : 0);
       document.addEventListener('click', alClicFuera);
     }
 
@@ -959,22 +940,19 @@ if (reservaForm) {
       if (panel.hidden) abrir(); else cerrar();
     });
 
-    buscar.addEventListener('input', () => renderLista(buscar.value));
-
-    buscar.addEventListener('keydown', e => {
+    toggle.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        e.preventDefault();
-        cerrar();
-        toggle.focus();
+        if (!panel.hidden) { e.preventDefault(); cerrar(); }
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
-        if (opciones.length) marcarActiva(Math.min(indiceActivo + 1, opciones.length - 1));
+        if (panel.hidden) abrir();
+        else marcarActiva(Math.min(indiceActivo + 1, PAISES_TELEFONO.length - 1));
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        if (opciones.length) marcarActiva(Math.max(indiceActivo - 1, 0));
-      } else if (e.key === 'Enter') {
+        if (!panel.hidden) marcarActiva(Math.max(indiceActivo - 1, 0));
+      } else if (e.key === 'Enter' && !panel.hidden) {
         e.preventDefault();
-        const elegido = opciones[indiceActivo] || opciones[0];
+        const elegido = PAISES_TELEFONO[indiceActivo];
         if (elegido) seleccionar(elegido);
       }
     });
