@@ -124,7 +124,11 @@
         </div>
         <div class="field">
           <label for="r-whatsapp">WhatsApp</label>
-          <input id="r-whatsapp" name="whatsapp" type="tel" required placeholder="+52 / +34 ...">
+          <div class="field-tel">
+            <!-- Las opciones las rellena script.js desde PAISES_TELEFONO -->
+            <select id="r-whatsapp-prefijo" aria-label="Prefijo del país"></select>
+            <input id="r-whatsapp" name="whatsapp" type="tel" required placeholder="Tu número">
+          </div>
         </div>
         <div class="field">
           <label for="r-pais">País</label>
