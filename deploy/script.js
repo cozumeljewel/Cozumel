@@ -485,9 +485,16 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   const YA_CERRADO = 'popupPreventaCerrado';
   if (CURRENT_PAGE === 'reservar') return;
 
+  // TEMPORAL (2026-08-27, pedido del cliente para esta promoción): el
+  // pop-up sale en cada entrada, no solo la primera. Sigue guardando en
+  // localStorage por si se necesita ese dato, pero ya no se consulta para
+  // decidir si mostrarlo. Para volver a "una vez y no más": cambiar
+  // MOSTRAR_SIEMPRE a false.
+  const MOSTRAR_SIEMPRE = true;
+
   let cerrado = false;
   try { cerrado = localStorage.getItem(YA_CERRADO) === '1'; } catch (e) { /* modo privado */ }
-  if (cerrado) return;
+  if (cerrado && !MOSTRAR_SIEMPRE) return;
 
   const capa = document.createElement('div');
   capa.className = 'popup-capa';

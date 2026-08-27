@@ -85,10 +85,13 @@ limitada a **100 piezas**. Lo inyecta `script.js`, así que no hay que
 tocar los HTML: aparece en todas las páginas automáticamente.
 
 - Sale a los **700 ms** de cargar (dar tiempo a que pinte la página).
-- Una vez cerrado, **no vuelve a salir nunca** — se guarda en
-  `localStorage` (`popupPreventaCerrado`), así sobrevive a cerrar el
-  navegador. Para volver a verlo en pruebas:
-  `localStorage.removeItem('popupPreventaCerrado')`.
+- Diseño original: una vez cerrado, no vuelve a salir nunca (se guarda en
+  `localStorage`, clave `popupPreventaCerrado`).
+  **⚠️ TEMPORAL (2026-08-27, pedido del cliente): ahora mismo sale en
+  cada entrada**, durante esta promoción. Es `MOSTRAR_SIEMPRE = true` en
+  `script.js`, justo donde arranca el pop-up. El cliente avisará cuándo
+  volver a `false` para que recupere el comportamiento de "una vez y no
+  más".
 - **No sale en `reservar.html`** a propósito: ahí la persona ya está
   rellenando el formulario y un aviso que la devuelve a la colección
   trabaja en contra de la conversión que estamos midiendo.
