@@ -643,7 +643,9 @@ if (reservaForm) {
     reservaSubmitBtn.disabled = true;
   }
 
-  const showReservaError = (msg) => { reservaError.textContent = msg; reservaError.hidden = false; };
+  // El aviso se destapa ANTES de escribir el texto: un lector de pantalla
+  // no anuncia cambios dentro de una región aria-live que sigue oculta.
+  const showReservaError = (msg) => { reservaError.hidden = false; reservaError.textContent = msg; };
   const hideReservaError = () => { reservaError.hidden = true; };
 
   /* ---- Login con Google ----
@@ -674,7 +676,7 @@ if (reservaForm) {
   } else {
     // Sin Supabase configurado no hay nada que pedir: el aviso de
     // "Supabase no está conectado todavía" ya cubre este caso.
-    loginGate.hidden = true;
+    if (loginGate) loginGate.hidden = true;
   }
 
   if (btnLoginGoogle) {

@@ -12,6 +12,7 @@ alter table public.reservas
   add column if not exists user_id uuid references auth.users(id);
 
 drop policy if exists "anon inserta reservas" on public.reservas;
+drop policy if exists "usuarios autenticados insertan sus reservas" on public.reservas;
 
 create policy "usuarios autenticados insertan sus reservas"
   on public.reservas for insert

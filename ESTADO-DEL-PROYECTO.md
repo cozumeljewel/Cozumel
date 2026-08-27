@@ -28,7 +28,7 @@ México es el 36,9% de su audiencia de Instagram; el 66% tiene 18–34 años.
 
 ---
 
-## 2. Estado: LISTO PARA DESPLEGAR (con contenido pendiente)
+## 2. Estado: NO SUBIR deploy/ TODAVÍA (login de Google a medio activar)
 
 - **Dominio:** `cozumeljewelry.es` — DNS propagado, HTTPS con certificado
   Let's Encrypt válido, sirviendo desde Netlify. **Funcionando.**
@@ -318,21 +318,24 @@ horizontal y errores de JS. El objetivo siempre es **0 fallos**.
 ## 8. Lo que falta
 
 ### Bloqueante
-**No subir `deploy/` a Netlify hasta que las dos cosas de abajo estén
-hechas.** El login de Google ya está en `deploy/`: sin estos dos pasos, el
-formulario de reserva queda inservible para todo el mundo en cuanto se
-publique (ver sección 4).
+**No subir `deploy/` a Netlify hasta que estos dos pasos estén hechos.**
+El login de Google ya está en `deploy/`: sin ellos, el formulario de
+reserva queda inservible para todo el mundo en cuanto se publique (ver
+sección 4).
 
 1. **Ejecutar `supabase-migracion-v6.sql`** en el SQL Editor de Supabase.
    Sin ella, todas las reservas fallarán al guardar, no solo las de un
    producto.
 2. **Completar `configurar-login-google.md`.** Son pasos manuales que solo
    puede hacer el cliente (crear credenciales OAuth en Google Cloud,
-   activar el proveedor en Supabase). Sin esto, el botón "Continuar con
-   Google" no lleva a ningún sitio: se pulsa y no pasa nada.
-3. Una vez hechas las dos, probar una reserva real de principio a fin
-   antes de anunciar el lanzamiento (ver la Tarea 6 del plan de
-   implementación, todavía sin hacer).
+   activar el proveedor en Supabase). Sin esto, pulsar "Continuar con
+   Google" saca al visitante del sitio y lo deja en una pantalla de error
+   de Supabase, fuera de `cozumeljewelry.es` (ver el final de
+   `configurar-login-google.md`).
+
+Hecho lo anterior, falta un paso más antes de anunciar el lanzamiento:
+probar una reserva real de principio a fin (ver la Tarea 6 del plan de
+implementación, todavía sin hacer).
 
 ### Contenido (decisiones del cliente)
 2. **Fotos de 6 de los 7 productos.** Solo Collar Destino tiene
