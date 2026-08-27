@@ -348,8 +348,12 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
    promete "10% de descuento", así que su precio debe cuadrar con eso.
 4. **Email real en Contacto: hecho (2026-08-27)**, `cozumeljewel@gmail.com`.
    **Instagram** sigue pendiente de definir.
-5. **Imagen de previsualización al compartir** (og:image, 1200×630). Sin
-   ella, el enlace en la story sale con texto pero sin imagen.
+5. ~~La imagen de previsualización al compartir~~ **HECHO (2026-08-27).**
+   `img/og-image.png`, 1200×630: emblema, COZUMEL JEWELRY y "Regala un
+   pedacito de ti" sobre fondo espuma, con el mismo lenguaje visual que la
+   cabecera. No usa foto de producto (no hay ninguna todavía) ni la foto
+   del hero (lleva texto quemado, ver riesgo 8). En las 6 páginas con
+   `og:description`; `404.html` no lleva.
 
 ### Riesgos señalados y no resueltos
 6. **Las fichas afirman "Acero inoxidable, no se oxida ni pierde color con
