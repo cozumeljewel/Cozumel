@@ -631,7 +631,7 @@ if (reservaForm) {
   const btnLoginGoogle = document.getElementById('btn-login-google');
   const btnLogout = document.getElementById('btn-logout');
 
-  if (!SUPA_READY) {
+  if (!SUPA_READY || !sb) {
     reservaConfigWarning.hidden = false;
     reservaSubmitBtn.disabled = true;
   }
@@ -655,9 +655,9 @@ if (reservaForm) {
     sesionActual = session || null;
     const haySesion = !!sesionActual;
 
-    loginGate.hidden = haySesion;
+    if (loginGate) loginGate.hidden = haySesion;
     reservaForm.hidden = !haySesion;
-    btnLogout.hidden = !haySesion;
+    if (btnLogout) btnLogout.hidden = !haySesion;
 
     if (haySesion) {
       const meta = sesionActual.user.user_metadata || {};
@@ -669,7 +669,7 @@ if (reservaForm) {
   };
 
   if (SUPA_READY && sb) {
-    sb.auth.getSession().then(({ data }) => mostrarSegunSesion(data.session));
+    sb.auth.getSession().then(({ data }) => mostrarSegunSesion(data.session)).catch(() => mostrarSegunSesion(null));
     sb.auth.onAuthStateChange((_evento, session) => mostrarSegunSesion(session));
   } else {
     // Sin Supabase configurado no hay nada que pedir: el aviso de
@@ -678,18 +678,28 @@ if (reservaForm) {
   }
 
   if (btnLoginGoogle) {
-    btnLoginGoogle.addEventListener('click', () => {
+    btnLoginGoogle.addEventListener('click', async () => {
       if (!sb) return;
-      sb.auth.signInWithOAuth({
+      hideReservaError();
+      const { error } = await sb.auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: window.location.href },
       });
+      if (error) {
+        console.error(error);
+        showReservaError('No se ha podido abrir el login de Google. Inténtalo de nuevo en unos minutos');
+      }
     });
   }
 
   if (btnLogout) {
-    btnLogout.addEventListener('click', () => {
-      if (sb) sb.auth.signOut();
+    btnLogout.addEventListener('click', async () => {
+      if (!sb) return;
+      const { error } = await sb.auth.signOut();
+      if (error) {
+        console.error(error);
+        showReservaError('No se ha podido cerrar la sesión. Inténtalo de nuevo');
+      }
     });
   }
 
