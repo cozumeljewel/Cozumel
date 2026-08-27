@@ -42,14 +42,23 @@ dashboard de Supabase del proyecto.
 4. Pega el **Client ID** y el **Client Secret** que copiaste de Google.
 5. Guarda.
 6. Ve a **Authentication → URL Configuration**.
-7. En **Redirect URLs**, añade:
+7. En **Site URL**, cambia el valor por defecto (`http://localhost:3000`,
+   viene así en todo proyecto nuevo de Supabase) por:
+   - `https://cozumeljewelry.es`
+
+   Es la URL de referencia del proyecto: la usa Supabase cuando una
+   redirección no coincide con nada de la lista de abajo, y también se
+   inserta en las plantillas de email. Si se queda en `localhost`, cosas
+   que dependen de ella (como esas plantillas) apuntan a un sitio que no
+   existe.
+8. En **Redirect URLs**, añade:
    - `https://cozumeljewelry.es/reservar.html`
    - `http://127.0.0.1:8080/reservar.html` (para las pruebas en local; si
      Supabase permite comodines en esta versión del dashboard, puedes usar
      algo como `http://127.0.0.1:*/**` para no tener que añadir cada
      puerto que uses al probar — compruébalo en la ayuda del propio campo,
      puede variar)
-8. Guarda.
+9. Guarda.
 
 ## 3. Cómo saber si ya está listo
 
