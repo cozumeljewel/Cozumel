@@ -409,6 +409,19 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
     `pendiente_pago` (el `reserva_id` no se recuerda entre reintentos). No
     afecta al cobro (nunca se cobra dos veces), pero ensucia la tabla: al
     exportar pedidos a Excel, filtrar siempre por `estado = 'pagado'`.
+14. **Pendientes de "hacerlo real" antes de lanzar con dinero real**
+    (aplazado el 2026-08-28, revisar cuando Stripe esté activo y probado):
+    - Página de política de privacidad (con login de Google y datos de
+      envío guardados, casi obligatoria legalmente)
+    - Página de términos y condiciones (plazos de envío, devoluciones)
+    - Banner de cookies (revisar si hace falta según qué analítica se use)
+    - Texto alternativo (`alt`) en las imágenes de producto, casi ninguna
+      lo lleva ahora mismo
+    - `sitemap.xml`, para que Google indexe las páginas más rápido
+    - Comprimir las fotos de producto al subirlas (punto 2 de esta misma
+      lista)
+    - Repasar que no quede ningún enlace roto tras el cambio de
+      `reservar.html` a `comprar.html`
 
 ---
 
