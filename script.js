@@ -531,7 +531,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 
   const p2 = document.createElement('p');
   p2.className = 'popup-texto';
-  p2.textContent = 'Cuando se acaben, se acaban. Si hay un pedacito que quieres que sea tuyo, o de alguien a quien quieras dar un pedacito de ti, este es el momento de reservarlo';
+  p2.textContent = 'Cuando se acaben, se acaban. Si hay un pedacito que quieres que sea tuyo, o de alguien a quien quieras dar un pedacito de ti, este es el momento de comprarlo';
 
   const badge = document.createElement('p');
   badge.className = 'popup-badge';
@@ -978,10 +978,14 @@ if (reservaForm) {
     reservaSubmitBtn.disabled = true;
   }
 
-  // No se puede reservar sin haber elegido pieza
+  // No se puede comprar sin haber elegido pieza, ni sin que tenga precio
+  const sinPrecioAviso = document.getElementById('sin-precio');
   const prodElegido = getProductoElegido();
   if (!prodElegido) {
     if (sinPiezaAviso) sinPiezaAviso.hidden = false;
+    reservaSubmitBtn.disabled = true;
+  } else if (prodElegido.precio === null || prodElegido.precio === undefined) {
+    if (sinPrecioAviso) sinPrecioAviso.hidden = false;
     reservaSubmitBtn.disabled = true;
   }
 
@@ -1056,8 +1060,12 @@ if (reservaForm) {
       showReservaError('Elige primero una pieza en la colección');
       return;
     }
+    if (prod.precio === null || prod.precio === undefined) {
+      showReservaError('Esta pieza todavía no tiene precio, no se puede comprar');
+      return;
+    }
     if (!sb) {
-      showReservaError('Ahora mismo no podemos guardar tu reserva. Inténtalo de nuevo en unos minutos');
+      showReservaError('Ahora mismo no podemos procesar tu compra. Inténtalo de nuevo en unos minutos');
       return;
     }
     if (!sesionActual) {
@@ -1080,7 +1088,8 @@ if (reservaForm) {
       personalizacion: getGrabado(),
       producto: prod.id,
       fuente: 'adri_story',
-      estado: 'reserva',
+      estado: 'pendiente_pago',
+      precio_pagado: prod.precio,
       consentimiento: document.getElementById('r-consent').checked,
       session_id: getSessionId(),
     };
@@ -1088,21 +1097,97 @@ if (reservaForm) {
     reservaSubmitBtn.disabled = true;
     reservaSubmitBtn.textContent = 'Guardando...';
 
-    const { error } = await sb.from('reservas').insert(payload);
+    const { data: filaCreada, error } = await sb.from('reservas').insert(payload).select('id').single();
 
     if (error) {
       console.error(error);
       reservaSubmitBtn.disabled = false;
-      reservaSubmitBtn.textContent = 'Reservar mi joya, gratis';
-      showReservaError('No se pudo guardar tu reserva. Inténtalo de nuevo');
+      reservaSubmitBtn.textContent = 'Pagar y comprar';
+      showReservaError('No se pudo guardar tu pedido. Inténtalo de nuevo');
       return;
     }
 
-    trackEvent('reserva_completada', prod.id);
+    reservaSubmitBtn.textContent = 'Conectando con Stripe...';
 
-    document.getElementById('reserva-content').hidden = true;
-    const done = document.getElementById('reserva-done');
-    done.hidden = false;
-    done.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    try {
+      const { data: sesion } = await sb.auth.getSession();
+      const token = sesion.session ? sesion.session.access_token : '';
+
+      const resp = await fetch(`${SUPABASE_URL}/functions/v1/crear-sesion-pago`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ reserva_id: filaCreada.id }),
+      });
+      const resultado = await resp.json();
+
+      if (!resp.ok || !resultado.url) {
+        throw new Error(resultado.error || 'sin url de pago');
+      }
+
+      window.location.href = resultado.url;
+    } catch (err) {
+      console.error(err);
+      reservaSubmitBtn.disabled = false;
+      reservaSubmitBtn.textContent = 'Pagar y comprar';
+      showReservaError('No se pudo conectar con el pago. Inténtalo de nuevo');
+    }
   });
+
+  /* ---- Vuelta desde Stripe (comprar.html?pago=exito|cancelado) ---- */
+  const parametros = new URLSearchParams(window.location.search);
+  const pago = parametros.get('pago');
+
+  if (pago === 'exito') {
+    const sessionId = parametros.get('session_id');
+    const contenido = document.getElementById('reserva-content');
+    const confirmando = document.getElementById('pago-confirmando');
+    const done = document.getElementById('reserva-done');
+
+    contenido.hidden = true;
+    confirmando.hidden = false;
+
+    const sondear = async (intento) => {
+      if (!sb || !sessionId) return;
+      const { data } = await sb
+        .from('reservas')
+        .select('estado')
+        .eq('stripe_session_id', sessionId)
+        .maybeSingle();
+
+      if (data && data.estado === 'pagado') {
+        confirmando.hidden = true;
+        done.hidden = false;
+        done.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      if (intento >= 10) {
+        confirmando.hidden = true;
+        showReservaError('Tu pago está confirmándose, tarda más de lo normal. Revisa tu email en unos minutos');
+        return;
+      }
+
+      setTimeout(() => sondear(intento + 1), 1000);
+    };
+
+    sondear(0);
+  }
+
+  if (pago === 'cancelado') {
+    const contenido = document.getElementById('reserva-content');
+    const cancelado = document.getElementById('pago-cancelado');
+    const btnReintentar = document.getElementById('btn-reintentar-pago');
+
+    contenido.hidden = true;
+    cancelado.hidden = false;
+
+    if (btnReintentar) {
+      btnReintentar.addEventListener('click', () => {
+        window.location.href = 'comprar.html';
+      });
+    }
+  }
 }
