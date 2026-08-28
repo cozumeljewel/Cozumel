@@ -909,6 +909,7 @@ details p{margin-top:10px; font-size:13.5px; color:var(--ink); line-height:1.55;
   animation:girar .8s linear infinite;
 }
 @keyframes girar{ to{ transform:rotate(360deg); } }
+.spinner[hidden]{display:none;}
 
 /* ---------- 8. CONTACTO ---------- */
 .contacto{

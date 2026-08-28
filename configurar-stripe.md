@@ -4,6 +4,16 @@ Esto hay que hacerlo una sola vez, con tu propia cuenta. Nadie más puede
 hacerlo por ti: pide acceso a Stripe y al dashboard de Supabase del
 proyecto.
 
+## 0. Ejecutar las migraciones de Supabase (si no están hechas)
+
+En el **SQL Editor** del dashboard de Supabase, ejecuta en este orden (si
+alguna ya se ejecutó antes, ejecutarla de nuevo no rompe nada):
+
+1. `supabase-migracion-v6.sql` (si no se ha ejecutado todavía: añade el
+   login con Google).
+2. `supabase-migracion-v7.sql` (el cobro con Stripe: sin esto no existen
+   las columnas ni las políticas que usan las funciones de este documento).
+
 ## 1. Instalar la CLI de Supabase
 
 Es la primera herramienta de desarrollo que usa este proyecto. Solo hace

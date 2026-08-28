@@ -407,6 +407,11 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
     Se arranca con el packaging estándar de EMANCO, que ya sirve como caja
     de regalo, y se pasa al personalizado con el logo cuando suba el
     volumen. La línea "Envío en caja especial de regalo" se queda.
+13. **Pago cancelado crea una fila nueva al reintentar**, en vez de
+    reanudar la misma. Cada cancelación en Stripe deja una fila huérfana en
+    `pendiente_pago` (el `reserva_id` no se recuerda entre reintentos). No
+    afecta al cobro (nunca se cobra dos veces), pero ensucia la tabla: al
+    exportar pedidos a Excel, filtrar siempre por `estado = 'pagado'`.
 
 ---
 

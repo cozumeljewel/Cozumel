@@ -42,28 +42,30 @@ Deno.serve(async (req) => {
     return new Response("Firma inválida", { status: 400 });
   }
 
-  if (evento.type === "checkout.session.completed") {
+  if (evento.type === "checkout.session.completed" && (evento.data.object as Stripe.Checkout.Session).payment_status === "paid") {
     const session = evento.data.object as Stripe.Checkout.Session;
-    const { error } = await sb
+    const { data, error } = await sb
       .from("reservas")
       .update({ estado: "pagado" })
-      .eq("stripe_session_id", session.id);
+      .eq("stripe_session_id", session.id)
+      .select("id");
 
-    if (error) {
-      console.error("No se pudo marcar como pagado:", error);
+    if (error || !data || data.length === 0) {
+      console.error("No se pudo marcar como pagado:", error ?? "0 filas afectadas");
       return new Response("Error al actualizar", { status: 500 });
     }
   }
 
   if (evento.type === "checkout.session.expired") {
     const session = evento.data.object as Stripe.Checkout.Session;
-    const { error } = await sb
+    const { data, error } = await sb
       .from("reservas")
       .update({ estado: "pago_fallido" })
-      .eq("stripe_session_id", session.id);
+      .eq("stripe_session_id", session.id)
+      .select("id");
 
-    if (error) {
-      console.error("No se pudo marcar como fallido:", error);
+    if (error || !data || data.length === 0) {
+      console.error("No se pudo marcar como fallido:", error ?? "0 filas afectadas");
       return new Response("Error al actualizar", { status: 500 });
     }
   }

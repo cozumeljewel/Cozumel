@@ -1127,6 +1127,7 @@ if (reservaForm) {
         throw new Error(resultado.error || 'sin url de pago');
       }
 
+      trackEvent('compra_iniciada', prod.id);
       window.location.href = resultado.url;
     } catch (err) {
       console.error(err);
@@ -1150,21 +1151,35 @@ if (reservaForm) {
     confirmando.hidden = false;
 
     const sondear = async (intento) => {
-      if (!sb || !sessionId) return;
-
-      if (intento >= 10) {
-        confirmando.hidden = true;
-        showReservaError('Tu pago está confirmándose, tarda más de lo normal. Revisa tu email en unos minutos');
+      if (!sb || !sessionId) {
+        const spinnerEl = confirmando.querySelector('.spinner');
+        if (spinnerEl) spinnerEl.hidden = true;
+        const pagoLento = document.getElementById('pago-lento');
+        pagoLento.hidden = false;
+        pagoLento.textContent = 'Tu pago está confirmándose, tarda más de lo normal. Revisa tu email en unos minutos';
         return;
       }
 
-      const { data } = await sb
+      if (intento >= 10) {
+        const spinnerEl = confirmando.querySelector('.spinner');
+        if (spinnerEl) spinnerEl.hidden = true;
+        const pagoLento = document.getElementById('pago-lento');
+        pagoLento.hidden = false;
+        pagoLento.textContent = 'Tu pago está confirmándose, tarda más de lo normal. Revisa tu email en unos minutos';
+        return;
+      }
+
+      const { data, error } = await sb
         .from('reservas')
         .select('estado')
         .eq('stripe_session_id', sessionId)
         .maybeSingle();
 
+      if (error) console.error(error);
+
       if (data && data.estado === 'pagado') {
+        const prodPagado = getProductoElegido();
+        trackEvent('compra_completada', prodPagado ? prodPagado.id : 'desconocido');
         confirmando.hidden = true;
         done.hidden = false;
         done.scrollIntoView({ behavior: 'smooth', block: 'start' });

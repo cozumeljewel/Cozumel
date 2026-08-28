@@ -43,6 +43,18 @@ create policy "usuarios autenticados leen sus reservas"
   to authenticated
   using (user_id = auth.uid());
 
+-- ---- Política de UPDATE (nueva) ----
+-- La necesita crear-sesion-pago para escribir stripe_session_id en la fila
+-- del propio usuario. Acotada a filas que siguen pendientes de pago, para
+-- que nadie pueda tocar una ya pagada desde el navegador.
+drop policy if exists "usuarios autenticados actualizan sus reservas" on public.reservas;
+
+create policy "usuarios autenticados actualizan sus reservas"
+  on public.reservas for update
+  to authenticated
+  using (user_id = auth.uid() and estado = 'pendiente_pago')
+  with check (user_id = auth.uid() and estado = 'pendiente_pago');
+
 -- ---- Función que envía los dos emails, vía Resend con pg_net ----
 -- Se ejecuta con los privilegios del propietario de la función (definer),
 -- así puede leer app.settings.resend_api_key aunque quien dispara el

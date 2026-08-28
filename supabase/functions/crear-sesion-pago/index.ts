@@ -111,12 +111,13 @@ Deno.serve(async (req) => {
     cancel_url: `${SITE_URL}/comprar.html?pago=cancelado`,
   });
 
-  const { error: updateError } = await sb
+  const { data: filaActualizada, error: updateError } = await sb
     .from("reservas")
     .update({ stripe_session_id: session.id, precio_pagado: precio })
-    .eq("id", fila.id);
+    .eq("id", fila.id)
+    .select("id");
 
-  if (updateError) {
+  if (updateError || !filaActualizada || filaActualizada.length === 0) {
     return new Response(
       JSON.stringify({ error: "No se pudo preparar el pago" }),
       { status: 500, headers: jsonHeaders },
