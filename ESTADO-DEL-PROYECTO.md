@@ -320,6 +320,22 @@ títulos de sección y en el pie.
 - La insignia de "edición de lanzamiento" usa `#7A5F2A`, un oro oscurecido
   a propósito para llegar a 4,5:1.
 
+### Regla aprendida: `hidden` contra `display` (ha costado dos bugs)
+
+Si un elemento se oculta con `elemento.hidden = true` desde JS, pero su
+propia regla CSS le pone `display` distinto de `none` (flex, block...),
+**ese `display` gana siempre**, aunque `[hidden]` sea del navegador y
+parezca que debería mandar. El elemento se queda visible con el atributo
+puesto, mintiendo sobre su propio estado.
+
+Ya pasó con `#reserva-form` (el login se podía saltar) y con
+`#tel-combo-panel` (el desplegable de prefijo no cerraba nunca). La regla:
+**todo elemento con `display` propio que además se oculte con `.hidden` en
+JS necesita su `#id[hidden]{display:none;}` al lado**, mismo patrón que ya
+tiene `.grabado-banda[hidden]`. Al añadir un elemento nuevo que se
+oculte así, comprobarlo con `getComputedStyle(el).display === 'none'`,
+nunca solo con `el.hidden === true` (eso no demuestra que se vea o no).
+
 ### Cómo verificar cambios visuales
 
 Hay un patrón de auditoría que se ha usado en cada cambio: recorrer las 12
