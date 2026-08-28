@@ -3,3 +3,6 @@ media_kit_adriana_carballo_2026.pdf
 
 # Artefactos de trabajo de subagent-driven-development
 .superpowers/sdd/
+
+# Metadata local de la CLI de Supabase (enlace al proyecto, versiones)
+supabase/.temp/

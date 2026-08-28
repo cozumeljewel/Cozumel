@@ -100,10 +100,13 @@ Si quieres que salgan los dos emails automáticos (al cliente y a
    `cozumeljewelry.es` (Resend te da los registros DNS que hay que añadir
    donde esté gestionado el dominio).
 2. Genera una API key en Resend.
-3. En el **SQL Editor** de Supabase, ejecuta (sustituyendo la clave real):
-   ```sql
-   alter database postgres set app.settings.resend_api_key = 'la_clave_de_resend';
-   ```
+3. Guarda esa clave en **Supabase Vault**, no con SQL directo: Supabase no
+   permite `alter database ... set` desde el SQL Editor normal (hace falta
+   privilegio de superusuario que ni el propietario del proyecto tiene
+   ahí). En el dashboard de Supabase, ve a **Project Settings → Vault →
+   Add new secret**, y crea uno con:
+   - Nombre: `resend_api_key` (exacto, la función lo busca por ese nombre)
+   - Valor: la clave que generaste en Resend
 4. Sin este paso, el pago se sigue confirmando y la fila pasa a `pagado`
    igual: solo se quedan sin enviar los dos emails. Se puede completar más
    adelante sin volver a tocar código.

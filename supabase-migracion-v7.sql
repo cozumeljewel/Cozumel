@@ -57,8 +57,14 @@ create policy "usuarios autenticados actualizan sus reservas"
 
 -- ---- Función que envía los dos emails, vía Resend con pg_net ----
 -- Se ejecuta con los privilegios del propietario de la función (definer),
--- así puede leer app.settings.resend_api_key aunque quien dispara el
--- trigger sea la política de UPDATE de la clave service_role.
+-- así puede leer el secreto de Vault aunque quien dispara el trigger sea
+-- la política de UPDATE de la clave service_role.
+--
+-- La clave de Resend se guarda en Supabase Vault (Project Settings →
+-- Vault → New secret, nombre "resend_api_key"), no con
+-- "alter database ... set": Supabase no permite esa sentencia desde el SQL
+-- Editor normal, hace falta privilegio de superusuario que ni el
+-- propietario del proyecto tiene ahí.
 create or replace function public.notificar_pedido_pagado()
 returns trigger
 language plpgsql
@@ -66,16 +72,21 @@ security definer
 set search_path = public
 as $$
 declare
-  resend_key text := current_setting('app.settings.resend_api_key', true);
+  resend_key text;
   nombre_producto text;
   importe_texto text;
 begin
+  select decrypted_secret into resend_key
+  from vault.decrypted_secrets
+  where name = 'resend_api_key'
+  limit 1;
+
   if resend_key is null or resend_key = '' then
-    -- Sin la clave configurada (antes de completar la guía de configuración
-    -- manual) no se intenta llamar a Resend: se deja constancia en los logs
-    -- de Postgres y se sigue, para no bloquear el UPDATE que sí importa
-    -- (marcar el pedido como pagado).
-    raise warning 'notificar_pedido_pagado: app.settings.resend_api_key no está configurada, no se envían emails';
+    -- Sin el secreto configurado en Vault (antes de completar la guía de
+    -- configuración manual) no se intenta llamar a Resend: se deja
+    -- constancia en los logs de Postgres y se sigue, para no bloquear el
+    -- UPDATE que sí importa (marcar el pedido como pagado).
+    raise warning 'notificar_pedido_pagado: el secreto "resend_api_key" no está en Vault, no se envían emails';
     return new;
   end if;
 
@@ -161,8 +172,8 @@ create trigger notificar_pedido_pagado
   execute function public.notificar_pedido_pagado();
 
 -- ============================================================
--- Nota: app.settings.resend_api_key se configura con
---   alter database postgres set app.settings.resend_api_key = 'la_clave';
--- Paso manual, documentado en configurar-stripe.md. Sin esa clave, los
--- pedidos se siguen marcando 'pagado' correctamente, solo que sin email.
+-- Nota: la clave de Resend se guarda en Project Settings → Vault → New
+-- secret, con el nombre exacto "resend_api_key". Paso manual, documentado
+-- en configurar-stripe.md. Sin ese secreto, los pedidos se siguen marcando
+-- 'pagado' correctamente, solo que sin email.
 -- ============================================================
