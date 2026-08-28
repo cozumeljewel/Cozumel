@@ -892,6 +892,24 @@ details p{margin-top:10px; font-size:13.5px; color:var(--ink); line-height:1.55;
 }
 .reserva-done p{margin-top:8px; font-size:15px; color:var(--ink); max-width:36ch; margin-left:auto; margin-right:auto;}
 
+.pago-confirmando, .pago-cancelado{
+  padding:70px 24px; text-align:center;
+}
+.pago-confirmando h2, .pago-cancelado h2{
+  font-family:'Playfair Display'; font-weight:700; font-size:28px; color:var(--deep);
+}
+.pago-confirmando p, .pago-cancelado p{
+  margin-top:8px; font-size:15px; color:var(--ink); max-width:36ch; margin-left:auto; margin-right:auto;
+}
+.pago-cancelado .btn{margin-top:20px;}
+
+.spinner{
+  display:block; width:36px; height:36px; margin:0 auto 16px;
+  border:3px solid var(--line-2); border-top-color:var(--gold-deep); border-radius:50%;
+  animation:girar .8s linear infinite;
+}
+@keyframes girar{ to{ transform:rotate(360deg); } }
+
 /* ---------- 8. CONTACTO ---------- */
 .contacto{
   padding:52px 24px 50px; background:var(--white);
