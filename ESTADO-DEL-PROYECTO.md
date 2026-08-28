@@ -271,12 +271,11 @@ consentimiento, session_id
 - **`supabase-migracion-v6.sql`** (añade `user_id` a `reservas`, exige
   sesión de Google para reservar): ejecutada y probada con una cuenta real
   (confirmado 2026-08-27, ver sección 4).
-- **⚠️ `supabase-migracion-v7.sql` NO se ha ejecutado.** Añade
-  `precio_pagado` y `stripe_session_id`, cambia la política de INSERT a
-  `estado = 'pendiente_pago'`, añade una política de SELECT (cada quien lee
-  sus propias filas) y mueve el disparador del email de "crear la fila" a
-  "pasar a `estado = 'pagado'`". Sin esta migración el flujo de compra con
-  Stripe no puede guardar nada.
+- **`supabase-migracion-v7.sql`** (añade `precio_pagado` y
+  `stripe_session_id`, cambia la política de INSERT a
+  `estado = 'pendiente_pago'`, añade políticas de SELECT y UPDATE, y mueve
+  el disparador del email a "pasar a `estado = 'pagado'`"): según el
+  cliente, ejecutada (confirmado 2026-08-28).
 
 Regla: **cada vez que se añade o renombra un `id` en `productos.js`, hay que
 repetir la migración v3** con la lista actualizada.
