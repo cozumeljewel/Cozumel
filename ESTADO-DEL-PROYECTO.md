@@ -268,11 +268,9 @@ consentimiento, session_id
   productos permitidos; sustituye a la política de la v3, su lista ya trae
   los 7): según el cliente, ya ejecutada (confirmado 2026-08-26). No
   verificable desde aquí por el mismo motivo que las anteriores.
-- **⚠️ `supabase-migracion-v6.sql` NO se ha ejecutado.** Añade `user_id` a
-  `reservas` y cambia la política de INSERT: de aquí en adelante hace falta
-  sesión de Google para reservar (ver el login en la sección 4). Sin esta
-  migración, en cuanto el login esté activo en el sitio, **todas** las
-  reservas fallarán al guardar, no solo las de un producto.
+- **`supabase-migracion-v6.sql`** (añade `user_id` a `reservas`, exige
+  sesión de Google para reservar): ejecutada y probada con una cuenta real
+  (confirmado 2026-08-27, ver sección 4).
 - **⚠️ `supabase-migracion-v7.sql` NO se ha ejecutado.** Añade
   `precio_pagado` y `stripe_session_id`, cambia la política de INSERT a
   `estado = 'pendiente_pago'`, añade una política de SELECT (cada quien lee
