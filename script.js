@@ -1151,6 +1151,13 @@ if (reservaForm) {
 
     const sondear = async (intento) => {
       if (!sb || !sessionId) return;
+
+      if (intento >= 10) {
+        confirmando.hidden = true;
+        showReservaError('Tu pago está confirmándose, tarda más de lo normal. Revisa tu email en unos minutos');
+        return;
+      }
+
       const { data } = await sb
         .from('reservas')
         .select('estado')
@@ -1161,12 +1168,6 @@ if (reservaForm) {
         confirmando.hidden = true;
         done.hidden = false;
         done.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
-      }
-
-      if (intento >= 10) {
-        confirmando.hidden = true;
-        showReservaError('Tu pago está confirmándose, tarda más de lo normal. Revisa tu email en unos minutos');
         return;
       }
 
