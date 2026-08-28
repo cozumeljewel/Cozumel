@@ -11,9 +11,10 @@ Prueba de validación de demanda para una marca de joyería personalizada,
 vinculada a la influencer **Adriana Carballo**. El tráfico vendrá de una
 story de Instagram suya.
 
-**No es una tienda.** No hay pagos ni Stripe. El objetivo es medir
-**intención de compra**: cuánta gente llega y cuánta deja sus datos en una
-**reserva gratuita**.
+**Es una tienda real.** El sitio cobra con Stripe Checkout. Los precios
+todavía no están definidos (ver sección 8), pero toda la infraestructura de
+cobro ya funciona: en cuanto se rellenen en `productos.js`, el sitio
+empieza a vender sin más cambios de código.
 
 **Reservar exige iniciar sesión con Google** (añadido el 2026-08-26,
 probado con una cuenta real el 2026-08-27, ver sección 4).
@@ -272,6 +273,12 @@ consentimiento, session_id
   sesión de Google para reservar (ver el login en la sección 4). Sin esta
   migración, en cuanto el login esté activo en el sitio, **todas** las
   reservas fallarán al guardar, no solo las de un producto.
+- **⚠️ `supabase-migracion-v7.sql` NO se ha ejecutado.** Añade
+  `precio_pagado` y `stripe_session_id`, cambia la política de INSERT a
+  `estado = 'pendiente_pago'`, añade una política de SELECT (cada quien lee
+  sus propias filas) y mueve el disparador del email de "crear la fila" a
+  "pasar a `estado = 'pagado'`". Sin esta migración el flujo de compra con
+  Stripe no puede guardar nada.
 
 Regla: **cada vez que se añade o renombra un `id` en `productos.js`, hay que
 repetir la migración v3** con la lista actualizada.
