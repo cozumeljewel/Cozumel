@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reserva · Cozumel Jewelry</title>
-<meta name="description" content="Reserva gratis y sin compromiso. Te contactamos cuando abramos los primeros pedidos">
+<title>Compra · Cozumel Jewelry</title>
+<meta name="description" content="Pago seguro con tarjeta, a través de Stripe. Envío incluido">
 <meta name="theme-color" content="#14454A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
 
@@ -12,14 +12,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cozumel">
 <meta property="og:locale" content="es_ES">
-<meta property="og:title" content="Reserva tu joya · Cozumel Jewelry">
-<meta property="og:description" content="Reserva gratis y sin compromiso. Te contactamos cuando abramos los primeros pedidos">
+<meta property="og:title" content="Compra tu joya · Cozumel Jewelry">
+<meta property="og:description" content="Pago seguro con tarjeta, a través de Stripe. Envío incluido">
 <meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Reserva tu joya · Cozumel Jewelry">
-<meta name="twitter:description" content="Reserva gratis y sin compromiso. Te contactamos cuando abramos los primeros pedidos">
+<meta name="twitter:title" content="Compra tu joya · Cozumel Jewelry">
+<meta name="twitter:description" content="Pago seguro con tarjeta, a través de Stripe. Envío incluido">
 <meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
 <script src="supabase-config.js"></script>
 <script src="productos.js"></script>
 </head>
-<body data-page="reservar">
+<body data-page="comprar">
 
 <div class="page">
 
@@ -74,7 +74,7 @@
         <a href="index.html">Inicio</a>
         <a href="productos.html">La colección</a>
         <a href="historia.html">Quiénes somos</a>
-        <a href="reservar.html">Reservar</a>
+        <a href="comprar.html">Comprar</a>
         <a href="contacto.html">Contacto</a>
       </nav>
     </div>
@@ -85,11 +85,11 @@
     <div class="reserva-content" id="reserva-content">
       <p class="edicion-badge">Edición de lanzamiento · unidades limitadas</p>
       <p class="eyebrow">Último paso</p>
-      <h2>Reserva la tuya</h2>
-      <p class="reserva-sub">Gratis. Sin compromiso. Es la primera edición de la colección, y te contactamos en cuanto abramos los primeros pedidos</p>
+      <h2>Cómpratela</h2>
+      <p class="reserva-sub">Pago seguro con tarjeta, a través de Stripe. Envío incluido</p>
 
       <div class="reserva-recap">
-        <span class="recap-label">Vas a reservar</span>
+        <span class="recap-label">Vas a comprar</span>
         <p class="recap-producto" data-bind="producto">Sin pieza elegida</p>
         <p class="recap-line" data-bind="resumen"></p>
         <a href="productos.html" class="recap-edit">Cambiar de pieza</a>
@@ -106,7 +106,7 @@
       <!-- Tapa el formulario hasta que hay sesión. script.js decide cuál
            de los dos se ve, comprobando sb.auth.getSession(). -->
       <div class="login-gate" id="login-gate">
-        <p class="login-gate-texto">Para reservar, primero identifícate</p>
+        <p class="login-gate-texto">Para comprar, primero identifícate</p>
         <button type="button" class="btn btn-primary" id="btn-login-google">Continuar con Google</button>
       </div>
 
@@ -158,7 +158,10 @@
           <span>Acepto que guarden estos datos para contactarme sobre esta reserva</span>
         </label>
 
-        <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Reservar mi joya, gratis</button>
+        <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Pagar y comprar</button>
+        <p class="reserva-config-warning" id="sin-precio" hidden>
+          Precio pendiente de confirmar
+        </p>
       </form>
       <p class="reserva-error" id="reserva-error" role="status" aria-live="polite" hidden></p>
       <button type="button" class="link-logout" id="btn-logout" hidden>Cerrar sesión</button>
@@ -172,8 +175,26 @@
         </svg>
       </span>
       <h2>Listo</h2>
-      <p>Hemos guardado tu reserva de la edición de lanzamiento</p>
-      <p>Te contactaremos cuando abramos los primeros pedidos</p>
+      <p>Hemos recibido tu pago de tu pieza de la edición de lanzamiento</p>
+      <p>Te avisaremos por email en cuanto se envíe</p>
+    </div>
+
+    <!-- Vuelta desde Stripe con éxito: se muestra mientras se sondea si
+         el webhook ya marcó la fila como pagada. script.js decide cuándo
+         pasar a #reserva-done. -->
+    <div class="pago-confirmando" id="pago-confirmando" hidden>
+      <span class="spinner" aria-hidden="true"></span>
+      <h2>Confirmando tu pago</h2>
+      <p>Esto tarda solo unos segundos</p>
+    </div>
+
+    <!-- Vuelta desde Stripe cancelada. Los datos ya escritos siguen en
+         sessionStorage, así que reintentar no obliga a rellenar todo de
+         nuevo. -->
+    <div class="pago-cancelado" id="pago-cancelado" hidden>
+      <h2>Pago cancelado</h2>
+      <p>No te hemos cobrado nada. Puedes intentarlo de nuevo cuando quieras</p>
+      <button type="button" class="btn btn-primary" id="btn-reintentar-pago">Volver a intentarlo</button>
     </div>
   </section>
 
@@ -185,7 +206,7 @@
         <a href="index.html">Inicio</a>
         <a href="productos.html">La colección</a>
         <a href="historia.html">Quiénes somos</a>
-        <a href="reservar.html">Reservar</a>
+        <a href="comprar.html">Comprar</a>
         <a href="contacto.html">Contacto</a>
       </nav>
       <p class="footer-tagline">Cozumel, somos un pedacito de lo que regalamos</p>
