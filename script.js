@@ -1127,7 +1127,7 @@ if (reservaForm) {
         throw new Error(resultado.error || 'sin url de pago');
       }
 
-      trackEvent('compra_iniciada', prod.id);
+      await trackEvent('compra_iniciada', prod.id);
       window.location.href = resultado.url;
     } catch (err) {
       console.error(err);
