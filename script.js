@@ -477,13 +477,14 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
    Aparece al abrir la página y, una vez cerrado, no vuelve a salir
    nunca más (localStorage, así sobrevive a cerrar el navegador).
 
-   NO se muestra en reservar.html: ahí la persona ya está rellenando
-   el formulario y un aviso que la manda de vuelta a la colección
-   trabaja en contra de la conversión que estamos midiendo.
+   SOLO en index.html (2026-08-28, pedido del cliente): en el resto de
+   páginas antes se mostraba también, pero un aviso que compite con lo
+   que la persona ya está mirando (la colección, una ficha, el propio
+   formulario) trabaja en contra de la conversión que estamos midiendo.
    ========================================================= */
 (function () {
   const YA_CERRADO = 'popupPreventaCerrado';
-  if (CURRENT_PAGE === 'reservar') return;
+  if (CURRENT_PAGE !== 'inicio') return;
 
   // TEMPORAL (2026-08-27, pedido del cliente para esta promoción): el
   // pop-up sale en cada entrada, no solo la primera. Sigue guardando en
