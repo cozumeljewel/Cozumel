@@ -945,6 +945,56 @@ if (ctaReservar) {
   });
 }
 
+/* ---------- CTA STICKY (ficha de producto) ----------
+   Aparece cuando #cta-reservar sale del viewport y el usuario ya hizo
+   scroll (para no mostrarlo de entrada, antes de que nadie toque nada).
+   El botón sticky no repite la lógica de compra: dispara un click()
+   sobre el CTA real, así reutiliza tal cual su tracking, sus estados y
+   su navegación (justo arriba). */
+(function () {
+  const sticky = document.getElementById('cta-sticky');
+  const ctaOriginal = document.getElementById('cta-reservar');
+  if (!sticky || !ctaOriginal) return;
+
+  const nombreEl = document.getElementById('cta-sticky-nombre');
+  const precioEl = document.getElementById('cta-sticky-precio');
+  const botonSticky = document.getElementById('cta-sticky-btn');
+
+  let yaHizoScroll = false;
+  let ctaOriginalVisible = true;
+
+  const actualizar = () => {
+    const debeMostrarse = yaHizoScroll && !ctaOriginalVisible;
+    if (debeMostrarse === sticky.classList.contains('visible')) return;
+    if (debeMostrarse) {
+      const titulo = document.getElementById('producto-titulo');
+      const precio = document.getElementById('resumen-precio');
+      if (nombreEl) nombreEl.textContent = titulo ? titulo.textContent : '';
+      if (precioEl) precioEl.textContent = precio ? precio.textContent : '';
+    }
+    sticky.classList.toggle('visible', debeMostrarse);
+    sticky.setAttribute('aria-hidden', String(!debeMostrarse));
+  };
+
+  new IntersectionObserver((entradas) => {
+    ctaOriginalVisible = entradas[0].isIntersecting;
+    actualizar();
+  }).observe(ctaOriginal);
+
+  window.addEventListener('scroll', () => {
+    yaHizoScroll = true;
+    actualizar();
+  }, { once: true, passive: true });
+
+  if (botonSticky) {
+    botonSticky.addEventListener('click', () => {
+      sticky.classList.remove('visible');
+      sticky.setAttribute('aria-hidden', 'true');
+      ctaOriginal.click();
+    });
+  }
+})();
+
 
 /* Prefijos telefonicos internacionales, para el desplegable del campo
    WhatsApp de reservar.html. Primero los 20 paises de habla hispana

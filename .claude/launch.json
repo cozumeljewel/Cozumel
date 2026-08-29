@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["scripts/dev-server-no-cache.py", "8123", "."],
       "port": 8123
+    },
+    {
+      "name": "cozumel-local-2",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["scripts/dev-server-no-cache.py", "8124", "."],
+      "port": 8124
     }
   ]
 }

@@ -38,6 +38,58 @@
   --line-3:#A8D5D2;      /* marcada */
 
   --header-h:62px;
+
+  /* =========================================================
+     TOKENS DEL SISTEMA (nombres estándar sobre la misma paleta
+     de arriba). No es una paleta nueva: es la paleta "agua/mar" de
+     siempre con nombres semánticos, para poder construir componentes
+     nuevos sin repetir el color de marca a mano cada vez.
+     ========================================================= */
+  --background:var(--foam);
+  --foreground:var(--ink);
+  --muted:var(--ink-soft);
+  --accent:var(--gold-deep);
+  --border:var(--line-2);
+  --font-display:'Playfair Display', serif;
+  --font-body:'Jost', sans-serif;
+
+  /* Espaciado: escala para componentes nuevos. Lo ya existente en el
+     sitio (paddings sueltos por sección) se deja como está — se
+     migra progresivamente, no de golpe. */
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:24px;
+  --space-6:32px;
+  --space-7:48px;
+  --space-8:64px;
+  --space-9:96px;
+
+  /* Radios: 2px es el que ya domina el sitio (look editorial, sin
+     esquinas redondeadas); el resto cubre los pocos casos con más
+     curva (insignias, popups, iconos circulares). */
+  --radius-xs:1px;
+  --radius-sm:2px;
+  --radius-md:3px;
+  --radius-lg:8px;
+  --radius-full:999px;
+
+  /* Tipografía: tamaños de UI/cuerpo. Los titulares siguen con su
+     propio clamp() por sección (cada uno responde distinto al ancho
+     de pantalla) — no se fuerzan a esta escala. */
+  --text-xs:11px;
+  --text-sm:13px;
+  --text-base:15px;
+  --text-md:16px;
+  --text-lg:18px;
+  --text-xl:22px;
+  --text-2xl:28px;
+
+  /* Transiciones: los tres ritmos que ya se repiten en microinteracciones. */
+  --transition-fast:.15s ease;
+  --transition-base:.25s ease;
+  --transition-slow:.4s ease;
 }
 
 *{box-sizing:border-box; margin:0; padding:0;}
@@ -66,10 +118,25 @@ html{scroll-behavior:smooth;}
     animation:none !important;
   }
 }
+/* Respaldo para Firefox/Safari (sin @view-transition nativo): lo activa
+   transiciones.js solo si detecta que el navegador no la soporta. Un
+   fundido de salida brevísimo antes de navegar; no hay fundido de
+   entrada (arriesgaría dejar la página en blanco si algo falla). */
+html.is-leaving body{
+  opacity:0;
+}
 body{
-  background:var(--foam);
-  color:var(--ink);
-  font-family:'Jost', sans-serif;
+  transition:opacity .09s ease-out;
+}
+@media (prefers-reduced-motion:reduce){
+  html.is-leaving body{
+    opacity:1;
+  }
+}
+body{
+  background:var(--background);
+  color:var(--foreground);
+  font-family:var(--font-body);
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
 }
@@ -153,9 +220,10 @@ section[id]{scroll-margin-top:var(--header-h);}
 
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
-  font-family:'Jost'; font-size:15px; font-weight:500; letter-spacing:.03em;
-  padding:16px 28px; border-radius:2px; text-decoration:none; cursor:pointer;
+  font-family:var(--font-body); font-size:var(--text-base); font-weight:500; letter-spacing:.03em;
+  padding:16px 28px; border-radius:var(--radius-sm); text-decoration:none; cursor:pointer;
   border:1px solid transparent;
+  transition:background-color var(--transition-base), border-color var(--transition-base), color var(--transition-base);
 }
 .btn-primary{background:var(--deep); color:var(--foam); border-color:var(--gold-deep);}
 .btn-primary:active{opacity:.85;}
@@ -233,7 +301,9 @@ section[id]{scroll-margin-top:var(--header-h);}
    El contenido del pop-up que abre reutiliza .popup-*: mismo aspecto que
    el de preventa, para no crear un segundo lenguaje visual de pop-ups. */
 .burbuja-contacto{
-  position:fixed; right:20px; bottom:20px; z-index:80;
+  position:fixed; z-index:80;
+  right:calc(20px + env(safe-area-inset-right));
+  bottom:calc(20px + env(safe-area-inset-bottom));
   width:52px; height:52px; border-radius:50%; border:none; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
   background:var(--deep); color:var(--foam);
@@ -256,9 +326,9 @@ section[id]{scroll-margin-top:var(--header-h);}
 /* ---------- HEADER ---------- */
 .site-header{
   position:sticky; top:0; z-index:50;
-  background:var(--foam);
+  background:var(--background);
   /* doble filete: hairline azul + hilo dorado */
-  border-bottom:1px solid var(--line-2);
+  border-bottom:1px solid var(--border);
   box-shadow:0 1px 0 rgba(198,166,100,.55);
   transition:background-color .3s ease, border-color .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
 }
@@ -353,16 +423,19 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 .menu-movil-nav a[aria-current="page"]{color:var(--sea-dark); font-weight:600;}
 
 .header-acciones{display:flex; align-items:center; gap:16px;}
+/* Zona táctil de 44px (mínimo recomendado) sin agrandar el icono: el
+   contenedor crece, el SVG se queda en su tamaño visual de siempre. */
 .header-carrito{
-  display:flex; width:21px; height:21px; color:var(--deep);
+  display:flex; align-items:center; justify-content:center;
+  width:44px; height:44px; margin:-11.5px; color:var(--deep);
   transition:color .2s;
 }
-.header-carrito svg{width:100%; height:100%; display:block;}
+.header-carrito svg{width:21px; height:21px; display:block;}
 .header-carrito:hover{color:var(--sea-dark);}
 
 .nav-toggle{
-  width:34px; height:34px; border:none; background:none; cursor:pointer;
-  display:flex; flex-direction:column; justify-content:center; gap:5px; padding:0;
+  width:44px; height:44px; margin:-5px; border:none; background:none; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:0;
 }
 .nav-toggle span{display:block; height:1.5px; width:22px; background:var(--deep); transition:.25s;}
 .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
@@ -514,10 +587,16 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 .hero-copy h1{
   font-family:'Playfair Display'; font-weight:900; font-size:clamp(38px,11vw,52px);
   line-height:1.05; color:var(--foam);
+  text-shadow:0 2px 14px rgba(6,26,29,.55);
   animation:heroRise .9s ease-out .35s both;
 }
+/* El dorado tiene menos luminosidad que el "foam" de arriba, así que
+   contra zonas claras de la foto pierde contraste (reportado en móvil).
+   Una sombra algo más marcada que la del resto del titular lo mantiene
+   legible sin tocar el color de marca. */
 .hero-copy h1 em{
   font-style:italic; font-weight:500; color:var(--gold);
+  text-shadow:0 2px 16px rgba(6,26,29,.75);
 }
 .hero-sub{
   margin:18px auto 0; max-width:32ch; font-size:15px; color:rgba(242,248,248,.88);
@@ -812,9 +891,11 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 .field label span{text-transform:none; letter-spacing:0; opacity:.7;}
 .field input, .field textarea{
   width:100%; padding:14px 16px; border:1px solid var(--line-3); border-radius:2px;
-  background:var(--foam); font-family:'Jost'; font-size:15px; color:var(--ink);
+  background:var(--foam); font-family:'Jost'; font-size:16px; color:var(--ink);
   resize:vertical;
 }
+/* 16px y no menos: por debajo, Safari en iPhone hace zoom automático
+   al enfocar el campo (y luego no siempre vuelve solo al tamaño normal). */
 .field input:focus, .field textarea:focus{
   outline:none; border-color:var(--sea); box-shadow:0 0 0 3px rgba(78,154,155,.15);
 }
@@ -1237,6 +1318,75 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   #cta-reservar:active{transform:none;}
 }
 
+/* ---------- CTA STICKY (ficha de producto) ----------
+   Barra fija abajo, en móvil y escritorio por igual. La pinta y la
+   muestra/oculta script.js con un IntersectionObserver sobre el CTA
+   real (#cta-reservar): visible mientras ese botón está fuera del
+   viewport, oculta mientras está a la vista, así nunca hay dos CTAs
+   compitiendo a la vez.
+   z-index por debajo del menú móvil y del pop-up (ambos en 100): si
+   cualquiera de los dos se abre, la barra queda tapada sin que haga
+   falta ocultarla a mano. visibility con retraso al ocultar para que
+   deje de ser alcanzable por teclado en cuanto termina el fundido. */
+.cta-sticky{
+  position:fixed; left:0; right:0; bottom:0; z-index:90;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:var(--foam); border-top:1px solid var(--line-2);
+  box-shadow:0 -6px 20px rgba(11,46,51,.12);
+  transform:translateY(12px); opacity:0; visibility:hidden; pointer-events:none;
+  transition:transform .18s ease-out, opacity .18s ease-out, visibility 0s .18s;
+}
+.cta-sticky.visible{
+  transform:translateY(0); opacity:1; visibility:visible; pointer-events:auto;
+  transition:transform .18s ease-out, opacity .18s ease-out, visibility 0s;
+}
+.cta-sticky-info{display:flex; flex-direction:column; min-width:0;}
+.cta-sticky-nombre{
+  font-size:12.5px; color:var(--ink-soft);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.cta-sticky-precio{font-family:'Playfair Display'; font-size:16px; color:var(--ink);}
+.cta-sticky-btn{flex:none; padding:12px 22px; font-size:14px; white-space:nowrap;}
+@media (prefers-reduced-motion:reduce){
+  .cta-sticky{transition:none;}
+  .cta-sticky.visible{transition:none;}
+}
+
+/* ---------- CURSOR PERSONALIZADO (solo escritorio con ratón) ----------
+   cursor.js decide si se activa (hover:hover + pointer:fine) y añade
+   .cursor-custom-activo a <html>: sin esa clase, ninguna regla de aquí
+   hace nada y el cursor nativo queda intacto (táctil, o si JS falla).
+   Sobre inputs/textareas se oculta del todo y se restaura el cursor
+   nativo, para no romper la edición de texto. */
+html.cursor-custom-activo, html.cursor-custom-activo *{
+  cursor:none;
+}
+html.cursor-custom-activo input,
+html.cursor-custom-activo textarea,
+html.cursor-custom-activo select,
+html.cursor-custom-activo [contenteditable="true"]{
+  cursor:auto !important;
+}
+.cursor-custom{
+  position:fixed; top:0; left:0; z-index:9999; pointer-events:none;
+  width:10px; height:10px; border-radius:50%;
+  background:var(--deep);
+  display:flex; align-items:center; justify-content:center;
+  transition:width .18s ease, height .18s ease, background-color .18s ease, opacity .15s ease;
+}
+.cursor-custom-texto{
+  opacity:0; font-family:'Jost'; font-size:11px; font-weight:500; letter-spacing:.04em;
+  color:var(--foam); white-space:nowrap; transition:opacity .12s ease;
+}
+.cursor-custom--link{width:18px; height:18px; background:var(--gold-deep);}
+.cursor-custom--ver{width:56px; height:56px; background:rgba(11,46,51,.85);}
+.cursor-custom--ver .cursor-custom-texto{opacity:1;}
+.cursor-custom--oculto{opacity:0;}
+@media (prefers-reduced-motion:reduce){
+  .cursor-custom, .cursor-custom-texto{transition:none;}
+}
+
 /* ---------- 7. FAQ ---------- */
 .faq{padding:44px 24px 20px; background:var(--white);}
 .faq h2{
@@ -1376,22 +1526,53 @@ details p{margin-top:10px; font-size:13.5px; color:var(--ink); line-height:1.55;
 .contact-link{color:var(--sea-dark); text-decoration:underline; text-underline-offset:2px;}
 .contact-link:hover{color:var(--deep);}
 
-/* ---------- FOOTER ---------- */
+/* ---------- FOOTER ----------
+   Cierre de marca: mucho aire, tipografía grande en el claim,
+   separadores casi invisibles (var(--border), un solo hairline, nada
+   de filetes gruesos). Legal y redes van como texto plano, no como
+   enlaces: esas páginas y cuentas todavía no existen — mismo criterio
+   que ya usa el menú móvil, nunca un href a algo que no está. */
 footer{
-  padding:30px 24px 40px; text-align:center; color:var(--ink-soft); background:var(--foam);
-  border-top:2px solid; border-image:linear-gradient(90deg, var(--surf), var(--gold), var(--silver)) 1;
+  padding:var(--space-9) var(--space-5) var(--space-7);
+  text-align:center; color:var(--muted); background:var(--background);
+  border-top:1px solid var(--border);
+}
+.footer-inner{max-width:640px; margin:0 auto;}
+.footer-marca{
+  display:inline-block; font-family:var(--font-display); font-weight:700;
+  font-size:clamp(22px,4vw,28px); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--foreground); text-decoration:none;
+}
+.footer-claim{
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  font-size:clamp(24px,4.5vw,36px); line-height:1.25; color:var(--foreground);
+  margin:var(--space-4) 0 var(--space-8);
 }
 .footer-nav{
-  display:flex; flex-wrap:wrap; justify-content:center; gap:8px 22px; margin-bottom:20px;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:var(--space-2) var(--space-5);
+  margin-bottom:var(--space-7); padding-bottom:var(--space-7);
+  border-bottom:1px solid var(--border);
 }
 .footer-nav a{
-  color:var(--ink-soft); text-decoration:none; font-size:12.5px; letter-spacing:.06em;
+  color:var(--foreground); text-decoration:none; font-size:var(--text-sm); letter-spacing:.06em;
+  transition:color var(--transition-base);
 }
+.footer-nav a:hover{color:var(--accent);}
+.footer-grupos{
+  display:flex; flex-wrap:wrap; justify-content:center; gap:var(--space-8);
+  margin-bottom:var(--space-8);
+}
+.footer-grupo{display:flex; flex-direction:column; align-items:center; gap:var(--space-2);}
+.footer-grupo-titulo{
+  font-size:var(--text-xs); letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:var(--space-1);
+}
+.footer-item{font-size:var(--text-sm); color:var(--muted);}
+.footer-item em{font-style:italic; opacity:.75;}
 .footer-tagline{
-  font-family:'Playfair Display'; font-style:italic; font-size:15px;
-  color:var(--sea-dark); margin-bottom:10px;
+  font-family:var(--font-display); font-style:italic; font-size:var(--text-sm);
+  color:var(--muted); margin-top:var(--space-4);
 }
-.footer-note{font-size:11px; letter-spacing:.08em; color:var(--ink-soft);}
 
 
 /* =========================================================
@@ -1638,6 +1819,12 @@ footer{
   .final-cta{padding:90px 40px;}
   .final-cta h2{font-size:30px;}
   .final-cta .btn{width:auto; padding:18px 60px;}
+
+  /* CTA STICKY: en escritorio hay más aire, así que se estira un poco
+     más y el nombre del producto ya no necesita acortarse tanto. */
+  .cta-sticky{padding:16px 48px calc(16px + env(safe-area-inset-bottom));}
+  .cta-sticky-nombre{font-size:13.5px;}
+  .cta-sticky-precio{font-size:18px;}
 
   /* 7. FAQ */
   .faq{padding:90px 40px 60px; max-width:720px; margin:0 auto;}
