@@ -957,18 +957,22 @@ section[id]{scroll-margin-top:var(--header-h);}
 .grabado-banda .fields{max-width:460px; margin-left:auto; margin-right:auto;}
 .grabado-nota{margin-top:20px; font-size:12.5px; color:var(--ink-soft);}
 
-/* ---------- FICHA LARGA DEL PRODUCTO ---------- */
+/* ---------- FICHA LARGA DEL PRODUCTO ----------
+   Sin caja ni líneas duras entre bloques (se veían muy pesadas dentro de
+   la columna estrecha de la ficha de producto): solo aire de sobra y,
+   como mucho, un hairline casi invisible, igual que el resto de
+   separadores de esta página. */
 .producto-ficha{margin-top:28px; text-align:left;}
 .producto-ficha:empty{margin-top:0;}
 .ficha-parrafo{
-  font-size:14.5px; color:var(--ink); line-height:1.6; margin-bottom:14px;
+  font-size:14.5px; color:var(--ink); line-height:1.65; margin-bottom:16px;
 }
 .ficha-lista{
-  list-style:none; margin:18px 0 0; padding:18px 0 0;
-  border-top:1px solid var(--line-2);
+  list-style:none; margin:22px 0 0; padding:20px 0 0;
+  border-top:1px solid rgba(20,69,74,.08);
 }
 .ficha-lista li{
-  position:relative; padding-left:20px; margin-bottom:9px;
+  position:relative; padding-left:20px; margin-bottom:10px;
   font-size:13.5px; color:var(--ink-soft); line-height:1.5;
 }
 /* viñeta: un punto dorado, en línea con el resto de detalles metálicos */
@@ -978,12 +982,12 @@ section[id]{scroll-margin-top:var(--header-h);}
 }
 /* Reclamo destacado (ej. el descuento del kit) */
 .ficha-oferta{
-  margin-top:20px; padding:12px 16px; border-radius:2px;
+  margin-top:22px; padding:12px 16px; border-radius:2px;
   background:var(--shallow); border-left:3px solid var(--gold-deep);
   font-size:13.5px; font-weight:600; color:#7A5F2A;
 }
 .ficha-cierre{
-  margin-top:20px; padding-top:16px; border-top:1px solid var(--line-2);
+  margin-top:22px; padding-top:18px; border-top:1px solid rgba(20,69,74,.08);
   font-family:'Playfair Display'; font-style:italic; font-size:16px;
   color:var(--sea-dark);
 }
@@ -1384,9 +1388,15 @@ footer{
   .pull-quote{font-size:24px; margin:30px 0;}
   .historia-media{margin-top:0; height:520px; max-height:none;}
 
-  /* 4. CONFIANZA */
-  .trust{justify-content:center; gap:110px; padding:70px 40px;}
-  .trust-item{flex:none;}
+  /* 4. CONFIANZA: los tres bloques ya no tienen el mismo ancho (depende
+     de si el texto es "Pieza única" o "Grabado por artesanos"), así que
+     un separador con posición fija en píxeles quedaba descuadrado. Con
+     borde + padding, el separador se coloca solo, sea cual sea el ancho
+     de cada bloque. */
+  .trust{justify-content:center; gap:0; padding:70px 40px;}
+  .trust-item{flex:0 1 200px; padding:0 44px;}
+  .trust-item + .trust-item{border-left:1px solid rgba(185,201,204,.35);}
+  .trust-item + .trust-item::before{display:none;}
   .trust-ico{width:42px; height:42px;}
   .trust-item p{font-size:14px;}
 
