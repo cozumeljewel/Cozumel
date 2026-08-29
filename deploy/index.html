@@ -133,6 +133,36 @@
     <a class="btn btn-primary stories-cta reveal" href="productos.html">Descubre la colección →</a>
   </section>
 
+  <!-- ===== PERSONALIZACIÓN (demo visual) =====
+       Solo una demo: enseña el concepto de grabado con una placa gráfica,
+       no una foto de producto. No guarda nada, no toca Supabase ni
+       ningún dato real de compra. La personalización de verdad (ligada a
+       la pieza elegida) vive en personalizar.html. -->
+  <section class="personaliza-demo">
+    <p class="eyebrow reveal">Personalización</p>
+    <h2 class="reveal">Hazla tuya</h2>
+    <p class="personaliza-demo-intro reveal">Un nombre. Una fecha. Un mensaje</p>
+
+    <div class="personaliza-demo-caja reveal">
+      <div class="field personaliza-demo-field">
+        <label for="demo-grabado">Escribe tu grabado</label>
+        <input type="text" id="demo-grabado" name="demo-grabado" maxlength="24"
+               placeholder="Escribe tu grabado…" autocomplete="off"
+               aria-describedby="demo-grabado-contador">
+        <p class="personaliza-demo-contador" id="demo-grabado-contador">
+          <span id="demo-grabado-num">0</span>/24
+        </p>
+      </div>
+
+      <div class="personaliza-demo-vista">
+        <span class="personaliza-demo-placa">
+          <span class="personaliza-demo-texto personaliza-demo-texto--ejemplo" id="demo-grabado-texto" aria-live="polite">ADRI</span>
+        </span>
+        <p class="personaliza-demo-nota">Así se vería tu grabado, a modo de ejemplo</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-inner">
