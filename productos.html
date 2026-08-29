@@ -83,8 +83,18 @@
     <h2 class="reveal">La colección</h2>
     <p class="coleccion-intro reveal">Piezas que cuentan algo</p>
 
-    <!-- Las tarjetas las genera productos.js — se editan ahí, no aquí -->
+    <!-- Las tarjetas las genera script.js a partir de productos.js —
+         se editan ahí, no aquí. Dos rejillas: piezas principales y kits,
+         con un separador editorial entre las dos. -->
     <div class="producto-grid" id="producto-grid"></div>
+
+    <div class="coleccion-divisor reveal">
+      <span class="coleccion-divisor-linea" aria-hidden="true"></span>
+      <p class="coleccion-divisor-texto">Los kits</p>
+      <span class="coleccion-divisor-linea" aria-hidden="true"></span>
+    </div>
+
+    <div class="producto-grid" id="producto-grid-kits"></div>
   </section>
 
   <footer>
