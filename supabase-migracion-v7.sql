@@ -11,6 +11,15 @@
 --     webhook-stripe con la clave service_role, nunca el navegador).
 -- ============================================================
 
+-- ---- Extensión necesaria para enviar los emails ----
+-- El disparador de más abajo llama a net.http_post (Resend), y esa función
+-- la aporta pg_net. Esta línea faltaba en la primera versión de esta
+-- migración: sin la extensión, el disparador falla, y como se ejecuta
+-- dentro del UPDATE que marca el pedido como pagado, tumbaba TODO el
+-- UPDATE. Efecto real en producción: Stripe cobraba, el webhook recibía
+-- un error 500 y el pedido se quedaba para siempre en 'pendiente_pago'.
+create extension if not exists pg_net;
+
 -- ---- Columnas nuevas ----
 alter table public.reservas
   add column if not exists precio_pagado numeric,
