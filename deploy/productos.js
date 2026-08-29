@@ -46,7 +46,7 @@ const PRODUCTOS = [
       'Grabado a mano, personalizable con nombre, fecha o mensaje corto',
     ],
     cierre: 'Para que lleve puesto un pedacito de ti',
-    precio: null,
+    precio: 1, // TEMPORAL: precio orientativo de prueba (1€), pendiente de precio real
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,

@@ -11,7 +11,7 @@
 // pena automatizarlo; con un catálogo de 7 piezas fijas, no por ahora.
 
 export const PRECIOS: Record<string, number | null> = {
-  collar_esencial: null,
+  collar_esencial: 1, // TEMPORAL: precio orientativo de prueba (1€), pendiente de precio real
   pulsera_vinculo: null,
   pulsera_nombre: null,
   brazalete_mensaje: null,
