@@ -245,6 +245,31 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
   }
 })();
 
+/* ---------- Lo mismo, dentro del menú móvil ----------
+   Aquí no vale con CSS: en móvil no hay :hover, así que "Personaliza tu
+   joya" es un botón que despliega la lista al tocarlo (no navega él
+   mismo a ningún sitio), y cada pieza de la lista sí es un enlace real. */
+(function () {
+  const toggle = document.getElementById('menu-movil-personaliza-toggle');
+  const lista = document.getElementById('menu-movil-personaliza-lista');
+  if (!toggle || !lista || typeof PRODUCTOS === 'undefined') return;
+
+  PRODUCTOS
+    .filter(prod => prod.campos.length > 0)
+    .forEach(prod => {
+      const a = document.createElement('a');
+      a.href = 'personalizar.html?p=' + encodeURIComponent(prod.slug);
+      a.textContent = prod.nombre;
+      lista.appendChild(a);
+    });
+
+  toggle.addEventListener('click', () => {
+    const abierto = lista.hidden; // va a abrirse si estaba oculta
+    lista.hidden = !abierto;
+    toggle.setAttribute('aria-expanded', String(abierto));
+  });
+})();
+
 
 /* =========================================================
    HAZLA TUYA (index.html) — DEMO VISUAL

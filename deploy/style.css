@@ -281,6 +281,12 @@ body[data-page="inicio"] .site-header .header-carrito{
   color:var(--foam);
 }
 body[data-page="inicio"] .site-header .nav a{color:rgba(242,248,248,.85);}
+/* El desplegable de "Personaliza" tiene su propio fondo claro siempre
+   (aunque el header esté transparente encima del hero): sus enlaces
+   deben quedarse oscuros siempre, o el texto se vuelve invisible sobre
+   ese fondo claro (blanco sobre blanco). Una clase más de especificidad
+   que la regla de arriba, para ganarle sí o sí. */
+body[data-page="inicio"] .site-header .nav .nav-dropdown-panel a{color:var(--ink);}
 body[data-page="inicio"] .site-header.scrolled{
   background:var(--foam); border-bottom-color:var(--line-2);
   box-shadow:0 1px 0 rgba(198,166,100,.55);
@@ -394,7 +400,7 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 .menu-movil-nav{
   display:flex; flex-direction:column; margin-top:24px;
 }
-.menu-movil-nav a{
+.menu-movil-nav a, .menu-movil-nav-toggle{
   padding:16px 0; border-bottom:1px solid var(--line-1);
   font-family:'Playfair Display'; font-weight:700; font-size:19px; color:var(--deep);
   text-decoration:none;
@@ -402,6 +408,34 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   opacity:0; transform:translateY(10px);
 }
 .menu-movil-nav a:last-child{border-bottom:none;}
+/* El botón de "Personaliza tu joya" se ve igual que los enlaces de al
+   lado, pero es un <button>: hay que resetearle el aspecto de botón y
+   añadirle la flechita que indica que despliega algo. */
+.menu-movil-nav-toggle{
+  width:100%; border:none; border-bottom:1px solid var(--line-1);
+  background:none; text-align:left; cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.menu-movil-nav-toggle::after{
+  content:"+"; font-family:'Jost'; font-weight:400; font-size:20px; color:var(--sea-dark);
+}
+.menu-movil-nav-toggle[aria-expanded="true"]::after{content:"−";}
+/* La lista de piezas personalizables: indentada, más pequeña, para que
+   se note que "cuelga" del botón de arriba y no es un enlace principal
+   más. Aparece/desaparece al toggle, sin animación de entrada propia
+   (esa ya la tuvo el botón al abrirse el menú). */
+.menu-movil-submenu{
+  display:flex; flex-direction:column; padding:4px 0 4px 18px;
+  border-bottom:1px solid var(--line-1);
+}
+/* Tiene su propio "display", así que necesita este [hidden] explícito o
+   se queda visible con el atributo puesto (regla ya aprendida en este
+   proyecto, ver ESTADO-DEL-PROYECTO.md). */
+.menu-movil-submenu[hidden]{display:none;}
+.menu-movil-submenu a{
+  padding:11px 0; font-family:'Jost'; font-weight:500; font-size:15px;
+  color:var(--ink-soft); text-decoration:none;
+}
 .menu-movil-social{
   margin-top:auto; padding-top:24px; display:flex; flex-direction:column; gap:8px;
   opacity:0; transform:translateY(10px);
@@ -412,20 +446,25 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 .menu-movil-social-item em{font-style:italic; text-transform:none; letter-spacing:0; opacity:.75;}
 
 @media (prefers-reduced-motion:no-preference){
-  .menu-movil-nav a, .menu-movil-social{transition:opacity .35s ease, transform .35s ease;}
-  /* El escalonado: cada enlace entra un pelín más tarde que el anterior. */
-  .menu-movil-nav a:nth-child(1){transition-delay:.05s;}
-  .menu-movil-nav a:nth-child(2){transition-delay:.1s;}
-  .menu-movil-nav a:nth-child(3){transition-delay:.15s;}
-  .menu-movil-nav a:nth-child(4){transition-delay:.2s;}
-  .menu-movil-nav a:nth-child(5){transition-delay:.25s;}
+  .menu-movil-nav a, .menu-movil-nav-toggle, .menu-movil-social{
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  /* El escalonado: cada enlace entra un pelín más tarde que el anterior.
+     Cuenta también el botón de "Personaliza" (2º) y salta la posición
+     del submenú (3ª, empieza oculto, no entra en el escalonado). */
+  .menu-movil-nav > :nth-child(1){transition-delay:.05s;}
+  .menu-movil-nav > :nth-child(2){transition-delay:.1s;}
+  .menu-movil-nav > :nth-child(4){transition-delay:.15s;}
+  .menu-movil-nav > :nth-child(5){transition-delay:.2s;}
+  .menu-movil-nav > :nth-child(6){transition-delay:.25s;}
   .menu-movil-social{transition-delay:.3s;}
 }
-.menu-movil-visible .menu-movil-nav a, .menu-movil-visible .menu-movil-social{
+.menu-movil-visible .menu-movil-nav a, .menu-movil-visible .menu-movil-nav-toggle,
+.menu-movil-visible .menu-movil-social{
   opacity:1; transform:translateY(0);
 }
 @media (prefers-reduced-motion:reduce){
-  .menu-movil-nav a, .menu-movil-social{opacity:1; transform:none;}
+  .menu-movil-nav a, .menu-movil-nav-toggle, .menu-movil-social{opacity:1; transform:none;}
 }
 
 /* ---------- 1. HERO ---------- */
@@ -1429,21 +1468,28 @@ footer{
   /* Desplegable de "Personaliza": las piezas que se pueden grabar, para
      ir directo a una en vez de pasar primero por la colección. Solo
      tiene sentido en escritorio (el menú móvil no lo usa). */
-  .nav-dropdown{position:relative;}
+  /* display:flex + align-items:center para que el texto del enlace
+     quede a la misma altura exacta que sus hermanos "Colección" etc
+     (si no, el <div> que envuelve el enlace + el panel desalinea el
+     texto un pelín respecto al resto de la barra). */
+  .nav-dropdown{position:relative; display:flex; align-items:center;}
   .nav-dropdown-panel{
+    /* Pegado (sin margen) a propósito: un hueco entre el enlace y el
+       panel rompe el :hover al pasar el ratón por en medio, y no deja
+       ni llegar a las opciones de dentro. */
     position:absolute; top:100%; left:50%; z-index:60;
-    transform:translateX(-50%) translateY(4px);
-    min-width:230px; margin-top:16px; padding:8px 0;
+    transform:translateX(-50%);
+    min-width:230px; padding:8px 0;
     background:var(--foam); border:1px solid var(--line-2); border-radius:2px;
     box-shadow:0 14px 30px rgba(11,46,51,.16);
     opacity:0; visibility:hidden; pointer-events:none;
   }
   .nav-dropdown:hover .nav-dropdown-panel,
   .nav-dropdown:focus-within .nav-dropdown-panel{
-    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+    opacity:1; visibility:visible; pointer-events:auto;
   }
   @media (prefers-reduced-motion:no-preference){
-    .nav-dropdown-panel{transition:opacity .18s ease, transform .18s ease, visibility .18s;}
+    .nav-dropdown-panel{transition:opacity .18s ease, visibility .18s;}
   }
   .nav .nav-dropdown-panel a{
     display:block; padding:9px 18px; font-size:12.5px; letter-spacing:.02em;
