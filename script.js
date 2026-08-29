@@ -210,6 +210,11 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
     const destino = prod.id.startsWith('kit_') && gridKits ? gridKits : grid;
     destino.appendChild(crearTarjetaProducto(prod));
   });
+  // Estas tarjetas nacen con la clase "reveal" (opacity:0 hasta que se
+  // ven). Hay que registrarlas en el observador de revelar.js, que ya
+  // escaneó la página antes de que existieran; si no, se quedan
+  // invisibles para siempre.
+  if (typeof window.registrarReveal === 'function') window.registrarReveal();
 }
 
 /* =========================================================
