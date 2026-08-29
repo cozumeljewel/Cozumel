@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preguntas frecuentes · Cozumel Jewelry</title>
+<meta name="description" content="Pedidos, personalización, envíos, materiales, regalos y devoluciones: todo lo que necesitas saber">
+<meta name="theme-color" content="#14454A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
+
+<!-- Previsualizacion al compartir el enlace (Instagram, WhatsApp, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cozumel">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Preguntas frecuentes · Cozumel Jewelry">
+<meta property="og:description" content="Pedidos, personalización, envíos, materiales, regalos y devoluciones: todo lo que necesitas saber">
+<meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Preguntas frecuentes · Cozumel Jewelry">
+<meta name="twitter:description" content="Pedidos, personalización, envíos, materiales, regalos y devoluciones: todo lo que necesitas saber">
+<meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="productos.js"></script>
+</head>
+<body data-page="faq">
+
+<div class="page">
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a class="logo" href="index.html" aria-label="Inicio">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="-15 -15 130 140" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round">
+              <line x1="84" y1="52" x2="95.9" y2="52"/>
+              <line x1="79.4" y1="72" x2="89.7" y2="79"/>
+              <line x1="67" y1="86.6" x2="72.95" y2="98.8"/>
+              <line x1="50" y1="92" x2="50" y2="106"/>
+              <line x1="33" y1="86.6" x2="27.05" y2="98.8"/>
+              <line x1="20.6" y1="72" x2="10.25" y2="79"/>
+              <line x1="16" y1="52" x2="4.1" y2="52"/>
+              <line x1="20.6" y1="32" x2="10.25" y2="25"/>
+              <line x1="33" y1="17.4" x2="27.05" y2="5.2"/>
+              <line x1="50" y1="12" x2="50" y2="-2"/>
+              <line x1="67" y1="17.4" x2="72.95" y2="5.2"/>
+              <line x1="79.4" y1="32" x2="89.7" y2="25"/>
+            </g>
+            <ellipse cx="50" cy="52" rx="34" ry="40" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M18,52 C30,36 70,36 82,52 C70,66 30,66 18,52 Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <circle cx="50" cy="52" r="7" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="logo-word">
+          <span class="logo-name">Cozumel</span>
+          <span class="logo-sub">Jewelry</span>
+          <span class="logo-olas" aria-hidden="true"></span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Principal">
+        <a href="productos.html">Colección</a>
+        <a href="personalizar.html">Personaliza</a>
+        <a href="historia.html">Nuestra historia</a>
+        <a href="faq.html">FAQ</a>
+      </nav>
+
+      <div class="header-acciones">
+        <a class="header-carrito" href="comprar.html" aria-label="Comprar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 4h2l2.2 11.6a1.8 1.8 0 0 0 1.8 1.4h8.2a1.8 1.8 0 0 0 1.8-1.4L21 8H6"/>
+            <circle cx="10" cy="20" r="1.3"/>
+            <circle cx="17" cy="20" r="1.3"/>
+          </svg>
+        </a>
+        <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-movil">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MENÚ MÓVIL, a pantalla completa ===== -->
+  <div class="menu-movil" id="menu-movil" hidden>
+    <div class="menu-movil-caja" role="dialog" aria-modal="true" aria-label="Menú">
+      <div class="menu-movil-cabecera">
+        <span class="menu-movil-marca">Cozumel</span>
+        <button class="menu-movil-cerrar" id="menu-movil-cerrar" type="button" aria-label="Cerrar menú">×</button>
+      </div>
+      <nav class="menu-movil-nav" aria-label="Principal">
+        <a href="productos.html">Colección</a>
+        <a href="personalizar.html">Personaliza tu joya</a>
+        <a href="historia.html">Nuestra historia</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+      <div class="menu-movil-social">
+        <span class="menu-movil-social-item">Instagram <em>(muy pronto)</em></span>
+        <span class="menu-movil-social-item">TikTok <em>(muy pronto)</em></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PREGUNTAS FRECUENTES ===== -->
+  <section class="faq-cabecera">
+    <p class="eyebrow">Ayuda</p>
+    <h2>Preguntas frecuentes</h2>
+  </section>
+
+  <section class="faq-categoria">
+    <h3>Pedidos</h3>
+    <div class="faq-lista">
+      <details class="info-item">
+        <summary>¿Cómo puedo realizar un pedido?</summary>
+        <p>Puedes realizar tu pedido directamente desde nuestra tienda online. Elige la joya que más te guste, selecciona las opciones disponibles y, si quieres personalizarla, añade tu grabado antes de completar la compra.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Puedo modificar o cancelar mi pedido?</summary>
+        <p>Si necesitas modificar o cancelar un pedido, ponte en contacto con nosotros lo antes posible. Intentaremos ayudarte siempre que el pedido todavía no haya entrado en proceso de preparación o personalización.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Recibiré una confirmación de mi pedido?</summary>
+        <p>Sí. Una vez completada la compra recibirás un email de confirmación con la información de tu pedido.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="faq-categoria">
+    <h3>Personalización</h3>
+    <div class="faq-lista">
+      <details class="info-item">
+        <summary>¿Puedo personalizar mi joya?</summary>
+        <p>Sí. Algunas de nuestras piezas pueden personalizarse con nombres, fechas o mensajes especiales. Las opciones de personalización disponibles aparecen indicadas en cada producto.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Qué puedo grabar?</summary>
+        <p>Puedes utilizar un nombre, una fecha, iniciales o un mensaje especial, siempre dentro de los límites de caracteres indicados para cada pieza.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Cómo debo escribir el texto del grabado?</summary>
+        <p>Te recomendamos revisar cuidadosamente el texto antes de finalizar el pedido. La joya se personalizará siguiendo exactamente la información que hayas proporcionado.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Puedo utilizar caracteres especiales o símbolos?</summary>
+        <p>Dependerá del tipo de personalización disponible en cada pieza. Si tienes una petición especial, escríbenos antes de realizar el pedido y te confirmaremos si es posible.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Puedo cambiar el grabado después de realizar el pedido?</summary>
+        <p>Las piezas personalizadas entran en proceso de preparación específicamente para cada pedido. Por ello, si necesitas modificar el grabado, contacta con nosotros cuanto antes.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="faq-categoria">
+    <h3>Envíos</h3>
+    <div class="faq-lista">
+      <details class="info-item">
+        <summary>¿A dónde realizáis envíos?</summary>
+        <p>Actualmente realizamos envíos a los destinos disponibles durante el proceso de compra.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Cuánto tarda en llegar mi pedido?</summary>
+        <p>El tiempo de entrega puede variar según el destino y el tipo de producto. Además, las piezas personalizadas pueden necesitar un tiempo adicional de preparación.</p>
+        <p>El plazo estimado se mostrará durante el proceso de compra o en la información de envío correspondiente.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Cómo puedo saber dónde está mi pedido?</summary>
+        <p>Cuando tu pedido sea enviado, recibirás la información de seguimiento disponible para que puedas consultar su estado.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Qué ocurre si no estoy en casa cuando llega el pedido?</summary>
+        <p>El transportista podrá realizar un nuevo intento de entrega o indicarte cómo recoger el paquete, dependiendo del servicio utilizado y del destino.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Qué hago si mi pedido llega dañado?</summary>
+        <p>Si recibes un paquete aparentemente dañado, ponte en contacto con nosotros lo antes posible y envíanos fotografías del paquete y del producto para que podamos ayudarte a resolverlo.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="faq-categoria">
+    <h3>Productos y materiales</h3>
+    <div class="faq-lista">
+      <details class="info-item">
+        <summary>¿De qué materiales están hechas las joyas?</summary>
+        <p>Cada producto puede tener unas características y materiales diferentes. Puedes consultar la información específica de cada pieza en su página de producto.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Las joyas son resistentes al agua?</summary>
+        <p>La resistencia al agua depende del material y del acabado de cada pieza. Consulta siempre las recomendaciones específicas de cada producto.</p>
+        <p>Como norma general, recomendamos evitar el contacto prolongado con agua, perfumes, cremas y productos químicos para conservar mejor la joya.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Cómo debo cuidar mi joya?</summary>
+        <p>Para mantener tu joya en las mejores condiciones:</p>
+        <ul class="faq-lista-cuidados">
+          <li>Evita el contacto con perfumes, cremas y productos químicos.</li>
+          <li>Quítatela antes de ducharte, bañarte o hacer deporte.</li>
+          <li>Guárdala en un lugar seco cuando no la estés utilizando.</li>
+          <li>Evita golpes y roces innecesarios.</li>
+          <li>Límpiala suavemente cuando sea necesario.</li>
+        </ul>
+        <p>Un buen cuidado ayudará a mantener su aspecto durante más tiempo.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="faq-categoria">
+    <h3>Regalos</h3>
+    <div class="faq-lista">
+      <details class="info-item">
+        <summary>¿Puedo enviar una joya directamente a otra persona?</summary>
+        <p>Sí. Puedes indicar una dirección de entrega diferente a la tuya durante el proceso de compra, siempre que el sistema de compra lo permita.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Puedo añadir un mensaje para la persona que recibe el regalo?</summary>
+        <p>Si esta opción está disponible durante el proceso de compra, podrás añadir tu mensaje personalizado.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Las joyas vienen preparadas para regalar?</summary>
+        <p>Nuestros pedidos están preparados con especial cuidado para que la experiencia de recibir una joya Cozumel sea especial.</p>
+        <p>Consulta la información del producto o del proceso de compra para conocer las opciones de packaging disponibles.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="faq-categoria">
+    <h3>Devoluciones</h3>
+    <div class="faq-lista">
+      <details class="info-item">
+        <summary>¿Puedo devolver mi pedido?</summary>
+        <p>Sí, puedes solicitar una devolución siempre que se cumplan las condiciones establecidas en nuestra política de devoluciones.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Puedo devolver una joya personalizada?</summary>
+        <p>Las joyas personalizadas pueden estar sujetas a condiciones especiales de devolución debido a que han sido realizadas específicamente para cada cliente.</p>
+        <p>Te recomendamos consultar nuestra política de devoluciones antes de realizar un pedido personalizado.</p>
+      </details>
+      <details class="info-item">
+        <summary>¿Qué hago si recibo un producto incorrecto o defectuoso?</summary>
+        <p>Si recibes un producto incorrecto, defectuoso o que presenta algún problema, ponte en contacto con nosotros lo antes posible indicando tu número de pedido y, si es necesario, adjuntando fotografías.</p>
+        <p>Estudiaremos tu caso y te indicaremos los siguientes pasos.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="faq-categoria faq-categoria-final">
+    <h3>Contacto</h3>
+    <div class="faq-lista">
+      <details class="info-item">
+        <summary>¿Cómo puedo contactar con Cozumel?</summary>
+        <p>Puedes contactar con nosotros a través de los canales de contacto disponibles en nuestra web. Estaremos encantados de ayudarte con cualquier duda sobre productos, personalización, pedidos o envíos.</p>
+      </details>
+      <details class="info-item">
+        <summary>Tengo una duda que no aparece aquí, ¿qué hago?</summary>
+        <p>Escríbenos. Si tu pregunta no aparece en este FAQ, estaremos encantados de ayudarte directamente.</p>
+      </details>
+    </div>
+    <a href="contacto.html" class="cambiar-pieza">Ir a contacto</a>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-olas" aria-hidden="true"></span>
+      <nav class="footer-nav">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">La colección</a>
+        <a href="historia.html">Quiénes somos</a>
+        <a href="faq.html">FAQ</a>
+        <a href="comprar.html">Comprar</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+      <p class="footer-tagline">Cozumel, somos un pedacito de lo que regalamos</p>
+    </div>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

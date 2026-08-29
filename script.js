@@ -685,29 +685,116 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 })();
 
 
-/* ---------- Menú móvil ---------- */
+/* ---------- Menú móvil, a pantalla completa ----------
+   #nav (la lista de arriba) ahora es solo la barra de escritorio; en
+   móvil el que se abre y cierra es #menu-movil, un overlay aparte. */
 const navToggle = document.querySelector('.nav-toggle');
-const nav = document.getElementById('nav');
+const menuMovil = document.getElementById('menu-movil');
+const menuMovilCerrar = document.getElementById('menu-movil-cerrar');
 
-if (navToggle && nav) {
+if (navToggle && menuMovil) {
+  let elementoAntesDeAbrir = null;
+
+  const elementosFocuables = () =>
+    [...menuMovil.querySelectorAll('a, button')].filter(el => el.offsetParent !== null);
+
+  const abrirMenu = () => {
+    elementoAntesDeAbrir = document.activeElement;
+    menuMovil.hidden = false;
+    navToggle.setAttribute('aria-expanded', 'true');
+    navToggle.setAttribute('aria-label', 'Cerrar menú');
+    document.body.style.overflow = 'hidden'; // bloquea el scroll de fondo
+
+    // Fuerza un reflow antes de añadir la clase que dispara la entrada
+    // escalonada: si no, al aplicarse en el mismo frame que hidden=false,
+    // el navegador se salta la transición y todo aparece de golpe.
+    void menuMovil.offsetWidth;
+    menuMovil.classList.add('menu-movil-visible');
+
+    const primero = elementosFocuables()[0];
+    if (primero) primero.focus();
+  };
+
+  const cerrarMenu = () => {
+    menuMovil.hidden = true;
+    menuMovil.classList.remove('menu-movil-visible');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Abrir menú');
+    document.body.style.overflow = '';
+    // Devuelve el foco a donde estaba (normalmente el propio botón
+    // hamburguesa), para quien navega con teclado.
+    if (elementoAntesDeAbrir) elementoAntesDeAbrir.focus();
+  };
+
   navToggle.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', String(open));
-    navToggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    if (menuMovil.hidden) abrirMenu(); else cerrarMenu();
   });
 
-  nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-      navToggle.setAttribute('aria-label', 'Abrir menú');
-    });
+  if (menuMovilCerrar) menuMovilCerrar.addEventListener('click', cerrarMenu);
+
+  // Clic fuera de la caja (sobre el velo oscuro) cierra el menú.
+  menuMovil.addEventListener('click', (e) => {
+    if (e.target === menuMovil) cerrarMenu();
+  });
+
+  // Cada enlace del menú lo cierra al navegar.
+  menuMovil.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', cerrarMenu);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (menuMovil.hidden) return;
+
+    if (e.key === 'Escape') {
+      cerrarMenu();
+      return;
+    }
+
+    // Atrapa el foco dentro del menú mientras está abierto (Tab / Shift+Tab
+    // no deben poder salirse a lo que hay detrás del velo).
+    if (e.key === 'Tab') {
+      const focuables = elementosFocuables();
+      if (!focuables.length) return;
+      const primero = focuables[0];
+      const ultimo = focuables[focuables.length - 1];
+
+      if (e.shiftKey && document.activeElement === primero) {
+        e.preventDefault();
+        ultimo.focus();
+      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        e.preventDefault();
+        primero.focus();
+      }
+    }
   });
 }
 
+/* ---------- Header sólido al hacer scroll (solo inicio) ----------
+   En el resto de páginas el header ya es sólido siempre: esta clase no
+   cambia nada allí, la regla que le da efecto está acotada a inicio en
+   style.css. Sin scroll-listener costoso: se limita a comprobar un
+   umbral pequeño y solo toca el DOM cuando el estado realmente cambia. */
+(function () {
+  const header = document.getElementById('site-header');
+  if (!header || CURRENT_PAGE !== 'inicio') return;
+
+  const UMBRAL = 40;
+  let solido = false;
+
+  const comprobar = () => {
+    const debeSerSolido = window.scrollY > UMBRAL;
+    if (debeSerSolido === solido) return;
+    solido = debeSerSolido;
+    header.classList.toggle('scrolled', solido);
+  };
+
+  comprobar();
+  window.addEventListener('scroll', comprobar, { passive: true });
+})();
+
 /* ---------- Marcar el enlace de la página activa ---------- */
 const currentFile = location.pathname.split('/').pop() || 'index.html';
-document.querySelectorAll('.nav a, .footer-nav a').forEach(a => {
+document.querySelectorAll('.nav a, .footer-nav a, .menu-movil-nav a').forEach(a => {
   if (a.getAttribute('href') === currentFile) a.setAttribute('aria-current', 'page');
 });
 

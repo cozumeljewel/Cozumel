@@ -212,7 +212,44 @@ section[id]{scroll-margin-top:var(--header-h);}
   /* doble filete: hairline azul + hilo dorado */
   border-bottom:1px solid var(--line-2);
   box-shadow:0 1px 0 rgba(198,166,100,.55);
+  transition:background-color .3s ease, border-color .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
 }
+/* Solo en inicio: el header empieza transparente, flotando sobre el
+   hero (por eso pasa a position:fixed aquí, y solo aquí — en el resto
+   de páginas sigue siendo sticky normal, sin solaparse con nada). Un
+   velo oscuro propio en la parte transparente asegura que el logo se
+   lea aunque justo detrás la foto sea clara. script.js añade ".scrolled"
+   al bajar, y esta misma regla se encarga de deshacer todo lo de abajo
+   para que quede igual que el header sólido normal. */
+body[data-page="inicio"] .site-header{
+  position:fixed; top:0; left:0; right:0;
+  background:linear-gradient(to bottom, rgba(11,46,51,.4), transparent);
+  border-bottom-color:transparent; box-shadow:none;
+}
+body[data-page="inicio"] .site-header .logo-name,
+body[data-page="inicio"] .site-header .logo-sub,
+body[data-page="inicio"] .site-header .nav-toggle span,
+body[data-page="inicio"] .site-header .header-carrito{
+  color:var(--foam);
+}
+body[data-page="inicio"] .site-header .nav a{color:rgba(242,248,248,.85);}
+body[data-page="inicio"] .site-header.scrolled{
+  background:var(--foam); border-bottom-color:var(--line-2);
+  box-shadow:0 1px 0 rgba(198,166,100,.55);
+}
+body[data-page="inicio"] .site-header.scrolled .logo-name,
+body[data-page="inicio"] .site-header.scrolled .logo-sub,
+body[data-page="inicio"] .site-header.scrolled .nav-toggle span,
+body[data-page="inicio"] .site-header.scrolled .header-carrito{
+  color:var(--deep);
+}
+body[data-page="inicio"] .site-header.scrolled .nav a{color:var(--ink-soft);}
+@supports (backdrop-filter: blur(1px)){
+  body[data-page="inicio"] .site-header:not(.scrolled){backdrop-filter:blur(6px);}
+}
+/* El hero, solo en inicio, empieza pegado del todo arriba: el header
+   flota encima (fixed), no le hace falta hueco propio. */
+body[data-page="inicio"] .hero{margin-top:0 !important;}
 .header-inner{
   height:var(--header-h); padding:0 20px;
   display:flex; align-items:center; justify-content:space-between;
@@ -249,6 +286,26 @@ section[id]{scroll-margin-top:var(--header-h);}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 118 20'%3E%3Cpath d='M3,10 Q17,-2 31,10 T59,10 T87,10 T115,10' fill='none' stroke='%234E9A9B' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
+/* En móvil, .nav es solo la lista de enlaces del menú a pantalla
+   completa (ver más abajo); en escritorio se convierte en la barra
+   horizontal (media query de 900px). Nunca se muestra "flotando" sobre
+   la página como antes: el contenedor que abre/cierra ahora es
+   #menu-movil, no este <nav>. */
+.nav{display:none;}
+.nav a{
+  text-decoration:none; color:var(--ink); font-size:15px; letter-spacing:.02em;
+}
+.nav a[aria-current="page"], .footer-nav a[aria-current="page"],
+.menu-movil-nav a[aria-current="page"]{color:var(--sea-dark); font-weight:600;}
+
+.header-acciones{display:flex; align-items:center; gap:16px;}
+.header-carrito{
+  display:flex; width:21px; height:21px; color:var(--deep);
+  transition:color .2s;
+}
+.header-carrito svg{width:100%; height:100%; display:block;}
+.header-carrito:hover{color:var(--sea-dark);}
+
 .nav-toggle{
   width:34px; height:34px; border:none; background:none; cursor:pointer;
   display:flex; flex-direction:column; justify-content:center; gap:5px; padding:0;
@@ -258,19 +315,70 @@ section[id]{scroll-margin-top:var(--header-h);}
 .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
 .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
 
-.nav{
-  position:fixed; inset:var(--header-h) 0 auto 0;
-  background:var(--foam); border-bottom:1px solid var(--line-2);
-  flex-direction:column; padding:8px 20px 20px;
-  display:none;
+/* ---------- MENÚ MÓVIL, a pantalla completa ----------
+   #menu-movil se abre/cierra con el atributo "hidden" (script.js), nunca
+   con display a secas: el propio hidden ya hace display:none, y esta
+   regla de abajo es la que le da forma cuando SÍ está presente (mismo
+   patrón que ya usa el resto del sitio para no repetir el bug de
+   "hidden contra display propio", ver ESTADO-DEL-PROYECTO.md). */
+.menu-movil:not([hidden]){display:flex;}
+.menu-movil{
+  position:fixed; inset:0; z-index:100;
+  align-items:stretch; justify-content:flex-end;
+  background:rgba(11,46,51,.4);
 }
-.nav.open{display:flex;}
-.nav a{
-  padding:15px 0; text-decoration:none; color:var(--ink);
-  font-size:15px; letter-spacing:.02em; border-bottom:1px solid var(--line-1);
+.menu-movil-caja{
+  width:min(360px, 86vw); height:100%; overflow-y:auto;
+  background:var(--foam); padding:22px 28px 40px;
+  display:flex; flex-direction:column;
 }
-.nav a:last-child{border-bottom:none;}
-.nav a[aria-current="page"], .footer-nav a[aria-current="page"]{color:var(--sea-dark); font-weight:600;}
+.menu-movil-cabecera{
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;
+}
+.menu-movil-marca{
+  font-family:'Playfair Display'; font-weight:700; font-size:15px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--deep);
+}
+.menu-movil-cerrar{
+  width:34px; height:34px; border:none; background:none; cursor:pointer;
+  font-size:26px; line-height:1; color:var(--deep); font-family:'Jost';
+}
+.menu-movil-nav{
+  display:flex; flex-direction:column; margin-top:24px;
+}
+.menu-movil-nav a{
+  padding:16px 0; border-bottom:1px solid var(--line-1);
+  font-family:'Playfair Display'; font-weight:700; font-size:19px; color:var(--deep);
+  text-decoration:none;
+  /* Aparecen escalonadas, no todas a la vez (ver .menu-movil-visible más abajo) */
+  opacity:0; transform:translateY(10px);
+}
+.menu-movil-nav a:last-child{border-bottom:none;}
+.menu-movil-social{
+  margin-top:auto; padding-top:24px; display:flex; flex-direction:column; gap:8px;
+  opacity:0; transform:translateY(10px);
+}
+.menu-movil-social-item{
+  font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft);
+}
+.menu-movil-social-item em{font-style:italic; text-transform:none; letter-spacing:0; opacity:.75;}
+
+@media (prefers-reduced-motion:no-preference){
+  .menu-movil-nav a, .menu-movil-social{transition:opacity .35s ease, transform .35s ease;}
+  /* El escalonado: cada enlace entra un pelín más tarde que el anterior. */
+  .menu-movil-nav a:nth-child(1){transition-delay:.05s;}
+  .menu-movil-nav a:nth-child(2){transition-delay:.1s;}
+  .menu-movil-nav a:nth-child(3){transition-delay:.15s;}
+  .menu-movil-nav a:nth-child(4){transition-delay:.2s;}
+  .menu-movil-nav a:nth-child(5){transition-delay:.25s;}
+  .menu-movil-social{transition-delay:.3s;}
+}
+.menu-movil-visible .menu-movil-nav a, .menu-movil-visible .menu-movil-social{
+  opacity:1; transform:translateY(0);
+}
+@media (prefers-reduced-motion:reduce){
+  .menu-movil-nav a, .menu-movil-social{opacity:1; transform:none;}
+}
 
 /* ---------- 1. HERO ---------- */
 /* ---------- 1. HERO ----------
@@ -1022,6 +1130,26 @@ section[id]{scroll-margin-top:var(--header-h);}
    note a simple vista que es un hueco pendiente, no la respuesta final. */
 .info-pendiente{color:var(--ink-soft); font-style:italic;}
 
+/* ---------- PÁGINA DE PREGUNTAS FRECUENTES ----------
+   Reutiliza el mismo acordeón (.info-item) que ya usa la ficha de
+   producto, agrupado aquí por categoría. */
+.faq-cabecera{padding:56px 24px 8px; text-align:center;}
+.faq-cabecera h2{
+  font-family:'Playfair Display'; font-weight:700; font-size:28px; color:var(--deep);
+  margin-top:8px;
+}
+.faq-categoria{padding:24px 24px 8px; max-width:640px; margin:0 auto;}
+.faq-categoria h3{
+  font-family:'Jost'; font-weight:600; font-size:11px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--sea-dark); margin-bottom:4px;
+}
+.faq-lista{border-top:1px solid var(--line-2);}
+.faq-lista-cuidados{
+  margin:6px 0 10px; padding-left:20px; font-size:13.5px; color:var(--ink); line-height:1.6;
+}
+.faq-categoria-final{padding-bottom:60px; text-align:center;}
+.faq-categoria-final .faq-lista{text-align:left;}
+
 /* ---------- 6. CTA ---------- */
 .final-cta{
   padding:50px 24px; background:var(--abyss); color:var(--foam); text-align:center;
@@ -1242,6 +1370,7 @@ footer{
   .logo-mark{width:36px; height:36px;}
   .logo-name{font-size:21px;}
   .nav-toggle{display:none;}
+  .menu-movil{display:none !important;}
   .nav{
     position:static; display:flex; flex-direction:row; gap:34px;
     background:none; border:none; padding:0; inset:auto;
@@ -1415,6 +1544,9 @@ footer{
 
   /* 7. FAQ */
   .faq{padding:90px 40px 60px; max-width:720px; margin:0 auto;}
+  .faq-cabecera{padding:90px 24px 8px;}
+  .faq-cabecera h2{font-size:36px;}
+  .faq-categoria{max-width:720px;}
 
   /* RESERVA */
   .reserva{padding:100px 40px;}
