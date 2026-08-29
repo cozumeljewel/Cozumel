@@ -452,7 +452,9 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
      grande. Si el archivo todavía no existe, la imagen falla en silencio
      y se ve el degradado marino de siempre — nunca un hueco roto. */
   background-size:cover, auto, auto;
-  background-position:center 28%, center, center;
+  /* La cara está casi pegada al borde superior de la foto: con "cover"
+     hay que anclar arriba del todo (0%), si no se recorta la cabeza. */
+  background-position:center top, center, center;
   background-repeat:no-repeat;
   animation:heroMediaFade 1.4s ease-out both;
 }
@@ -1443,6 +1445,36 @@ footer{
   .hero-copy{padding:0 70px 96px; max-width:760px;}
   .hero-copy h1{font-size:clamp(56px,6.2vw,92px);}
   .hero-sub{font-size:17px; max-width:42ch;}
+
+  /* Solo en escritorio: el hueco del hero es muy ancho y bajo comparado
+     con la foto (vertical), así que a "cover" solo cabría un 43% de su
+     alto — no entran cabeza y cuerpo a la vez, sea cual sea el
+     encuadre. Aquí se ve la foto ENTERA sin recortar (contain), con una
+     copia difuminada y ampliada de la misma detrás para rellenar los
+     bordes. En móvil, donde la proporción del hueco sí es parecida a la
+     de la foto, se queda "cover" tal cual (ver regla base). */
+  .hero-media{background-image:
+    radial-gradient(circle at 32% 22%, rgba(255,255,255,.5), transparent 55%),
+    linear-gradient(160deg, #C9E6E4 0%, var(--surf) 28%, var(--sea) 62%, var(--deep) 100%);
+  }
+  .hero-media::before{
+    content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+    background-image:url('img/hero-adriana.jpg');
+    background-size:cover; background-position:center 22%; background-repeat:no-repeat;
+    filter:blur(32px); transform:scale(1.15);
+  }
+  .hero-media::after{
+    background-image:
+      linear-gradient(to top,
+        rgba(11,46,51,.55) 0%,
+        rgba(11,46,51,.25) 30%,
+        rgba(11,46,51,.05) 55%,
+        rgba(11,46,51,.05) 100%),
+      url('img/hero-adriana.jpg');
+    background-size:auto, contain;
+    background-position:center, center top;
+    background-repeat:no-repeat;
+  }
 
   /* COZUMEL STORIES: mosaico editorial en vez de columna. Una foto grande
      y vertical a la izquierda, dos apaisadas apiladas a la derecha, y una
