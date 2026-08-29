@@ -67,7 +67,12 @@
 
       <nav class="nav" id="nav" aria-label="Principal">
         <a href="productos.html">Colección</a>
-        <a href="personalizar.html">Personaliza</a>
+        <div class="nav-dropdown">
+          <a href="personalizar.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="nav-personaliza-panel">Personaliza</a>
+          <div class="nav-dropdown-panel" id="nav-personaliza-panel">
+            <!-- script.js la rellena con las piezas que sí se personalizan -->
+          </div>
+        </div>
         <a href="historia.html">Nuestra historia</a>
         <a href="faq.html">FAQ</a>
       </nav>

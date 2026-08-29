@@ -1425,6 +1425,31 @@ footer{
     position:static; display:flex; flex-direction:row; gap:34px;
     background:none; border:none; padding:0; inset:auto;
   }
+
+  /* Desplegable de "Personaliza": las piezas que se pueden grabar, para
+     ir directo a una en vez de pasar primero por la colección. Solo
+     tiene sentido en escritorio (el menú móvil no lo usa). */
+  .nav-dropdown{position:relative;}
+  .nav-dropdown-panel{
+    position:absolute; top:100%; left:50%; z-index:60;
+    transform:translateX(-50%) translateY(4px);
+    min-width:230px; margin-top:16px; padding:8px 0;
+    background:var(--foam); border:1px solid var(--line-2); border-radius:2px;
+    box-shadow:0 14px 30px rgba(11,46,51,.16);
+    opacity:0; visibility:hidden; pointer-events:none;
+  }
+  .nav-dropdown:hover .nav-dropdown-panel,
+  .nav-dropdown:focus-within .nav-dropdown-panel{
+    opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .nav-dropdown-panel{transition:opacity .18s ease, transform .18s ease, visibility .18s;}
+  }
+  .nav .nav-dropdown-panel a{
+    display:block; padding:9px 18px; font-size:12.5px; letter-spacing:.02em;
+    text-transform:none; color:var(--ink); white-space:nowrap;
+  }
+  .nav .nav-dropdown-panel a:hover{color:var(--sea-dark); background:var(--shallow);}
   .nav a{
     padding:0; border:none; font-size:13px; letter-spacing:.12em;
     text-transform:uppercase; color:var(--ink-soft);

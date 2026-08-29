@@ -213,6 +213,40 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
 }
 
 /* =========================================================
+   DESPLEGABLE "PERSONALIZA" DEL MENÚ (todas las páginas, escritorio)
+   Enlaces a las piezas que sí se personalizan, directo desde el menú
+   de arriba, sin pasar primero por la colección.
+   ========================================================= */
+(function () {
+  const panel = document.getElementById('nav-personaliza-panel');
+  const dropdown = panel ? panel.closest('.nav-dropdown') : null;
+  const trigger = dropdown ? dropdown.querySelector('.nav-dropdown-trigger') : null;
+  if (!panel || typeof PRODUCTOS === 'undefined') return;
+
+  PRODUCTOS
+    .filter(prod => prod.campos.length > 0)
+    .forEach(prod => {
+      const a = document.createElement('a');
+      a.href = 'personalizar.html?p=' + encodeURIComponent(prod.slug);
+      a.textContent = prod.nombre;
+      panel.appendChild(a);
+    });
+
+  // Puro CSS ya muestra/oculta el panel (:hover / :focus-within); esto
+  // solo mantiene aria-expanded correcto para quien usa lector de pantalla.
+  if (dropdown && trigger) {
+    const marcar = (abierto) => trigger.setAttribute('aria-expanded', String(abierto));
+    dropdown.addEventListener('mouseenter', () => marcar(true));
+    dropdown.addEventListener('mouseleave', () => marcar(false));
+    dropdown.addEventListener('focusin', () => marcar(true));
+    dropdown.addEventListener('focusout', (e) => {
+      if (!dropdown.contains(e.relatedTarget)) marcar(false);
+    });
+  }
+})();
+
+
+/* =========================================================
    HAZLA TUYA (index.html) — DEMO VISUAL
 
    Ojo: esto NO está conectado a Supabase ni al flujo real de compra.
