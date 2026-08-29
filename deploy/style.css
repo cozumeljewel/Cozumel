@@ -59,10 +59,10 @@ body{
    El contenido de la sección va en z-index:1 para quedar por encima. */
 /* Solo la seccion principal de cada pagina lleva marca de agua: si tambien
    la lleva el pie, en paginas cortas (como el inicio) se ven dos emblemas. */
-.hero-copy, .coleccion, .personalize, .historia, .reserva, .contacto{
+.coleccion, .personalize, .historia, .reserva, .contacto{
   position:relative; isolation:isolate;
 }
-.hero-copy::before, .coleccion::before, .personalize::before,
+.coleccion::before, .personalize::before,
 .historia::before, .reserva::before, .contacto::before{
   content:"";
   position:absolute; inset:0; z-index:-1; pointer-events:none;
@@ -273,52 +273,81 @@ section[id]{scroll-margin-top:var(--header-h);}
 .nav a[aria-current="page"], .footer-nav a[aria-current="page"]{color:var(--sea-dark); font-weight:600;}
 
 /* ---------- 1. HERO ---------- */
-.hero{position:relative;}
-/* La foto va como background-image con el degradado DEBAJO: si el archivo
-   todavía no existe, la imagen falla en silencio y se sigue viendo el
-   degradado — nunca un hueco roto. */
-/* La foto va como background-image con el degradado DEBAJO: si el archivo
-   todavía no existe, la imagen falla en silencio y se sigue viendo el
-   degradado — nunca un hueco roto. */
+/* ---------- 1. HERO ----------
+   Rediseño a pantalla casi completa (2026-08-29): la foto pasa a ser el
+   fondo a sangre completa (cover), con un velo oscuro para que el texto en
+   blanco/dorado se lea encima, y el titular/CTA flotan sobre ella. Antes el
+   hero era una caja con la foto "contain" (entera, sin recortar) seguida de
+   un bloque de texto sobre fondo claro debajo: ese patrón sigue vivo en
+   otras piezas del sitio (galería de producto), aquí se sustituye a
+   propósito por uno editorial de marca premium. */
+.hero{
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  min-height:88vh;
+}
 .hero-media{
-  height:80vw; max-height:400px; position:relative;
+  position:absolute; inset:0; z-index:0;
   background-image:
     url('img/hero-adriana.jpg'),
     radial-gradient(circle at 32% 22%, rgba(255,255,255,.5), transparent 55%),
     linear-gradient(160deg, #C9E6E4 0%, var(--surf) 28%, var(--sea) 62%, var(--deep) 100%);
-  /* "contain" en vez de "cover": la foto se ve ENTERA, sin recortar por
-     ningún lado. El degradado de debajo rellena lo que sobra. */
-  background-size:contain, auto, auto;
-  background-position:center center, center, center;
+  /* "cover" a propósito: la foto llena el hero de borde a borde, en
+     grande. Si el archivo todavía no existe, la imagen falla en silencio
+     y se ve el degradado marino de siempre — nunca un hueco roto. */
+  background-size:cover, auto, auto;
+  background-position:center 28%, center, center;
   background-repeat:no-repeat;
+  animation:heroMediaFade 1.4s ease-out both;
 }
-/* Marco azul claro difuminado sobre la foto: se funde hacia dentro por
-   los cuatro lados, sin recortar la imagen. */
+/* Velo oscuro: más denso abajo (donde vive el texto), casi transparente
+   arriba (para que la foto respire). */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
-  background:
-    linear-gradient(to right,  rgba(242,248,248,.85) 0%, rgba(242,248,248,.2) 2%, transparent 5%),
-    linear-gradient(to left,   rgba(242,248,248,.85) 0%, rgba(242,248,248,.2) 2%, transparent 5%),
-    linear-gradient(to bottom, rgba(242,248,248,.85) 0%, rgba(242,248,248,.2) 1.5%, transparent 4%),
-    linear-gradient(to top,    rgba(242,248,248,.85) 0%, rgba(242,248,248,.2) 1.5%, transparent 4%);
+  background:linear-gradient(to top,
+    rgba(11,46,51,.80) 0%,
+    rgba(11,46,51,.45) 32%,
+    rgba(11,46,51,.12) 60%,
+    rgba(11,46,51,.05) 100%);
 }
-.hero-copy{padding:30px 24px 34px; background:var(--foam); text-align:center;}
+.hero-copy{
+  position:relative; z-index:2;
+  padding:0 24px 64px; text-align:center;
+}
 .hero-copy h1{
-  font-family:'Playfair Display'; font-weight:900; font-size:clamp(34px,10vw,42px);
-  line-height:1.06; color:var(--deep);
+  font-family:'Playfair Display'; font-weight:900; font-size:clamp(38px,11vw,52px);
+  line-height:1.05; color:var(--foam);
+  animation:heroRise .9s ease-out .35s both;
 }
 .hero-copy h1 em{
-  font-style:italic; font-weight:500; color:var(--sea-dark);
+  font-style:italic; font-weight:500; color:var(--gold);
 }
 .hero-sub{
-  margin:16px auto 0; max-width:34ch; font-size:15px; color:var(--ink);
+  margin:18px auto 0; max-width:32ch; font-size:15px; color:rgba(242,248,248,.88);
+  animation:heroRise .9s ease-out .58s both;
 }
-.hero-copy .btn{margin-top:22px;}
+.hero-copy .btn{margin-top:26px;}
+.hero-cta{
+  animation:heroRise .9s ease-out .8s both;
+  background:transparent; color:var(--foam); border-color:rgba(242,248,248,.7);
+  transition:background .25s, color .25s, border-color .25s;
+}
+.hero-cta:hover{background:var(--foam); color:var(--deep); border-color:var(--foam);}
 /* Línea puente entre el hero y el resto: mismo registro editorial que el
    titular en cursiva, pero más pequeña para no competir con él. */
 .hero-puente{
-  margin:20px auto 0; font-family:'Playfair Display'; font-style:italic;
-  font-size:15.5px; color:var(--sea-dark); max-width:32ch;
+  margin:22px auto 0; font-family:'Playfair Display'; font-style:italic;
+  font-size:14.5px; color:rgba(242,248,248,.75); max-width:32ch;
+  animation:heroRise .9s ease-out 1.02s both;
+}
+@keyframes heroMediaFade{ from{opacity:0;} to{opacity:1;} }
+@keyframes heroRise{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
+/* Sin animación de entrada para quien pide menos movimiento: todo aparece
+   ya en su sitio, de golpe. */
+@media (prefers-reduced-motion:reduce){
+  .hero-media, .hero-copy h1, .hero-sub, .hero-cta, .hero-puente{
+    animation:none; opacity:1; transform:none;
+  }
 }
 
 /* ---------- 2. PERSONALIZACIÓN ---------- */
@@ -990,19 +1019,17 @@ footer{
   /* Aire entre la barra superior y el contenido, en TODAS las páginas.
      El contenido principal se centra en el alto de la pantalla en vez de
      quedar pegado al menú. */
-  .hero, .coleccion, .personalize, .historia, .reserva, .contacto{
+  .coleccion, .personalize, .historia, .reserva, .contacto{
     margin-top:56px;
   }
-  .hero{min-height:calc(100vh - var(--header-h) - 112px);}
 
-  /* 1. HERO */
-  .hero{display:grid; grid-template-columns:1fr 1fr; align-items:center;}
-  .hero-media{height:100%; min-height:520px; max-height:none;}
-  .hero-copy{
-    text-align:center; display:flex; flex-direction:column; justify-content:center;
-    padding:0 70px; align-items:center;
-  }
-  .hero-copy h1{font-size:clamp(42px,4.4vw,64px);}
+  /* 1. HERO: a pantalla casi completa también en escritorio, mismo
+     hero de fondo a sangre completa que en móvil, solo cambia el tamaño
+     del texto y el aire lateral. */
+  .hero{margin-top:56px; min-height:92vh;}
+  .hero-copy{padding:0 70px 96px; max-width:760px;}
+  .hero-copy h1{font-size:clamp(56px,6.2vw,92px);}
+  .hero-sub{font-size:17px; max-width:42ch;}
 
   /* PÁGINA DE PRODUCTO */
   .producto-cabecera{padding:70px 90px 10px;}
