@@ -806,18 +806,17 @@ section[id]{scroll-margin-top:var(--header-h);}
 .summary-message{
   margin-top:4px; font-family:'Playfair Display'; font-style:italic; font-size:13px; color:var(--ink-soft);
 }
-.price-placeholder{
-  margin:22px auto 0; max-width:220px; padding:16px; border:1px dashed var(--gold);
-  border-radius:2px; background:var(--white);
-}
+/* Sin caja ni borde: el precio se sostiene solo con tipografía, como en
+   una joyería de verdad, no un recuadro de "aquí falta un dato". */
+.price-placeholder{margin:22px auto 0; text-align:center;}
 .price-placeholder span{
   display:block; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft);
 }
 .price-placeholder strong{
-  display:block; margin-top:6px; font-family:'Playfair Display'; font-size:24px; color:var(--deep);
+  display:block; margin-top:6px; font-family:'Playfair Display'; font-weight:700; font-size:28px; color:var(--deep);
 }
 .price-placeholder em{
-  display:block; margin-top:4px; font-style:normal; font-size:11px; color:var(--ink-soft);
+  display:block; margin-top:4px; font-style:italic; font-size:12px; color:var(--ink-soft);
 }
 
 /* =========================================================
@@ -1279,13 +1278,11 @@ footer{
   }
   .producto-col-galeria{position:sticky; top:calc(var(--header-h) + 28px);}
 
-  .producto-cabecera{padding:0 0 6px; text-align:left;}
+  .producto-cabecera{padding:0 0 6px; text-align:center;}
   .producto-cabecera h2{font-size:36px;}
-  .producto-cabecera .edicion-badge, .producto-cabecera .eyebrow{text-align:left; margin-left:0;}
-  .price-placeholder{margin:18px 0 0;}
+  .price-placeholder{margin:18px auto 0;}
 
-  .producto-detalle{padding:0; margin-top:26px; text-align:left;}
-  .producto-desc{margin-left:0;}
+  .producto-detalle{padding:0; margin-top:26px; text-align:center;}
   .cambiar-pieza{margin-top:20px;}
 
   .galeria-pista{padding:0; gap:16px;}
@@ -1293,25 +1290,33 @@ footer{
   /* Las miniaturas dejan de ser puntos y pasan a ser una fila de fotos
      pequeñas de verdad: cada botón ya lleva su propia foto de fondo
      (puesta en script.js), aquí solo se les da tamaño y forma. */
-  .galeria-puntos{justify-content:flex-start; gap:10px; margin-top:12px;}
+  .galeria-puntos{justify-content:center; gap:10px; margin-top:12px;}
   .galeria-punto{
     width:56px; height:56px; border-radius:2px; opacity:.55;
     border:1px solid transparent;
   }
   .galeria-punto.activo{opacity:1; transform:none; border-color:var(--gold);}
 
-  .grabado-banda{padding:32px 0; text-align:left; border-top:1px solid var(--line-2); border-image:none;}
-  .grabado-banda h3{font-size:22px; text-align:left;}
-  .grabado-banda .eyebrow{text-align:left;}
-  .grabado-banda .fields{max-width:none; margin-left:0;}
+  /* Separadores muy suaves entre bloques: una línea casi invisible en vez
+     de los filetes de color fuerte que llevan estas secciones en el
+     resto del sitio (pensados para bandas a todo lo ancho, no para una
+     columna estrecha, donde se ven pesados). */
+  .grabado-banda{
+    padding:32px 0; text-align:center; background:none;
+    border-top:1px solid rgba(20,69,74,.08); border-image:none;
+  }
+  .grabado-banda .fields{max-width:460px; margin:0 auto;}
 
-  .producto-info-adicional{padding:8px 0;}
+  .producto-info-adicional{padding:8px 0; background:none; border-top:1px solid rgba(20,69,74,.08);}
 
   .final-cta{
-    margin-top:8px; padding:32px 28px; border-radius:3px; border-top:none;
-    text-align:left;
+    margin-top:8px; padding:32px 0 0; border-radius:0; border-top:1px solid rgba(20,69,74,.08);
+    background:none; color:inherit; text-align:center;
   }
-  .final-cta h2{text-align:left;}
+  .final-cta h2{
+    text-align:center; color:var(--deep); font-style:normal; font-weight:700; font-size:20px;
+  }
+  .final-cta .btn-primary{background:var(--deep); color:var(--foam); border-color:var(--gold-deep);}
   .final-cta .btn{width:100%;}
 
   /* 2. PERSONALIZACIÓN */
