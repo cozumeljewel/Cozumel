@@ -715,16 +715,53 @@ document.querySelectorAll('.nav a, .footer-nav a').forEach(a => {
 /* ---------- CTA "Quiero el mío" → reservar.html ----------
    Es una navegación entre páginas: si no esperamos, el navegador puede
    cancelar el insert a medio camino. Interceptamos, lanzamos el tracking
-   y navegamos al terminar (o a los 500ms como máximo, para no bloquear). */
+   y navegamos al terminar (o a los 500ms como máximo, para no bloquear).
+
+   Los estados (cargando/éxito/error) son solo visuales, encima de esta
+   misma lógica: no cambian qué se compra ni cuándo se navega. El
+   tracking sigue siendo "best effort" (si falla, se compra igual, ver
+   el .finally de más abajo); el estado de error es para el caso aparte
+   de que la propia navegación no se pueda completar. */
 const ctaReservar = document.getElementById('cta-reservar');
 if (ctaReservar) {
+  const ctaTexto = ctaReservar.querySelector('.cta-texto');
+  const ponerTexto = (t) => { if (ctaTexto) ctaTexto.textContent = t; };
+
   ctaReservar.addEventListener('click', (e) => {
+    // Ya está en marcha (o ya terminó con éxito): ignora los clicks de
+    // más, no se manda el tracking ni se navega dos veces.
+    if (ctaReservar.classList.contains('is-loading') || ctaReservar.classList.contains('is-success')) {
+      e.preventDefault();
+      return;
+    }
+
     const prodId = (getProductoElegido() || {}).id || 'sin_producto';
     if (!sb || sessionStorage.getItem('ri:' + prodId) === '1') return;
     e.preventDefault();
+
+    ctaReservar.classList.remove('is-error');
+    ctaReservar.classList.add('is-loading');
+    ponerTexto('Preparando tu pedido…');
+
     const dest = ctaReservar.href;
     let navegado = false;
-    const ir = () => { if (!navegado) { navegado = true; window.location.href = dest; } };
+    const ir = () => {
+      if (navegado) return;
+      try {
+        if (!dest) throw new Error('cta-reservar sin destino');
+        navegado = true;
+        ctaReservar.classList.remove('is-loading');
+        ctaReservar.classList.add('is-success');
+        ponerTexto('Listo');
+        // Deja ver el estado de éxito un instante antes de irse de verdad.
+        setTimeout(() => { window.location.href = dest; }, 180);
+      } catch (err) {
+        console.error(err);
+        ctaReservar.classList.remove('is-loading');
+        ctaReservar.classList.add('is-error');
+        ponerTexto('No se pudo continuar, pulsa de nuevo');
+      }
+    };
     trackReservaIniciada().finally(ir);
     setTimeout(ir, 500);
   });

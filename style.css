@@ -1030,8 +1030,29 @@ section[id]{scroll-margin-top:var(--header-h);}
 }
 /* Microinteracción al pulsar: un pequeño "hundido" elegante, nada de
    rebotes. Solo con movimiento activado (ver la guardia de abajo). */
-#cta-reservar{transition:transform .15s ease, box-shadow .15s ease;}
+#cta-reservar{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  transition:transform .15s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+}
 #cta-reservar:active{transform:scale(.97);}
+
+/* Estados del botón: normal (arriba) → cargando → éxito, o error si algo
+   falla de verdad (no la navegación en sí: esa siempre sigue adelante,
+   ver script.js; el error es solo si ni eso se puede completar). Solo
+   visual: no toca qué producto se compra ni cómo. */
+.cta-spinner{
+  display:none; width:16px; height:16px; flex:none;
+  border:2px solid rgba(43,36,16,.3); border-top-color:#2B2410; border-radius:50%;
+}
+#cta-reservar.is-loading{cursor:progress;}
+#cta-reservar.is-loading .cta-spinner{display:inline-block;}
+@media (prefers-reduced-motion:no-preference){
+  .cta-spinner{animation:girar .7s linear infinite;}
+}
+#cta-reservar.is-success{background:var(--sea-dark); border-color:var(--sea-dark); color:var(--foam);}
+#cta-reservar.is-success .cta-texto::before{content:"✓ ";}
+#cta-reservar.is-error{background:#8A4038; border-color:#8A4038; color:var(--foam); cursor:pointer;}
+
 @media (prefers-reduced-motion:reduce){
   #cta-reservar{transition:none;}
   #cta-reservar:active{transform:none;}
