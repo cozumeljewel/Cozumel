@@ -483,13 +483,11 @@ section[id]{scroll-margin-top:var(--header-h);}
 .producto-foto{
   position:absolute; inset:0;
   background-repeat:no-repeat; background-position:center; background-size:contain;
-  transition:opacity .5s ease, transform .6s ease;
+  transition:opacity .5s ease;
 }
-/* Zoom muy sutil al pasar el ratón, solo sobre la foto (el texto de
-   encima se queda quieto y legible). */
-.producto-card:hover .producto-foto{transform:scale(1.035);}
 /* Segunda foto: solo existe en el DOM si el producto tiene más de una
-   (lo decide script.js), así que nunca hay una transición vacía. */
+   (lo decide script.js), así que nunca hay una transición vacía. El
+   cruce es solo de opacidad, se mantiene igual con o sin reduced-motion. */
 .producto-foto-2{opacity:0;}
 .producto-card:hover .producto-foto-2{opacity:1;}
 /* "Ver producto" aparece encima de la imagen solo al pasar el ratón, con
@@ -518,6 +516,21 @@ section[id]{scroll-margin-top:var(--header-h);}
   transition:color .2s;
 }
 .producto-card:hover .producto-cta{color:var(--negro-suave);}
+
+/* Microinteracciones de hover que implican movimiento (zoom de la foto,
+   el nombre subiendo un poco, el CTA desplazándose): solo para quien no
+   ha pedido menos movimiento. Los cambios de opacidad y color de arriba
+   se quedan siempre, con o sin esta preferencia. */
+@media (prefers-reduced-motion:no-preference){
+  .producto-foto{transition:opacity .5s ease, transform .6s ease;}
+  .producto-card:hover .producto-foto{transform:scale(1.035);}
+
+  .producto-body h3{transition:transform .3s ease;}
+  .producto-card:hover .producto-body h3{transform:translateY(-3px);}
+
+  .producto-cta{transition:color .2s, transform .25s ease;}
+  .producto-card:hover .producto-cta{transform:translateX(4px);}
+}
 
 /* Aparición progresiva al entrar en el viewport (script.js añade
    "reveal-visto" con IntersectionObserver). Sutil a propósito: opacidad,
