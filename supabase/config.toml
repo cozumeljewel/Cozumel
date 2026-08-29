@@ -1,0 +1,22 @@
+# Configuración de las Edge Functions.
+#
+# Por defecto Supabase exige un token de sesión (JWT) para llamar a una
+# función. Eso está bien para crear-sesion-pago, que la llama el navegador
+# con la sesión del cliente ya iniciada.
+#
+# Pero webhook-stripe la llama STRIPE, no un navegador, y Stripe no manda
+# ninguna cabecera Authorization: con la verificación activada, Supabase
+# rechazaba todos los avisos con 401 antes de que el código llegara a
+# ejecutarse. Resultado: el cobro se hacía en Stripe pero el pedido nunca
+# pasaba a "pagado" ni se enviaban los emails.
+#
+# Desactivarla aquí NO deja la función abierta: lo primero que hace es
+# verificar la firma criptográfica de Stripe (constructEventAsync) y
+# rechazar cualquier petición que no venga firmada con el secreto del
+# webhook. Esa es la comprobación correcta para un webhook.
+#
+# Este archivo existe para que la configuración sea permanente: si se
+# dependiera solo del flag --no-verify-jwt al desplegar, un despliegue
+# futuro sin ese flag volvería a romper los pagos en silencio.
+[functions.webhook-stripe]
+verify_jwt = false
