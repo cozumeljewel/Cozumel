@@ -350,6 +350,58 @@ section[id]{scroll-margin-top:var(--header-h);}
   }
 }
 
+/* ---------- COZUMEL STORIES ----------
+   Galería editorial (no rejilla tipo Instagram): tamaños distintos por
+   tarjeta, en vez de cuadrados uniformes. Todo son placeholders por
+   ahora (ver comentario en index.html), reutilizando el mismo patrón de
+   "imagen pendiente" que ya usan las fichas de producto. */
+.stories{padding:64px 24px 56px; background:var(--white); text-align:center;}
+.stories h2{
+  font-family:'Playfair Display'; font-weight:700; font-size:27px; color:var(--deep);
+  margin-top:8px; line-height:1.2; max-width:20ch; margin-left:auto; margin-right:auto;
+}
+.stories-intro{
+  margin:14px auto 0; max-width:38ch; font-size:14.5px; color:var(--ink-soft);
+}
+.stories-galeria{
+  margin-top:40px; display:grid; grid-template-columns:1fr; gap:18px;
+}
+/* El marco (recortado, tamaño fijo) y la capa de la foto (la que hace
+   zoom) van separados, igual que en las tarjetas de producto: si se
+   escalase el marco entero, el hover agrandaría también el recorte y no
+   se vería ningún zoom real. */
+.stories-foto{position:relative; overflow:hidden; border-radius:2px;}
+.stories-foto-capa{
+  position:absolute; inset:0;
+  background:linear-gradient(150deg, var(--surf) 0%, var(--sea) 55%, var(--deep) 100%);
+  background-repeat:no-repeat; background-position:center; background-size:cover;
+}
+.stories-foto-capa .ph-tag{top:14px; left:14px;}
+.stories-foto-nota{
+  position:absolute; left:14px; bottom:14px; right:14px; z-index:1; pointer-events:none;
+  font-family:'Playfair Display'; font-style:italic; font-size:12.5px;
+  color:rgba(242,248,248,.85); text-align:left;
+}
+/* Foto real (cuando la haya): en vez del degradado, pon
+   "background-image" en style="" del div .stories-foto-capa
+   correspondiente (igual que hace script.js con las de producto) — no
+   hace falta tocar nada más de este bloque. Este velo solo aparece con
+   foto real, para que la nota de abajo se siga leyendo bien. */
+.stories-foto.con-foto .stories-foto-capa::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(11,46,51,.55) 0%, transparent 40%);
+}
+/* Alterna proporciones incluso apiladas en móvil, para que no se lea
+   como una cuadrícula de Instagram ni en una sola columna. */
+.stories-foto{aspect-ratio:4/5;}
+.stories-foto:nth-child(2), .stories-foto:nth-child(3){aspect-ratio:16/10;}
+.stories-cta{margin-top:40px;}
+
+@media (prefers-reduced-motion:no-preference){
+  .stories-foto-capa{transition:transform .6s ease;}
+  .stories-foto:hover .stories-foto-capa{transform:scale(1.03);}
+}
+
 /* ---------- 2. PERSONALIZACIÓN ---------- */
 .personalize{padding:52px 24px 46px; background:var(--white); text-align:center;}
 .personalize h2{
@@ -1100,6 +1152,27 @@ footer{
   .hero-copy{padding:0 70px 96px; max-width:760px;}
   .hero-copy h1{font-size:clamp(56px,6.2vw,92px);}
   .hero-sub{font-size:17px; max-width:42ch;}
+
+  /* COZUMEL STORIES: mosaico editorial en vez de columna. Una foto grande
+     y vertical a la izquierda, dos apaisadas apiladas a la derecha, y una
+     fila de tres abajo. Pensado para exactamente 6 tarjetas. */
+  .stories{padding:90px 90px 100px;}
+  .stories h2{font-size:34px;}
+  .stories-intro{font-size:15.5px;}
+  .stories-galeria{
+    grid-template-columns:repeat(12, 1fr);
+    grid-template-areas:
+      "a a a a a a a b b b b b"
+      "a a a a a a a c c c c c"
+      "d d d d e e e e f f f f";
+    gap:24px; margin-top:56px;
+  }
+  .stories-foto:nth-child(1){grid-area:a; aspect-ratio:4/5;}
+  .stories-foto:nth-child(2){grid-area:b; aspect-ratio:16/9;}
+  .stories-foto:nth-child(3){grid-area:c; aspect-ratio:16/9;}
+  .stories-foto:nth-child(4){grid-area:d; aspect-ratio:1/1;}
+  .stories-foto:nth-child(5){grid-area:e; aspect-ratio:1/1;}
+  .stories-foto:nth-child(6){grid-area:f; aspect-ratio:1/1;}
 
   /* PÁGINA DE PRODUCTO */
   .producto-cabecera{padding:70px 90px 10px;}
