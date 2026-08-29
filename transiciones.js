@@ -9,6 +9,29 @@
    brevísimo (.09s) y navega. Nada de esto retrasa la navegación más de
    lo que dura el propio fundido, y respeta el atrás/adelante (el
    navegador restaura la página tal cual, no se queda "pillada"). */
+/* ---------- Empezar arriba al entrar en una página ----------
+   El navegador guarda dónde te habías quedado en cada página y restaura
+   esa posición al volver a entrar. Para "atrás" y "adelante" eso está
+   bien y es lo que se espera, pero al abrir una pieza desde la colección
+   te dejaba a media página, teniendo que subir a mano para ver el
+   principio (reportado en móvil).
+   Solo se fuerza el inicio cuando es una navegación NUEVA: si vienes de
+   atrás/adelante se respeta la posición guardada, como debe ser. */
+(function () {
+  if (!('scrollRestoration' in history)) return;
+
+  var entrada = performance.getEntriesByType
+    ? performance.getEntriesByType('navigation')[0]
+    : null;
+  var esNavegacionNueva = !entrada || entrada.type === 'navigate';
+  if (!esNavegacionNueva) return;
+  // Un enlace con ancla (#seccion) sí debe saltar a su sitio.
+  if (location.hash) return;
+
+  history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+})();
+
 (function () {
   var PREFIERE_MENOS_MOVIMIENTO =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

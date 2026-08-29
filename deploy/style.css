@@ -93,6 +93,15 @@
 }
 
 *{box-sizing:border-box; margin:0; padding:0;}
+
+/* El atributo "hidden" tiene que ganar SIEMPRE.
+   El navegador lo aplica con display:none, pero cualquier regla nuestra
+   que ponga display (block, flex...) lo anula sin avisar. Pasó de verdad:
+   la nota "pendiente de confirmar" del precio seguía viéndose junto al
+   precio ya puesto, porque .price-placeholder em tenía display:block y
+   ganaba al hidden que le ponía el JavaScript. Con esta regla, ocultar
+   algo con "hidden" funciona en todo el sitio sin excepciones. */
+[hidden]{display:none !important;}
 html{scroll-behavior:smooth;}
 
 /* ---------- TRANSICIÓN SUAVE ENTRE PÁGINAS ----------
@@ -302,19 +311,27 @@ section[id]{scroll-margin-top:var(--header-h);}
    ".visible" según el scroll. Abajo a la izquierda (la burbuja de
    contacto y el CTA sticky viven a la derecha / a todo lo ancho, así
    nunca se pisan). */
+/* Mismas medidas y misma altura que la burbuja de contacto del FAQ: en
+   esa página se ven las dos a la vez (una en cada esquina) y tienen que
+   leerse como pareja, no como dos botones sueltos de distinto tamaño. */
 .volver-arriba{
   position:fixed; z-index:80;
-  left:calc(16px + env(safe-area-inset-left));
-  bottom:calc(90px + env(safe-area-inset-bottom));
-  width:44px; height:44px; border-radius:50%; border:none; cursor:pointer;
+  left:calc(20px + env(safe-area-inset-left));
+  bottom:calc(20px + env(safe-area-inset-bottom));
+  width:52px; height:52px; border-radius:50%; border:none; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
   background:var(--deep); color:var(--foam);
-  box-shadow:0 6px 18px rgba(11,46,51,.25);
+  box-shadow:0 6px 18px rgba(11,46,51,.3);
   opacity:0; transform:translateY(8px); pointer-events:none;
   transition:opacity .25s ease, transform .25s ease;
 }
+/* Única excepción: en la ficha de producto la barra de compra ocupa todo
+   el ancho abajo, así que aquí sube para no quedar debajo de ella. */
+body[data-page="personalizar"] .volver-arriba{
+  bottom:calc(84px + env(safe-area-inset-bottom));
+}
 .volver-arriba.visible{opacity:1; transform:translateY(0); pointer-events:auto;}
-.volver-arriba svg{width:20px; height:20px;}
+.volver-arriba svg{width:24px; height:24px;}
 .volver-arriba:active{transform:scale(.92);}
 @media (prefers-reduced-motion:reduce){
   .volver-arriba{transition:none;}
