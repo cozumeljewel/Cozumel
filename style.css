@@ -42,6 +42,30 @@
 
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
+
+/* ---------- TRANSICIÓN SUAVE ENTRE PÁGINAS ----------
+   View Transitions API nativa del navegador, entre documentos: la
+   propia página se encarga de capturar cómo se veía antes de navegar y
+   cómo se ve la nueva, y hace un fundido entre las dos. Sin JavaScript,
+   sin librería, sin tocar la navegación de cada enlace uno a uno.
+   Funciona igual con atrás/adelante (el navegador ya lo gestiona), y en
+   los navegadores que todavía no la soportan (Firefox, Safari) esta
+   regla no hace nada: la navegación sigue siendo la de siempre, sin
+   ningún error ni comportamiento raro. */
+@view-transition{
+  navigation:auto;
+}
+/* Fundido rápido, no el cross-fade por defecto (algo más lento): que se
+   note pero sin retrasar nada. */
+::view-transition-old(root), ::view-transition-new(root){
+  animation-duration:.16s;
+  animation-timing-function:ease-out;
+}
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*){
+    animation:none !important;
+  }
+}
 body{
   background:var(--foam);
   color:var(--ink);
