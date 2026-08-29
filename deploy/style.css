@@ -38,11 +38,6 @@
   --line-3:#A8D5D2;      /* marcada */
 
   --header-h:62px;
-
-  /* Marfil/negro cálidos: nacieron para la colección editorial, ahora
-     también los usa cualquier sitio que reutilice .producto-card fuera
-     de .coleccion (ej. "Hazla tuya" en inicio). */
-  --marfil:#FAF7F1; --marfil-hondo:#F3EEE4; --negro-suave:#211F1C; --negro-tenue:#5B564C;
 }
 
 *{box-sizing:border-box; margin:0; padding:0;}
@@ -604,14 +599,6 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
    que un grabado real, para que quede claro que es solo un ejemplo. */
 .personaliza-demo-texto--ejemplo{opacity:.55;}
 
-/* Tarjetas de piezas personalizables: mismas .producto-card que la
-   colección, solo con más aire por encima al vivir en otra sección. */
-.personaliza-demo-subtitulo{
-  margin-top:56px; font-family:'Playfair Display'; font-style:italic;
-  font-size:16px; color:var(--sea-dark);
-}
-.personaliza-demo-grid{margin-top:28px;}
-
 @media (prefers-reduced-motion:no-preference){
   @keyframes graboAparece{ from{opacity:.35; transform:translateY(3px);} to{opacity:1; transform:translateY(0);} }
   .personaliza-demo-texto.anim{animation:graboAparece .22s ease-out;}
@@ -708,6 +695,7 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
    protagonista. Variables locales para no filtrar estos tonos a
    ninguna otra sección. */
 .coleccion{
+  --marfil:#FAF7F1; --marfil-hondo:#F3EEE4; --negro-suave:#211F1C; --negro-tenue:#5B564C;
   padding:56px 24px 60px; background:var(--marfil); text-align:center;
 }
 .coleccion h2{

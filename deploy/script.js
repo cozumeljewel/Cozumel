@@ -213,18 +213,6 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
 }
 
 /* =========================================================
-   PÁGINA: INICIO — tarjetas de "Hazla tuya"
-   Mismas tarjetas que la colección (crearTarjetaProducto, definida más
-   arriba), solo que filtradas a las piezas que de verdad se personalizan.
-   ========================================================= */
-const gridPersonaliza = document.getElementById('personaliza-demo-grid');
-if (gridPersonaliza && typeof PRODUCTOS !== 'undefined') {
-  PRODUCTOS
-    .filter(prod => prod.campos.length > 0)
-    .forEach(prod => gridPersonaliza.appendChild(crearTarjetaProducto(prod)));
-}
-
-/* =========================================================
    HAZLA TUYA (index.html) — DEMO VISUAL
 
    Ojo: esto NO está conectado a Supabase ni al flujo real de compra.
