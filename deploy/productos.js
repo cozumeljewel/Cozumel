@@ -28,6 +28,15 @@
                      con el aviso "imagen pendiente".
 
    forma admitida: 'cadena', 'circulos', 'placa', 'brazalete', 'flor'
+
+   ⚠️ ESTOS NO SON LOS PRECIOS REALES ⚠️
+   Todas las piezas están a 1 € a propósito, para poder probar el flujo de
+   compra completo con el modo de prueba de Stripe (tarjeta de prueba
+   4242 4242 4242 4242, dinero falso). Es un valor obviamente falso para
+   que nadie lo confunda con un precio definitivo.
+   ANTES DE LANZAR hay que: (1) poner los precios reales aquí Y en
+   supabase/functions/_shared/precios.ts, que es la copia que usa Stripe
+   para cobrar, y (2) cambiar los secretos de Supabase a las claves live.
    ========================================================= */
 
 const PRODUCTOS = [
@@ -46,7 +55,7 @@ const PRODUCTOS = [
       'Grabado a mano, personalizable con nombre, fecha o mensaje corto',
     ],
     cierre: 'Para que lleve puesto un pedacito de ti',
-    precio: 1, // TEMPORAL: precio orientativo de prueba (1€), pendiente de precio real
+    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
@@ -66,7 +75,7 @@ const PRODUCTOS = [
       'Dos círculos entrelazados como símbolo de unión',
     ],
     cierre: 'Lo que no se dice, pero se lleva puesto',
-    precio: null,
+    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
     forma: 'circulos',
     campos: [],
     destacado: false,
@@ -86,7 +95,7 @@ const PRODUCTOS = [
       'Grabado a mano: frase, fecha o coordenadas',
     ],
     cierre: 'Un sitio que solo ustedes dos saben leer',
-    precio: null,
+    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
     forma: 'placa',
     campos: ['grabado'],
     destacado: true,
@@ -106,7 +115,7 @@ const PRODUCTOS = [
       'Grabado a mano: frase, fecha o coordenadas',
     ],
     cierre: 'Se ve desde lejos y se recuerda de cerca',
-    precio: null,
+    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
     forma: 'brazalete',
     campos: ['grabado'],
     destacado: false,
@@ -127,7 +136,7 @@ const PRODUCTOS = [
     ],
     cierre: 'Su mes, su piedra, su collar',
     foto: 'img/collar-destino.jpg',
-    precio: null,
+    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
     forma: 'flor',
     campos: ['mes'],
     destacado: false,
@@ -149,7 +158,7 @@ const PRODUCTOS = [
     ],
     oferta: '10% de descuento al llevar el kit completo',
     cierre: 'Porque el amor también se lleva puesto',
-    precio: null,
+    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
@@ -170,7 +179,7 @@ const PRODUCTOS = [
       'Envío en caja especial de regalo',
     ],
     cierre: 'Un pedacito de lo que regalamos',
-    precio: null,
+    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
     forma: 'flor',
     campos: ['mes', 'grabado'],
     destacado: false,
