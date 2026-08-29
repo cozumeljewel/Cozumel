@@ -12,7 +12,9 @@ responder 304 solo por soportar If-Modified-Since de fábrica.
 Uso: python scripts/dev-server-no-cache.py <puerto> <directorio>
 """
 import http.server
+import socket
 import sys
+import threading
 
 puerto = int(sys.argv[1]) if len(sys.argv) > 1 else 8099
 directorio = sys.argv[2] if len(sys.argv) > 2 else "."
@@ -39,7 +41,36 @@ class HandlerSinCache(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 
+class ServidorIPv6(http.server.ThreadingHTTPServer):
+    address_family = socket.AF_INET6
+
+
 if __name__ == "__main__":
-    servidor = http.server.ThreadingHTTPServer(("127.0.0.1", puerto), HandlerSinCache)
-    print(f"Sirviendo {directorio} en http://127.0.0.1:{puerto} (sin caché)")
-    servidor.serve_forever()
+    # Se escucha en IPv4 (127.0.0.1) Y en IPv6 (::1), las dos loopback.
+    #
+    # Por qué: en Windows el navegador resuelve "localhost" primero como
+    # IPv6 (::1). Escuchando solo en 127.0.0.1, ese primer intento fallaba
+    # y el navegador tardaba ~300ms en reintentar por IPv4 — medido:
+    # conexión TCP 306ms para un servidor que respondía en 1ms. Ese era
+    # todo el "va lento" en local, y se llevaba por delante cada carga de
+    # página.
+    #
+    # Se atan las dos loopback por separado (en vez de "::" a secas) para
+    # NO exponer el servidor de desarrollo al resto de la red.
+    servidores = []
+    try:
+        s6 = ServidorIPv6(("::1", puerto), HandlerSinCache)
+        servidores.append(s6)
+        threading.Thread(target=s6.serve_forever, daemon=True).start()
+    except OSError as e:
+        print(f"Aviso: no se pudo escuchar en IPv6 (::1): {e}")
+
+    s4 = http.server.ThreadingHTTPServer(("127.0.0.1", puerto), HandlerSinCache)
+    servidores.append(s4)
+    familias = "IPv4 + IPv6" if len(servidores) == 2 else "solo IPv4"
+    print(f"Sirviendo {directorio} en http://localhost:{puerto} ({familias}, sin caché)")
+    try:
+        s4.serve_forever()
+    except KeyboardInterrupt:
+        for s in servidores:
+            s.shutdown()
