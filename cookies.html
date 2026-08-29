@@ -3,31 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Página no encontrada · Cozumel Jewelry</title>
+<title>Cookies · Cozumel Jewelry</title>
+<meta name="description" content="Qué cookies y almacenamiento usa Cozumel Jewelry">
+<meta name="theme-color" content="#14454A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cozumel">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Cookies · Cozumel Jewelry">
+<meta property="og:description" content="Qué cookies y almacenamiento usa Cozumel Jewelry">
+<meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cookies · Cozumel Jewelry">
+<meta name="twitter:description" content="Qué cookies y almacenamiento usa Cozumel Jewelry">
+<meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="supabase-config.js" defer></script>
 <script src="productos.js" defer></script>
-<style>
-  .notfound{
-    min-height:70vh; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; text-align:center;
-    padding:60px 24px;
-  }
-  .notfound .mark{width:56px; height:56px; color:var(--gold-deep); margin-bottom:22px;}
-  .notfound .mark svg{width:100%; height:100%; display:block;}
-  .notfound h1{
-    font-family:'Playfair Display'; font-weight:900; font-size:34px; color:var(--deep);
-  }
-  .notfound p{margin-top:12px; color:var(--ink-soft); max-width:34ch;}
-  .notfound .btn{margin-top:26px;}
-</style>
 </head>
-<body data-page="404">
+<body data-page="cookies">
 
 <div class="page">
 
+  <!-- ===== HEADER ===== -->
   <header class="site-header" id="site-header">
     <div class="header-inner">
       <a class="logo" href="index.html" aria-label="Inicio">
@@ -112,21 +118,34 @@
     </div>
   </div>
 
-  <section class="notfound">
-    <span class="mark" aria-hidden="true">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"
-           stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 11 L32 11 L39 20 L24 38 L9 20 Z"/>
-        <path d="M9 20 L39 20"/>
-        <path d="M16 11 L20 20 L24 38"/>
-        <path d="M32 11 L28 20 L24 38"/>
-      </svg>
-    </span>
-    <h1>Esta página no existe</h1>
-    <p>El enlace que has seguido no lleva a ningún sitio</p>
-    <a class="btn btn-primary" href="index.html">Volver al inicio</a>
+  <!-- ===== COOKIES ===== -->
+  <section class="legal-cabecera">
+    <p class="eyebrow">Legal</p>
+    <h2>Política de cookies</h2>
+    <p class="legal-actualizado">Última actualización: 29 de agosto de 2026</p>
   </section>
 
+  <section class="legal-cuerpo">
+    <h3>Qué usamos</h3>
+    <p>Cozumel Jewelry usa únicamente almacenamiento técnico, necesario para que el sitio funcione — nada de publicidad ni de analítica de terceros:</p>
+    <ul>
+      <li><strong>Un identificador de sesión anónimo</strong>, guardado en tu navegador (no es una cookie, es almacenamiento local), para medir de forma interna qué páginas se visitan antes de una reserva.</li>
+      <li><strong>Cookies de sesión de Supabase</strong>, si iniciás sesión con Google para reservar una pieza — mantienen tu sesión iniciada.</li>
+      <li><strong>Cookies del propio proceso de inicio de sesión de Google</strong>, mientras dura ese proceso.</li>
+    </ul>
+    <p>Cuando pagás, salís de nuestro sitio hacia la página de pago de Stripe (un dominio distinto), que gestiona sus propias cookies bajo su propia política. Cozumel Jewelry no tiene acceso a esas cookies ni a tus datos de tarjeta.</p>
+
+    <h3>Por qué no hay un banner de aceptar cookies</h3>
+    <p>La normativa española solo exige pedir tu consentimiento para cookies no esenciales (publicitarias o de analítica). Como las únicas que usamos son estrictamente necesarias para que el sitio y el inicio de sesión funcionen, no hace falta ese aviso.</p>
+
+    <h3>Cómo gestionar las cookies</h3>
+    <p>Podés borrar o bloquear las cookies desde la configuración de tu navegador en cualquier momento. Tené en cuenta que si bloqueás las cookies necesarias para iniciar sesión, no vas a poder reservar una pieza.</p>
+
+    <h3>Más información</h3>
+    <p>Para saber qué datos recogemos y para qué los usamos, consultá nuestra <a href="privacidad.html">política de privacidad</a>.</p>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-inner">
       <a class="footer-marca" href="index.html">Cozumel</a>
@@ -160,9 +179,7 @@
     </div>
   </footer>
 
-  <!-- ===== VOLVER ARRIBA (solo móvil) =====
-       Aparece tras hacer scroll; volver-arriba.js decide cuándo mostrarlo
-       y hace el scroll suave al pulsar. -->
+  <!-- ===== VOLVER ARRIBA (solo móvil) ===== -->
   <button type="button" class="volver-arriba" id="volver-arriba" aria-label="Volver arriba" hidden>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M12 19V5"/>

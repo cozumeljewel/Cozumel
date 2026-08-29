@@ -3,31 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Página no encontrada · Cozumel Jewelry</title>
+<title>Términos y condiciones · Cozumel Jewelry</title>
+<meta name="description" content="Condiciones de compra, envío, pago, cancelaciones y devoluciones de Cozumel Jewelry">
+<meta name="theme-color" content="#14454A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cozumel">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Términos y condiciones · Cozumel Jewelry">
+<meta property="og:description" content="Condiciones de compra, envío, pago, cancelaciones y devoluciones de Cozumel Jewelry">
+<meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Términos y condiciones · Cozumel Jewelry">
+<meta name="twitter:description" content="Condiciones de compra, envío, pago, cancelaciones y devoluciones de Cozumel Jewelry">
+<meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="supabase-config.js" defer></script>
 <script src="productos.js" defer></script>
-<style>
-  .notfound{
-    min-height:70vh; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; text-align:center;
-    padding:60px 24px;
-  }
-  .notfound .mark{width:56px; height:56px; color:var(--gold-deep); margin-bottom:22px;}
-  .notfound .mark svg{width:100%; height:100%; display:block;}
-  .notfound h1{
-    font-family:'Playfair Display'; font-weight:900; font-size:34px; color:var(--deep);
-  }
-  .notfound p{margin-top:12px; color:var(--ink-soft); max-width:34ch;}
-  .notfound .btn{margin-top:26px;}
-</style>
 </head>
-<body data-page="404">
+<body data-page="terminos">
 
 <div class="page">
 
+  <!-- ===== HEADER ===== -->
   <header class="site-header" id="site-header">
     <div class="header-inner">
       <a class="logo" href="index.html" aria-label="Inicio">
@@ -112,21 +118,53 @@
     </div>
   </div>
 
-  <section class="notfound">
-    <span class="mark" aria-hidden="true">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"
-           stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 11 L32 11 L39 20 L24 38 L9 20 Z"/>
-        <path d="M9 20 L39 20"/>
-        <path d="M16 11 L20 20 L24 38"/>
-        <path d="M32 11 L28 20 L24 38"/>
-      </svg>
-    </span>
-    <h1>Esta página no existe</h1>
-    <p>El enlace que has seguido no lleva a ningún sitio</p>
-    <a class="btn btn-primary" href="index.html">Volver al inicio</a>
+  <!-- ===== TÉRMINOS Y CONDICIONES ===== -->
+  <section class="legal-cabecera">
+    <p class="eyebrow">Legal</p>
+    <h2>Términos y condiciones</h2>
+    <p class="legal-actualizado">Última actualización: 29 de agosto de 2026</p>
   </section>
 
+  <section class="legal-cuerpo">
+    <h3>Quién vende</h3>
+    <div class="legal-datos">
+      <strong>Eduardo Troncoso Domínguez</strong>, autónomo · NIF 45140951R<br>
+      Calle Manuel Pereira, nº 2, 32003 Ourense, Galicia, España<br>
+      <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a> · +34 604 09 48 68
+    </div>
+
+    <h3>Qué vendemos</h3>
+    <p>Piezas de joyería personalizada con grabado a mano, bajo el nombre comercial Cozumel Jewelry. Los precios se indican en cada ficha de producto en euros; mientras aparezca como "precio pendiente", esa pieza todavía no está a la venta.</p>
+
+    <h3>Cómo comprar</h3>
+    <p>Elegís la pieza, la personalizás con tu grabado y completás el pago con tarjeta a través de Stripe. Al pagar aceptás estos términos.</p>
+
+    <h3>Envío</h3>
+    <p>Las piezas se fabrican y se envían directamente desde nuestro taller de fabricación; no pasan por nuestras manos antes de llegarte. El plazo estimado de envío es de <strong>7 días laborables</strong> desde que se confirma el pedido.</p>
+    <p>Según el país de destino, el envío puede estar sujeto a impuestos o gestión aduanera propios de ese país. Si esto te afecta, te lo indicaremos con el mayor detalle posible antes de tu compra o en cuanto lo sepamos.</p>
+
+    <h3>Pago</h3>
+    <p>El pago se procesa de forma segura a través de Stripe. Cozumel Jewelry no almacena los datos de tu tarjeta.</p>
+
+    <h3 id="cancelaciones">Cancelaciones</h3>
+    <p>Podés cancelar tu pedido sin coste <strong>antes de que empiece la fabricación de tu pieza</strong>. Una vez iniciada la fabricación (al llevar tu grabado personalizado), ya no es posible cancelarlo. Para cancelar, escribinos cuanto antes a <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>.</p>
+
+    <h3 id="devoluciones">Devoluciones</h3>
+    <p>Como cada pieza se fabrica y se graba a medida para vos, no aceptamos devoluciones porque "no te convenció" del mismo modo que un producto de stock. Aun así, queremos que quedes contento con tu compra:</p>
+    <ul>
+      <li><strong>Si algo no te convence</strong> (el tamaño, el acabado, etc.), escribinos dentro de los <strong>15 días</strong> siguientes a la entrega a <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>. Buscamos una solución caso por caso — no hay una respuesta única predefinida, y no vamos a pedirte que envíes la pieza de vuelta.</li>
+      <li><strong>Si la pieza llega con un defecto de fabricación</strong> o dañada, tenés hasta <strong>15 días desde que la recibís</strong> para avisarnos, con fotos como prueba y conservando el embalaje original. En ese caso, te reembolsamos el importe.</li>
+    </ul>
+    <p>Escribinos siempre indicando tu número de pedido.</p>
+
+    <h3>Ley aplicable</h3>
+    <p>Estos términos se rigen por la legislación española. Si sos consumidor y hay algún desacuerdo, tenés derecho a acudir a los tribunales de tu domicilio.</p>
+
+    <h3>Cambios en estos términos</h3>
+    <p>Podemos actualizar este documento si cambian nuestras condiciones de venta; la fecha de "última actualización" arriba refleja la versión vigente.</p>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-inner">
       <a class="footer-marca" href="index.html">Cozumel</a>
@@ -160,9 +198,7 @@
     </div>
   </footer>
 
-  <!-- ===== VOLVER ARRIBA (solo móvil) =====
-       Aparece tras hacer scroll; volver-arriba.js decide cuándo mostrarlo
-       y hace el scroll suave al pulsar. -->
+  <!-- ===== VOLVER ARRIBA (solo móvil) ===== -->
   <button type="button" class="volver-arriba" id="volver-arriba" aria-label="Volver arriba" hidden>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M12 19V5"/>

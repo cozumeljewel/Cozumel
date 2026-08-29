@@ -3,31 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Página no encontrada · Cozumel Jewelry</title>
+<title>Privacidad · Cozumel Jewelry</title>
+<meta name="description" content="Qué datos recoge Cozumel Jewelry, para qué los usa y cómo ejercer tus derechos">
+<meta name="theme-color" content="#14454A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cozumel">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Privacidad · Cozumel Jewelry">
+<meta property="og:description" content="Qué datos recoge Cozumel Jewelry, para qué los usa y cómo ejercer tus derechos">
+<meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacidad · Cozumel Jewelry">
+<meta name="twitter:description" content="Qué datos recoge Cozumel Jewelry, para qué los usa y cómo ejercer tus derechos">
+<meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="supabase-config.js" defer></script>
 <script src="productos.js" defer></script>
-<style>
-  .notfound{
-    min-height:70vh; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; text-align:center;
-    padding:60px 24px;
-  }
-  .notfound .mark{width:56px; height:56px; color:var(--gold-deep); margin-bottom:22px;}
-  .notfound .mark svg{width:100%; height:100%; display:block;}
-  .notfound h1{
-    font-family:'Playfair Display'; font-weight:900; font-size:34px; color:var(--deep);
-  }
-  .notfound p{margin-top:12px; color:var(--ink-soft); max-width:34ch;}
-  .notfound .btn{margin-top:26px;}
-</style>
 </head>
-<body data-page="404">
+<body data-page="privacidad">
 
 <div class="page">
 
+  <!-- ===== HEADER ===== -->
   <header class="site-header" id="site-header">
     <div class="header-inner">
       <a class="logo" href="index.html" aria-label="Inicio">
@@ -112,21 +118,59 @@
     </div>
   </div>
 
-  <section class="notfound">
-    <span class="mark" aria-hidden="true">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"
-           stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 11 L32 11 L39 20 L24 38 L9 20 Z"/>
-        <path d="M9 20 L39 20"/>
-        <path d="M16 11 L20 20 L24 38"/>
-        <path d="M32 11 L28 20 L24 38"/>
-      </svg>
-    </span>
-    <h1>Esta página no existe</h1>
-    <p>El enlace que has seguido no lleva a ningún sitio</p>
-    <a class="btn btn-primary" href="index.html">Volver al inicio</a>
+  <!-- ===== PRIVACIDAD ===== -->
+  <section class="legal-cabecera">
+    <p class="eyebrow">Legal</p>
+    <h2>Política de privacidad</h2>
+    <p class="legal-actualizado">Última actualización: 29 de agosto de 2026</p>
   </section>
 
+  <section class="legal-cuerpo">
+    <h3>Responsable del tratamiento</h3>
+    <div class="legal-datos">
+      <strong>Eduardo Troncoso Domínguez</strong>, autónomo · NIF 45140951R<br>
+      Calle Manuel Pereira, nº 2, 32003 Ourense, Galicia, España<br>
+      <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a> · +34 604 09 48 68
+    </div>
+    <p>Como responsable, Cozumel Jewelry cumple con el Reglamento General de Protección de Datos (RGPD) y la normativa española aplicable.</p>
+
+    <h3>Qué datos recogemos</h3>
+    <ul>
+      <li>Nombre, apellidos y dirección de envío, al hacer un pedido.</li>
+      <li>Correo electrónico y, si lo dejás, número de WhatsApp, para contactarte sobre tu pedido.</li>
+      <li>El texto de personalización que elegís para el grabado.</li>
+      <li>Tu cuenta de Google, si iniciás sesión para reservar una pieza (recibimos tu nombre y correo, no tu contraseña).</li>
+      <li>Los datos de pago los introducís directamente en Stripe: Cozumel Jewelry no los ve ni los almacena.</li>
+    </ul>
+
+    <h3>Para qué los usamos</h3>
+    <ul>
+      <li>Gestionar, fabricar y enviar tu pedido.</li>
+      <li>Comunicarnos con vos sobre el estado de tu pedido.</li>
+      <li>Iniciar y mantener tu sesión al reservar una pieza.</li>
+      <li>Cumplir obligaciones legales, fiscales y contables.</li>
+    </ul>
+
+    <h3>Con quién compartimos tus datos</h3>
+    <ul>
+      <li><strong>EMANCO</strong> (nuestro fabricante, en China): recibe tu nombre, dirección de envío y el texto de personalización, lo necesario para fabricar y enviarte la pieza.</li>
+      <li><strong>Stripe</strong>: procesa el pago. Cozumel Jewelry no almacena datos de tarjetas.</li>
+      <li><strong>Google</strong>: gestiona el inicio de sesión, si elegís entrar con tu cuenta de Google.</li>
+      <li><strong>Supabase</strong>: aloja la base de datos donde se guardan los pedidos.</li>
+    </ul>
+    <p>No usamos herramientas de analítica de terceros (como Google Analytics o Meta Pixel) ni vendemos tus datos a nadie.</p>
+
+    <h3>Cuánto tiempo los guardamos</h3>
+    <p>Mientras dure la relación derivada de tu pedido y, después, durante los plazos legales de conservación fiscal y contable que exige la normativa española (hasta 6 años según el Código de Comercio).</p>
+
+    <h3>Tus derechos</h3>
+    <p>Podés acceder, rectificar, suprimir, oponerte o pedir la limitación o portabilidad de tus datos escribiendo a <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>. Si no quedás satisfecho con la respuesta, podés reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener">Agencia Española de Protección de Datos (AEPD)</a>.</p>
+
+    <h3>Cookies</h3>
+    <p>Consultá el detalle en nuestra <a href="cookies.html">política de cookies</a>.</p>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-inner">
       <a class="footer-marca" href="index.html">Cozumel</a>
@@ -160,9 +204,7 @@
     </div>
   </footer>
 
-  <!-- ===== VOLVER ARRIBA (solo móvil) =====
-       Aparece tras hacer scroll; volver-arriba.js decide cuándo mostrarlo
-       y hace el scroll suave al pulsar. -->
+  <!-- ===== VOLVER ARRIBA (solo móvil) ===== -->
   <button type="button" class="volver-arriba" id="volver-arriba" aria-label="Volver arriba" hidden>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M12 19V5"/>

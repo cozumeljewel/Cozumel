@@ -1292,6 +1292,36 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
    note a simple vista que es un hueco pendiente, no la respuesta final. */
 .info-pendiente{color:var(--ink-soft); font-style:italic;}
 
+/* ---------- PÁGINAS LEGALES (aviso legal, privacidad, cookies, términos) ---------- */
+.legal-cabecera{padding:56px 24px 8px; text-align:center;}
+.legal-cabecera h2{
+  font-family:'Playfair Display'; font-weight:700; font-size:28px; color:var(--deep);
+  margin-top:8px;
+}
+.legal-cabecera .legal-actualizado{
+  margin-top:10px; font-size:12px; color:var(--ink-soft); font-style:italic;
+}
+.legal-cuerpo{padding:24px 24px 60px; max-width:640px; margin:0 auto;}
+.legal-cuerpo h3{
+  font-family:'Playfair Display'; font-weight:700; font-size:18px; color:var(--deep);
+  margin:32px 0 10px; scroll-margin-top:80px;
+}
+.legal-cuerpo h3:first-child{margin-top:0;}
+.legal-cuerpo p{font-size:15px; color:var(--ink); line-height:1.6; margin-bottom:14px;}
+.legal-cuerpo ul{margin:0 0 14px 20px; padding:0;}
+.legal-cuerpo li{font-size:15px; color:var(--ink); line-height:1.6; margin-bottom:6px;}
+.legal-cuerpo a{color:var(--sea-dark);}
+.legal-cuerpo strong{font-weight:600;}
+.legal-datos{
+  margin:0 0 14px; padding:16px 18px; background:var(--shallow);
+  border-radius:var(--radius-sm); font-size:14px; color:var(--ink); line-height:1.7;
+}
+@media (min-width:900px){
+  .legal-cabecera{padding:80px 24px 8px;}
+  .legal-cabecera h2{font-size:34px;}
+  .legal-cuerpo{padding:32px 24px 90px;}
+}
+
 /* ---------- PÁGINA DE PREGUNTAS FRECUENTES ----------
    Reutiliza el mismo acordeón (.info-item) que ya usa la ficha de
    producto, agrupado aquí por categoría. */
