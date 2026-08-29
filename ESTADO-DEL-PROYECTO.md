@@ -69,15 +69,31 @@ buena una comprobación.
 
 | Página | Contenido |
 |---|---|
-| `index.html` | Hero con foto de Adriana. Entrada desde la story. |
-| `productos.html` | La colección — 6 productos, rejilla 3+3 |
-| `personalizar.html` | Ficha de producto (`?p=slug`) + banda de grabado |
+| `index.html` | Hero a pantalla completa, "Cozumel Stories" (placeholders), demo de personalización "Hazla tuya" |
+| `productos.html` | La colección — 5 piezas principales + 2 kits, separados por un divisor |
+| `personalizar.html` | Ficha de producto (`?p=slug`), dos columnas en escritorio, acordeón de info adicional |
 | `historia.html` | "Quiénes somos" |
-| `reservar.html` | Formulario de reserva → Supabase |
+| `comprar.html` | Formulario de compra → Stripe → Supabase (sustituyó a `reservar.html`) |
 | `contacto.html` | Contacto (el formulario **no envía nada** todavía) |
+| `faq.html` | Preguntas frecuentes, 7 categorías, contenido real dado por el cliente (2026-08-29) |
 | `404.html` | Error, con identidad de marca |
 
 **Sin frameworks.** HTML + CSS + JS vanilla. Mobile-first.
+
+### Header y menú (rediseñado 2026-08-29)
+
+Escritorio: logo, nav (Colección/Personaliza/Nuestra historia/FAQ) e icono
+de carrito a la derecha. El icono de carrito enlaza a `comprar.html`: el
+sitio no tiene carrito de verdad (un pedido es una pieza), así que es un
+atajo, no una cesta que acumula productos.
+
+Móvil: menú a pantalla completa (antes era un desplegable), con
+Instagram y TikTok marcados "muy pronto" al pie porque todavía no hay
+cuentas/enlaces reales que poner ahí.
+
+El header es transparente sobre el hero **solo en `index.html`** y se
+vuelve sólido al hacer scroll; en el resto de páginas sigue siendo el
+mismo header sólido de siempre, sin cambios de comportamiento.
 
 ### Pop-up de preventa
 
@@ -373,7 +389,9 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
 3. **Precios.** Todos en `null` → sale "Precio pendiente". Ojo: el Kit
    promete "10% de descuento", así que su precio debe cuadrar con eso.
 4. **Email real en Contacto: hecho (2026-08-27)**, `cozumeljewel@gmail.com`.
-   **Instagram** sigue pendiente de definir.
+   **Instagram y TikTok** siguen pendientes de definir: el menú móvil
+   (2026-08-29) ya tiene un hueco para los dos, marcado "muy pronto"
+   hasta que haya cuentas/enlaces reales que poner.
 5. ~~La imagen de previsualización al compartir~~ **HECHO (2026-08-27).**
    `img/og-image.png`, 1200×630: emblema, COZUMEL JEWELRY y "Regala un
    pedacito de ti" sobre fondo espuma, con el mismo lenguaje visual que la
