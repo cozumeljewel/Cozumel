@@ -591,7 +591,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   const cta = document.createElement('a');
   cta.className = 'btn btn-primary popup-cta';
   cta.href = 'comprar.html';
-  cta.textContent = 'Comprar ahora';
+  cta.textContent = 'Descubrir ahora';
 
   caja.append(cerrar, olas, eyebrow, titulo, p1, p2, badge, cierre, cta);
   capa.appendChild(caja);
