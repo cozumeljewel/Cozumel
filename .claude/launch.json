@@ -4,8 +4,8 @@
     {
       "name": "cozumel-local",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8099", "--bind", "127.0.0.1", "--directory", "."],
-      "port": 8099
+      "runtimeArgs": ["scripts/dev-server-no-cache.py", "8123", "."],
+      "port": 8123
     }
   ]
 }

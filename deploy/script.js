@@ -149,16 +149,29 @@ const grid = document.getElementById('producto-grid');
 if (grid && typeof PRODUCTOS !== 'undefined') {
   PRODUCTOS.forEach(prod => {
     const card = document.createElement('a');
-    card.className = 'producto-card';
+    card.className = 'producto-card reveal';
     card.href = 'personalizar.html?p=' + encodeURIComponent(prod.slug);
 
     const media = document.createElement('div');
     media.className = 'producto-media forma-' + prod.forma;
-    if (prod.foto) {
-      // La foto va encima del degradado: si el archivo faltara, el
-      // degradado sigue ahí y no queda un hueco roto.
-      media.style.backgroundImage = `url('${prod.foto}')`;
+
+    // Acepta "fotos" (varias, la segunda se usa en el hover) o el "foto"
+    // antiguo (una sola). Sin ninguna, se queda el degradado con el aviso.
+    const fotos = prod.fotos && prod.fotos.length ? prod.fotos : (prod.foto ? [prod.foto] : []);
+    if (fotos[0]) {
+      const foto1 = document.createElement('div');
+      foto1.className = 'producto-foto';
+      foto1.style.backgroundImage = `url('${fotos[0]}')`;
+      media.appendChild(foto1);
       media.classList.add('con-foto');
+
+      // Segunda foto solo si existe de verdad: nunca se inventa.
+      if (fotos[1]) {
+        const foto2 = document.createElement('div');
+        foto2.className = 'producto-foto producto-foto-2';
+        foto2.style.backgroundImage = `url('${fotos[1]}')`;
+        media.appendChild(foto2);
+      }
     } else {
       const tag = document.createElement('span');
       tag.className = 'ph-tag';
@@ -166,15 +179,16 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
       media.appendChild(tag);
     }
 
+    const hoverCta = document.createElement('span');
+    hoverCta.className = 'producto-hover-cta';
+    hoverCta.innerHTML = '<span>Ver producto →</span>';
+    media.appendChild(hoverCta);
+
     const body = document.createElement('div');
     body.className = 'producto-body';
 
     const h3 = document.createElement('h3');
     h3.textContent = prod.nombre;
-
-    const resumen = document.createElement('p');
-    resumen.className = 'producto-resumen';
-    resumen.textContent = prod.resumen;
 
     const precio = document.createElement('p');
     precio.className = 'producto-precio';
@@ -184,10 +198,35 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
     cta.className = 'producto-cta';
     cta.textContent = prod.campos.length > 0 ? 'Personalizar →' : 'Ver pieza →';
 
-    body.append(h3, resumen, precio, cta);
+    body.append(h3, precio, cta);
     card.append(media, body);
     grid.appendChild(card);
   });
+}
+
+/* ---------- Aparición progresiva al hacer scroll ----------
+   Genérico: actúa sobre cualquier ".reveal" que haya en la página (por
+   ahora, la cabecera y las tarjetas de la colección). Si no hay ninguno,
+   no hace nada. Respeta "menos movimiento", y si el navegador no soporta
+   IntersectionObserver, todo se muestra directamente sin animar. */
+const elementosReveal = document.querySelectorAll('.reveal');
+if (elementosReveal.length) {
+  const prefiereMenosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!('IntersectionObserver' in window) || prefiereMenosMovimiento) {
+    elementosReveal.forEach(el => el.classList.add('reveal-visto'));
+  } else {
+    const observadorReveal = new IntersectionObserver((entradas, obs) => {
+      entradas.forEach(entrada => {
+        if (entrada.isIntersecting) {
+          entrada.target.classList.add('reveal-visto');
+          obs.unobserve(entrada.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
+
+    elementosReveal.forEach(el => observadorReveal.observe(el));
+  }
 }
 
 
