@@ -79,58 +79,102 @@
     </div>
   </header>
 
-  <!-- ===== 1. CABECERA DEL PRODUCTO: nombre + olas ===== -->
-  <section class="producto-cabecera">
-    <p class="edicion-badge">Edición de lanzamiento · unidades limitadas</p>
-    <p class="eyebrow" id="producto-eyebrow">La colección</p>
-    <h2 id="producto-titulo">Cargando…</h2>
-  </section>
+  <!-- ===== FICHA DE PRODUCTO =====
+       Dos columnas en escritorio (galería a la izquierda, info a la
+       derecha); en móvil, todo apilado con la galería primero. Los ids
+       de dentro no cambian: son los mismos que ya lee script.js. -->
+  <div class="producto-layout">
 
-  <!-- ===== 2. GALERÍA: varias fotos, scroll lateral ===== -->
-  <section class="producto-galeria">
-    <div class="galeria-pista" id="galeria-pista">
-      <!-- Las .galeria-foto las inyecta script.js desde productos.js -->
+    <!-- ===== GALERÍA: varias fotos, scroll lateral + miniaturas ===== -->
+    <div class="producto-col-galeria">
+      <section class="producto-galeria">
+        <div class="galeria-pista" id="galeria-pista">
+          <!-- Las .galeria-foto las inyecta script.js desde productos.js -->
+        </div>
+        <div class="galeria-puntos" id="galeria-puntos" aria-hidden="true"></div>
+      </section>
     </div>
-    <div class="galeria-puntos" id="galeria-puntos" aria-hidden="true"></div>
-  </section>
 
-  <!-- ===== 3. DESCRIPCIÓN ===== -->
-  <section class="producto-detalle">
-    <p class="producto-desc" id="producto-desc"></p>
-    <div class="producto-ficha" id="producto-ficha"></div>
-    <a href="productos.html" class="cambiar-pieza">Ver las otras piezas</a>
-  </section>
+    <div class="producto-col-info">
 
-  <!-- ===== 4. PERSONALIZACIÓN (solo si la pieza se graba) ===== -->
-  <section class="grabado-banda" id="grabado-banda">
-    <p class="eyebrow">Tu joya, tus palabras</p>
-    <h3 id="grabado-titulo">Elige tu grabado</h3>
-    <div class="fields" id="campos"></div>
+      <!-- ===== 1. CABECERA DEL PRODUCTO: nombre + olas ===== -->
+      <section class="producto-cabecera">
+        <p class="edicion-badge">Edición de lanzamiento · unidades limitadas</p>
+        <p class="eyebrow" id="producto-eyebrow">La colección</p>
+        <h2 id="producto-titulo">Cargando…</h2>
+      </section>
 
-    <!-- Cartita del mes elegido (solo Collar Destino). La pinta script.js -->
-    <figure class="cartita" id="cartita" hidden>
-      <figcaption class="cartita-cabecera">
-        <span class="cartita-eyebrow">La cartita que va en la caja</span>
-        <span class="cartita-titulo" id="cartita-titulo"></span>
-      </figcaption>
-      <p class="cartita-texto" id="cartita-texto"></p>
-      <p class="cartita-cierre" id="cartita-cierre"></p>
-    </figure>
+      <!-- ===== 2. PRECIO ===== -->
+      <div class="price-placeholder">
+        <span>PRECIO</span>
+        <strong id="resumen-precio">— · — €</strong>
+        <em id="resumen-precio-nota">pendiente de confirmar</em>
+        <p class="compra-envio">Envío gratis</p>
+      </div>
 
-    <p class="grabado-nota" id="grabado-nota">El grabado lo hace a mano un artesano, pieza a pieza</p>
-  </section>
+      <!-- ===== 3. DESCRIPCIÓN ===== -->
+      <section class="producto-detalle">
+        <p class="producto-desc" id="producto-desc"></p>
+        <div class="producto-ficha" id="producto-ficha"></div>
+        <a href="productos.html" class="cambiar-pieza">Ver las otras piezas</a>
+      </section>
 
-  <!-- ===== 5. COMPRA: precio + envío + CTA ===== -->
-  <section class="final-cta">
-    <div class="price-placeholder">
-      <span>PRECIO</span>
-      <strong id="resumen-precio">— · — €</strong>
-      <em id="resumen-precio-nota">pendiente de confirmar</em>
-      <p class="compra-envio">Envío gratis</p>
+      <!-- ===== 4. PERSONALIZACIÓN (solo si la pieza se graba) ===== -->
+      <section class="grabado-banda" id="grabado-banda">
+        <p class="eyebrow">Tu joya, tus palabras</p>
+        <h3 id="grabado-titulo">Elige tu grabado</h3>
+        <div class="fields" id="campos"></div>
+
+        <!-- Cartita del mes elegido (solo Collar Destino). La pinta script.js -->
+        <figure class="cartita" id="cartita" hidden>
+          <figcaption class="cartita-cabecera">
+            <span class="cartita-eyebrow">La cartita que va en la caja</span>
+            <span class="cartita-titulo" id="cartita-titulo"></span>
+          </figcaption>
+          <p class="cartita-texto" id="cartita-texto"></p>
+          <p class="cartita-cierre" id="cartita-cierre"></p>
+        </figure>
+
+        <p class="grabado-nota" id="grabado-nota">El grabado lo hace a mano un artesano, pieza a pieza</p>
+      </section>
+
+      <!-- ===== 5. INFO ADICIONAL =====
+           Acordeón nativo (<details>), sin JS. Solo lleva texto real y ya
+           aprobado (el mismo que usan otras partes del sitio); donde
+           todavía no hay datos confirmados del producto, lo dice
+           explícitamente en vez de inventar nada. Fácil de rellenar más
+           adelante: basta con cambiar el texto de cada <p>. -->
+      <section class="producto-info-adicional">
+        <details class="info-item" open>
+          <summary>Personalización</summary>
+          <p id="info-personalizacion-texto">El grabado lo hace a mano un artesano, pieza a pieza</p>
+        </details>
+        <details class="info-item">
+          <summary>Materiales</summary>
+          <p class="info-pendiente">Información pendiente de confirmar con el proveedor</p>
+        </details>
+        <details class="info-item">
+          <summary>Envío</summary>
+          <p>Envío gratis en todos los pedidos</p>
+        </details>
+        <details class="info-item">
+          <summary>Cuidados</summary>
+          <p class="info-pendiente">Información pendiente</p>
+        </details>
+        <details class="info-item">
+          <summary>Devoluciones</summary>
+          <p class="info-pendiente">Política de devoluciones pendiente de publicar</p>
+        </details>
+      </section>
+
+      <!-- ===== 6. COMPRA: CTA ===== -->
+      <section class="final-cta">
+        <h2>Ya solo falta regalarlo</h2>
+        <a class="btn btn-primary btn-lg" href="comprar.html" id="cta-reservar">Regálale un pedacito de ti</a>
+      </section>
+
     </div>
-    <h2>Ya solo falta regalarlo</h2>
-    <a class="btn btn-primary btn-lg" href="comprar.html" id="cta-reservar">Regálale un pedacito de ti</a>
-  </section>
+  </div>
 
   <!-- ===== 5. CONFIANZA ===== -->
   <section class="trust">

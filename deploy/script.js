@@ -323,11 +323,19 @@ function pintarGaleria(prod) {
     pista.appendChild(card);
   });
 
-  // Un punto por foto, solo si hay más de una
+  // Un punto por foto, solo si hay más de una. Son <button>, no <span>:
+  // en escritorio se ven como miniaturas y se puede pulsar para saltar
+  // directo a esa foto (en móvil siguen siendo solo puntos pequeños).
   if (puntos && fotos.length > 1) {
-    fotos.forEach((_, i) => {
-      const p = document.createElement('span');
+    fotos.forEach((src, i) => {
+      const p = document.createElement('button');
+      p.type = 'button';
       p.className = 'galeria-punto' + (i === 0 ? ' activo' : '');
+      p.style.backgroundImage = `url('${src}')`;
+      p.setAttribute('aria-label', `Ver imagen ${i + 1} de ${fotos.length}`);
+      p.addEventListener('click', () => {
+        pista.children[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
       puntos.appendChild(p);
     });
 
@@ -406,6 +414,15 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
   // La banda de grabado solo existe si la pieza se personaliza
   const bandaGrabado = document.getElementById('grabado-banda');
   if (bandaGrabado) bandaGrabado.hidden = !esPersonalizable;
+
+  // El acordeón de "Personalización" (info adicional) usa el mismo dato
+  // real, sin inventar nada: si la pieza no lleva grabado, lo dice tal cual.
+  const infoPersonalizacion = document.getElementById('info-personalizacion-texto');
+  if (infoPersonalizacion) {
+    infoPersonalizacion.textContent = esPersonalizable
+      ? 'El grabado lo hace a mano un artesano, pieza a pieza'
+      : 'Esta pieza no lleva grabado';
+  }
 
   const precioTxt = formatearPrecio(prod.precio);
   const resPrecio = document.getElementById('resumen-precio');

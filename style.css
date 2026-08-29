@@ -884,9 +884,14 @@ section[id]{scroll-margin-top:var(--header-h);}
 }
 /* Los puntos solo aparecen si hay más de una foto (lo decide script.js) */
 .galeria-puntos{display:flex; justify-content:center; gap:7px; margin-top:14px;}
+/* En móvil son puntos pequeños (mismo aspecto de siempre); en escritorio
+   (ver media query) se convierten en miniaturas reales, ya que cada uno
+   lleva su propia foto de fondo. */
 .galeria-punto{
   width:6px; height:6px; border-radius:50%; background:var(--sea);
-  opacity:.26; transition:opacity .25s, transform .25s;
+  background-size:cover; background-position:center;
+  opacity:.26; border:none; padding:0; cursor:pointer;
+  transition:opacity .25s, transform .25s;
 }
 .galeria-punto.activo{opacity:1; transform:scale(1.4);}
 
@@ -981,6 +986,34 @@ section[id]{scroll-margin-top:var(--header-h);}
   color:var(--sea-dark);
 }
 
+/* ---------- INFO ADICIONAL (acordeón nativo, sin JS) ---------- */
+.producto-info-adicional{
+  margin-top:8px; padding:26px 24px; background:var(--white);
+  border-top:1px solid var(--line-2);
+}
+.info-item{
+  border-bottom:1px solid var(--line-2);
+}
+.info-item summary{
+  padding:14px 4px; font-family:'Playfair Display'; font-weight:700;
+  font-size:15px; color:var(--deep); cursor:pointer; list-style:none;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.info-item summary::-webkit-details-marker{display:none;}
+/* Flecha propia (en vez del triángulo por defecto del navegador), que
+   gira al abrir: mismo lenguaje visual que el resto del sitio. */
+.info-item summary::after{
+  content:"+"; font-family:'Jost'; font-size:18px; color:var(--sea-dark);
+  transition:transform .2s;
+}
+.info-item[open] summary::after{content:"−";}
+.info-item p{
+  padding:0 4px 16px; font-size:13.5px; line-height:1.55; color:var(--ink);
+}
+/* Texto todavía sin confirmar: en cursiva y más apagado, para que se
+   note a simple vista que es un hueco pendiente, no la respuesta final. */
+.info-pendiente{color:var(--ink-soft); font-style:italic;}
+
 /* ---------- 6. CTA ---------- */
 .final-cta{
   padding:50px 24px; background:var(--abyss); color:var(--foam); text-align:center;
@@ -992,6 +1025,14 @@ section[id]{scroll-margin-top:var(--header-h);}
 }
 .final-cta .btn-primary{
   background:var(--gold); color:#2B2410; border-color:var(--gold-soft);
+}
+/* Microinteracción al pulsar: un pequeño "hundido" elegante, nada de
+   rebotes. Solo con movimiento activado (ver la guardia de abajo). */
+#cta-reservar{transition:transform .15s ease, box-shadow .15s ease;}
+#cta-reservar:active{transform:scale(.97);}
+@media (prefers-reduced-motion:reduce){
+  #cta-reservar{transition:none;}
+  #cta-reservar:active{transform:none;}
 }
 
 /* ---------- 7. FAQ ---------- */
@@ -1228,20 +1269,50 @@ footer{
   .personaliza-demo-field, .personaliza-demo-vista{flex:1;}
   .personaliza-demo-placa{min-height:120px;}
 
-  /* PÁGINA DE PRODUCTO */
-  .producto-cabecera{padding:70px 90px 10px;}
-  .producto-cabecera h2{font-size:38px;}
-  /* La ficha pasa a una sola columna centrada: las fotos ya van arriba,
-     a lo ancho, así que no hay nada que poner al lado. */
-  .producto-detalle{
-    padding:34px 90px 80px;
-    max-width:760px; margin:0 auto;
-    display:flex; flex-direction:column; gap:30px;
+  /* PÁGINA DE PRODUCTO: dos columnas, la galería a la izquierda (grande,
+     protagonista, se queda fija al bajar) y toda la info a la derecha.
+     En móvil no hay grid: producto-layout es un bloque normal y todo se
+     apila en el orden del HTML (galería primero, luego la info). */
+  .producto-layout{
+    display:grid; grid-template-columns:1.15fr 1fr; column-gap:56px;
+    align-items:start; padding:60px 60px 0; max-width:1280px; margin:0 auto;
   }
-  .galeria-pista{padding:0 calc(50% - 230px) 4px; gap:22px;}
-  .galeria-foto{flex:0 0 460px;}
-  .grabado-banda{padding:80px 40px;}
-  .grabado-banda h3{font-size:28px;}
+  .producto-col-galeria{position:sticky; top:calc(var(--header-h) + 28px);}
+
+  .producto-cabecera{padding:0 0 6px; text-align:left;}
+  .producto-cabecera h2{font-size:36px;}
+  .producto-cabecera .edicion-badge, .producto-cabecera .eyebrow{text-align:left; margin-left:0;}
+  .price-placeholder{margin:18px 0 0;}
+
+  .producto-detalle{padding:0; margin-top:26px; text-align:left;}
+  .producto-desc{margin-left:0;}
+  .cambiar-pieza{margin-top:20px;}
+
+  .galeria-pista{padding:0; gap:16px;}
+  .galeria-foto{flex:0 0 100%; aspect-ratio:1;}
+  /* Las miniaturas dejan de ser puntos y pasan a ser una fila de fotos
+     pequeñas de verdad: cada botón ya lleva su propia foto de fondo
+     (puesta en script.js), aquí solo se les da tamaño y forma. */
+  .galeria-puntos{justify-content:flex-start; gap:10px; margin-top:12px;}
+  .galeria-punto{
+    width:56px; height:56px; border-radius:2px; opacity:.55;
+    border:1px solid transparent;
+  }
+  .galeria-punto.activo{opacity:1; transform:none; border-color:var(--gold);}
+
+  .grabado-banda{padding:32px 0; text-align:left; border-top:1px solid var(--line-2); border-image:none;}
+  .grabado-banda h3{font-size:22px; text-align:left;}
+  .grabado-banda .eyebrow{text-align:left;}
+  .grabado-banda .fields{max-width:none; margin-left:0;}
+
+  .producto-info-adicional{padding:8px 0;}
+
+  .final-cta{
+    margin-top:8px; padding:32px 28px; border-radius:3px; border-top:none;
+    text-align:left;
+  }
+  .final-cta h2{text-align:left;}
+  .final-cta .btn{width:100%;}
 
   /* 2. PERSONALIZACIÓN */
   .personalize{
