@@ -90,19 +90,17 @@ tocar los HTML.
   se muestra: un aviso que compite con lo que la persona ya está mirando
   (una ficha, el propio formulario de compra) trabaja en contra de la
   conversión que estamos midiendo.
-- El botón del pop-up lleva a `comprar.html` ("Comprar ahora"), no a
-  `productos.html`: como el pop-up ya sale estando en la colección, un
-  botón que llevara ahí de nuevo no serviría de nada.
+- El botón del pop-up lleva a `productos.html` ("Descubrir ahora"): como
+  el pop-up ya sale estando en la colección, en la práctica solo la cierra
+  y deja a la persona donde estaba.
 - Sale a los **700 ms** de cargar (dar tiempo a que pinte la página).
-- Diseño original: una vez cerrado, no vuelve a salir nunca (se guarda en
-  `localStorage`, clave `popupPreventaCerrado`).
-  **⚠️ TEMPORAL (2026-08-27, pedido del cliente): ahora mismo sale en
-  cada entrada**, durante esta promoción. Es `MOSTRAR_SIEMPRE = true` en
-  `script.js`, justo donde arranca el pop-up. El cliente avisará cuándo
-  volver a `false` para que recupere el comportamiento de "una vez y no
-  más".
+- Una vez cerrado, no vuelve a salir nunca (se guarda en `localStorage`,
+  clave `popupPreventaCerrado`). Hubo una promoción puntual
+  (2026-08-27 a 2026-08-29) en la que salía en cada entrada
+  (`MOSTRAR_SIEMPRE = true`); ya terminó y volvió al comportamiento
+  normal (`MOSTRAR_SIEMPRE = false`).
 - Se cierra con la ×, con Escape, pulsando fuera, o con el botón
-  "Ver la colección".
+  "Descubrir ahora".
 
 **Detalle técnico que costó un bug:** la animación de entrada NO puede
 usar `requestAnimationFrame` — no se ejecuta en pestañas en segundo plano,
