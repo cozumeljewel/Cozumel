@@ -267,6 +267,17 @@
     <a href="contacto.html" class="cambiar-pieza">Ir a contacto</a>
   </section>
 
+  <!-- ===== BURBUJA DE CONTACTO (solo esta página) =====
+       El pop-up lo construye script.js al pulsarla, reutilizando el
+       mismo patrón accesible del pop-up de preventa (mismas clases
+       .popup-*). Datos reales: el email ya publicado en contacto.html,
+       nada inventado. -->
+  <button type="button" class="burbuja-contacto" id="burbuja-contacto" aria-haspopup="dialog" aria-label="Contactar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M4 5h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.5 3.5A.6.6 0 0 1 3.5 21V17H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
+    </svg>
+  </button>
+
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-inner">

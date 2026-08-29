@@ -229,6 +229,30 @@ section[id]{scroll-margin-top:var(--header-h);}
   .popup-texto{font-size:14.5px;}
 }
 
+/* ---------- BURBUJA DE CONTACTO (solo faq.html) ----------
+   El contenido del pop-up que abre reutiliza .popup-*: mismo aspecto que
+   el de preventa, para no crear un segundo lenguaje visual de pop-ups. */
+.burbuja-contacto{
+  position:fixed; right:20px; bottom:20px; z-index:80;
+  width:52px; height:52px; border-radius:50%; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--deep); color:var(--foam);
+  box-shadow:0 6px 18px rgba(11,46,51,.3);
+  transition:transform .15s ease, background-color .2s ease;
+}
+.burbuja-contacto:hover{background:var(--sea-dark);}
+.burbuja-contacto:active{transform:scale(.94);}
+.burbuja-contacto svg{width:24px; height:24px;}
+@media (prefers-reduced-motion:reduce){
+  .burbuja-contacto{transition:none;}
+  .burbuja-contacto:active{transform:none;}
+}
+
+.popup-contacto-link{
+  display:block; margin-top:14px; font-size:12.5px; color:var(--sea-dark);
+  text-decoration:underline; text-underline-offset:2px;
+}
+
 /* ---------- HEADER ---------- */
 .site-header{
   position:sticky; top:0; z-index:50;

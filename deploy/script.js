@@ -685,6 +685,82 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 })();
 
 
+/* =========================================================
+   BURBUJA DE CONTACTO (solo faq.html)
+   Mismo patrón accesible que el pop-up de preventa (construido al
+   pulsar, no al cargar la página), reutilizando sus mismas clases
+   .popup-* para que se vea igual. Datos reales, nada inventado: el
+   email ya publicado en contacto.html.
+   ========================================================= */
+(function () {
+  const burbuja = document.getElementById('burbuja-contacto');
+  if (!burbuja) return;
+
+  burbuja.addEventListener('click', () => {
+    const capa = document.createElement('div');
+    capa.className = 'popup-capa';
+    capa.setAttribute('role', 'dialog');
+    capa.setAttribute('aria-modal', 'true');
+    capa.setAttribute('aria-labelledby', 'popup-contacto-titulo');
+
+    const caja = document.createElement('div');
+    caja.className = 'popup-caja';
+
+    const cerrar = document.createElement('button');
+    cerrar.className = 'popup-cerrar';
+    cerrar.type = 'button';
+    cerrar.setAttribute('aria-label', 'Cerrar');
+    cerrar.textContent = '×';
+
+    const olas = document.createElement('span');
+    olas.className = 'popup-olas';
+    olas.setAttribute('aria-hidden', 'true');
+
+    const titulo = document.createElement('h2');
+    titulo.className = 'popup-titulo';
+    titulo.id = 'popup-contacto-titulo';
+    titulo.textContent = '¿Hablamos?';
+
+    const texto = document.createElement('p');
+    texto.className = 'popup-texto';
+    texto.textContent = 'Si tu pregunta no aparece en el FAQ, escríbenos directamente y te contestamos personalmente';
+
+    const cta = document.createElement('a');
+    cta.className = 'btn btn-primary popup-cta';
+    cta.href = 'mailto:cozumeljewel@gmail.com';
+    cta.textContent = 'cozumeljewel@gmail.com';
+
+    const link = document.createElement('a');
+    link.className = 'popup-contacto-link';
+    link.href = 'contacto.html';
+    link.textContent = 'Ir al formulario de contacto →';
+
+    caja.append(cerrar, olas, titulo, texto, cta, link);
+    capa.appendChild(caja);
+
+    const antesDelPopup = document.activeElement;
+
+    function ocultar() {
+      capa.remove();
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', porTecla);
+      if (antesDelPopup && antesDelPopup.focus) antesDelPopup.focus();
+    }
+    function porTecla(e) { if (e.key === 'Escape') ocultar(); }
+
+    cerrar.addEventListener('click', ocultar);
+    capa.addEventListener('click', e => { if (e.target === capa) ocultar(); });
+    document.addEventListener('keydown', porTecla);
+
+    document.body.appendChild(capa);
+    document.body.style.overflow = 'hidden';
+    void capa.offsetWidth; // fuerza el reflow, ver nota arriba en el otro pop-up
+    capa.classList.add('visible');
+    cerrar.focus();
+  });
+})();
+
+
 /* ---------- Menú móvil, a pantalla completa ----------
    #nav (la lista de arriba) ahora es solo la barra de escritorio; en
    móvil el que se abre y cierra es #menu-movil, un overlay aparte. */
