@@ -524,14 +524,14 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
    Aparece al abrir la página y, una vez cerrado, no vuelve a salir
    nunca más (localStorage, así sobrevive a cerrar el navegador).
 
-   SOLO en index.html (2026-08-28, pedido del cliente): en el resto de
-   páginas antes se mostraba también, pero un aviso que compite con lo
-   que la persona ya está mirando (la colección, una ficha, el propio
-   formulario) trabaja en contra de la conversión que estamos midiendo.
+   SOLO en productos.html (2026-08-29, pedido del cliente): en el resto de
+   páginas no se muestra, porque un aviso que compite con lo que la
+   persona ya está mirando (una ficha, el propio formulario de compra)
+   trabaja en contra de la conversión que estamos midiendo.
    ========================================================= */
 (function () {
   const YA_CERRADO = 'popupPreventaCerrado';
-  if (CURRENT_PAGE !== 'inicio') return;
+  if (CURRENT_PAGE !== 'productos') return;
 
   // TEMPORAL (2026-08-27, pedido del cliente para esta promoción): el
   // pop-up sale en cada entrada, no solo la primera. Sigue guardando en
@@ -590,8 +590,8 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 
   const cta = document.createElement('a');
   cta.className = 'btn btn-primary popup-cta';
-  cta.href = 'productos.html';
-  cta.textContent = 'Ver la colección';
+  cta.href = 'comprar.html';
+  cta.textContent = 'Comprar ahora';
 
   caja.append(cerrar, olas, eyebrow, titulo, p1, p2, badge, cierre, cta);
   capa.appendChild(caja);

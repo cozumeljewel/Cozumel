@@ -83,8 +83,16 @@ buena una comprobación.
 
 Modal "Un Pedacito de Mí" — anuncia la primera colección y la edición
 limitada a **100 piezas**. Lo inyecta `script.js`, así que no hay que
-tocar los HTML: aparece en todas las páginas automáticamente.
+tocar los HTML.
 
+- **Solo sale en `productos.html`** (cambiado el 2026-08-29, pedido del
+  cliente; antes solo salía en `index.html`). En el resto de páginas no
+  se muestra: un aviso que compite con lo que la persona ya está mirando
+  (una ficha, el propio formulario de compra) trabaja en contra de la
+  conversión que estamos midiendo.
+- El botón del pop-up lleva a `comprar.html` ("Comprar ahora"), no a
+  `productos.html`: como el pop-up ya sale estando en la colección, un
+  botón que llevara ahí de nuevo no serviría de nada.
 - Sale a los **700 ms** de cargar (dar tiempo a que pinte la página).
 - Diseño original: una vez cerrado, no vuelve a salir nunca (se guarda en
   `localStorage`, clave `popupPreventaCerrado`).
@@ -93,9 +101,6 @@ tocar los HTML: aparece en todas las páginas automáticamente.
   `script.js`, justo donde arranca el pop-up. El cliente avisará cuándo
   volver a `false` para que recupere el comportamiento de "una vez y no
   más".
-- **No sale en `reservar.html`** a propósito: ahí la persona ya está
-  rellenando el formulario y un aviso que la devuelve a la colección
-  trabaja en contra de la conversión que estamos midiendo.
 - Se cierra con la ×, con Escape, pulsando fuera, o con el botón
   "Ver la colección".
 
