@@ -26,9 +26,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="productos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="supabase-config.js" defer></script>
+<script src="productos.js" defer></script>
 </head>
 <body data-page="historia">
 
@@ -119,38 +119,114 @@
     </div>
   </div>
 
-  <!-- ===== HISTORIA DE LA MARCA ===== -->
+  <!-- ===== HERO DE MARCA =====
+       Antes esto era un h2 metido dentro de la sección de texto; ahora es
+       el h1 real de la página (no había ninguno) y va suelto arriba, con
+       mucho aire, como apertura editorial. -->
+  <section class="historia-hero">
+    <p class="eyebrow reveal">Quiénes somos</p>
+    <h1 class="reveal">Somos un pedacito<br>de lo que regalamos</h1>
+  </section>
+
+  <!-- ===== HISTORIA DE COZUMEL =====
+       Mismo texto de siempre, solo reordenado y con más espacio para
+       respirar. Nada de esto es nuevo: ya vivía en esta página. -->
   <section class="historia">
     <div class="historia-body">
-      <p class="eyebrow">Quiénes somos</p>
-      <h2>Somos un pedacito<br>de lo que regalamos</h2>
-      <p>Por eso Cozumel nace desde un lugar muy personal: cada pieza está hecha con amor, pensada para llevar algo más que un accesorio: una memoria, un momento, una historia que solo tú y esa persona conocen</p>
-      <p>Porque lo mejor que podemos hacer en esta vida es compartir. Y compartir empieza por elegir bien: un regalo que tenga significado, que se sienta, que se recuerde</p>
-      <blockquote class="pull-quote">En Cozumel creemos que un buen regalo no se olvida. Se lleva puesto</blockquote>
-      <p>Que las personas que más quieres lleven siempre un pedacito de ti</p>
-      <p class="historia-firma">Cozumel, un pedacito de lo que regalamos</p>
+      <p class="eyebrow reveal">Nuestra historia</p>
+      <p class="reveal">Cozumel nace desde un lugar muy personal: cada pieza está hecha con amor, pensada para llevar algo más que un accesorio: una memoria, un momento, una historia que solo tú y esa persona conocen</p>
+      <p class="reveal">Porque lo mejor que podemos hacer en esta vida es compartir. Y compartir empieza por elegir bien: un regalo que tenga significado, que se sienta, que se recuerde</p>
+      <blockquote class="pull-quote reveal">En Cozumel creemos que un buen regalo no se olvida. Se lleva puesto</blockquote>
     </div>
-    <div class="historia-media" aria-hidden="true"><span class="ph-tag">foto del taller · pendiente</span></div>
+  </section>
+
+  <!-- ===== QUÉ SIGNIFICA REGALAR UNA JOYA PERSONALIZADA =====
+       Reutiliza frases ya existentes en el sitio (el subtítulo del hero
+       de inicio y la nota de personalizar.html), no texto nuevo. -->
+  <section class="historia-bloque">
+    <p class="eyebrow reveal">Por qué personalizar</p>
+    <p class="reveal">Un collar con su nombre, su fecha o tu mensaje, grabado a mano, para que siempre lleven un pedacito de ti</p>
+    <p class="reveal">El grabado lo hace a mano un artesano, pieza a pieza</p>
+  </section>
+
+  <!-- ===== QUÉ QUEREMOS TRANSMITIR ===== -->
+  <section class="historia-bloque">
+    <p class="eyebrow reveal">Qué queremos transmitir</p>
+    <p class="reveal">Que las personas que más quieres lleven siempre un pedacito de ti</p>
+    <p class="historia-firma reveal">Cozumel, un pedacito de lo que regalamos</p>
+  </section>
+
+  <!-- ===== GALERÍA LIFESTYLE =====
+       Fotos reales pendientes (mismo criterio que "Cozumel Stories" en
+       inicio): los pies de foto describen el TIPO de imagen que irá ahí
+       (taller, grabado, pieza terminada), no una escena inventada. -->
+  <section class="historia-galeria">
+    <p class="eyebrow reveal">Momentos Cozumel</p>
+    <div class="historia-fotos">
+      <figure class="historia-foto reveal">
+        <div class="historia-foto-capa"><span class="ph-tag">imagen pendiente</span></div>
+        <figcaption>El taller</figcaption>
+      </figure>
+      <figure class="historia-foto reveal">
+        <div class="historia-foto-capa"><span class="ph-tag">imagen pendiente</span></div>
+        <figcaption>El grabado, a mano</figcaption>
+      </figure>
+      <figure class="historia-foto reveal">
+        <div class="historia-foto-capa"><span class="ph-tag">imagen pendiente</span></div>
+        <figcaption>Una pieza terminada</figcaption>
+      </figure>
+    </div>
   </section>
 
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-inner">
-      <span class="footer-olas" aria-hidden="true"></span>
-      <nav class="footer-nav">
-        <a href="index.html">Inicio</a>
-        <a href="productos.html">La colección</a>
-        <a href="historia.html">Quiénes somos</a>
+      <a class="footer-marca" href="index.html">Cozumel</a>
+      <p class="footer-claim">Regala un pedacito de ti.</p>
+
+      <nav class="footer-nav" aria-label="Enlaces del pie de página">
+        <a href="productos.html">Colección</a>
+        <a href="personalizar.html">Personaliza</a>
+        <a href="historia.html">Nuestra historia</a>
         <a href="faq.html">FAQ</a>
-        <a href="comprar.html">Comprar</a>
         <a href="contacto.html">Contacto</a>
       </nav>
-      <p class="footer-tagline">Cozumel, somos un pedacito de lo que regalamos</p>
+
+      <div class="footer-grupos">
+        <div class="footer-grupo">
+          <span class="footer-grupo-titulo">Legal</span>
+          <span class="footer-item">Aviso legal <em>(próximamente)</em></span>
+          <span class="footer-item">Privacidad <em>(próximamente)</em></span>
+          <span class="footer-item">Cookies <em>(próximamente)</em></span>
+          <span class="footer-item">Términos y condiciones <em>(próximamente)</em></span>
+        </div>
+        <div class="footer-grupo">
+          <span class="footer-grupo-titulo">Síguenos</span>
+          <span class="footer-item">Instagram <em>(muy pronto)</em></span>
+          <span class="footer-item">TikTok <em>(muy pronto)</em></span>
+        </div>
+      </div>
+
+      <span class="footer-olas" aria-hidden="true"></span>
+      <p class="footer-tagline">Cozumel, somos un pedacito de lo que regalamos.</p>
     </div>
   </footer>
 
+  <!-- ===== VOLVER ARRIBA (solo móvil) =====
+       Aparece tras hacer scroll; volver-arriba.js decide cuándo mostrarlo
+       y hace el scroll suave al pulsar. -->
+  <button type="button" class="volver-arriba" id="volver-arriba" aria-label="Volver arriba" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V5"/>
+      <path d="M6 11l6-6 6 6"/>
+    </svg>
+  </button>
+
 </div>
 
-<script src="script.js"></script>
+<script src="revelar.js"></script>
+<script src="transiciones.js" defer></script>
+<script src="volver-arriba.js" defer></script>
+<script src="script.js" defer></script>
 </body>
 </html>

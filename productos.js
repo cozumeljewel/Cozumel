@@ -126,7 +126,7 @@ const PRODUCTOS = [
       'Piedra y flor según el mes de nacimiento',
     ],
     cierre: 'Su mes, su piedra, su collar',
-    foto: 'img/collar-destino.png',
+    foto: 'img/collar-destino.jpg',
     precio: null,
     forma: 'flor',
     campos: ['mes'],

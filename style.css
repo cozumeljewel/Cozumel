@@ -96,32 +96,12 @@
 html{scroll-behavior:smooth;}
 
 /* ---------- TRANSICIÓN SUAVE ENTRE PÁGINAS ----------
-   View Transitions API nativa del navegador, entre documentos: la
-   propia página se encarga de capturar cómo se veía antes de navegar y
-   cómo se ve la nueva, y hace un fundido entre las dos. Sin JavaScript,
-   sin librería, sin tocar la navegación de cada enlace uno a uno.
-   Funciona igual con atrás/adelante (el navegador ya lo gestiona), y en
-   los navegadores que todavía no la soportan (Firefox, Safari) esta
-   regla no hace nada: la navegación sigue siendo la de siempre, sin
-   ningún error ni comportamiento raro. */
-@view-transition{
-  navigation:auto;
-}
-/* Fundido rápido, no el cross-fade por defecto (algo más lento): que se
-   note pero sin retrasar nada. */
-::view-transition-old(root), ::view-transition-new(root){
-  animation-duration:.16s;
-  animation-timing-function:ease-out;
-}
-@media (prefers-reduced-motion:reduce){
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*){
-    animation:none !important;
-  }
-}
-/* Respaldo para Firefox/Safari (sin @view-transition nativo): lo activa
-   transiciones.js solo si detecta que el navegador no la soporta. Un
-   fundido de salida brevísimo antes de navegar; no hay fundido de
-   entrada (arriesgaría dejar la página en blanco si algo falla). */
+   Se probó la View Transitions API nativa del navegador (@view-transition
+   en CSS), pero en el mundo real (red lenta, navegación interrumpida) el
+   navegador la aborta a medio camino y a veces deja la página sin pintar
+   del todo — causó más de un reporte de "no se ven los productos". Se
+   quitó la parte nativa; queda solo el fundido por JavaScript de abajo
+   (transiciones.js), mismo para todos los navegadores, sin ese riesgo. */
 html.is-leaving body{
   opacity:0;
 }
@@ -197,7 +177,7 @@ section[id]{scroll-margin-top:var(--header-h);}
 
 /* Las olas sustituyen al filete dorado bajo los títulos de sección */
 .personalize h2::after,
-.historia h2::after,
+.historia-hero h1::after,
 .faq h2::after,
 .reserva h2::after,
 .contacto h2::after,
@@ -209,7 +189,6 @@ section[id]{scroll-margin-top:var(--header-h);}
   background-repeat:no-repeat; background-position:center; background-size:contain;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 118 20'%3E%3Cpath d='M3,10 Q17,-2 31,10 T59,10 T87,10 T115,10' fill='none' stroke='%23A8873F' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 }
-.historia h2::after{margin-left:0;}
 
 /* Olas en espuma bajo el titular del CTA final (fondo oscuro) */
 .final-cta h2::after{
@@ -316,6 +295,33 @@ section[id]{scroll-margin-top:var(--header-h);}
 @media (prefers-reduced-motion:reduce){
   .burbuja-contacto{transition:none;}
   .burbuja-contacto:active{transform:none;}
+}
+
+/* ---------- VOLVER ARRIBA (solo móvil) ----------
+   volver-arriba.js le quita el "hidden" al cargar y luego alterna
+   ".visible" según el scroll. Abajo a la izquierda (la burbuja de
+   contacto y el CTA sticky viven a la derecha / a todo lo ancho, así
+   nunca se pisan). */
+.volver-arriba{
+  position:fixed; z-index:80;
+  left:calc(16px + env(safe-area-inset-left));
+  bottom:calc(90px + env(safe-area-inset-bottom));
+  width:44px; height:44px; border-radius:50%; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--deep); color:var(--foam);
+  box-shadow:0 6px 18px rgba(11,46,51,.25);
+  opacity:0; transform:translateY(8px); pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
+}
+.volver-arriba.visible{opacity:1; transform:translateY(0); pointer-events:auto;}
+.volver-arriba svg{width:20px; height:20px;}
+.volver-arriba:active{transform:scale(.92);}
+@media (prefers-reduced-motion:reduce){
+  .volver-arriba{transition:none;}
+  .volver-arriba:active{transform:none;}
+}
+@media (min-width:900px){
+  .volver-arriba{display:none;}
 }
 
 .popup-contacto-link{
@@ -773,12 +779,12 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   padding:56px 24px 60px; background:var(--marfil); text-align:center;
 }
 .coleccion h2{
-  font-family:'Playfair Display'; font-weight:700; font-size:30px; color:var(--negro-suave);
+  font-family:'Playfair Display'; font-weight:700; font-size:30px; color:var(--deep);
   margin-top:10px; line-height:1.15;
 }
 .coleccion-intro{
-  margin:12px auto 0; max-width:32ch; font-family:'Playfair Display'; font-style:italic;
-  font-size:16px; color:var(--negro-tenue);
+  margin:12px auto 0; max-width:32ch;
+  font-size:15px; color:var(--ink-soft);
 }
 .producto-grid{
   margin-top:52px; display:grid; grid-template-columns:1fr; gap:56px;
@@ -833,17 +839,17 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 }
 .producto-body{padding:20px 4px 0; text-align:center;}
 .producto-body h3{
-  font-family:'Playfair Display'; font-weight:700; font-size:21px; color:var(--negro-suave);
+  font-family:'Playfair Display'; font-weight:700; font-size:21px; color:var(--deep);
 }
 .producto-precio{
-  margin-top:8px; font-family:'Playfair Display'; font-size:16px; color:var(--negro-tenue);
+  margin-top:8px; font-family:'Playfair Display'; font-size:16px; color:var(--ink-soft);
 }
 .producto-cta{
   display:inline-block; margin-top:10px; font-size:11.5px; letter-spacing:.1em;
-  text-transform:uppercase; color:var(--negro-tenue); font-weight:500;
+  text-transform:uppercase; color:var(--ink-soft); font-weight:500;
   transition:color .2s;
 }
-.producto-card:hover .producto-cta{color:var(--negro-suave);}
+.producto-card:hover .producto-cta{color:var(--deep);}
 
 /* Microinteracciones de hover que implican movimiento (zoom de la foto,
    el nombre subiendo un poco, el CTA desplazándose): solo para quien no
@@ -980,28 +986,57 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 .swatch.activo .dot{border-color:var(--deep);}
 .swatch.activo .mes-abr{color:var(--deep); font-weight:600;}
 
-/* ---------- 3. HISTORIA ---------- */
-.historia{background:var(--shallow); padding:56px 24px 50px;}
-.historia .eyebrow{text-align:left;}
-.historia h2{
-  font-family:'Playfair Display'; font-weight:900; font-size:30px; line-height:1.08;
-  color:var(--deep); margin:12px 0 20px;
+/* ---------- 3. HISTORIA (página "Quiénes somos") ----------
+   Página de storytelling, no una sección corporativa suelta: hero grande,
+   varios bloques de texto con mucho aire entre sí y una galería al final.
+   Todo centrado, ancho de lectura corto (44-60ch), tipografía editorial. */
+.historia-hero{
+  padding:var(--space-7) var(--space-5) var(--space-6);
+  text-align:center;
 }
-.historia p{font-size:15px; color:var(--ink); margin-bottom:16px; max-width:44ch;}
+.historia-hero h1{
+  font-family:var(--font-display); font-weight:900; font-size:clamp(32px,8vw,52px);
+  line-height:1.12; color:var(--deep); margin-top:14px;
+}
+
+.historia{background:var(--shallow); padding:var(--space-6) var(--space-5);}
+.historia .eyebrow{text-align:center;}
+.historia-body{max-width:52ch; margin:0 auto; text-align:center;}
+.historia p{font-size:16px; color:var(--foreground); margin:0 auto var(--space-4); max-width:44ch;}
 .pull-quote{
-  margin:24px 0; padding:18px 0 18px 20px; border-left:2px solid var(--gold);
-  font-family:'Playfair Display'; font-style:italic; font-weight:500;
-  font-size:20px; line-height:1.35; color:var(--sea-dark);
+  margin:var(--space-6) auto 0; padding:0; max-width:36ch;
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  font-size:22px; line-height:1.35; color:var(--sea-dark);
 }
-/* Firma que cierra el texto de marca */
+
+/* Los tres bloques de después (origen, por qué personalizar, qué
+   transmitimos): mismo patrón, sin caja ni fondo, solo aire entre uno y
+   otro para que se lean como capítulos, no como tarjetas. */
+.historia-bloque{
+  padding:var(--space-6) var(--space-5); max-width:52ch; margin:0 auto;
+  text-align:center;
+}
+.historia-bloque p{font-size:16px; color:var(--foreground); margin:0 auto var(--space-3); max-width:44ch;}
 .historia-firma{
-  margin-top:26px; font-family:'Playfair Display'; font-style:italic;
+  margin-top:var(--space-4); font-family:var(--font-display); font-style:italic;
   font-size:17px; color:var(--sea-dark);
 }
 
-.historia-media{
-  margin-top:28px; height:62vw; max-height:300px; position:relative; border-radius:2px;
+/* Galería lifestyle: fotos grandes apiladas, una sola columna incluso en
+   escritorio (a propósito — lee más editorial que un mosaico apretado). */
+.historia-galeria{padding:var(--space-6) var(--space-5) var(--space-7); text-align:center;}
+.historia-fotos{
+  display:flex; flex-direction:column; gap:var(--space-5);
+  max-width:640px; margin:var(--space-5) auto 0;
+}
+.historia-foto{position:relative;}
+.historia-foto-capa{
+  position:relative; aspect-ratio:4/5; border-radius:var(--radius-sm);
   background:linear-gradient(155deg, var(--surf) 0%, var(--sea) 45%, var(--deep) 100%);
+}
+.historia-foto-capa .ph-tag{position:absolute; top:14px; left:14px;}
+.historia-foto figcaption{
+  margin-top:10px; font-size:13px; letter-spacing:.04em; color:var(--muted);
 }
 
 /* ---------- 4. CONFIANZA ---------- */
@@ -1353,39 +1388,6 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   .cta-sticky.visible{transition:none;}
 }
 
-/* ---------- CURSOR PERSONALIZADO (solo escritorio con ratón) ----------
-   cursor.js decide si se activa (hover:hover + pointer:fine) y añade
-   .cursor-custom-activo a <html>: sin esa clase, ninguna regla de aquí
-   hace nada y el cursor nativo queda intacto (táctil, o si JS falla).
-   Sobre inputs/textareas se oculta del todo y se restaura el cursor
-   nativo, para no romper la edición de texto. */
-html.cursor-custom-activo, html.cursor-custom-activo *{
-  cursor:none;
-}
-html.cursor-custom-activo input,
-html.cursor-custom-activo textarea,
-html.cursor-custom-activo select,
-html.cursor-custom-activo [contenteditable="true"]{
-  cursor:auto !important;
-}
-.cursor-custom{
-  position:fixed; top:0; left:0; z-index:9999; pointer-events:none;
-  width:10px; height:10px; border-radius:50%;
-  background:var(--deep);
-  display:flex; align-items:center; justify-content:center;
-  transition:width .18s ease, height .18s ease, background-color .18s ease, opacity .15s ease;
-}
-.cursor-custom-texto{
-  opacity:0; font-family:'Jost'; font-size:11px; font-weight:500; letter-spacing:.04em;
-  color:var(--foam); white-space:nowrap; transition:opacity .12s ease;
-}
-.cursor-custom--link{width:18px; height:18px; background:var(--gold-deep);}
-.cursor-custom--ver{width:56px; height:56px; background:rgba(11,46,51,.85);}
-.cursor-custom--ver .cursor-custom-texto{opacity:1;}
-.cursor-custom--oculto{opacity:0;}
-@media (prefers-reduced-motion:reduce){
-  .cursor-custom, .cursor-custom-texto{transition:none;}
-}
 
 /* ---------- 7. FAQ ---------- */
 .faq{padding:44px 24px 20px; background:var(--white);}
@@ -1509,7 +1511,7 @@ details p{margin-top:10px; font-size:13.5px; color:var(--ink); line-height:1.55;
   text-align:center; margin-top:8px;
 }
 .contacto-intro{
-  margin:12px auto 0; max-width:40ch; text-align:center; font-size:14.5px; color:var(--ink);
+  margin:12px auto 0; max-width:40ch; text-align:center; font-size:14.5px; color:var(--ink-soft);
 }
 .contact-form{margin-top:30px; display:flex; flex-direction:column; gap:16px;}
 .form-note{font-size:11.5px; color:var(--ink-soft); text-align:center;}
@@ -1787,15 +1789,15 @@ footer{
   .producto-grid{grid-template-columns:1fr 1fr; gap:64px 48px; margin-top:64px;}
   .producto-card:nth-child(2n){margin-top:96px;}
 
-  /* 3. HISTORIA */
-  .historia{
-    display:grid; grid-template-columns:1fr 1fr; align-items:center;
-    column-gap:70px; padding:110px 90px;
-  }
-  .historia h2{font-size:44px; margin:14px 0 24px;}
-  .historia p{font-size:16px;}
-  .pull-quote{font-size:24px; margin:30px 0;}
-  .historia-media{margin-top:0; height:520px; max-height:none;}
+  /* 3. HISTORIA (página "Quiénes somos"): más aire, mismo layout de una
+     columna centrada que en móvil — a este ancho de lectura no hace
+     falta partirlo en columnas, y se mantiene la sensación editorial. */
+  .historia-hero{padding:var(--space-8) var(--space-6) var(--space-7);}
+  .historia{padding:var(--space-7) var(--space-6);}
+  .pull-quote{font-size:26px;}
+  .historia-bloque{padding:var(--space-7) var(--space-6);}
+  .historia-fotos{max-width:760px;}
+  .historia-foto-capa{aspect-ratio:16/10;}
 
   /* 4. CONFIANZA: los tres bloques ya no tienen el mismo ancho (depende
      de si el texto es "Pieza única" o "Grabado por artesanos"), así que

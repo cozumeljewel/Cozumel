@@ -271,32 +271,6 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
 })();
 
 
-/* ---------- Aparición progresiva al hacer scroll ----------
-   Genérico: actúa sobre cualquier ".reveal" que haya en la página (por
-   ahora, la cabecera y las tarjetas de la colección). Si no hay ninguno,
-   no hace nada. Respeta "menos movimiento", y si el navegador no soporta
-   IntersectionObserver, todo se muestra directamente sin animar. */
-const elementosReveal = document.querySelectorAll('.reveal');
-if (elementosReveal.length) {
-  const prefiereMenosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!('IntersectionObserver' in window) || prefiereMenosMovimiento) {
-    elementosReveal.forEach(el => el.classList.add('reveal-visto'));
-  } else {
-    const observadorReveal = new IntersectionObserver((entradas, obs) => {
-      entradas.forEach(entrada => {
-        if (entrada.isIntersecting) {
-          entrada.target.classList.add('reveal-visto');
-          obs.unobserve(entrada.target);
-        }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
-
-    elementosReveal.forEach(el => observadorReveal.observe(el));
-  }
-}
-
-
 /* =========================================================
    PÁGINA: PERSONALIZAR (personalizar.html)
    ========================================================= */
