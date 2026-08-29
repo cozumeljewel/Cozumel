@@ -28,6 +28,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="productos.js"></script>
 </head>
 <body data-page="inicio">
 
@@ -187,6 +188,12 @@
         <p class="personaliza-demo-nota">Así se vería tu grabado, a modo de ejemplo</p>
       </div>
     </div>
+
+    <!-- Las tarjetas las genera script.js, filtrando productos.js a las
+         piezas que sí se pueden grabar (reutiliza la misma función que
+         la colección, no se repite el código). -->
+    <p class="personaliza-demo-subtitulo reveal">Piezas que puedes personalizar</p>
+    <div class="producto-grid personaliza-demo-grid" id="personaliza-demo-grid"></div>
   </section>
 
   <!-- ===== FOOTER ===== -->
