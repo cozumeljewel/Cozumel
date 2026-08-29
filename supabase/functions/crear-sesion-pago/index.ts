@@ -17,9 +17,40 @@ const SITE_URL = "https://cozumeljewelry.es";
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });
 
-const jsonHeaders = { "Content-Type": "application/json" };
+// La web y esta función viven en dominios distintos (cozumeljewelry.es y
+// supabase.co), así que el navegador exige CORS: manda primero una
+// petición OPTIONS de permiso y, si no la contesta bien, bloquea el POST
+// sin llegar a enviarlo. Sin esto el pago fallaba siempre con "no se pudo
+// conectar", sin más pista, porque el navegador cortaba antes de salir.
+//
+// El control de acceso de verdad lo hace el token de sesión (más abajo),
+// no esta lista: aquí solo se declara desde qué webs se puede llamar.
+const ORIGENES_PERMITIDOS = [
+  "https://cozumeljewelry.es",
+  "https://www.cozumeljewelry.es",
+];
+
+function cabecerasCors(origen: string | null): Record<string, string> {
+  const esLocal = origen !== null && /^http:\/\/localhost:\d+$/.test(origen);
+  const permitido = origen !== null && (ORIGENES_PERMITIDOS.includes(origen) || esLocal);
+  return {
+    "Access-Control-Allow-Origin": permitido ? origen : ORIGENES_PERMITIDOS[0],
+    "Access-Control-Allow-Headers": "authorization, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    // El navegador debe cachear por origen, no servir a uno la respuesta del otro.
+    "Vary": "Origin",
+  };
+}
 
 Deno.serve(async (req) => {
+  const cors = cabecerasCors(req.headers.get("Origin"));
+  const jsonHeaders = { "Content-Type": "application/json", ...cors };
+
+  // Petición de permiso previa del navegador: se contesta y ya está.
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: cors });
+  }
+
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ error: "Método no permitido" }), {
       status: 405,
