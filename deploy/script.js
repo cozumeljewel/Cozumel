@@ -271,50 +271,6 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
 })();
 
 
-/* =========================================================
-   HAZLA TUYA (index.html) — DEMO VISUAL
-
-   Ojo: esto NO está conectado a Supabase ni al flujo real de compra.
-   Solo dibuja una placa de ejemplo mientras la persona escribe, para que
-   entienda el concepto de grabado antes de llegar a elegir una pieza de
-   verdad. La personalización real (ligada a la pieza y sus campos
-   concretos: nombre/fecha/mensaje/mes) vive en personalizar.html y usa
-   sus propias funciones (lineasDePieza, actualizarResumen, más arriba en
-   este archivo) — esta demo no las toca ni las reutiliza a propósito,
-   para que quede claro que son dos cosas distintas. Cuando se quiera
-   sustituir esta demo por algo conectado de verdad, se puede sustituir
-   este bloque entero sin tocar nada de la lógica real.
-   ========================================================= */
-(function () {
-  const input = document.getElementById('demo-grabado');
-  const textoEl = document.getElementById('demo-grabado-texto');
-  const numEl = document.getElementById('demo-grabado-num');
-  if (!input || !textoEl || !numEl) return;
-
-  const EJEMPLO = 'ADRI';
-
-  const actualizarPlaca = () => {
-    const valor = input.value.trim();
-    textoEl.textContent = valor ? valor.toUpperCase() : EJEMPLO;
-    textoEl.classList.toggle('personaliza-demo-texto--ejemplo', !valor);
-
-    // Reinicia la animación de entrada en cada cambio (si el usuario no
-    // pidió menos movimiento): quitar y volver a poner la clase no
-    // repite la animación sin forzar antes un reflow.
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      textoEl.classList.remove('anim');
-      void textoEl.offsetWidth;
-      textoEl.classList.add('anim');
-    }
-  };
-
-  input.addEventListener('input', () => {
-    numEl.textContent = String(input.value.length);
-    actualizarPlaca();
-  });
-})();
-
-
 /* ---------- Aparición progresiva al hacer scroll ----------
    Genérico: actúa sobre cualquier ".reveal" que haya en la página (por
    ahora, la cabecera y las tarjetas de la colección). Si no hay ninguno,
