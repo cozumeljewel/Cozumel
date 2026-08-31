@@ -58,6 +58,25 @@ Deno.serve(async (req) => {
     });
   }
 
+  // Todo lo de aquí abajo puede fallar de formas que no se controlan una
+  // a una (Stripe caído, clave mal puesta, timeout de red...). Sin este
+  // try/catch, una excepción no capturada hace que Deno devuelva su
+  // propio error genérico SIN las cabeceras CORS de arriba — y entonces
+  // el navegador lo reporta como "bloqueado por CORS", escondiendo cuál
+  // era el fallo de verdad. Pasó de verdad: el pago fallaba en Vercel/
+  // producción con ese mensaje engañoso.
+  try {
+    return await manejarPago(req, jsonHeaders);
+  } catch (err) {
+    console.error("Error no controlado en crear-sesion-pago:", err);
+    return new Response(
+      JSON.stringify({ error: err instanceof Error ? err.message : "Error inesperado" }),
+      { status: 500, headers: jsonHeaders },
+    );
+  }
+});
+
+async function manejarPago(req: Request, jsonHeaders: Record<string, string>): Promise<Response> {
   const authHeader = req.headers.get("Authorization") ?? "";
 
   // Cliente "en nombre del usuario que llama": las políticas RLS de la
@@ -159,7 +178,7 @@ Deno.serve(async (req) => {
     status: 200,
     headers: jsonHeaders,
   });
-});
+}
 
 function nombreProducto(id: string): string {
   const nombres: Record<string, string> = {
