@@ -191,7 +191,6 @@ section[id]{scroll-margin-top:var(--header-h);}
 .reserva h2::after,
 .contacto h2::after,
 .coleccion h2::after,
-.producto-cabecera h2::after,
 .grabado-banda h3::after,
 .reserva-done h2::after{
   content:""; display:block; width:88px; height:15px; margin:18px auto 0;
@@ -354,6 +353,11 @@ body[data-page="personalizar"] .volver-arriba{
   border-bottom:1px solid var(--border);
   box-shadow:0 1px 0 rgba(198,166,100,.55);
   transition:background-color .3s ease, border-color .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
+  /* Fuerza su propia capa de composición: algunos navegadores integrados
+     (WhatsApp/Instagram in-app) no pintan un elemento fixed/sticky recién
+     cargado hasta el primer scroll, dejando la portada sin cabecera hasta
+     que el usuario desliza. */
+  transform:translateZ(0);
 }
 /* Solo en inicio: el header empieza transparente, flotando sobre el
    hero (por eso pasa a position:fixed aquí, y solo aquí — en el resto
@@ -1096,15 +1100,18 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 /* Sin caja ni borde: el precio se sostiene solo con tipografía y el
    motivo de olas de la marca (el mismo que va bajo el logo y los
    títulos de sección), no un recuadro de "aquí falta un dato". */
-.price-placeholder{margin:26px auto 0; text-align:center;}
+.price-placeholder{margin:18px auto 0; padding:0 24px; text-align:center;}
 .price-placeholder > span{
-  font-family:'Jost'; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--sea-dark);
+  font-family:'Jost'; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--sea-dark);
 }
 .price-placeholder strong{
-  display:block; margin-top:8px; font-family:'Playfair Display'; font-weight:700;
-  font-size:36px; letter-spacing:.01em; color:var(--deep);
+  display:block; margin-top:4px; font-family:'Playfair Display'; font-weight:600;
+  font-size:26px; letter-spacing:.01em; color:var(--deep);
 }
-.price-olas{height:14px; margin-top:10px;}
+.price-olas{
+  height:10px; width:60px; margin:6px auto 0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 118 20'%3E%3Cpath d='M3,10 Q17,-2 31,10 T59,10 T87,10 T115,10' fill='none' stroke='%234E9A9B' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
 .price-placeholder em{
   display:block; margin-top:10px; font-style:italic; font-size:12.5px; color:var(--ink-soft);
 }
@@ -1224,9 +1231,13 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   color:var(--sea-dark);
 }
 
-/* Envío, bajo el precio y en el punto de compra */
+/* Envío, bajo el precio y en el punto de compra. Sin línea divisoria:
+   antes llevaba un border-top que, al no tener .price-placeholder
+   padding propio, se estiraba de borde a borde de la pantalla y
+   quedaba descuadrado frente al resto del bloque, que sí iba con
+   márgenes. Ahora es solo texto, igual de centrado que el precio. */
 .compra-envio{
-  margin-top:10px; padding-top:10px; border-top:1px solid var(--line-2);
+  margin-top:10px;
   font-size:12px; letter-spacing:.1em; text-transform:uppercase;
   color:var(--sea-dark); font-weight:500;
 }
