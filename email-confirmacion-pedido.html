@@ -1,0 +1,211 @@
+<!--
+  Cozumel Jewelry — email de confirmación de pedido
+  ==================================================
+  Plantilla genérica y portable (variables {{...}}), pensada para Gmail,
+  Outlook (incluido el motor Word de Outlook de escritorio), Apple Mail y
+  móvil. Por eso:
+    - Todo con tablas + CSS inline, nada de flexbox/grid ni <div> para
+      layout: Outlook de escritorio no los soporta.
+    - Sin fuentes externas (Playfair Display / Jost no cargan en Outlook):
+      pilas de fuentes de sistema que se acercan al mismo carácter editorial
+      (serif tipo Georgia para titulares, sans-serif de sistema para cuerpo).
+    - Sin JavaScript, sin botones (no hay sistema de seguimiento de envío
+      todavía — mejor no fingir uno).
+    - max-width 600px, se lee bien tanto en móvil como en escritorio.
+
+  Variables a sustituir por tu sistema de envío:
+    {{customer_name}}      Nombre del cliente
+    {{product_name}}       Nombre de la pieza
+    {{quantity}}           Cantidad (texto ya formado, ej. "1 unidad")
+    {{total}}              Importe ya formateado, ej. "39,90 €"
+    {{shipping_address}}   Dirección de envío
+    {{engraving_summary}}  Opcional — resumen del grabado, ej. "Nombre: Adri".
+                            Si no hay personalización, omite todo el bloque
+                            marcado más abajo con el comentario ENGRAVING.
+    {{tracking_url}}       Opcional — si tu sistema todavía no genera un
+                            enlace de seguimiento, omite el bloque marcado
+                            con el comentario TRACKING (no dejes el enlace
+                            vacío o roto).
+-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F2F8F8; margin:0; padding:0;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px; background-color:#FFFFFF;">
+
+        <!-- ===== CABECERA ===== -->
+        <tr>
+          <td align="center" style="background-color:#0B2E33; padding:28px 24px;">
+            <img src="https://cozumeljewelry.es/img/email-logo.png" width="150" alt="Cozumel Jewelry" style="display:block; max-width:150px; width:150px; height:auto; border:0;">
+          </td>
+        </tr>
+
+        <!-- ===== CONTENIDO ===== -->
+        <tr>
+          <td style="padding:40px 32px 8px;">
+
+            <!-- Eyebrow -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="font-family:Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#2E6D70; padding-bottom:10px;">
+                  Pedido confirmado
+                </td>
+              </tr>
+            </table>
+
+            <!-- Título -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="font-family:Georgia,'Times New Roman',serif; font-weight:700; font-size:26px; line-height:1.25; color:#14454A; padding-bottom:20px;">
+                  Tu pedido está confirmado
+                </td>
+              </tr>
+            </table>
+
+            <!-- Saludo -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="font-family:Helvetica,Arial,sans-serif; font-size:15px; line-height:1.7; color:#12333A; padding-bottom:4px;">
+                  Hola, {{customer_name}}:
+                </td>
+              </tr>
+              <tr>
+                <td align="center" style="font-family:Helvetica,Arial,sans-serif; font-size:15px; line-height:1.7; color:#12333A; padding:8px 0 28px;">
+                  ¡Gracias por confiar en Cozumel! Ya recibimos tu pago y estamos preparando tu pedido con mucho cariño. En cuanto esté listo, te lo enviamos a la dirección que nos diste.
+                </td>
+              </tr>
+            </table>
+
+            <!-- Frase emocional -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:32px;">
+              <tr>
+                <td style="border-left:2px solid #C6A664; padding:2px 0 2px 18px;">
+                  <span style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:17px; line-height:1.5; color:#2E6D70;">
+                    Porque no estás regalando solo una joya.<br>Estás regalando un pedacito de ti.
+                  </span>
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <!-- ===== RESUMEN DEL PEDIDO ===== -->
+        <tr>
+          <td style="padding:0 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #D8E8EA; border-bottom:1px solid #D8E8EA;">
+              <tr>
+                <td style="padding:20px 0 8px; font-family:Helvetica,Arial,sans-serif; font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; color:#4A6B6E;">
+                  Tu pedido
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0 0 18px; font-family:Georgia,'Times New Roman',serif; font-size:19px; color:#14454A;">
+                  {{product_name}}
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:10px 0; border-top:1px solid #F2F8F8;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="font-family:Helvetica,Arial,sans-serif; font-size:13.5px; color:#4A6B6E;">Cantidad</td>
+                      <td align="right" style="font-family:Helvetica,Arial,sans-serif; font-size:13.5px; color:#12333A;">{{quantity}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0; border-top:1px solid #F2F8F8;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="font-family:Helvetica,Arial,sans-serif; font-size:13.5px; color:#4A6B6E;">Total pagado</td>
+                      <td align="right" style="font-family:Helvetica,Arial,sans-serif; font-size:13.5px; font-weight:bold; color:#14454A;">{{total}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0 18px; border-top:1px solid #F2F8F8;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="font-family:Helvetica,Arial,sans-serif; font-size:13.5px; color:#4A6B6E; vertical-align:top;">Enviamos a</td>
+                      <td align="right" style="font-family:Helvetica,Arial,sans-serif; font-size:13.5px; color:#12333A;">{{shipping_address}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- ENGRAVING: quita este <tr> entero si la pieza no lleva grabado -->
+              <tr>
+                <td style="padding:10px 0 18px; border-top:1px solid #F2F8F8;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td style="font-family:Helvetica,Arial,sans-serif; font-size:13.5px; color:#4A6B6E; vertical-align:top;">Tu grabado</td>
+                      <td align="right" style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:14px; color:#14454A;">{{engraving_summary}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- /ENGRAVING -->
+
+            </table>
+          </td>
+        </tr>
+
+        <!-- ===== BLOQUE EMOCIONAL ===== -->
+        <tr>
+          <td style="padding:32px 32px 8px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="font-family:Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#2E6D70; padding-bottom:10px;">
+                  Hecho especialmente para ti
+                </td>
+              </tr>
+              <tr>
+                <td align="center" style="font-family:Helvetica,Arial,sans-serif; font-size:14.5px; line-height:1.7; color:#4A6B6E; padding-bottom:6px;">
+                  Cada pieza de Cozumel lleva algo especial: una historia, un nombre, una fecha o unas palabras que solo significan algo para ustedes dos.
+                </td>
+              </tr>
+              <tr>
+                <td align="center" style="font-family:Helvetica,Arial,sans-serif; font-size:14.5px; line-height:1.7; color:#4A6B6E;">
+                  La tuya pronto estará lista. Te avisaremos en cuanto salga de nuestro taller.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- TRACKING: bloque opcional, solo si {{tracking_url}} existe de verdad -->
+        <!--
+        <tr>
+          <td align="center" style="padding:12px 32px 8px;">
+            <a href="{{tracking_url}}" style="font-family:Helvetica,Arial,sans-serif; font-size:13px; color:#2E6D70; text-decoration:underline;">Seguir mi pedido →</a>
+          </td>
+        </tr>
+        -->
+        <!-- /TRACKING -->
+
+        <!-- ===== FOOTER ===== -->
+        <tr>
+          <td align="center" style="padding:36px 32px 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" style="border-top:1px solid #D8E8EA; padding-top:24px; font-family:Georgia,'Times New Roman',serif; font-weight:700; font-size:14px; letter-spacing:2px; text-transform:uppercase; color:#14454A; padding-bottom:8px;">
+                  Cozumel Jewelry
+                </td>
+              </tr>
+              <tr>
+                <td align="center" style="font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:13px; color:#4A6B6E;">
+                  Somos un pedacito de lo que regalamos.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>
