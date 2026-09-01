@@ -115,14 +115,30 @@
     </div>
   </div>
 
-  <!-- ===== HERO / INICIO ===== -->
+  <!-- ===== HERO / INICIO =====
+       Cozumel es la marca (fija, no cambia); "Un pedacito de ti" es el
+       concepto de la EDICIÓN 01, no el claim permanente de la marca. Para
+       lanzar una Edición 02 solo hay que editar estos dos valores, sin
+       tocar nada más de la sección:
+         editionTitle       -> el <h1>
+         editionDescription -> .hero-sub
+       El bloque .hero-marca (Cozumel + su claim) no forma parte de la
+       edición: se queda igual pase lo que pase con las ediciones. -->
   <section class="hero">
     <div class="hero-media" role="img" aria-label="Adriana llevando piezas de Cozumel Jewelry"></div>
     <div class="hero-copy">
-      <h1>Regala un<br><em>pedacito de ti</em></h1>
-      <p class="hero-sub">Un collar con su nombre, su fecha o tu mensaje, grabado a mano, para que siempre lleven un pedacito de ti</p>
-      <a class="btn btn-primary hero-cta" href="productos.html">Descubrir la colección →</a>
-      <p class="hero-puente">Porque somos un pedacito de lo que regalamos</p>
+      <h1 class="reveal-hero">Un Pedacito<br><em>de ti</em></h1>
+      <p class="hero-sub reveal-hero">Joyas personalizadas para regalar algo que importa</p>
+
+      <div class="hero-marca reveal-hero">
+        <span class="hero-marca-nombre">Cozumel</span>
+        <span class="hero-marca-claim">Lo que importa, se lleva</span>
+      </div>
+
+      <div class="hero-ctas reveal-hero">
+        <a class="btn btn-primary hero-cta" href="productos.html">Descubrir la colección →</a>
+        <a class="hero-cta-secundaria" href="historia.html">Conoce Cozumel</a>
+      </div>
     </div>
   </section>
 
@@ -133,7 +149,7 @@
        sea tan fácil como añadir "background-image" en el div. -->
   <section class="stories">
     <p class="eyebrow reveal">Cozumel Stories</p>
-    <h2 class="reveal">Joyas para las personas que forman parte de ti</h2>
+    <h2 class="reveal">Joyas para las personas que <em>forman parte de ti</em></h2>
     <p class="stories-intro reveal">Un pedacito de Cozumel en la vida real: quien lo lleva puesto, a quién se lo regala, el momento en que se lo pusieron por primera vez</p>
 
     <div class="stories-galeria">

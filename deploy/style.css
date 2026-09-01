@@ -157,10 +157,40 @@ body{
 
 section[id]{scroll-margin-top:var(--header-h);}
 
+/* Etiqueta de sección ("Cozumel Stories", "Quiénes somos"...). En dorado
+   oscuro en vez de turquesa: engancha con las olas doradas que rematan
+   el titular justo debajo, y da un registro más de campaña que de
+   subtítulo. Ese dorado concreto (#7A5F2A) es el mismo que ya usa la
+   insignia de edición — es el oro de marca oscurecido lo justo para
+   llegar a 4.5:1 en texto pequeño, que el --gold-deep no alcanza. */
 .eyebrow{
-  font-size:11px; letter-spacing:.22em; text-transform:uppercase;
-  color:var(--sea-dark); font-weight:500; text-align:center;
+  font-size:12px; letter-spacing:.26em; text-transform:uppercase;
+  color:#7A5F2A; font-weight:600; text-align:center;
 }
+
+/* ---------- TITULARES DE SECCIÓN ----------
+   El recurso de marca del hero ("Un pedacito / de ti", con la segunda
+   parte en cursiva dorada) aplicado a los títulos de sección: el <em>
+   marca la parte emocional del titular. Es el mismo gesto tipográfico
+   en toda la web, no un adorno nuevo.
+
+   El dorado va en --gold-deep, no en --gold: sobre fondo claro el oro
+   normal se queda en ~2.3:1 de contraste. A este tamaño (32px+ cuenta
+   como texto grande) --gold-deep cumple de sobra.
+
+   text-wrap:balance reparte las palabras entre líneas en lugar de dejar
+   una suelta al final — en titulares centrados de 2-3 líneas la
+   diferencia entre "cuidado" y "descuidado" es justo esa. */
+.stories h2, .coleccion h2, .faq-cabecera h2, .contacto h2,
+.personalize h2, .reserva h2, .producto-cabecera h2{
+  text-wrap:balance; letter-spacing:-.012em;
+}
+.stories h2 em, .coleccion h2 em, .faq-cabecera h2 em, .contacto h2 em,
+.personalize h2 em, .reserva h2 em, .producto-cabecera h2 em{
+  font-style:italic; font-weight:500; color:var(--gold-deep);
+}
+/* El titular del CTA final no entra aquí: ya va entero en cursiva dorada
+   sobre fondo oscuro, que es el mismo registro por otra vía. */
 
 .edicion-badge{
   display:inline-block; margin:0 auto 14px; padding:6px 14px;
@@ -193,9 +223,12 @@ section[id]{scroll-margin-top:var(--header-h);}
 .coleccion h2::after,
 .grabado-banda h3::after,
 .reserva-done h2::after{
-  content:""; display:block; width:88px; height:15px; margin:18px auto 0;
+  /* Más estrechas y de trazo más fino que antes (88x15 con trazo 2): a
+     tamaños de titular grandes, unas olas anchas y gruesas competían con
+     el texto en vez de rematarlo. */
+  content:""; display:block; width:64px; height:12px; margin:20px auto 0;
   background-repeat:no-repeat; background-position:center; background-size:contain;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 118 20'%3E%3Cpath d='M3,10 Q17,-2 31,10 T59,10 T87,10 T115,10' fill='none' stroke='%23A8873F' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 118 20'%3E%3Cpath d='M3,10 Q17,-2 31,10 T59,10 T87,10 T115,10' fill='none' stroke='%23A8873F' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 /* Olas en espuma bajo el titular del CTA final (fondo oscuro) */
@@ -577,9 +610,15 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
    otras piezas del sitio (galería de producto), aquí se sustituye a
    propósito por uno editorial de marca premium. */
 .hero{
-  position:relative; overflow:hidden;
+  position:relative; overflow:hidden; box-sizing:border-box;
   display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
   min-height:88vh;
+  /* El contenido está anclado abajo (justify-content:flex-end): en un
+     viewport bajo de verdad (~600px, frecuente en Android en horizontal
+     o con la barra de direcciones desplegada), "Edición 01" podía acabar
+     asomando por debajo de la cabecera fija. Este padding es un suelo que
+     el contenido nunca puede cruzar, pase lo que pase con el alto. */
+  padding-top:calc(var(--header-h) + 16px);
 }
 .hero-media{
   position:absolute; inset:0; z-index:0;
@@ -595,7 +634,6 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
      hay que anclar arriba del todo (0%), si no se recorta la cabeza. */
   background-position:center top, center, center;
   background-repeat:no-repeat;
-  animation:heroMediaFade 1.4s ease-out both;
 }
 /* Velo oscuro: más denso abajo (donde vive el texto), casi transparente
    arriba (para que la foto respire). */
@@ -609,48 +647,82 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 }
 .hero-copy{
   position:relative; z-index:2;
-  padding:0 24px 64px; text-align:center;
+  padding:0 24px 56px; text-align:center;
 }
+
+/* Titular de la edición: mismo tratamiento de siempre en el hero (serif
+   grande en blanco + acento en cursiva dorada con "em"), no un bloque
+   monocromo en mayúsculas — esa es la estética de marca que ya existía
+   y que se mantiene aquí sin más cambio que el texto. */
 .hero-copy h1{
+  margin-top:10px;
   font-family:'Playfair Display'; font-weight:900; font-size:clamp(38px,11vw,52px);
   line-height:1.05; color:var(--foam);
   text-shadow:0 2px 14px rgba(6,26,29,.55);
-  animation:heroRise .9s ease-out .35s both;
 }
-/* El dorado tiene menos luminosidad que el "foam" de arriba, así que
-   contra zonas claras de la foto pierde contraste (reportado en móvil).
-   Una sombra algo más marcada que la del resto del titular lo mantiene
-   legible sin tocar el color de marca. */
+/* El acento dorado va en --gold-soft, no en --gold: el oro de marca es
+   demasiado oscuro para leerse sobre la foto (queda a media luz contra
+   las zonas claras). El oro claro mantiene el color de marca pero con
+   bastante más contraste. Peso algo mayor y doble sombra (una cerrada
+   que perfila la letra + otra abierta que la despega del fondo) para
+   que aguante encima de cualquier foto que se ponga después. */
 .hero-copy h1 em{
-  font-style:italic; font-weight:500; color:var(--gold);
-  text-shadow:0 2px 16px rgba(6,26,29,.75);
+  font-style:italic; font-weight:600; color:var(--gold-soft);
+  text-shadow:0 1px 3px rgba(6,26,29,.85), 0 2px 18px rgba(6,26,29,.7);
 }
 .hero-sub{
   margin:18px auto 0; max-width:32ch; font-size:15px; color:rgba(242,248,248,.88);
-  animation:heroRise .9s ease-out .58s both;
 }
-.hero-copy .btn{margin-top:26px;}
+
+/* Firma de marca: discreta a propósito (más pequeña que la edición de
+   arriba), para que quede claro que "Cozumel · Lo que importa, se lleva"
+   es la marca de siempre y "un pedacito de ti" es solo el nombre de esta
+   edición. Este bloque NO cambia entre ediciones. Sin filete ni caja:
+   solo aire, como el resto del hero — así todo el bloque se lee como un
+   único mensaje centrado, no como tarjetas apiladas a distinto nivel. */
+.hero-marca{margin:26px auto 0; max-width:30ch;}
+.hero-marca-nombre{
+  display:block; font-family:'Jost'; font-size:11px; font-weight:600;
+  letter-spacing:.28em; text-transform:uppercase; color:rgba(242,248,248,.7);
+}
+.hero-marca-claim{
+  display:block; margin-top:6px; font-family:'Playfair Display'; font-style:italic;
+  font-size:14.5px; color:rgba(242,248,248,.75);
+}
+
+.hero-ctas{
+  margin-top:28px; display:flex; flex-direction:column; align-items:center; gap:14px;
+}
 .hero-cta{
-  animation:heroRise .9s ease-out .8s both;
   background:transparent; color:var(--foam); border-color:rgba(242,248,248,.7);
   transition:background .25s, color .25s, border-color .25s;
 }
 .hero-cta:hover{background:var(--foam); color:var(--deep); border-color:var(--foam);}
-/* Línea puente entre el hero y el resto: mismo registro editorial que el
-   titular en cursiva, pero más pequeña para no competir con él. */
-.hero-puente{
-  margin:22px auto 0; font-family:'Playfair Display'; font-style:italic;
-  font-size:14.5px; color:rgba(242,248,248,.75); max-width:32ch;
-  animation:heroRise .9s ease-out 1.02s both;
+/* CTA secundaria: solo texto, sin caja — para que la principal ("Descubrir
+   la colección") siga siendo la única llamada a la acción con peso
+   visual. Lleva a la identidad de marca (Quiénes somos), no a venta. */
+.hero-cta-secundaria{
+  font-family:'Jost'; font-size:13px; letter-spacing:.08em; color:rgba(242,248,248,.85);
+  text-decoration:underline; text-underline-offset:4px; text-decoration-color:rgba(242,248,248,.4);
+  transition:color .2s, text-decoration-color .2s;
 }
+.hero-cta-secundaria:hover{color:var(--foam); text-decoration-color:var(--foam);}
+
 @keyframes heroMediaFade{ from{opacity:0;} to{opacity:1;} }
-@keyframes heroRise{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
-/* Sin animación de entrada para quien pide menos movimiento: todo aparece
-   ya en su sitio, de golpe. */
-@media (prefers-reduced-motion:reduce){
-  .hero-media, .hero-copy h1, .hero-sub, .hero-cta, .hero-puente{
-    animation:none; opacity:1; transform:none;
-  }
+@keyframes heroRise{ from{opacity:0; transform:translateY(16px) scale(.99);} to{opacity:1; transform:translateY(0) scale(1);} }
+/* La entrada escalonada (fondo → edición → titular → subtítulo → firma de
+   marca → CTA) vive SOLO aquí, no como regla base con un "apagado" aparte:
+   ".hero-copy h1" tiene más especificidad que una clase suelta como
+   ".reveal-hero", así que un override posterior con esa clase perdería y
+   la animación se colaría igual con el movimiento reducido activado. Dentro
+   de "no-preference" ese problema no puede pasar — la propiedad no existe
+   en absoluto si el usuario pide menos movimiento. */
+@media (prefers-reduced-motion:no-preference){
+  .hero-media{animation:heroMediaFade 1.4s ease-out both;}
+  .hero-copy h1{animation:heroRise .8s ease-out .18s both;}
+  .hero-sub{animation:heroRise .8s ease-out .38s both;}
+  .hero-marca{animation:heroRise .8s ease-out .56s both;}
+  .hero-ctas{animation:heroRise .8s ease-out .74s both;}
 }
 
 /* ---------- COZUMEL STORIES ----------
@@ -660,8 +732,8 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
    "imagen pendiente" que ya usan las fichas de producto. */
 .stories{padding:64px 24px 56px; background:var(--white); text-align:center;}
 .stories h2{
-  font-family:'Playfair Display'; font-weight:700; font-size:27px; color:var(--deep);
-  margin-top:8px; line-height:1.2; max-width:20ch; margin-left:auto; margin-right:auto;
+  font-family:'Playfair Display'; font-weight:800; font-size:32px; color:var(--deep);
+  margin-top:10px; line-height:1.16; max-width:20ch; margin-left:auto; margin-right:auto;
 }
 .stories-intro{
   margin:14px auto 0; max-width:38ch; font-size:14.5px; color:var(--ink-soft);
@@ -800,8 +872,8 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   padding:56px 24px 60px; background:var(--marfil); text-align:center;
 }
 .coleccion h2{
-  font-family:'Playfair Display'; font-weight:700; font-size:30px; color:var(--deep);
-  margin-top:10px; line-height:1.15;
+  font-family:'Playfair Display'; font-weight:800; font-size:34px; color:var(--deep);
+  margin-top:10px; line-height:1.12;
 }
 .coleccion-intro{
   margin:12px auto 0; max-width:32ch;
@@ -821,8 +893,12 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   flex:1; height:1px;
   background:linear-gradient(to right, transparent, rgba(33,31,28,.22), transparent);
 }
+/* El comentario de arriba ya decía "mismo registro que el subtítulo,
+   Playfair cursiva" pero la regla nunca lo aplicaba — se quedó en texto
+   plano de 14.5px, sin apenas presencia frente al filete a los lados. */
 .coleccion-divisor-texto{
-  font-size:14.5px; color:var(--ink-soft); white-space:nowrap;
+  font-family:'Playfair Display'; font-style:italic; font-weight:600;
+  font-size:20px; color:var(--deep); white-space:nowrap;
 }
 .producto-card{
   display:block; text-decoration:none;
@@ -1809,7 +1885,15 @@ footer{
   .hero{margin-top:56px; min-height:92vh;}
   .hero-copy{padding:0 70px 96px; max-width:760px;}
   .hero-copy h1{font-size:clamp(56px,6.2vw,92px);}
-  .hero-sub{font-size:17px; max-width:42ch;}
+  /* El ritmo vertical de móvil (pensado para un titular de 52px) se queda
+     corto junto a uno de hasta 92px: todo el bloque se veía apelotonado.
+     Estos márgenes escalan con el tamaño del titular. */
+  .hero-sub{margin-top:26px; font-size:17px; max-width:42ch;}
+  .hero-marca{margin-top:40px; max-width:none;}
+  .hero-marca-claim{font-size:15px;}
+  /* Apiladas también en escritorio (no en fila): la principal manda y la
+     secundaria queda debajo, sin competir con ella en la misma línea. */
+  .hero-ctas{margin-top:44px; gap:18px;}
 
   /* Solo en escritorio: el hueco del hero es muy ancho y bajo comparado
      con la foto (vertical), así que a "cover" solo cabría un 43% de su
@@ -1845,7 +1929,7 @@ footer{
      y vertical a la izquierda, dos apaisadas apiladas a la derecha, y una
      fila de tres abajo. Pensado para exactamente 6 tarjetas. */
   .stories{padding:90px 90px 100px;}
-  .stories h2{font-size:34px;}
+  .stories h2{font-size:42px;}
   .stories-intro{font-size:15.5px;}
   .stories-galeria{
     grid-template-columns:repeat(12, 1fr);
@@ -1939,7 +2023,8 @@ footer{
      productos haya (a diferencia del reparto anterior, atado al total
      exacto de piezas: se rompía cada vez que se añadía o quitaba una). */
   .coleccion{padding:110px 90px 120px;}
-  .coleccion h2{font-size:42px;}
+  .coleccion h2{font-size:50px;}
+  .coleccion-divisor-texto{font-size:23px;}
   .coleccion-intro{font-size:18px;}
   .producto-grid{grid-template-columns:1fr 1fr; gap:64px 48px; margin-top:64px;}
   .producto-card:nth-child(2n){margin-top:96px;}
