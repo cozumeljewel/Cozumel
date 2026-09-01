@@ -1008,57 +1008,116 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 .swatch.activo .dot{border-color:var(--deep);}
 .swatch.activo .mes-abr{color:var(--deep); font-weight:600;}
 
-/* ---------- 3. HISTORIA (página "Quiénes somos") ----------
-   Página de storytelling, no una sección corporativa suelta: hero grande,
-   varios bloques de texto con mucho aire entre sí y una galería al final.
-   Todo centrado, ancho de lectura corto (44-60ch), tipografía editorial. */
-.historia-hero{
-  padding:var(--space-7) var(--space-5) var(--space-6);
-  text-align:center;
-}
+/* ---------- 3. "QUIÉNES SOMOS" — página de identidad de marca ----------
+   Editorial, no corporativa: hero + capítulos que alternan texto/foto,
+   ritmo distinto en cada uno (prosa larga, líneas sueltas apiladas, cita
+   destacada), cierre de marca aparte. En móvil todo apilado (foto primero,
+   texto después, siempre en el mismo orden — nunca se invierte con
+   flex/grid tricks que compliquen el orden de lectura); en escritorio
+   (ver min-width:900px más abajo) se vuelve asimétrico de verdad. */
+.historia-hero{padding:var(--space-7) var(--space-5) 0;}
+.qs-hero-texto{text-align:center;}
 .historia-hero h1{
-  font-family:var(--font-display); font-weight:900; font-size:clamp(32px,8vw,52px);
-  line-height:1.12; color:var(--deep); margin-top:14px;
+  font-family:var(--font-display); font-weight:900; font-size:clamp(32px,8vw,46px);
+  line-height:1.16; color:var(--deep); margin-top:14px;
 }
 
-.historia{background:var(--shallow); padding:var(--space-6) var(--space-5);}
-.historia .eyebrow{text-align:center;}
-.historia-body{max-width:52ch; margin:0 auto; text-align:center;}
-.historia p{font-size:16px; color:var(--ink-soft); margin:0 auto var(--space-4); max-width:44ch;}
+/* Capítulos: fondo alterno solo en el que lleva la marca de agua
+   (.historia), el resto respira sobre el fondo base — así cada uno tiene
+   un ritmo visual algo distinto sin convertirse en una fila de tarjetas
+   idénticas. */
+.historia{background:var(--shallow);}
+.qs-capitulo{padding:var(--space-8) var(--space-5);}
+.qs-capitulo-texto{text-align:center; max-width:56ch; margin:0 auto;}
+.qs-capitulo-texto h2{
+  font-family:var(--font-display); font-weight:700; font-size:clamp(24px,5.5vw,32px);
+  line-height:1.25; color:var(--deep); margin-top:10px;
+}
+
+/* Prosa: párrafos normales, ancho de lectura corto */
+.qs-prosa{margin-top:var(--space-5);}
+.qs-prosa p{
+  font-size:16px; line-height:1.7; color:var(--ink-soft);
+  margin:0 auto; max-width:44ch;
+}
+.qs-prosa p + p{margin-top:var(--space-3);}
+
+/* Líneas sueltas ("un nombre. / una fecha. / ..."): cada una es su propio
+   .reveal, así aparecen escalonadas al hacer scroll en vez de todas a la
+   vez — es el único sitio de la página con ese efecto de cascada, para
+   marcar un ritmo distinto al de la prosa. */
+.qs-lineas{margin-top:var(--space-5);}
+.qs-lineas p{
+  font-family:var(--font-display); font-style:italic; font-size:19px;
+  color:var(--sea-dark); line-height:1.5;
+}
+.qs-linea-sola{margin-top:6px; font-weight:600;}
+.qs-lineas p:nth-child(2){transition-delay:.05s;}
+.qs-lineas p:nth-child(3){transition-delay:.1s;}
+.qs-lineas p:nth-child(4){transition-delay:.15s;}
+.qs-lineas p:nth-child(5){transition-delay:.2s;}
+.qs-lineas p:nth-child(6){transition-delay:.25s;}
+
 .pull-quote{
-  margin:var(--space-6) auto 0; padding:0; max-width:36ch;
+  margin:var(--space-6) auto 0; padding:0; max-width:38ch;
   font-family:var(--font-display); font-style:italic; font-weight:500;
-  font-size:22px; line-height:1.35; color:var(--sea-dark);
+  font-size:21px; line-height:1.4; color:var(--sea-dark);
 }
 
-/* Los tres bloques de después (origen, por qué personalizar, qué
-   transmitimos): mismo patrón, sin caja ni fondo, solo aire entre uno y
-   otro para que se lean como capítulos, no como tarjetas. */
-.historia-bloque{
-  padding:var(--space-6) var(--space-5); max-width:52ch; margin:0 auto;
-  text-align:center;
-}
-.historia-bloque p{font-size:16px; color:var(--ink-soft); margin:0 auto var(--space-3); max-width:44ch;}
-.historia-firma{
-  margin-top:var(--space-4); font-family:var(--font-display); font-style:italic;
-  font-size:17px; color:var(--sea-dark);
-}
-
-/* Galería lifestyle: fotos grandes apiladas, una sola columna incluso en
-   escritorio (a propósito — lee más editorial que un mosaico apretado). */
-.historia-galeria{padding:var(--space-6) var(--space-5) var(--space-7); text-align:center;}
-.historia-fotos{
-  display:flex; flex-direction:column; gap:var(--space-5);
-  max-width:640px; margin:var(--space-5) auto 0;
-}
-.historia-foto{position:relative;}
-.historia-foto-capa{
+/* Foto: mismo patrón "imagen pendiente" que ya usa el resto del sitio
+   (degradado de marca + ph-tag), para que sustituir por la foto real más
+   adelante sea solo cambiar el fondo, sin tocar layout. El zoom es un
+   .reveal aparte del de texto: escala más (1.06→1) y más lento (1.1s),
+   para que se note como un gesto fotográfico, no como el mismo fundido
+   del texto. */
+.qs-foto{
   position:relative; aspect-ratio:4/5; border-radius:var(--radius-sm);
   background:linear-gradient(155deg, var(--surf) 0%, var(--sea) 45%, var(--deep) 100%);
+  margin:var(--space-6) auto 0; max-width:520px; overflow:hidden;
 }
-.historia-foto-capa .ph-tag{position:absolute; top:14px; left:14px;}
-.historia-foto figcaption{
-  margin-top:10px; font-size:13px; letter-spacing:.04em; color:var(--muted);
+.qs-foto img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+}
+.qs-foto .ph-tag{position:absolute; top:14px; left:14px; right:14px;}
+/* El transform del zoom va SOLO bajo "no-preference": ".qs-foto.reveal"
+   tiene más especificidad que la regla que apaga el movimiento en
+   ".reveal" (prefers-reduced-motion:reduce), así que si se declarase
+   fuera de este media query le ganaría y el zoom se colaría igual con
+   el movimiento reducido activado. */
+@media (prefers-reduced-motion:no-preference){
+  .qs-foto.reveal{transform:scale(1.06); transition:opacity 1.1s ease, transform 1.1s ease;}
+  .qs-foto.reveal-visto{transform:scale(1);}
+}
+
+.qs-hero .qs-foto{margin-top:var(--space-7);}
+
+/* Menos movimiento en móvil (gran parte del tráfico llega de TikTok/
+   Instagram, en redes lentas): el fundido del texto se acorta un poco y
+   el zoom de foto se suaviza — sigue siendo el mismo efecto, solo menos
+   pronunciado. La versión de escritorio (min-width:900px) usa la
+   intensidad completa definida arriba. */
+@media (max-width:899px) and (prefers-reduced-motion:no-preference){
+  .qs-capitulo .reveal, .qs-hero .reveal{transition-duration:.5s;}
+  .qs-foto.reveal{transform:scale(1.03); transition-duration:.8s;}
+}
+
+/* ---------- CIERRE DE MARCA ----------
+   El paraguas de Cozumel ("Lo que importa, se lleva"), separado a
+   propósito de "un pedacito de ti": vive solo en esta página para que
+   futuras colecciones no tengan que rehacer la identidad de marca. Fondo
+   oscuro (mismo lenguaje que el CTA final del resto del sitio) para
+   cerrar con un ritmo distinto al de los capítulos claros de arriba. */
+.qs-cierre{
+  padding:var(--space-8) var(--space-5); background:var(--abyss);
+  text-align:center;
+}
+.qs-cierre-marca{
+  font-family:var(--font-body); font-size:12px; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--gold-soft);
+}
+.qs-cierre-claim{
+  margin-top:var(--space-3); font-family:var(--font-display); font-style:italic;
+  font-weight:500; font-size:clamp(26px,7vw,36px); color:var(--foam);
 }
 
 /* ---------- 4. CONFIANZA ---------- */
@@ -1850,15 +1909,41 @@ footer{
   .producto-grid{grid-template-columns:1fr 1fr; gap:64px 48px; margin-top:64px;}
   .producto-card:nth-child(2n){margin-top:96px;}
 
-  /* 3. HISTORIA (página "Quiénes somos"): más aire, mismo layout de una
-     columna centrada que en móvil — a este ancho de lectura no hace
-     falta partirlo en columnas, y se mantiene la sensación editorial. */
-  .historia-hero{padding:var(--space-8) var(--space-6) var(--space-7);}
-  .historia{padding:var(--space-7) var(--space-6);}
-  .pull-quote{font-size:26px;}
-  .historia-bloque{padding:var(--space-7) var(--space-6);}
-  .historia-fotos{max-width:760px;}
-  .historia-foto-capa{aspect-ratio:16/10;}
+  /* 3. "QUIÉNES SOMOS": aquí sí se parte en columnas — es la única
+     página del sitio con composición asimétrica de verdad (texto + foto
+     lado a lado, no apilados). El hero lleva la foto a la derecha; los
+     capítulos alternan lado con :nth-of-type, y el modificador
+     ".qs-capitulo--invertido" fuerza el lado contrario cuando hace falta
+     que dos capítulos seguidos no queden con la foto en el mismo sitio. */
+  .historia-hero{
+    padding:var(--space-9) var(--space-7) var(--space-8);
+    display:grid; grid-template-columns:1.1fr .9fr; gap:var(--space-8);
+    align-items:center; text-align:left; max-width:1240px; margin:0 auto;
+  }
+  .qs-hero-texto{text-align:left;}
+  .historia-hero h1::after{margin-left:0; margin-right:auto;}
+  .historia-hero .qs-foto,
+  .qs-hero .qs-foto{margin:0; max-width:none; align-self:stretch; height:100%;}
+  .historia-hero .eyebrow,
+  .qs-capitulo-texto .eyebrow{text-align:left;}
+
+  .qs-capitulo{
+    padding:var(--space-9) var(--space-7);
+    display:grid; grid-template-columns:.9fr 1.1fr; gap:var(--space-9);
+    align-items:center; max-width:1240px; margin:0 auto;
+  }
+  .qs-capitulo-texto{text-align:left; max-width:52ch; margin:0;}
+  .qs-prosa p, .pull-quote{margin-left:0;}
+  .qs-capitulo .qs-foto{margin:0; max-width:none; order:-1;}
+
+  /* Capítulo impar en la columna de texto a la derecha (foto a la
+     izquierda); el modificador invierte ambas cosas a la vez. */
+  .qs-capitulo--invertido{grid-template-columns:1.1fr .9fr;}
+  .qs-capitulo--invertido .qs-capitulo-texto{order:-1;}
+  .qs-capitulo--invertido .qs-foto{order:0;}
+
+  .pull-quote{font-size:24px;}
+  .qs-cierre{padding:var(--space-9) var(--space-7);}
 
   /* 4. CONFIANZA: los tres bloques ya no tienen el mismo ancho (depende
      de si el texto es "Pieza única" o "Grabado por artesanos"), así que

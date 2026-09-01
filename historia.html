@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiénes somos · Cozumel Jewelry</title>
-<meta name="description" content="Somos un pedacito de lo que regalamos. Por qué nace Cozumel">
+<meta name="description" content="Hay cosas que queremos llevar con nosotros. Por qué nace Cozumel">
 <meta name="theme-color" content="#14454A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
 
@@ -13,13 +13,13 @@
 <meta property="og:site_name" content="Cozumel">
 <meta property="og:locale" content="es_ES">
 <meta property="og:title" content="Quiénes somos · Cozumel Jewelry">
-<meta property="og:description" content="Somos un pedacito de lo que regalamos. Por qué nace Cozumel">
+<meta property="og:description" content="Hay cosas que queremos llevar con nosotros. Por qué nace Cozumel">
 <meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Quiénes somos · Cozumel Jewelry">
-<meta name="twitter:description" content="Somos un pedacito de lo que regalamos. Por qué nace Cozumel">
+<meta name="twitter:description" content="Hay cosas que queremos llevar con nosotros. Por qué nace Cozumel">
 <meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,63 +119,137 @@
     </div>
   </div>
 
-  <!-- ===== HERO DE MARCA =====
-       Antes esto era un h2 metido dentro de la sección de texto; ahora es
-       el h1 real de la página (no había ninguno) y va suelto arriba, con
-       mucho aire, como apertura editorial. -->
-  <section class="historia-hero">
-    <p class="eyebrow reveal">Quiénes somos</p>
-    <h1 class="reveal">Somos un pedacito<br>de lo que regalamos</h1>
+  <!-- =========================================================
+       "QUIÉNES SOMOS" — página de identidad de marca, no de venta.
+       Estructura editorial: hero + 4 capítulos asimétricos (texto+foto
+       alternando lado) + cierre de marca. "Un pedacito de ti" es el
+       concepto de ESTA edición (ver home/footer); esta página habla del
+       paraguas de marca ("Lo que importa, se lleva"), para que aguante
+       futuras colecciones sin reescribirse.
+       Los 4 huecos de foto (ph-tag "imagen pendiente") son los que pidió
+       Adri: lifestyle principal, persona llevando la pieza, detalle de
+       pieza, foto emocional. Sustituir por <img> real cuando existan. ===== -->
+
+  <!-- ===== HERO ===== -->
+  <section class="historia-hero qs-hero">
+    <div class="qs-hero-texto">
+      <p class="eyebrow reveal">Quiénes somos</p>
+      <h1 class="reveal">Hay cosas que queremos<br>llevar con nosotros</h1>
+
+      <div class="qs-prosa">
+        <p class="reveal">Cozumel nace de una idea sencilla: hay personas, momentos y recuerdos que queremos sentir cerca, incluso cuando no están</p>
+      </div>
+
+      <div class="qs-lineas">
+        <p class="reveal">A veces es un nombre</p>
+        <p class="reveal">Una fecha</p>
+        <p class="reveal">Una frase que solo vosotros entendéis</p>
+        <p class="reveal">Un lugar</p>
+        <p class="reveal">Una historia</p>
+        <p class="reveal qs-linea-sola">O simplemente alguien</p>
+      </div>
+
+      <div class="qs-prosa">
+        <p class="reveal">Por eso creamos joyas que guardan algo más que un significado. Guardan una parte de lo que somos y de las personas que forman parte de nosotros</p>
+        <p class="reveal">Porque creemos que hay recuerdos que no deberían quedarse solamente en la memoria</p>
+      </div>
+
+      <blockquote class="pull-quote reveal">Algunos merecen llevarse</blockquote>
+    </div>
+
+    <figure class="qs-foto reveal" aria-hidden="true">
+      <span class="ph-tag">imagen pendiente · foto lifestyle principal</span>
+    </figure>
   </section>
 
-  <!-- ===== HISTORIA DE COZUMEL =====
-       Mismo texto de siempre, solo reordenado y con más espacio para
-       respirar. Nada de esto es nuevo: ya vivía en esta página. -->
-  <section class="historia">
-    <div class="historia-body">
+  <!-- ===== CAPÍTULO 1: NUESTRA HISTORIA (lleva la marca de agua) ===== -->
+  <section class="historia qs-capitulo">
+    <figure class="qs-foto reveal" aria-hidden="true">
+      <span class="ph-tag">imagen pendiente · persona llevando la pieza</span>
+    </figure>
+
+    <div class="qs-capitulo-texto">
       <p class="eyebrow reveal">Nuestra historia</p>
-      <p class="reveal">Cozumel nace desde un lugar muy personal: cada pieza está hecha con amor, pensada para llevar algo más que un accesorio: una memoria, un momento, una historia que solo tú y esa persona conocen</p>
-      <p class="reveal">Porque lo mejor que podemos hacer en esta vida es compartir. Y compartir empieza por elegir bien: un regalo que tenga significado, que se sienta, que se recuerde</p>
-      <blockquote class="pull-quote reveal">En Cozumel creemos que un buen regalo no se olvida. Se lleva puesto</blockquote>
+      <h2 class="reveal">Las cosas que importan no siempre se pueden explicar</h2>
+
+      <div class="qs-prosa">
+        <p class="reveal">Cozumel nace de una forma de entender los pequeños detalles. De creer que un regalo no tiene que ser grande para significar mucho. Que una joya puede convertirse en una historia. Y que aquello que elegimos llevar dice algo de nosotros</p>
+        <p class="reveal">Por eso cada pieza está pensada para convertirse en algo personal</p>
+      </div>
+
+      <div class="qs-lineas">
+        <p class="reveal">Algo que tenga un nombre</p>
+        <p class="reveal">Una fecha</p>
+        <p class="reveal">Un recuerdo</p>
+        <p class="reveal qs-linea-sola">O simplemente un significado que solo tú conoces</p>
+      </div>
+
+      <blockquote class="pull-quote reveal">Porque las cosas que importan no siempre se pueden explicar<br>A veces, simplemente, se llevan contigo</blockquote>
     </div>
   </section>
 
-  <!-- ===== QUÉ SIGNIFICA REGALAR UNA JOYA PERSONALIZADA =====
-       Reutiliza frases ya existentes en el sitio (el subtítulo del hero
-       de inicio y la nota de personalizar.html), no texto nuevo. -->
-  <section class="historia-bloque">
-    <p class="eyebrow reveal">Por qué personalizar</p>
-    <p class="reveal">Un collar con su nombre, su fecha o tu mensaje, grabado a mano, para que siempre lleven un pedacito de ti</p>
-    <p class="reveal">El grabado lo hace a mano un artesano, pieza a pieza</p>
-  </section>
+  <!-- ===== CAPÍTULO 2: MÁS QUE UNA JOYA ===== -->
+  <section class="qs-capitulo qs-capitulo--invertido">
+    <figure class="qs-foto reveal" aria-hidden="true">
+      <span class="ph-tag">imagen pendiente · detalle de una pieza</span>
+    </figure>
 
-  <!-- ===== QUÉ QUEREMOS TRANSMITIR ===== -->
-  <section class="historia-bloque">
-    <p class="eyebrow reveal">Qué queremos transmitir</p>
-    <p class="reveal">Que las personas que más quieres lleven siempre un pedacito de ti</p>
-    <p class="historia-firma reveal">Cozumel, un pedacito de lo que regalamos</p>
-  </section>
+    <div class="qs-capitulo-texto">
+      <p class="eyebrow reveal">Más que una joya</p>
+      <h2 class="reveal">Personalizar es hacerla tuya</h2>
 
-  <!-- ===== GALERÍA LIFESTYLE =====
-       Fotos reales pendientes (mismo criterio que "Cozumel Stories" en
-       inicio): los pies de foto describen el TIPO de imagen que irá ahí
-       (taller, grabado, pieza terminada), no una escena inventada. -->
-  <section class="historia-galeria">
-    <p class="eyebrow reveal">Momentos Cozumel</p>
-    <div class="historia-fotos">
-      <figure class="historia-foto reveal">
-        <div class="historia-foto-capa"><span class="ph-tag">imagen pendiente</span></div>
-        <figcaption>El taller</figcaption>
-      </figure>
-      <figure class="historia-foto reveal">
-        <div class="historia-foto-capa"><span class="ph-tag">imagen pendiente</span></div>
-        <figcaption>El grabado, a mano</figcaption>
-      </figure>
-      <figure class="historia-foto reveal">
-        <div class="historia-foto-capa"><span class="ph-tag">imagen pendiente</span></div>
-        <figcaption>Una pieza terminada</figcaption>
-      </figure>
+      <div class="qs-prosa">
+        <p class="reveal">Cada persona tiene algo que quiere recordar. Por eso algunas de nuestras piezas pueden personalizarse para convertirlas en algo único</p>
+      </div>
+
+      <div class="qs-lineas">
+        <p class="reveal">Un nombre</p>
+        <p class="reveal">Una fecha</p>
+        <p class="reveal">Un mensaje</p>
+        <p class="reveal qs-linea-sola">Una palabra</p>
+      </div>
+
+      <div class="qs-prosa">
+        <p class="reveal">El grabado lo hace a mano un artesano, pieza a pieza, para que cada joya tenga su propia historia</p>
+      </div>
+
+      <blockquote class="pull-quote reveal">No queremos que lleves una joya más<br>Queremos que lleves algo que signifique algo para ti</blockquote>
     </div>
+  </section>
+
+  <!-- ===== CAPÍTULO 3: LO QUE QUEREMOS TRANSMITIR ===== -->
+  <section class="qs-capitulo">
+    <figure class="qs-foto reveal" aria-hidden="true">
+      <span class="ph-tag">imagen pendiente · foto emocional, recuerdo/vínculo</span>
+    </figure>
+
+    <div class="qs-capitulo-texto">
+      <p class="eyebrow reveal">Lo que queremos transmitir</p>
+      <h2 class="reveal">Llevar cerca lo que importa</h2>
+
+      <div class="qs-prosa">
+        <p class="reveal">En Cozumel creemos que las joyas pueden ser mucho más que accesorios</p>
+      </div>
+
+      <div class="qs-lineas">
+        <p class="reveal">Pueden ser una forma de recordar</p>
+        <p class="reveal">De regalar</p>
+        <p class="reveal">De conectar</p>
+        <p class="reveal qs-linea-sola">De decir algo sin palabras</p>
+      </div>
+
+      <blockquote class="pull-quote reveal">Y, sobre todo, de llevar contigo un pequeño pedacito de aquello que hace que alguien sea importante para ti</blockquote>
+    </div>
+  </section>
+
+  <!-- ===== CIERRE DE MARCA =====
+       El paraguas: "Lo que importa, se lleva." Vive solo aquí, no en el
+       footer global (eso sigue con el claim de campaña de esta edición) —
+       así queda listo para cuando existan más colecciones, sin tener que
+       rehacer la identidad de marca otra vez. -->
+  <section class="qs-cierre">
+    <p class="qs-cierre-marca reveal">Cozumel</p>
+    <p class="qs-cierre-claim reveal">Lo que importa, se lleva</p>
   </section>
 
   <!-- ===== FOOTER ===== -->
