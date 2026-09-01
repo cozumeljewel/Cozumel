@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiénes somos · Cozumel Jewelry</title>
+<title>Quiénes somos · Cozumel Jewelry</title>
 <meta name="description" content="Hay cosas que queremos llevar con nosotros. Por qué nace Cozumel">
 <meta name="theme-color" content="#14454A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
@@ -12,13 +12,13 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cozumel">
 <meta property="og:locale" content="es_ES">
-<meta property="og:title" content="Quiénes somos · Cozumel Jewelry">
+<meta property="og:title" content="Quiénes somos · Cozumel Jewelry">
 <meta property="og:description" content="Hay cosas que queremos llevar con nosotros. Por qué nace Cozumel">
 <meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Quiénes somos · Cozumel Jewelry">
+<meta name="twitter:title" content="Quiénes somos · Cozumel Jewelry">
 <meta name="twitter:description" content="Hay cosas que queremos llevar con nosotros. Por qué nace Cozumel">
 <meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
 
@@ -132,14 +132,27 @@
 
   <!-- ===== HERO ===== -->
   <section class="historia-hero qs-hero">
-    <div class="qs-hero-texto">
+    <div class="qs-hero-intro">
       <p class="eyebrow reveal">Quiénes somos</p>
-      <h1 class="reveal">Hay cosas que queremos<br>llevar con nosotros</h1>
+      <h1 class="reveal">Hay cosas que queremos llevar con nosotros</h1>
 
       <div class="qs-prosa">
         <p class="reveal">Cozumel nace de una idea sencilla: hay personas, momentos y recuerdos que queremos sentir cerca, incluso cuando no están</p>
       </div>
+    </div>
 
+    <!-- La foto va DENTRO del hero, entre la entradilla y el resto del
+         texto: en móvil rompe el muro de texto (antes había una pantalla
+         entera de letra seguida antes de ver una sola imagen). En
+         escritorio ocupa la columna derecha entera (grid-row 1/-1). -->
+    <figure class="qs-foto reveal" aria-hidden="true">
+      <span class="ph-tag">imagen pendiente · foto lifestyle principal</span>
+    </figure>
+
+    <div class="qs-hero-resto">
+      <!-- Única cascada de frases sueltas de la página: aparecen una a una
+           al hacer scroll. En los capítulos de abajo el mismo contenido va
+           en línea, para que este gesto no se gaste de tanto repetirlo. -->
       <div class="qs-lineas">
         <p class="reveal">A veces es un nombre</p>
         <p class="reveal">Una fecha</p>
@@ -156,16 +169,12 @@
 
       <blockquote class="pull-quote reveal">Algunos merecen llevarse</blockquote>
     </div>
-
-    <figure class="qs-foto reveal" aria-hidden="true">
-      <span class="ph-tag">imagen pendiente · foto lifestyle principal</span>
-    </figure>
   </section>
 
   <!-- ===== CAPÍTULO 1: NUESTRA HISTORIA (lleva la marca de agua) ===== -->
   <section class="historia qs-capitulo">
     <figure class="qs-foto reveal" aria-hidden="true">
-      <span class="ph-tag">imagen pendiente · persona llevando la pieza</span>
+      <span class="ph-tag">imagen pendiente · persona llevando la pieza</span>
     </figure>
 
     <div class="qs-capitulo-texto">
@@ -177,12 +186,8 @@
         <p class="reveal">Por eso cada pieza está pensada para convertirse en algo personal</p>
       </div>
 
-      <div class="qs-lineas">
-        <p class="reveal">Algo que tenga un nombre</p>
-        <p class="reveal">Una fecha</p>
-        <p class="reveal">Un recuerdo</p>
-        <p class="reveal qs-linea-sola">O simplemente un significado que solo tú conoces</p>
-      </div>
+      <p class="qs-linea-inline reveal"><span>Algo que tenga un nombre</span><span>Una fecha</span><span>Un recuerdo</span></p>
+      <p class="qs-linea-inline qs-linea-sola reveal">O simplemente un significado que solo tú conoces</p>
 
       <blockquote class="pull-quote reveal">Porque las cosas que importan no siempre se pueden explicar<br>A veces, simplemente, se llevan contigo</blockquote>
     </div>
@@ -191,7 +196,7 @@
   <!-- ===== CAPÍTULO 2: MÁS QUE UNA JOYA ===== -->
   <section class="qs-capitulo qs-capitulo--invertido">
     <figure class="qs-foto reveal" aria-hidden="true">
-      <span class="ph-tag">imagen pendiente · detalle de una pieza</span>
+      <span class="ph-tag">imagen pendiente · detalle de una pieza</span>
     </figure>
 
     <div class="qs-capitulo-texto">
@@ -202,12 +207,7 @@
         <p class="reveal">Cada persona tiene algo que quiere recordar. Por eso algunas de nuestras piezas pueden personalizarse para convertirlas en algo único</p>
       </div>
 
-      <div class="qs-lineas">
-        <p class="reveal">Un nombre</p>
-        <p class="reveal">Una fecha</p>
-        <p class="reveal">Un mensaje</p>
-        <p class="reveal qs-linea-sola">Una palabra</p>
-      </div>
+      <p class="qs-linea-inline reveal"><span>Un nombre</span><span>Una fecha</span><span>Un mensaje</span><span>Una palabra</span></p>
 
       <div class="qs-prosa">
         <p class="reveal">El grabado lo hace a mano un artesano, pieza a pieza, para que cada joya tenga su propia historia</p>
@@ -220,7 +220,7 @@
   <!-- ===== CAPÍTULO 3: LO QUE QUEREMOS TRANSMITIR ===== -->
   <section class="qs-capitulo">
     <figure class="qs-foto reveal" aria-hidden="true">
-      <span class="ph-tag">imagen pendiente · foto emocional, recuerdo/vínculo</span>
+      <span class="ph-tag">imagen pendiente · foto emocional, recuerdo/vínculo</span>
     </figure>
 
     <div class="qs-capitulo-texto">
@@ -231,12 +231,8 @@
         <p class="reveal">En Cozumel creemos que las joyas pueden ser mucho más que accesorios</p>
       </div>
 
-      <div class="qs-lineas">
-        <p class="reveal">Pueden ser una forma de recordar</p>
-        <p class="reveal">De regalar</p>
-        <p class="reveal">De conectar</p>
-        <p class="reveal qs-linea-sola">De decir algo sin palabras</p>
-      </div>
+      <p class="qs-linea-inline reveal"><span>Una forma de recordar</span><span>De regalar</span><span>De conectar</span></p>
+      <p class="qs-linea-inline qs-linea-sola reveal">De decir algo sin palabras</p>
 
       <blockquote class="pull-quote reveal">Y, sobre todo, de llevar contigo un pequeño pedacito de aquello que hace que alguien sea importante para ti</blockquote>
     </div>

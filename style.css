@@ -1015,30 +1015,43 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
    texto después, siempre en el mismo orden — nunca se invierte con
    flex/grid tricks que compliquen el orden de lectura); en escritorio
    (ver min-width:900px más abajo) se vuelve asimétrico de verdad. */
+/* Alineación: los titulares, las frases sueltas y las citas van
+   centrados (son piezas cortas, de display); la PROSA va siempre a la
+   izquierda. Centrar párrafos largos deja el borde izquierdo distinto en
+   cada línea y se lee como algo descuadrado — es lo que hacía que la
+   página no terminara de verse bien. */
 .historia-hero{padding:var(--space-7) var(--space-5) 0;}
-.qs-hero-texto{text-align:center;}
+.qs-hero-intro, .qs-hero-resto{text-align:center;}
+/* text-wrap:balance reparte las palabras entre líneas en vez de dejar
+   una suelta al final. Sustituye a los <br> forzados, que en móvil
+   partían el titular en sitios raros. Donde no está soportado se
+   comporta como siempre. */
 .historia-hero h1{
-  font-family:var(--font-display); font-weight:900; font-size:clamp(32px,8vw,46px);
+  font-family:var(--font-display); font-weight:900; font-size:clamp(30px,7.6vw,46px);
   line-height:1.16; color:var(--deep); margin-top:14px;
+  text-wrap:balance;
 }
+.qs-capitulo-texto h2, .pull-quote, .qs-linea-inline{text-wrap:balance;}
 
 /* Capítulos: fondo alterno solo en el que lleva la marca de agua
    (.historia), el resto respira sobre el fondo base — así cada uno tiene
    un ritmo visual algo distinto sin convertirse en una fila de tarjetas
    idénticas. */
 .historia{background:var(--shallow);}
-.qs-capitulo{padding:var(--space-8) var(--space-5);}
+.qs-capitulo{padding:var(--space-7) var(--space-5);}
 .qs-capitulo-texto{text-align:center; max-width:56ch; margin:0 auto;}
 .qs-capitulo-texto h2{
   font-family:var(--font-display); font-weight:700; font-size:clamp(24px,5.5vw,32px);
   line-height:1.25; color:var(--deep); margin-top:10px;
 }
 
-/* Prosa: párrafos normales, ancho de lectura corto */
+/* Prosa: alineada a la izquierda incluso dentro de bloques centrados
+   (de ahí el text-align propio), con ancho de lectura corto y centrada
+   como bloque. */
 .qs-prosa{margin-top:var(--space-5);}
 .qs-prosa p{
-  font-size:16px; line-height:1.7; color:var(--ink-soft);
-  margin:0 auto; max-width:44ch;
+  font-size:16px; line-height:1.72; color:var(--ink-soft);
+  margin:0 auto; max-width:40ch; text-align:left;
 }
 .qs-prosa p + p{margin-top:var(--space-3);}
 
@@ -1052,16 +1065,42 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   color:var(--sea-dark); line-height:1.5;
 }
 .qs-linea-sola{margin-top:6px; font-weight:600;}
+
+/* Misma voz que .qs-lineas, pero como un solo bloque compacto: cada
+   fragmento en su línea (un <span> por fragmento) y una única animación
+   de entrada para todo el grupo. La cascada de uno en uno se reserva
+   para el hero, así el gesto no se gasta repitiéndolo en cada capítulo.
+   Se probó ponerlos en una línea separados por "·", pero al partirse en
+   móvil el separador quedaba colgando al principio o al final de la
+   línea; con un fragmento por línea eso no puede pasar. */
+.qs-linea-inline{
+  margin-top:var(--space-5); font-family:var(--font-display); font-style:italic;
+  font-size:19px; line-height:1.42; color:var(--sea-dark);
+  max-width:34ch; margin-left:auto; margin-right:auto;
+}
+.qs-linea-inline span{display:block;}
+.qs-linea-inline + .qs-linea-inline{margin-top:6px;}
+
 .qs-lineas p:nth-child(2){transition-delay:.05s;}
 .qs-lineas p:nth-child(3){transition-delay:.1s;}
 .qs-lineas p:nth-child(4){transition-delay:.15s;}
 .qs-lineas p:nth-child(5){transition-delay:.2s;}
 .qs-lineas p:nth-child(6){transition-delay:.25s;}
 
+/* Cita de cierre de cada capítulo. Antes usaba casi el mismo tamaño y
+   color que .qs-lineas (ambas en cursiva turquesa) y las dos se
+   confundían en pantalla. Ahora sube de tamaño, va en tinta profunda y
+   entra precedida de un filete dorado corto: se lee claramente como el
+   remate del capítulo, no como una línea más. */
 .pull-quote{
-  margin:var(--space-6) auto 0; padding:0; max-width:38ch;
+  margin:var(--space-6) auto 0; padding-top:var(--space-5); max-width:30ch;
   font-family:var(--font-display); font-style:italic; font-weight:500;
-  font-size:21px; line-height:1.4; color:var(--sea-dark);
+  font-size:24px; line-height:1.38; color:var(--deep);
+  position:relative;
+}
+.pull-quote::before{
+  content:""; position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:38px; height:1px; background:var(--gold-deep);
 }
 
 /* Foto: mismo patrón "imagen pendiente" que ya usa el resto del sitio
@@ -1090,6 +1129,15 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 }
 
 .qs-hero .qs-foto{margin-top:var(--space-7);}
+/* En móvil la foto va delante del texto (así está en el HTML): sin este
+   margen el eyebrow del capítulo quedaba pegado al borde de la imagen. */
+.qs-foto + .qs-capitulo-texto,
+.qs-foto + .qs-hero-resto{margin-top:var(--space-6);}
+/* Solo la del hero es vertical (es la protagonista); las de los
+   capítulos van cuadradas. Da un ritmo visual distinto entre la apertura
+   y el cuerpo, y recorta bastante scroll en móvil, donde una vertical a
+   ancho completo se come media pantalla ella sola. */
+.qs-capitulo .qs-foto{aspect-ratio:1;}
 
 /* Menos movimiento en móvil (gran parte del tráfico llega de TikTok/
    Instagram, en redes lentas): el fundido del texto se acorta un poco y
@@ -1915,17 +1963,28 @@ footer{
      capítulos alternan lado con :nth-of-type, y el modificador
      ".qs-capitulo--invertido" fuerza el lado contrario cuando hace falta
      que dos capítulos seguidos no queden con la foto en el mismo sitio. */
+  /* Hero: la columna de texto se parte en dos filas (entradilla arriba,
+     resto abajo) y la foto ocupa las dos enteras a la derecha. En móvil
+     esas tres piezas quedan apiladas en orden, con la foto en medio
+     rompiendo el bloque de texto. */
   .historia-hero{
     padding:var(--space-9) var(--space-7) var(--space-8);
-    display:grid; grid-template-columns:1.1fr .9fr; gap:var(--space-8);
-    align-items:center; text-align:left; max-width:1240px; margin:0 auto;
+    display:grid; grid-template-columns:1.05fr .95fr;
+    grid-template-rows:auto auto;
+    gap:var(--space-6) var(--space-8);
+    align-content:center; text-align:left; max-width:1240px; margin:0 auto;
   }
-  .qs-hero-texto{text-align:left;}
+  .qs-hero-intro{grid-column:1; grid-row:1; text-align:left; align-self:end;}
+  .qs-hero-resto{grid-column:1; grid-row:2; text-align:left; align-self:start;}
   .historia-hero h1::after{margin-left:0; margin-right:auto;}
   .historia-hero .qs-foto,
-  .qs-hero .qs-foto{margin:0; max-width:none; align-self:stretch; height:100%;}
+  .qs-hero .qs-foto{
+    grid-column:2; grid-row:1 / -1;
+    margin:0; max-width:none; align-self:stretch; height:100%;
+  }
   .historia-hero .eyebrow,
   .qs-capitulo-texto .eyebrow{text-align:left;}
+  .qs-linea-inline{margin-left:0; margin-right:0;}
 
   .qs-capitulo{
     padding:var(--space-9) var(--space-7);
@@ -1934,7 +1993,17 @@ footer{
   }
   .qs-capitulo-texto{text-align:left; max-width:52ch; margin:0;}
   .qs-prosa p, .pull-quote{margin-left:0;}
-  .qs-capitulo .qs-foto{margin:0; max-width:none; order:-1;}
+  /* El filete de la cita se alinea al texto (a la izquierda), no al
+     centro como en móvil. */
+  .pull-quote::before{left:0; transform:none;}
+  /* En escritorio la foto del capítulo vuelve a ser vertical: aquí es una
+     columna alta junto al texto, no una banda a lo ancho como en móvil. */
+  .qs-capitulo .qs-foto{margin:0; max-width:none; order:-1; aspect-ratio:4/5;}
+  /* El aire entre foto y texto lo pone el "gap" del grid: el margen que
+     los separa en móvil (donde van apilados) aquí descuadraría las
+     columnas. */
+  .qs-foto + .qs-capitulo-texto,
+  .qs-foto + .qs-hero-resto{margin-top:0;}
 
   /* Capítulo impar en la columna de texto a la derecha (foto a la
      izquierda); el modificador invierte ambas cosas a la vez. */
