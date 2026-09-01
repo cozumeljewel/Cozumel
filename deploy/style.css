@@ -1031,7 +1031,7 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   line-height:1.16; color:var(--deep); margin-top:14px;
   text-wrap:balance;
 }
-.qs-capitulo-texto h2, .pull-quote, .qs-linea-inline{text-wrap:balance;}
+.qs-capitulo-texto h2, .pull-quote{text-wrap:balance;}
 
 /* Capítulos: fondo alterno solo en el que lleva la marca de agua
    (.historia), el resto respira sobre el fondo base — así cada uno tiene
@@ -1045,53 +1045,40 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   line-height:1.25; color:var(--deep); margin-top:10px;
 }
 
-/* Prosa: alineada a la izquierda incluso dentro de bloques centrados
-   (de ahí el text-align propio), con ancho de lectura corto y centrada
-   como bloque. */
+/* Prosa justificada a ambos lados. El guionado automático va de la mano:
+   sin él, justificar una columna estrecha (en móvil son ~38 caracteres)
+   estira los espacios hasta abrir "ríos" blancos entre palabras. Con
+   hyphens:auto el navegador parte por sílabas — funciona porque el
+   <html> declara lang="es". text-wrap:pretty evita además dejar una
+   palabra sola en la última línea. */
 .qs-prosa{margin-top:var(--space-5);}
+/* 15.5px en móvil no es un capricho: a 16px entraban 40 caracteres por
+   línea y el justificado necesita ~45 para no abrir huecos entre
+   palabras. Bajando medio punto entran ~44 y el texto cierra limpio a
+   ambos lados. En escritorio la columna es mucho más ancha y vuelve a
+   16px (ver min-width:900px). */
 .qs-prosa p{
-  font-size:16px; line-height:1.72; color:var(--ink-soft);
-  margin:0 auto; max-width:40ch; text-align:left;
+  font-size:15.5px; line-height:1.72; color:var(--ink-soft);
+  margin:0 auto; max-width:42ch;
+  text-align:justify; hyphens:auto; -webkit-hyphens:auto;
+  text-wrap:pretty;
 }
 .qs-prosa p + p{margin-top:var(--space-3);}
 
-/* Líneas sueltas ("un nombre. / una fecha. / ..."): cada una es su propio
-   .reveal, así aparecen escalonadas al hacer scroll en vez de todas a la
-   vez — es el único sitio de la página con ese efecto de cascada, para
-   marcar un ritmo distinto al de la prosa. */
-.qs-lineas{margin-top:var(--space-5);}
-.qs-lineas p{
+/* Frase destacada del hero ("Un nombre. Una fecha. ..."): la única de la
+   página. Va en cursiva y centrada, sin justificar — es una enumeración
+   corta, no un párrafo, y justificarla abriría huecos entre palabras.
+   Rompe el bloque de prosa del hero en dos y le da ritmo. */
+.qs-destacado{
+  margin:var(--space-5) auto 0;
   font-family:var(--font-display); font-style:italic; font-size:19px;
-  color:var(--sea-dark); line-height:1.5;
+  line-height:1.5; color:var(--sea-dark); max-width:34ch;
+  text-wrap:balance;
 }
-.qs-linea-sola{margin-top:6px; font-weight:600;}
 
-/* Misma voz que .qs-lineas, pero como un solo bloque compacto: cada
-   fragmento en su línea (un <span> por fragmento) y una única animación
-   de entrada para todo el grupo. La cascada de uno en uno se reserva
-   para el hero, así el gesto no se gasta repitiéndolo en cada capítulo.
-   Se probó ponerlos en una línea separados por "·", pero al partirse en
-   móvil el separador quedaba colgando al principio o al final de la
-   línea; con un fragmento por línea eso no puede pasar. */
-.qs-linea-inline{
-  margin-top:var(--space-5); font-family:var(--font-display); font-style:italic;
-  font-size:19px; line-height:1.42; color:var(--sea-dark);
-  max-width:34ch; margin-left:auto; margin-right:auto;
-}
-.qs-linea-inline span{display:block;}
-.qs-linea-inline + .qs-linea-inline{margin-top:6px;}
-
-.qs-lineas p:nth-child(2){transition-delay:.05s;}
-.qs-lineas p:nth-child(3){transition-delay:.1s;}
-.qs-lineas p:nth-child(4){transition-delay:.15s;}
-.qs-lineas p:nth-child(5){transition-delay:.2s;}
-.qs-lineas p:nth-child(6){transition-delay:.25s;}
-
-/* Cita de cierre de cada capítulo. Antes usaba casi el mismo tamaño y
-   color que .qs-lineas (ambas en cursiva turquesa) y las dos se
-   confundían en pantalla. Ahora sube de tamaño, va en tinta profunda y
-   entra precedida de un filete dorado corto: se lee claramente como el
-   remate del capítulo, no como una línea más. */
+/* Cita de cierre de cada capítulo. Va en tinta profunda, más grande que
+   la prosa y precedida de un filete dorado corto, para que se lea como
+   el remate del capítulo y no se confunda con el resto del texto. */
 .pull-quote{
   margin:var(--space-6) auto 0; padding-top:var(--space-5); max-width:30ch;
   font-family:var(--font-display); font-style:italic; font-weight:500;
@@ -1984,7 +1971,7 @@ footer{
   }
   .historia-hero .eyebrow,
   .qs-capitulo-texto .eyebrow{text-align:left;}
-  .qs-linea-inline{margin-left:0; margin-right:0;}
+  .qs-destacado{margin-left:0; margin-right:0;}
 
   .qs-capitulo{
     padding:var(--space-9) var(--space-7);
@@ -1993,6 +1980,7 @@ footer{
   }
   .qs-capitulo-texto{text-align:left; max-width:52ch; margin:0;}
   .qs-prosa p, .pull-quote{margin-left:0;}
+  .qs-prosa p{font-size:16px;}
   /* El filete de la cita se alinea al texto (a la izquierda), no al
      centro como en móvil. */
   .pull-quote::before{left:0; transform:none;}
