@@ -163,9 +163,13 @@ section[id]{scroll-margin-top:var(--header-h);}
    subtítulo. Ese dorado concreto (#7A5F2A) es el mismo que ya usa la
    insignia de edición — es el oro de marca oscurecido lo justo para
    llegar a 4.5:1 en texto pequeño, que el --gold-deep no alcanza. */
+/* Va a 15px (era 12): es la primera línea de la sección, y a tamaño de
+   nota al pie no abría nada — se leía como un pie de foto perdido encima
+   del titular en vez de como la entrada a un capítulo. */
 .eyebrow{
-  font-size:12px; letter-spacing:.26em; text-transform:uppercase;
+  font-size:15px; letter-spacing:.24em; text-transform:uppercase;
   color:#7A5F2A; font-weight:600; text-align:center;
+  margin-bottom:2px;
 }
 
 /* ---------- TITULARES DE SECCIÓN ----------
@@ -193,10 +197,11 @@ section[id]{scroll-margin-top:var(--header-h);}
    sobre fondo oscuro, que es el mismo registro por otra vía. */
 
 .edicion-badge{
-  display:inline-block; margin:0 auto 14px; padding:6px 14px;
-  border:1px solid var(--gold-deep); border-radius:20px;
-  font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  display:inline-block; margin:0 auto 14px; padding:9px 20px;
+  border:1px solid var(--gold-deep); border-radius:24px;
+  font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
   color:#7A5F2A; font-weight:600; /* mismo dorado, oscurecido para 4.5:1 en texto pequeño */
+  line-height:1.35;
 }
 .coleccion .edicion-badge, .personalize .edicion-badge, .reserva .edicion-badge{
   display:block; width:fit-content; margin-left:auto; margin-right:auto;
@@ -226,7 +231,7 @@ section[id]{scroll-margin-top:var(--header-h);}
   /* Más estrechas y de trazo más fino que antes (88x15 con trazo 2): a
      tamaños de titular grandes, unas olas anchas y gruesas competían con
      el texto en vez de rematarlo. */
-  content:""; display:block; width:64px; height:12px; margin:20px auto 0;
+  content:""; display:block; width:64px; height:12px; margin:16px auto 0;
   background-repeat:no-repeat; background-position:center; background-size:contain;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 118 20'%3E%3Cpath d='M3,10 Q17,-2 31,10 T59,10 T87,10 T115,10' fill='none' stroke='%23A8873F' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
 }
@@ -735,8 +740,32 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   font-family:'Playfair Display'; font-weight:800; font-size:32px; color:var(--deep);
   margin-top:10px; line-height:1.16; max-width:20ch; margin-left:auto; margin-right:auto;
 }
+/* Lema de la sección, bajo el título. Mismo tratamiento que el nombre de
+   la edición en la página de colección (.coleccion-edicion): serif con la
+   segunda parte en cursiva dorada, siempre por debajo del título en
+   tamaño — el que manda es "Cozumel Stories". */
+.stories-claim{
+  margin:8px auto 0; font-family:'Playfair Display'; font-weight:700;
+  font-size:24px; line-height:1.15; color:var(--deep); text-wrap:balance;
+}
+.stories-claim em{font-style:italic; font-weight:500; color:var(--gold-deep);}
 .stories-intro{
-  margin:14px auto 0; max-width:38ch; font-size:14.5px; color:var(--ink-soft);
+  margin:12px auto 0; max-width:38ch; font-size:15px; line-height:1.6;
+  color:var(--ink-soft); text-wrap:pretty;
+}
+/* Las cuatro líneas sueltas ("Quién la lleva. / Quién la regaló. ...").
+   Mismo recurso que la frase destacada de "Quiénes somos": cursiva serif,
+   una por línea y centradas, para romper el ritmo de los dos párrafos que
+   las rodean sin cambiar de registro. Van dentro de un solo <p> con
+   <span> en bloque: es un párrafo, no una lista de items sueltos. */
+.stories-lineas{
+  margin:20px auto 0; font-family:'Playfair Display'; font-style:italic;
+  font-size:18px; line-height:1.5; color:var(--sea-dark);
+}
+.stories-lineas span{display:block; text-wrap:balance;}
+.stories-cierre{
+  margin:20px auto 0; max-width:42ch; font-size:15px; line-height:1.65;
+  color:var(--ink-soft); text-wrap:pretty;
 }
 .stories-galeria{
   margin-top:40px; display:grid; grid-template-columns:1fr; gap:18px;
@@ -875,9 +904,36 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   font-family:'Playfair Display'; font-weight:800; font-size:34px; color:var(--deep);
   margin-top:10px; line-height:1.12;
 }
+/* Nombre de la edición, bajo "La colección": mismo gesto que el titular
+   del hero (serif con la segunda parte en cursiva dorada), a menor
+   tamaño. Deja claro que la colección tiene nombre propio y que "La
+   colección" es solo la etiqueta de la página. */
+.coleccion-edicion{
+  margin:8px auto 0; font-family:'Playfair Display'; font-weight:700;
+  font-size:24px; line-height:1.15; color:var(--deep);
+}
+.coleccion-edicion em{font-style:italic; font-weight:500; color:var(--gold-deep);}
+/* Descripción de la colección: qué significa, no solo qué es. Algo más
+   ancha que la línea suelta que había antes ("Piezas que cuentan algo"),
+   porque ahora sí es una frase de dos o tres líneas. */
 .coleccion-intro{
-  margin:12px auto 0; max-width:32ch;
-  font-size:15px; color:var(--ink-soft);
+  margin:12px auto 0; max-width:40ch;
+  font-size:15px; line-height:1.65; color:var(--ink-soft);
+  text-wrap:pretty;
+}
+/* Mismo patrón que Cozumel Stories: las líneas sueltas en cursiva serif
+   entre los dos párrafos, para que la descripción no sea un bloque
+   corrido. */
+.coleccion-lineas{
+  margin:20px auto 0; font-family:'Playfair Display'; font-style:italic;
+  font-size:18px; line-height:1.5; color:var(--sea-dark);
+}
+/* En pantallas estrechas la línea más larga no cabe entera; balance la
+   parte por la mitad en vez de dejar la última palabra sola. */
+.coleccion-lineas span{display:block; text-wrap:balance;}
+.coleccion-cierre{
+  margin:20px auto 0; max-width:46ch; font-size:15px; line-height:1.65;
+  color:var(--ink-soft); text-wrap:pretty;
 }
 .producto-grid{
   margin-top:52px; display:grid; grid-template-columns:1fr; gap:56px;
@@ -1928,9 +1984,15 @@ footer{
   /* COZUMEL STORIES: mosaico editorial en vez de columna. Una foto grande
      y vertical a la izquierda, dos apaisadas apiladas a la derecha, y una
      fila de tres abajo. Pensado para exactamente 6 tarjetas. */
+  /* La etiqueta de sección acompaña al titular al crecer: si se queda al
+     tamaño de móvil, junto a un h2 de 42px vuelve a desaparecer. */
+  .eyebrow{font-size:16px; margin-bottom:3px;}
   .stories{padding:90px 90px 100px;}
   .stories h2{font-size:42px;}
-  .stories-intro{font-size:15.5px;}
+  .stories-claim{font-size:32px;}
+  .stories-intro{font-size:16.5px;}
+  .stories-lineas{font-size:21px; margin-top:24px;}
+  .stories-cierre{font-size:16px; margin-top:24px; max-width:50ch;}
   .stories-galeria{
     grid-template-columns:repeat(12, 1fr);
     grid-template-areas:
@@ -2025,7 +2087,11 @@ footer{
   .coleccion{padding:110px 90px 120px;}
   .coleccion h2{font-size:50px;}
   .coleccion-divisor-texto{font-size:23px;}
-  .coleccion-intro{font-size:18px;}
+  .coleccion-edicion{font-size:32px;}
+  .coleccion-intro{font-size:16.5px; max-width:46ch;}
+  .coleccion-lineas{font-size:21px; margin-top:24px;}
+  .coleccion-cierre{font-size:16px; margin-top:24px; max-width:54ch;}
+  .edicion-badge{font-size:13.5px; padding:10px 24px;}
   .producto-grid{grid-template-columns:1fr 1fr; gap:64px 48px; margin-top:64px;}
   .producto-card:nth-child(2n){margin-top:96px;}
 
