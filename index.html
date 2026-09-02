@@ -26,6 +26,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<!-- La foto del hero es un fondo CSS, así que el navegador no se entera
+     de que existe hasta haber descargado y procesado style.css: medido en
+     producción, no empezaba a pedirla hasta los 330 ms. Con este preload
+     arranca a la vez que el CSS. Solo va en el inicio: es la única página
+     con hero, y precargar de más quita ancho de banda a lo que sí urge. -->
+<link rel="preload" as="image" href="img/hero-adriana.jpg" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="productos.js" defer></script>
@@ -126,18 +133,26 @@
        edición: se queda igual pase lo que pase con las ediciones. -->
   <section class="hero">
     <div class="hero-media" role="img" aria-label="Adriana llevando piezas de Cozumel Jewelry"></div>
+    <!-- Dos bloques, uno arriba y otro abajo, para no tapar a Adriana:
+         el titular va sobre su cabeza (cielo) y todo lo demás al pie. El
+         hueco del medio lo reparte el space-between de .hero-copy. -->
     <div class="hero-copy">
-      <h1 class="reveal-hero">Un Pedacito<br><em>de ti</em></h1>
-      <p class="hero-sub reveal-hero">Joyas personalizadas para regalar algo que importa</p>
-
-      <div class="hero-marca reveal-hero">
-        <span class="hero-marca-nombre">Cozumel</span>
-        <span class="hero-marca-claim">Lo que importa, se lleva</span>
+      <div class="hero-copy-alto">
+        <h1 class="reveal-hero">Un Pedacito<br><em>de ti</em></h1>
       </div>
 
-      <div class="hero-ctas reveal-hero">
-        <a class="btn btn-primary hero-cta" href="productos.html">Descubrir la colección →</a>
-        <a class="hero-cta-secundaria" href="historia.html">Conoce Cozumel</a>
+      <div class="hero-copy-bajo">
+        <p class="hero-sub reveal-hero">Joyas personalizadas para regalar algo que importa</p>
+
+        <div class="hero-marca reveal-hero">
+          <span class="hero-marca-nombre">Cozumel</span>
+          <span class="hero-marca-claim">Lo que importa, se lleva</span>
+        </div>
+
+        <div class="hero-ctas reveal-hero">
+          <a class="btn btn-primary hero-cta" href="productos.html">Descubrir la colección →</a>
+          <a class="hero-cta-secundaria" href="historia.html">Conoce Cozumel</a>
+        </div>
       </div>
     </div>
   </section>

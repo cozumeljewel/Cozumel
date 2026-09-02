@@ -616,13 +616,12 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
    propósito por uno editorial de marca premium. */
 .hero{
   position:relative; overflow:hidden; box-sizing:border-box;
-  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  display:flex; flex-direction:column; align-items:center;
   min-height:88vh;
-  /* El contenido está anclado abajo (justify-content:flex-end): en un
-     viewport bajo de verdad (~600px, frecuente en Android en horizontal
-     o con la barra de direcciones desplegada), "Edición 01" podía acabar
-     asomando por debajo de la cabecera fija. Este padding es un suelo que
-     el contenido nunca puede cruzar, pase lo que pase con el alto. */
+  /* El texto no puede subir por encima de esta línea: la cabecera flota
+     fija encima del hero, así que sin este suelo el titular se le metía
+     debajo en viewports bajos (~600px, frecuente en Android en
+     horizontal o con la barra de direcciones desplegada). */
   padding-top:calc(var(--header-h) + 16px);
 }
 .hero-media{
@@ -640,18 +639,28 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
   background-position:center top, center, center;
   background-repeat:no-repeat;
 }
-/* Velo oscuro: más denso abajo (donde vive el texto), casi transparente
-   arriba (para que la foto respire). */
+/* Velo oscuro en los dos extremos, transparente en el centro: sigue a
+   donde está el texto ahora. Antes solo oscurecía abajo, porque todo el
+   texto vivía ahí; con el titular subido al cielo, arriba quedaba a un 5%
+   de velo y el blanco sobre cielo claro casi no se leía. El centro se
+   deja limpio a propósito: es donde está ella. */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
-  background:linear-gradient(to top,
-    rgba(11,46,51,.80) 0%,
-    rgba(11,46,51,.45) 32%,
-    rgba(11,46,51,.12) 60%,
-    rgba(11,46,51,.05) 100%);
+  background:linear-gradient(to bottom,
+    rgba(11,46,51,.58) 0%,
+    rgba(11,46,51,.30) 18%,
+    rgba(11,46,51,.06) 38%,
+    rgba(11,46,51,.10) 52%,
+    rgba(11,46,51,.45) 78%,
+    rgba(11,46,51,.82) 100%);
 }
+/* Ocupa todo el alto del hero y reparte sus dos bloques a los extremos:
+   el titular arriba (sobre el cielo, por encima de la cabeza) y el resto
+   abajo. Así el centro de la foto — donde está ella — queda despejado en
+   vez de tener el texto cruzándole el cuerpo. */
 .hero-copy{
-  position:relative; z-index:2;
+  position:relative; z-index:2; flex:1; width:100%;
+  display:flex; flex-direction:column; justify-content:space-between;
   padding:0 24px 56px; text-align:center;
 }
 
@@ -1968,13 +1977,18 @@ footer{
     background-size:cover; background-position:center 22%; background-repeat:no-repeat;
     filter:blur(32px); transform:scale(1.15);
   }
+  /* Mismo velo en dos extremos que en móvil: aquí la foto va entera
+     (contain) sobre su propia copia difuminada, así que el degradado se
+     aplica encima de las dos capas. */
   .hero-media::after{
     background-image:
-      linear-gradient(to top,
-        rgba(11,46,51,.55) 0%,
-        rgba(11,46,51,.25) 30%,
-        rgba(11,46,51,.05) 55%,
-        rgba(11,46,51,.05) 100%),
+      linear-gradient(to bottom,
+        rgba(11,46,51,.50) 0%,
+        rgba(11,46,51,.22) 20%,
+        rgba(11,46,51,.05) 42%,
+        rgba(11,46,51,.10) 58%,
+        rgba(11,46,51,.35) 80%,
+        rgba(11,46,51,.62) 100%),
       url('img/hero-adriana.jpg');
     background-size:auto, contain;
     background-position:center, center top;
