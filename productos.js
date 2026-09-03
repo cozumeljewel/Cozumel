@@ -19,9 +19,20 @@
      caracteristicas:['...', '...']   lista con viñetas
      cierre:         '...'            frase final destacada
      oferta:         '...'            reclamo destacado (ej. descuento de kit)
-     fotos:          ['img/a.png', ...]  galería de la ficha, en orden.
-                     La primera es la que se ve al entrar. Se pasan con
-                     scroll lateral. Sin espacios ni acentos en los nombres.
+     fotos:          UNA GALERÍA POR ACABADO (lo recomendado ahora):
+                       fotos: {
+                         oro:   ['img/collar-esencia-oro-1.jpg', ...],
+                         plata: ['img/collar-esencia-plata-1.jpg', ...],
+                       }
+                     Al elegir "Bañado en oro" o "Plateado" en la ficha,
+                     la galería cambia sola a las fotos de ese acabado.
+                     Si un acabado se deja vacío, se enseñan las del otro.
+
+                     También sigue valiendo una lista simple —
+                     fotos: ['img/a.jpg', ...] — cuando las dos versiones
+                     comparten fotos. La primera es la que se ve al entrar;
+                     el resto se pasan con scroll lateral. Sin espacios ni
+                     acentos en los nombres de archivo.
      foto:           'img/archivo.png'  forma antigua, una sola foto. Sigue
                      funcionando, pero para piezas nuevas usar "fotos".
                      Si no hay ninguna de las dos, se muestra el degradado
@@ -50,12 +61,14 @@ const PRODUCTOS = [
       'Hay cosas que no salen bien dichas en voz alta, pero caben enteras en unas letras grabadas. Ella lo va a llevar puesto un martes cualquiera, sin ocasión, y lo va a tocar sin darse cuenta mientras piensa en otra cosa. Ahí es donde vive un buen regalo: en los días normales',
     ],
     caracteristicas: [
-      'Acero inoxidable, no se oxida ni pierde color con el uso diario',
+      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Doble cadena: fina + placa grabable',
       'Grabado a mano, personalizable con nombre, fecha o mensaje corto',
     ],
     cierre: 'Para que lleve puesto un pedacito de ti',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // SKU proveedor (Yiwu Lantiao). El grabado va como linea aparte: 'diaoke'
+    sku: { oro:'CDNN067-2', plata:'CDNN067-1', grabado:'diaoke' },
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
@@ -70,12 +83,13 @@ const PRODUCTOS = [
       'No lleva grabado y no le hace falta. Un aro sujeta al otro sin apretarlo, que es más o menos lo que hacen dos personas cuando la cosa va bien. Ella lo va a entender en cuanto la vea, sin que tengas que decir nada',
     ],
     caracteristicas: [
-      'Acero inoxidable, no se oxida ni pierde color con el uso diario',
+      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Cadena fina, cierre ajustable',
       'Dos círculos entrelazados como símbolo de unión',
     ],
     cierre: 'Lo que no se dice, pero se lleva puesto',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    sku: { oro:'YS14924D0W0', plata:'YS14924A0W0' },
     forma: 'circulos',
     campos: [],
     destacado: false,
@@ -90,12 +104,14 @@ const PRODUCTOS = [
       'Lo bueno de grabar un lugar es que solo funciona para ustedes dos. Cualquiera que la vea leerá unos números sueltos; ella va a ver la playa, el bar, la calle a las cuatro de la mañana. Un código privado que se lleva puesto',
     ],
     caracteristicas: [
-      'Acero inoxidable, no se oxida ni pierde color con el uso diario',
+      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Cadena fina con placa, cierre ajustable',
       'Grabado a mano: frase, fecha o coordenadas',
     ],
     cierre: 'Un sitio que solo ustedes dos saben leer',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // El sufijo -KZ ya lleva incluida la tarifa de grabado
+    sku: { oro:'YS15777D0W0-KZ', plata:'YS15777A0W0-KZ' },
     forma: 'placa',
     campos: ['grabado'],
     destacado: true,
@@ -110,12 +126,14 @@ const PRODUCTOS = [
       'Es la pieza más rotunda de la colección: se ve desde lejos y se nota al abrazar. Si buscas un regalo que no pase desapercibido, que le pregunten por él y ella tenga algo que contar, es este',
     ],
     caracteristicas: [
-      'Acero inoxidable, no se oxida ni pierde color con el uso diario',
+      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Cuff ajustable, diseño minimalista',
       'Grabado a mano: frase, fecha o coordenadas',
     ],
     cierre: 'Se ve desde lejos y se recuerda de cerca',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // El sufijo -KZ ya lleva incluida la tarifa de grabado
+    sku: { oro:'FZ28329D0W0-KZ', plata:'FZ28329A0W0-KZ' },
     forma: 'brazalete',
     campos: ['grabado'],
     destacado: false,
@@ -130,13 +148,15 @@ const PRODUCTOS = [
       'Es el regalo fácil de acertar y difícil de olvidar: no hace falta saber su talla, ni su estilo, ni qué joyas tiene ya. Solo su cumpleaños. Y si te lo sabes, ya llevas media conversación ganada',
     ],
     caracteristicas: [
-      'Acero inoxidable, no se oxida ni pierde color con el uso diario',
+      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Cadena fina tipo eslabón, largo ajustable',
       'Piedra y flor según el mes de nacimiento',
     ],
     cierre: 'Su mes, su piedra, su collar',
     foto: 'img/collar-destino.jpg',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // W1-W12 = mes de la piedra natal (enero..diciembre)
+    sku: { oro:'XX49472D0W{mes}', plata:'XX49472A0W{mes}' },
     forma: 'flor',
     campos: ['mes'],
     destacado: false,
@@ -154,7 +174,7 @@ const PRODUCTOS = [
     caracteristicas: [
       'Collar Esencia: doble cadena con placa grabable a mano',
       'Pulsera Dos Almas: dos círculos entrelazados, símbolo de unión',
-      'Acero inoxidable, no se oxida ni pierde color con el uso diario',
+      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
     ],
     oferta: '10% de descuento al llevar el kit completo',
     cierre: 'Porque el amor también se lleva puesto',
@@ -175,7 +195,7 @@ const PRODUCTOS = [
     caracteristicas: [
       'Collar Destino: piedra y flor según el mes de nacimiento',
       'Pulsera Mi Cielo: placa grabable con fecha, lugar o frase',
-      'Acero inoxidable, no se oxida ni pierde color con el uso diario',
+      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Envío en caja especial de regalo',
     ],
     cierre: 'Un pedacito de lo que regalamos',

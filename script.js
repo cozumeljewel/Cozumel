@@ -283,7 +283,28 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
 /* Galería de la ficha: una foto por tarjeta, scroll lateral con snap.
    Acepta "fotos" (array) o el "foto" antiguo (una sola). Si no hay
    ninguna, deja una tarjeta con el degradado y el aviso de pendiente. */
-function pintarGaleria(prod) {
+/* Fotos de la pieza para el acabado elegido.
+   Admite tres formas, de más nueva a más vieja:
+     fotos: { oro:[...], plata:[...] }   una galería por acabado
+     fotos: [...]                        misma galería para los dos
+     foto:  'img/x.jpg'                  una sola foto
+   Si un acabado todavía no tiene fotos propias, cae al otro antes que a
+   dejar el hueco vacío: mejor enseñar la pieza en el otro color que un
+   placeholder. */
+function fotosDe(prod, acabado) {
+  const f = prod.fotos;
+  if (f && !Array.isArray(f) && typeof f === 'object') {
+    const elegidas = f[acabado];
+    if (elegidas && elegidas.length) return elegidas;
+    const otro = acabado === 'oro' ? f.plata : f.oro;
+    if (otro && otro.length) return otro;
+    return [];
+  }
+  if (Array.isArray(f) && f.length) return f;
+  return prod.foto ? [prod.foto] : [];
+}
+
+function pintarGaleria(prod, acabado) {
   const pista = document.getElementById('galeria-pista');
   const puntos = document.getElementById('galeria-puntos');
   if (!pista) return;
@@ -291,9 +312,7 @@ function pintarGaleria(prod) {
   pista.textContent = '';
   if (puntos) puntos.textContent = '';
 
-  const fotos = (prod.fotos && prod.fotos.length)
-    ? prod.fotos
-    : (prod.foto ? [prod.foto] : []);
+  const fotos = fotosDe(prod, acabado || getGrabado().acabado || 'oro');
 
   if (!fotos.length) {
     const vacia = document.createElement('div');
@@ -409,12 +428,14 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
   const bandaGrabado = document.getElementById('grabado-banda');
   if (bandaGrabado) bandaGrabado.hidden = !esPersonalizable;
 
-  // El acordeón de "Personalización" (info adicional) usa el mismo dato
-  // real, sin inventar nada: si la pieza no lleva grabado, lo dice tal cual.
+  // El acordeón de "Personalización" (info adicional): si la pieza no se
+  // graba, lo dice tal cual en vez de describir un grabado que no existe.
+  // Ojo: este texto PISA el que haya en personalizar.html, así que el
+  // bueno es este — cambiarlo aquí, no en el HTML.
   const infoPersonalizacion = document.getElementById('info-personalizacion-texto');
   if (infoPersonalizacion) {
     infoPersonalizacion.textContent = esPersonalizable
-      ? 'El grabado lo hace a mano un artesano, pieza a pieza'
+      ? 'Cada pieza se personaliza con un grabado de máxima precisión y calidad, realizado para conseguir un acabado elegante, definido y duradero. Un detalle único pensado para conservar ese significado especial durante mucho tiempo.'
       : 'Esta pieza no lleva grabado';
   }
 
@@ -543,6 +564,41 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
     actualizarResumen(prod, actuales);
     pintarCartita(actuales.mes);
   };
+
+  /* ---------- Acabado: bañado en oro o plateado ----------
+     No es un campo de grabado (lo tienen todas las piezas, se graben o
+     no), pero se registra en "entradas" para que herede toda la fontanería
+     que ya existe: sincronizar() lo guarda y el checkout lo manda dentro
+     de "personalizacion". Así no hace falta tocar la tabla de reservas.
+     Se guarda el valor por defecto nada más cargar: si la persona no toca
+     el selector, el pedido tiene que llevar el acabado igual. */
+  const acabadoOpciones = document.getElementById('acabado-opciones');
+  if (acabadoOpciones) {
+    const estadoAcabado = { value: datos.acabado || 'oro' };
+    entradas.acabado = estadoAcabado;
+
+    const botones = acabadoOpciones.querySelectorAll('.acabado-op');
+    const marcarAcabado = () => {
+      botones.forEach(b => {
+        const activo = b.dataset.acabado === estadoAcabado.value;
+        b.classList.toggle('activo', activo);
+        b.setAttribute('aria-checked', activo ? 'true' : 'false');
+      });
+    };
+    marcarAcabado();
+    setGrabado({ ...getGrabado(), acabado: estadoAcabado.value });
+
+    botones.forEach(btn => {
+      btn.addEventListener('click', () => {
+        estadoAcabado.value = btn.dataset.acabado;
+        marcarAcabado();
+        sincronizar();
+        // La galería cambia con el acabado: cuando cada pieza tenga sus
+        // fotos en oro y en plata, al elegir uno u otro se ven las suyas.
+        pintarGaleria(prod, estadoAcabado.value);
+      });
+    });
+  }
 
   Object.entries(entradas).forEach(([campo, el]) => {
     // El selector de color ya sincroniza en su propio click (arriba);

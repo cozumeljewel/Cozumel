@@ -148,7 +148,28 @@
         <p class="compra-envio">Envío gratis</p>
       </div>
 
-      <!-- ===== 3. DESCRIPCIÓN ===== -->
+      <!-- ===== 3. ACABADO =====
+           Va aquí y no dentro de la banda de grabado a propósito: el
+           acabado lo tienen TODAS las piezas, también las que no se
+           graban (y esa banda se oculta entera en esas). script.js lo
+           engancha y lo guarda junto al grabado, así viaja con el pedido
+           y sabéis cuál enviar. -->
+      <div class="acabado">
+        <p class="acabado-label" id="acabado-label">Acabado</p>
+        <div class="acabado-opciones" id="acabado-opciones"
+             role="radiogroup" aria-labelledby="acabado-label">
+          <button type="button" class="acabado-op" data-acabado="oro" role="radio" aria-checked="true">
+            <span class="acabado-dot acabado-dot--oro" aria-hidden="true"></span>
+            Bañado en oro
+          </button>
+          <button type="button" class="acabado-op" data-acabado="plata" role="radio" aria-checked="false">
+            <span class="acabado-dot acabado-dot--plata" aria-hidden="true"></span>
+            Plateado
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== 4. DESCRIPCIÓN ===== -->
       <section class="producto-detalle">
         <p class="producto-desc" id="producto-desc"></p>
         <div class="producto-ficha" id="producto-ficha"></div>
@@ -175,31 +196,55 @@
       </section>
 
       <!-- ===== 5. INFO ADICIONAL =====
-           Acordeón nativo (<details>), sin JS. Solo lleva texto real y ya
-           aprobado (el mismo que usan otras partes del sitio); donde
-           todavía no hay datos confirmados del producto, lo dice
-           explícitamente en vez de inventar nada. Fácil de rellenar más
-           adelante: basta con cambiar el texto de cada <p>. -->
+           Acordeón nativo (<details>), sin JS salvo el texto de
+           personalización, que sí depende de si la pieza se graba.
+           Los cuidados llevan los dos bloques (baño de oro y acero) a la
+           vista porque todavía no existe selector de acabado en la ficha:
+           cuando lo haya, basta con ocultar el que no toque por su id
+           (#cuidados-oro / #cuidados-acero). -->
       <section class="producto-info-adicional">
         <details class="info-item" open>
           <summary>Personalización</summary>
-          <p id="info-personalizacion-texto">El grabado lo hace a mano un artesano, pieza a pieza</p>
+          <p id="info-personalizacion-texto">Cada pieza se personaliza con un grabado de máxima precisión y calidad, realizado para conseguir un acabado elegante, definido y duradero. Un detalle único pensado para conservar ese significado especial durante mucho tiempo.</p>
         </details>
         <details class="info-item">
           <summary>Materiales</summary>
-          <p class="info-pendiente">Información pendiente de confirmar con el proveedor</p>
+          <p><strong>Acero inoxidable con baño de oro:</strong> acero inoxidable de alta calidad con un delicado baño de oro, seleccionado para conseguir un acabado elegante y sofisticado.</p>
+          <p><strong>Acero inoxidable:</strong> acero inoxidable de alta calidad, resistente y duradero, con un acabado limpio y atemporal.</p>
         </details>
         <details class="info-item">
           <summary>Envío</summary>
-          <p>Envío gratis en todos los pedidos</p>
+          <p>Envío gratis en todos los pedidos.</p>
+          <p>Preparamos cada pieza con especial cuidado para que llegue lista para regalar o para convertirse en un recuerdo personal.</p>
         </details>
         <details class="info-item">
           <summary>Cuidados</summary>
-          <p class="info-pendiente">Información pendiente</p>
-        </details>
-        <details class="info-item">
-          <summary>Devoluciones</summary>
-          <p>Al ser piezas grabadas a medida, no se aceptan devoluciones porque no haya convencido, pero buscamos una solución caso por caso si escribes dentro de los 15 días tras recibirla. Si llega con un defecto de fábrica, se reembolsa. <a href="terminos.html#devoluciones">Ver política completa →</a></p>
+
+          <div class="cuidados-bloque" id="cuidados-oro">
+            <p class="cuidados-titulo">Piezas bañadas en oro</p>
+            <p>Para conservar el brillo y el acabado dorado de tu joya durante más tiempo:</p>
+            <ul>
+              <li>Evita el contacto directo con perfumes, cremas, aceites y otros cosméticos.</li>
+              <li>No la expongas durante largos periodos al agua, al cloro o al agua de mar.</li>
+              <li>Quítatela antes de ducharte, bañarte o practicar deporte.</li>
+              <li>Guárdala en un lugar seco y, preferiblemente, dentro de su estuche cuando no la estés utilizando.</li>
+              <li>Para limpiarla, utiliza suavemente un paño suave y seco. Evita productos abrasivos o químicos.</li>
+            </ul>
+            <p>El baño de oro es un acabado delicado que puede presentar desgaste natural con el uso y el paso del tiempo.</p>
+          </div>
+
+          <div class="cuidados-bloque" id="cuidados-acero">
+            <p class="cuidados-titulo">Piezas de acero inoxidable</p>
+            <p>El acero inoxidable es un material resistente y pensado para el uso diario. Para mantener su aspecto original durante más tiempo:</p>
+            <ul>
+              <li>Evita el contacto prolongado con perfumes, cremas y productos químicos.</li>
+              <li>Después de exponer la pieza al agua, sécala cuidadosamente con un paño suave.</li>
+              <li>Evita el contacto con cloro y productos de limpieza.</li>
+              <li>Guárdala en un lugar seco cuando no la utilices.</li>
+              <li>Para recuperar su brillo, límpiala suavemente con un paño de microfibra.</li>
+            </ul>
+            <p>Con estos sencillos cuidados podrás mantener tu joya limpia, brillante y bonita durante mucho más tiempo.</p>
+          </div>
         </details>
       </section>
 

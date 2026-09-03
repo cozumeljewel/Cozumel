@@ -1133,6 +1133,39 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 .picker::-webkit-scrollbar{height:6px;}
 .picker::-webkit-scrollbar-thumb{background:var(--surf); border-radius:3px;}
 .picker::-webkit-scrollbar-track{background:transparent;}
+/* ---------- SELECTOR DE ACABADO (oro / plateado) ----------
+   Vive fuera de la banda de grabado, justo bajo el precio, porque lo
+   tienen todas las piezas. Dos botones tipo pastilla en vez de puntos
+   sueltos: aquí el nombre del acabado importa tanto como el color, que
+   "bañado en oro" y "plateado" no se distinguen solo por un círculo. */
+.acabado{margin:var(--space-5) auto 0; padding:0 24px; text-align:center;}
+.acabado-label{
+  font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--sea-dark); font-weight:600;
+}
+.acabado-opciones{
+  margin-top:10px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
+}
+.acabado-op{
+  display:inline-flex; align-items:center; gap:9px;
+  padding:10px 16px; cursor:pointer;
+  background:var(--white); border:1px solid var(--line-2); border-radius:var(--radius-full);
+  font-family:'Jost'; font-size:13.5px; color:var(--ink-soft);
+  transition:border-color .2s, color .2s, box-shadow .2s;
+}
+.acabado-op:hover{border-color:var(--gold-deep);}
+.acabado-op.activo{
+  border-color:var(--gold-deep); color:var(--deep); font-weight:500;
+  box-shadow:inset 0 0 0 1px var(--gold-deep);
+}
+.acabado-dot{
+  width:18px; height:18px; border-radius:50%; flex:none;
+  box-shadow:0 1px 3px rgba(20,69,74,.28);
+}
+/* Degradados en vez de color plano: un círculo liso no lee como metal. */
+.acabado-dot--oro{background:linear-gradient(140deg, #F0DCA8 0%, #C6A664 48%, #9C7C36 100%);}
+.acabado-dot--plata{background:linear-gradient(140deg, #FFFFFF 0%, #C9D4D6 48%, #8FA5A9 100%);}
+
 .swatch{
   background:none; border:none; cursor:pointer; padding:4px 2px;
   display:flex; flex-direction:column; align-items:center; gap:6px;
@@ -1554,6 +1587,23 @@ body[data-page="inicio"] .hero{margin-top:0 !important;}
 /* Texto todavía sin confirmar: en cursiva y más apagado, para que se
    note a simple vista que es un hueco pendiente, no la respuesta final. */
 .info-pendiente{color:var(--ink-soft); font-style:italic;}
+
+/* Listas de cuidados dentro del acordeón */
+.info-item ul{
+  margin:0 0 16px; padding:0 4px 0 22px;
+  font-size:13.5px; line-height:1.55; color:var(--ink-soft);
+}
+.info-item li{margin-bottom:6px;}
+.info-item li::marker{color:var(--gold-deep);}
+/* Los dos bloques de cuidados (oro / acero) van seguidos; el segundo
+   necesita separarse del primero cuando se ven los dos a la vez. */
+.cuidados-bloque + .cuidados-bloque{
+  margin-top:4px; padding-top:16px; border-top:1px solid var(--line-1);
+}
+.cuidados-titulo{
+  padding-bottom:8px !important;
+  font-weight:600; color:var(--deep); letter-spacing:.01em;
+}
 
 /* ---------- PÁGINAS LEGALES (aviso legal, privacidad, cookies, términos) ---------- */
 .legal-cabecera{padding:56px 24px 8px; text-align:center;}
