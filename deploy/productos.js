@@ -179,6 +179,12 @@ const PRODUCTOS = [
     oferta: '10% de descuento al llevar el kit completo',
     cierre: 'Porque el amor también se lleva puesto',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Kit = las dos piezas sueltas, no un SKU propio de EMANCO. Se piden
+    // las dos por separado, más "diaoke" si hay grabado. La resolución
+    // real (con acabado y grabado ya aplicados) vive en la migración v9
+    // de Supabase, que es lo que de verdad se usa al gestionar el pedido
+    // — esto es solo referencia para quien lea el catálogo.
+    sku: { oro:'CDNN067-2 + YS14924D0W0', plata:'CDNN067-1 + YS14924A0W0', grabado:'diaoke' },
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
@@ -200,6 +206,9 @@ const PRODUCTOS = [
     ],
     cierre: 'Un pedacito de lo que regalamos',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Kit = las dos piezas sueltas; W{mes} se resuelve como en Collar
+    // Destino. La resolución real vive en la migración v9 de Supabase.
+    sku: { oro:'XX49472D0W{mes} + YS15777D0W0-KZ', plata:'XX49472A0W{mes} + YS15777A0W0-KZ' },
     forma: 'flor',
     campos: ['mes', 'grabado'],
     destacado: false,
