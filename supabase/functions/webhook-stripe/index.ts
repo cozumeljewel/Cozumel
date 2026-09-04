@@ -44,6 +44,11 @@ Deno.serve(async (req) => {
 
   if (evento.type === "checkout.session.completed" && (evento.data.object as Stripe.Checkout.Session).payment_status === "paid") {
     const session = evento.data.object as Stripe.Checkout.Session;
+    // Un pedido con varias piezas es varias filas que comparten este mismo
+    // stripe_session_id (ver crear-sesion-pago): este UPDATE con .eq() ya
+    // marca TODAS las que coincidan, no solo una — no hace falta ningún
+    // cambio aquí para el carrito. El disparador de la migración v10 se
+    // ejecuta una vez por fila (un email por pieza), no una vez por pedido.
     const { data, error } = await sb
       .from("reservas")
       .update({ estado: "pagado" })

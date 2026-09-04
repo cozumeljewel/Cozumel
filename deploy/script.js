@@ -39,6 +39,75 @@ function setProductoElegido(prod) {
   sessionStorage.setItem('productoId', prod.id);
 }
 
+/* =========================================================
+   CARRITO
+   Varias piezas en un mismo pedido, cada una ya configurada (producto +
+   su personalización, acabado incluido). En localStorage a propósito —
+   a diferencia de sessionStorage, sobrevive a cerrar la pestaña, así que
+   si alguien vuelve más tarde no pierde lo que llevaba añadido.
+
+   Cada elemento: { producto: 'collar_esencial', personalizacion: {...} }.
+   El precio NUNCA se guarda aquí: se relee en comprar.html desde
+   productos.js para mostrarlo, y la fuente de verdad real al cobrar sigue
+   siendo PRECIOS en el servidor (ver crear-sesion-pago), igual que ya
+   pasaba con una sola pieza — el carrito no cambia esa garantía.
+   ========================================================= */
+const CARRITO_KEY = 'cozumel_carrito';
+
+function getCarrito() {
+  try {
+    const items = JSON.parse(localStorage.getItem(CARRITO_KEY));
+    return Array.isArray(items) ? items : [];
+  } catch {
+    return [];
+  }
+}
+
+function guardarCarrito(items) {
+  localStorage.setItem(CARRITO_KEY, JSON.stringify(items));
+  actualizarBadgeCarrito();
+}
+
+function añadirAlCarrito(item) {
+  const items = getCarrito();
+  items.push(item);
+  guardarCarrito(items);
+  return items;
+}
+
+function quitarDelCarrito(indice) {
+  const items = getCarrito();
+  items.splice(indice, 1);
+  guardarCarrito(items);
+  return items;
+}
+
+function vaciarCarrito() {
+  guardarCarrito([]);
+}
+
+/* Insignia con el número de piezas, sobre el icono del carrito del header
+   (mismo elemento en las 12 páginas: .header-carrito). Se añade por JS en
+   vez de tocar cada HTML, así que no puede faltar en ninguna página que
+   cargue script.js. */
+function actualizarBadgeCarrito() {
+  const n = getCarrito().length;
+  document.querySelectorAll('.header-carrito').forEach(a => {
+    let badge = a.querySelector('.header-carrito-badge');
+    if (n > 0) {
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'header-carrito-badge';
+        a.appendChild(badge);
+      }
+      badge.textContent = String(n);
+    } else if (badge) {
+      badge.remove();
+    }
+  });
+}
+actualizarBadgeCarrito();
+
 /* ---------- Tracking del embudo ---------- */
 function trackEvent(evento, productoId) {
   if (!sb) return Promise.resolve();
@@ -565,39 +634,106 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
     pintarCartita(actuales.mes);
   };
 
+  // Se llama una vez ya al cargar, ANTES de que nadie toque nada: si no,
+  // getGrabado() se queda sin el valor por defecto de campos como "mes"
+  // (el selector de piedra natal) hasta el primer clic. Pasó de verdad al
+  // probar el carrito: si alguien añadía Collar Destino sin tocar el mes,
+  // el pedido llegaba sin él y el SKU no se podía resolver. Los campos de
+  // texto no lo necesitan (ya nacen con su valor, vacío o no, en el
+  // input), pero llamar aquí una vez es más simple que distinguir cuáles
+  // sí y cuáles no.
+  sincronizar();
+
   /* ---------- Acabado: bañado en oro o plateado ----------
      No es un campo de grabado (lo tienen todas las piezas, se graben o
-     no), pero se registra en "entradas" para que herede toda la fontanería
-     que ya existe: sincronizar() lo guarda y el checkout lo manda dentro
-     de "personalizacion". Así no hace falta tocar la tabla de reservas.
-     Se guarda el valor por defecto nada más cargar: si la persona no toca
-     el selector, el pedido tiene que llevar el acabado igual. */
-  const acabadoOpciones = document.getElementById('acabado-opciones');
-  if (acabadoOpciones) {
-    const estadoAcabado = { value: datos.acabado || 'oro' };
-    entradas.acabado = estadoAcabado;
+     no), pero cada grupo se registra en "entradas" para heredar toda la
+     fontanería que ya existe: sincronizar() lo guarda y el carrito lo
+     manda dentro de "personalizacion".
 
-    const botones = acabadoOpciones.querySelectorAll('.acabado-op');
-    const marcarAcabado = () => {
-      botones.forEach(b => {
-        const activo = b.dataset.acabado === estadoAcabado.value;
-        b.classList.toggle('activo', activo);
-        b.setAttribute('aria-checked', activo ? 'true' : 'false');
-      });
-    };
-    marcarAcabado();
-    setGrabado({ ...getGrabado(), acabado: estadoAcabado.value });
+     Una pieza suelta lleva UN grupo (campo "acabado"). Un kit declara
+     "acabados" en productos.js con un grupo POR PIEZA del kit (ej. el
+     collar puede ir en oro y la pulsera en plata a la vez) — sin eso, se
+     usa el grupo por defecto para no romper las piezas sueltas.
 
-    botones.forEach(btn => {
-      btn.addEventListener('click', () => {
-        estadoAcabado.value = btn.dataset.acabado;
-        marcarAcabado();
-        sincronizar();
-        // La galería cambia con el acabado: cuando cada pieza tenga sus
-        // fotos en oro y en plata, al elegir uno u otro se ven las suyas.
-        pintarGaleria(prod, estadoAcabado.value);
+     Se guarda el valor por defecto de cada grupo nada más cargar: si la
+     persona no toca ningún selector, el pedido lleva igual el acabado. */
+  const gruposAcabado = (prod.acabados && prod.acabados.length)
+    ? prod.acabados
+    : [{ campo: 'acabado', label: 'Acabado' }];
+
+  const contenedorAcabado = document.getElementById('acabado-contenedor');
+  if (contenedorAcabado) {
+    contenedorAcabado.textContent = '';
+    let datosIniciales = { ...getGrabado() };
+
+    gruposAcabado.forEach((grupo, i) => {
+      const idLabel = 'acabado-label-' + i;
+      const bloque = document.createElement('div');
+      bloque.className = 'acabado-grupo';
+
+      const label = document.createElement('p');
+      label.className = 'acabado-label';
+      label.id = idLabel;
+      label.textContent = grupo.label;
+      bloque.appendChild(label);
+
+      const opciones = document.createElement('div');
+      opciones.className = 'acabado-opciones';
+      opciones.setAttribute('role', 'radiogroup');
+      opciones.setAttribute('aria-labelledby', idLabel);
+
+      const estadoAcabado = { value: datos[grupo.campo] || 'oro' };
+      entradas[grupo.campo] = estadoAcabado;
+      datosIniciales[grupo.campo] = estadoAcabado.value;
+
+      const defs = [
+        { valor: 'oro', clase: 'acabado-dot--oro', texto: 'Bañado en oro' },
+        { valor: 'plata', clase: 'acabado-dot--plata', texto: 'Plateado' },
+      ];
+      const botones = defs.map(def => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'acabado-op';
+        btn.dataset.acabado = def.valor;
+        btn.setAttribute('role', 'radio');
+        btn.setAttribute('aria-checked', def.valor === estadoAcabado.value ? 'true' : 'false');
+
+        const dot = document.createElement('span');
+        dot.className = 'acabado-dot ' + def.clase;
+        dot.setAttribute('aria-hidden', 'true');
+
+        btn.append(dot, document.createTextNode(def.texto));
+        opciones.appendChild(btn);
+        return btn;
       });
+
+      const marcarAcabado = () => {
+        botones.forEach(b => {
+          const activo = b.dataset.acabado === estadoAcabado.value;
+          b.classList.toggle('activo', activo);
+          b.setAttribute('aria-checked', activo ? 'true' : 'false');
+        });
+      };
+      marcarAcabado();
+
+      botones.forEach(btn => {
+        btn.addEventListener('click', () => {
+          estadoAcabado.value = btn.dataset.acabado;
+          marcarAcabado();
+          sincronizar();
+          // La galería sigue al acabado del PRIMER grupo (la pieza
+          // principal del kit, o la única pieza si no es un kit): cuando
+          // cada pieza tenga sus fotos en oro y en plata, esto se enseña
+          // solo. Ver comentario en fotosDe() de más arriba.
+          if (i === 0) pintarGaleria(prod, estadoAcabado.value);
+        });
+      });
+
+      bloque.appendChild(opciones);
+      contenedorAcabado.appendChild(bloque);
     });
+
+    setGrabado(datosIniciales);
   }
 
   Object.entries(entradas).forEach(([campo, el]) => {
@@ -925,16 +1061,18 @@ document.querySelectorAll('.nav a, .footer-nav a, .menu-movil-nav a').forEach(a 
 });
 
 
-/* ---------- CTA "Quiero el mío" → reservar.html ----------
-   Es una navegación entre páginas: si no esperamos, el navegador puede
-   cancelar el insert a medio camino. Interceptamos, lanzamos el tracking
-   y navegamos al terminar (o a los 500ms como máximo, para no bloquear).
+/* ---------- CTA "Añade al carrito" → comprar.html ----------
+   Añadir al carrito es instantáneo (solo localStorage), pero se mantiene
+   la misma espera/estados que antes para el tracking, que sí es una
+   llamada de red: si no se espera, el navegador puede cancelarla a medio
+   camino al cambiar de página. El tracking sigue siendo "best effort"
+   (si falla, se compra igual, ver el .finally de más abajo).
 
-   Los estados (cargando/éxito/error) son solo visuales, encima de esta
-   misma lógica: no cambian qué se compra ni cuándo se navega. El
-   tracking sigue siendo "best effort" (si falla, se compra igual, ver
-   el .finally de más abajo); el estado de error es para el caso aparte
-   de que la propia navegación no se pueda completar. */
+   IMPORTANTE: el añadido al carrito pasa SIEMPRE, incluso sin Supabase
+   configurado o si el tracking de esta pieza ya se mandó antes en esta
+   sesión — antes esos dos casos se limitaban a dejar el <a> navegar solo
+   (sin preventDefault), lo cual ya no vale: ahora hace falta guardar el
+   ítem pase lo que pase con el tracking. */
 const ctaReservar = document.getElementById('cta-reservar');
 if (ctaReservar) {
   const ctaTexto = ctaReservar.querySelector('.cta-texto');
@@ -942,19 +1080,21 @@ if (ctaReservar) {
 
   ctaReservar.addEventListener('click', (e) => {
     // Ya está en marcha (o ya terminó con éxito): ignora los clicks de
-    // más, no se manda el tracking ni se navega dos veces.
+    // más, no se añade dos veces ni se navega dos veces.
     if (ctaReservar.classList.contains('is-loading') || ctaReservar.classList.contains('is-success')) {
       e.preventDefault();
       return;
     }
 
-    const prodId = (getProductoElegido() || {}).id || 'sin_producto';
-    if (!sb || sessionStorage.getItem('ri:' + prodId) === '1') return;
+    const prod = getProductoElegido();
+    if (!prod) return; // no debería poder pasar en esta página, pero por si acaso deja el <a> navegar tal cual
+
     e.preventDefault();
+    añadirAlCarrito({ producto: prod.id, personalizacion: getGrabado() });
 
     ctaReservar.classList.remove('is-error');
     ctaReservar.classList.add('is-loading');
-    ponerTexto('Preparando tu pedido…');
+    ponerTexto('Añadiendo a tu carrito…');
 
     const dest = ctaReservar.href;
     let navegado = false;
@@ -965,7 +1105,7 @@ if (ctaReservar) {
         navegado = true;
         ctaReservar.classList.remove('is-loading');
         ctaReservar.classList.add('is-success');
-        ponerTexto('Listo');
+        ponerTexto('Añadida');
         // Deja ver el estado de éxito un instante antes de irse de verdad.
         setTimeout(() => { window.location.href = dest; }, 180);
       } catch (err) {
@@ -975,8 +1115,14 @@ if (ctaReservar) {
         ponerTexto('No se pudo continuar, pulsa de nuevo');
       }
     };
-    trackReservaIniciada().finally(ir);
-    setTimeout(ir, 500);
+
+    const yaTrackeado = sessionStorage.getItem('ri:' + prod.id) === '1';
+    if (sb && !yaTrackeado) {
+      trackReservaIniciada().finally(ir);
+      setTimeout(ir, 500);
+    } else {
+      ir();
+    }
   });
 }
 
@@ -1375,6 +1521,8 @@ if (reservaForm) {
   const reservaConfigWarning = document.getElementById('reserva-config-warning');
   const reservaError = document.getElementById('reserva-error');
   const sinPiezaAviso = document.getElementById('sin-pieza');
+  const sinPrecioAviso = document.getElementById('sin-precio');
+  const carritoLista = document.getElementById('carrito-lista');
   const loginGate = document.getElementById('login-gate');
   const btnLoginGoogle = document.getElementById('btn-login-google');
   const btnLogout = document.getElementById('btn-logout');
@@ -1384,16 +1532,97 @@ if (reservaForm) {
     reservaSubmitBtn.disabled = true;
   }
 
-  // No se puede comprar sin haber elegido pieza, ni sin que tenga precio
-  const sinPrecioAviso = document.getElementById('sin-precio');
-  const prodElegido = getProductoElegido();
-  if (!prodElegido) {
-    if (sinPiezaAviso) sinPiezaAviso.hidden = false;
-    reservaSubmitBtn.disabled = true;
-  } else if (prodElegido.precio === null || prodElegido.precio === undefined) {
-    if (sinPrecioAviso) sinPrecioAviso.hidden = false;
-    reservaSubmitBtn.disabled = true;
+  /* ---------- Etiqueta corta del acabado, para el resumen del carrito ----------
+     Una pieza suelta: "Bañado en oro". Un kit (varios grupos): una línea
+     por pieza del kit, con su etiqueta corta ("pieza" en productos.js). */
+  function resumenAcabado(prod, datos) {
+    const grupos = (prod.acabados && prod.acabados.length)
+      ? prod.acabados
+      : [{ campo: 'acabado', pieza: null }];
+    return grupos.map(g => {
+      const texto = datos[g.campo] === 'plata' ? 'Plateado' : 'Bañado en oro';
+      return g.pieza ? `${g.pieza}: ${texto}` : texto;
+    }).join(' · ');
   }
+
+  /* ---------- Pintar el carrito entero ----------
+     Se llama al cargar la página y cada vez que se quita una pieza. No
+     hace falta llamarla al añadir: añadir siempre navega aquí desde cero
+     (ver el CTA de personalizar.html), así que la página ya carga con el
+     carrito al día. */
+  function pintarCarrito() {
+    const items = getCarrito();
+    carritoLista.textContent = '';
+
+    let total = 0;
+    let huboPiezaSinPrecio = false;
+
+    items.forEach((item, indice) => {
+      const prod = PRODUCTOS.find(p => p.id === item.producto);
+      if (!prod) return; // el catálogo cambió desde que se añadió: se ignora sin romper el resto
+
+      if (prod.precio === null || prod.precio === undefined) huboPiezaSinPrecio = true;
+      else total += prod.precio;
+
+      const tarjeta = document.createElement('div');
+      tarjeta.className = 'carrito-item';
+
+      const nombre = document.createElement('p');
+      nombre.className = 'carrito-item-nombre';
+      nombre.textContent = prod.nombre;
+      tarjeta.appendChild(nombre);
+
+      const resumen = resumenGrabado(prod, item.personalizacion);
+      if (resumen) {
+        const linea = document.createElement('p');
+        linea.className = 'carrito-item-linea';
+        linea.textContent = resumen;
+        tarjeta.appendChild(linea);
+      }
+
+      const acabado = document.createElement('p');
+      acabado.className = 'carrito-item-acabado';
+      acabado.textContent = resumenAcabado(prod, item.personalizacion);
+      tarjeta.appendChild(acabado);
+
+      const precio = document.createElement('p');
+      precio.className = 'carrito-item-precio';
+      precio.textContent = formatearPrecio(prod.precio) || 'Precio pendiente de confirmar';
+      tarjeta.appendChild(precio);
+
+      const quitar = document.createElement('button');
+      quitar.type = 'button';
+      quitar.className = 'carrito-item-quitar';
+      quitar.setAttribute('aria-label', `Quitar ${prod.nombre} del carrito`);
+      quitar.textContent = '×';
+      quitar.addEventListener('click', () => {
+        quitarDelCarrito(indice);
+        pintarCarrito();
+      });
+      tarjeta.appendChild(quitar);
+
+      carritoLista.appendChild(tarjeta);
+    });
+
+    let totalEl = document.querySelector('.carrito-total');
+    if (totalEl) totalEl.remove();
+    if (items.length) {
+      totalEl = document.createElement('div');
+      totalEl.className = 'carrito-total';
+      totalEl.innerHTML = '<span>Total</span><strong></strong>';
+      totalEl.querySelector('strong').textContent = formatearPrecio(total) || '—';
+      carritoLista.insertAdjacentElement('afterend', totalEl);
+    }
+
+    const carritoVacio = items.length === 0;
+    if (sinPiezaAviso) sinPiezaAviso.hidden = !carritoVacio;
+    if (sinPrecioAviso) sinPrecioAviso.hidden = !huboPiezaSinPrecio;
+    reservaSubmitBtn.disabled = carritoVacio || huboPiezaSinPrecio || (!SUPA_READY || !sb);
+
+    return items;
+  }
+
+  pintarCarrito();
 
   // El aviso se destapa ANTES de escribir el texto: un lector de pantalla
   // no anuncia cambios dentro de una región aria-live que sigue oculta.
@@ -1461,13 +1690,20 @@ if (reservaForm) {
     e.preventDefault();
     hideReservaError();
 
-    const prod = getProductoElegido();
-    if (!prod) {
-      showReservaError('Elige primero una pieza en la colección');
+    // Los datos de la ficha (nombre/dirección/etc) se comparten para
+    // TODAS las piezas del pedido: es un único envío a una dirección, no
+    // uno por pieza. Cada fila de "reservas" guarda su propio producto y
+    // personalización, pero repite estos mismos datos de contacto.
+    const items = getCarrito()
+      .map(item => ({ item, prod: PRODUCTOS.find(p => p.id === item.producto) }))
+      .filter(({ prod }) => prod); // el catálogo pudo cambiar desde que se añadió
+
+    if (!items.length) {
+      showReservaError('Tu carrito está vacío. Añade alguna pieza antes de comprar');
       return;
     }
-    if (prod.precio === null || prod.precio === undefined) {
-      showReservaError('Esta pieza todavía no tiene precio, no se puede comprar');
+    if (items.some(({ prod }) => prod.precio === null || prod.precio === undefined)) {
+      showReservaError('Alguna pieza de tu carrito todavía no tiene precio, no se puede comprar');
       return;
     }
     if (!sb) {
@@ -1483,7 +1719,7 @@ if (reservaForm) {
       return;
     }
 
-    const payload = {
+    const datosComunes = {
       user_id: sesionActual.user.id,
       nombre: reservaForm.nombre.value.trim(),
       apellidos: reservaForm.apellidos.value.trim(),
@@ -1491,22 +1727,29 @@ if (reservaForm) {
       whatsapp: `${prefijoSelect.value} ${reservaForm.whatsapp.value.trim()}`.trim(),
       pais: reservaForm.pais.value.trim(),
       direccion_envio: reservaForm.direccion_envio.value.trim(),
-      personalizacion: getGrabado(),
-      producto: prod.id,
       fuente: 'adri_story',
       estado: 'pendiente_pago',
-      precio_pagado: prod.precio,
       consentimiento: document.getElementById('r-consent').checked,
       session_id: getSessionId(),
     };
 
+    const payloads = items.map(({ item, prod }) => ({
+      ...datosComunes,
+      personalizacion: item.personalizacion,
+      producto: prod.id,
+      precio_pagado: prod.precio,
+    }));
+
     reservaSubmitBtn.disabled = true;
-    reservaSubmitBtn.textContent = 'Guardando...';
+    reservaSubmitBtn.textContent = items.length > 1 ? 'Guardando tu pedido...' : 'Guardando...';
 
-    const { data: filaCreada, error } = await sb.from('reservas').insert(payload).select('id').single();
+    // Una fila por pieza, todas en el mismo insert (Supabase valida cada
+    // una contra la misma política RLS de siempre, fila a fila — no hace
+    // falta tocar la base de datos para admitir varias a la vez).
+    const { data: filasCreadas, error } = await sb.from('reservas').insert(payloads).select('id');
 
-    if (error) {
-      console.error(error);
+    if (error || !filasCreadas || filasCreadas.length !== payloads.length) {
+      console.error(error ?? `esperadas ${payloads.length} filas, llegaron ${filasCreadas?.length ?? 0}`);
       reservaSubmitBtn.disabled = false;
       reservaSubmitBtn.textContent = 'Pagar y comprar';
       showReservaError('No se pudo guardar tu pedido. Inténtalo de nuevo');
@@ -1525,7 +1768,7 @@ if (reservaForm) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ reserva_id: filaCreada.id }),
+        body: JSON.stringify({ reserva_ids: filasCreadas.map(f => f.id) }),
       });
       const resultado = await resp.json();
 
@@ -1533,7 +1776,11 @@ if (reservaForm) {
         throw new Error(resultado.error || 'sin url de pago');
       }
 
-      await trackEvent('compra_iniciada', prod.id);
+      await Promise.all(items.map(({ prod }) => trackEvent('compra_iniciada', prod.id)));
+      // El carrito NO se vacía aquí a propósito: si Stripe cancela y
+      // vuelve a comprar.html, tiene que seguir viendo las mismas piezas
+      // sin tener que volver a añadirlas. Se vacía solo cuando el pago se
+      // confirma de verdad (ver el sondeo de más abajo).
       window.location.href = resultado.url;
     } catch (err) {
       console.error(err);
@@ -1575,17 +1822,22 @@ if (reservaForm) {
         return;
       }
 
+      // Un pedido con varias piezas comparte un mismo stripe_session_id
+      // entre varias filas de "reservas" (una por pieza): .maybeSingle()
+      // asumía una sola fila y con dos o más piezas fallaba directamente
+      // con "multiple rows returned". Se piden todas y se espera a que
+      // TODAS estén pagadas — el webhook las marca juntas en un mismo
+      // UPDATE, así que en la práctica cambian de estado a la vez.
       const { data, error } = await sb
         .from('reservas')
-        .select('estado')
-        .eq('stripe_session_id', sessionId)
-        .maybeSingle();
+        .select('estado, producto')
+        .eq('stripe_session_id', sessionId);
 
       if (error) console.error(error);
 
-      if (data && data.estado === 'pagado') {
-        const prodPagado = getProductoElegido();
-        trackEvent('compra_completada', prodPagado ? prodPagado.id : 'desconocido');
+      if (data && data.length > 0 && data.every(fila => fila.estado === 'pagado')) {
+        data.forEach(fila => trackEvent('compra_completada', fila.producto));
+        vaciarCarrito(); // ahora sí: el pago ya está confirmado de verdad
         confirmando.hidden = true;
         done.hidden = false;
         done.scrollIntoView({ behavior: 'smooth', block: 'start' });

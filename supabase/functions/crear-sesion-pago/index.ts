@@ -1,10 +1,17 @@
-// Crea una sesión de Stripe Checkout para una fila de "reservas" que ya
-// existe en estado 'pendiente_pago'. La llama el navegador, autenticado.
+// Crea una sesión de Stripe Checkout para una o varias filas de "reservas"
+// que ya existen en estado 'pendiente_pago' (un pedido con varias piezas
+// es varias filas que van a compartir esta misma sesión). La llama el
+// navegador, autenticado.
 //
 // Por qué el precio se relee aquí y no se confía en el que ya guardó el
 // navegador en "precio_pagado": esta función es la última barrera antes de
 // cobrar. Si alguien manipulase el JavaScript del formulario, el precio
 // que Stripe termina cobrando sale de PRECIOS (Tarea 3), no de la fila.
+//
+// Todas las filas del mismo pedido se validan y actualizan como grupo: si
+// una sola no es del usuario que llama, o ya no está pendiente de pago, o
+// es un producto desconocido, se rechaza el pedido ENTERO — no se cobra
+// una parte sí y otra no.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@17";
@@ -93,7 +100,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     });
   }
 
-  let body: { reserva_id?: string };
+  let body: { reserva_ids?: string[] };
   try {
     body = await req.json();
   } catch {
@@ -103,75 +110,98 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     });
   }
 
-  if (!body.reserva_id) {
-    return new Response(JSON.stringify({ error: "Falta reserva_id" }), {
+  const idsPedidos = Array.isArray(body.reserva_ids)
+    ? [...new Set(body.reserva_ids.filter((id) => typeof id === "string" && id))]
+    : [];
+
+  if (idsPedidos.length === 0) {
+    return new Response(JSON.stringify({ error: "Falta reserva_ids" }), {
       status: 400,
       headers: jsonHeaders,
     });
   }
 
-  const { data: fila, error: filaError } = await sb
+  const { data: filas, error: filasError } = await sb
     .from("reservas")
     .select("id, producto, estado")
-    .eq("id", body.reserva_id)
-    .single();
+    .in("id", idsPedidos);
 
-  if (filaError || !fila) {
+  if (filasError) {
+    return new Response(JSON.stringify({ error: "No se pudo leer el pedido" }), {
+      status: 500,
+      headers: jsonHeaders,
+    });
+  }
+
+  // RLS ya filtra a "solo mis filas": si falta alguna, o no es del usuario
+  // que llama, o no existe. Cualquiera de los dos casos es un pedido
+  // incompleto — se rechaza entero en vez de cobrar solo una parte.
+  if (!filas || filas.length !== idsPedidos.length) {
     return new Response(JSON.stringify({ error: "Pedido no encontrado" }), {
       status: 404,
       headers: jsonHeaders,
     });
   }
 
-  if (fila.estado !== "pendiente_pago") {
+  const filaNoPendiente = filas.find((f) => f.estado !== "pendiente_pago");
+  if (filaNoPendiente) {
     return new Response(
-      JSON.stringify({ error: "Este pedido ya no está pendiente de pago" }),
+      JSON.stringify({ error: "Alguna pieza de este pedido ya no está pendiente de pago" }),
       { status: 409, headers: jsonHeaders },
     );
   }
 
-  if (!PRODUCTOS_VALIDOS.includes(fila.producto)) {
+  const filaProductoInvalido = filas.find((f) => !PRODUCTOS_VALIDOS.includes(f.producto));
+  if (filaProductoInvalido) {
     return new Response(JSON.stringify({ error: "Producto desconocido" }), {
       status: 400,
       headers: jsonHeaders,
     });
   }
 
-  const precio = PRECIOS[fila.producto];
-  if (precio === null || precio === undefined) {
+  // Precio real de cada pieza, SIEMPRE desde PRECIOS (servidor), nunca de
+  // lo que mande el navegador — igual que con una sola pieza, solo que
+  // ahora se repite por fila.
+  const lineas = filas.map((f) => ({ id: f.id, producto: f.producto, precio: PRECIOS[f.producto] }));
+
+  const lineaSinPrecio = lineas.find((l) => l.precio === null || l.precio === undefined);
+  if (lineaSinPrecio) {
     return new Response(
-      JSON.stringify({ error: "Esta pieza todavía no tiene precio" }),
+      JSON.stringify({ error: "Alguna pieza de este pedido todavía no tiene precio" }),
       { status: 400, headers: jsonHeaders },
     );
   }
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
-    line_items: [
-      {
-        price_data: {
-          currency: "eur",
-          unit_amount: Math.round(precio * 100),
-          product_data: { name: nombreProducto(fila.producto) },
-        },
-        quantity: 1,
+    line_items: lineas.map((l) => ({
+      price_data: {
+        currency: "eur",
+        unit_amount: Math.round((l.precio as number) * 100),
+        product_data: { name: nombreProducto(l.producto) },
       },
-    ],
+      quantity: 1,
+    })),
     success_url: `${SITE_URL}/comprar.html?pago=exito&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${SITE_URL}/comprar.html?pago=cancelado`,
   });
 
-  const { data: filaActualizada, error: updateError } = await sb
-    .from("reservas")
-    .update({ stripe_session_id: session.id, precio_pagado: precio })
-    .eq("id", fila.id)
-    .select("id");
+  // Una fila puede tener un precio distinto de otra (piezas distintas), así
+  // que no vale un único UPDATE con un precio compartido: se actualiza una
+  // a una, cada una con el suyo. Mismo número de filas que de piezas
+  // (2-3 piezas en un pedido normal), así que el coste real es mínimo.
+  for (const l of lineas) {
+    const { error: updateError } = await sb
+      .from("reservas")
+      .update({ stripe_session_id: session.id, precio_pagado: l.precio })
+      .eq("id", l.id);
 
-  if (updateError || !filaActualizada || filaActualizada.length === 0) {
-    return new Response(
-      JSON.stringify({ error: "No se pudo preparar el pago" }),
-      { status: 500, headers: jsonHeaders },
-    );
+    if (updateError) {
+      return new Response(
+        JSON.stringify({ error: "No se pudo preparar el pago" }),
+        { status: 500, headers: jsonHeaders },
+      );
+    }
   }
 
   return new Response(JSON.stringify({ url: session.url }), {

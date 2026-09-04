@@ -185,6 +185,15 @@ const PRODUCTOS = [
     // de Supabase, que es lo que de verdad se usa al gestionar el pedido
     // — esto es solo referencia para quien lea el catálogo.
     sku: { oro:'CDNN067-2 + YS14924D0W0', plata:'CDNN067-1 + YS14924A0W0', grabado:'diaoke' },
+    // Un selector de acabado por pieza del kit: se pueden pedir en
+    // acabados distintos (el collar en oro, la pulsera en plata). Las
+    // claves ("campo") tienen que coincidir EXACTAMENTE con las que lee
+    // supabase-migracion-v10.sql al resolver el SKU — si se cambian aquí,
+    // hay que cambiarlas también allí.
+    acabados: [
+      { campo: 'acabado__collar_esencial', label: 'Acabado del collar', pieza: 'Collar' },
+      { campo: 'acabado__pulsera_vinculo', label: 'Acabado de la pulsera', pieza: 'Pulsera' },
+    ],
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
@@ -209,6 +218,12 @@ const PRODUCTOS = [
     // Kit = las dos piezas sueltas; W{mes} se resuelve como en Collar
     // Destino. La resolución real vive en la migración v9 de Supabase.
     sku: { oro:'XX49472D0W{mes} + YS15777D0W0-KZ', plata:'XX49472A0W{mes} + YS15777A0W0-KZ' },
+    // Ver el mismo aviso en kit_pedacito_nosotros: estas claves tienen
+    // que coincidir con supabase-migracion-v10.sql.
+    acabados: [
+      { campo: 'acabado__collar_flor_natal', label: 'Acabado del collar', pieza: 'Collar' },
+      { campo: 'acabado__pulsera_nombre', label: 'Acabado de la pulsera', pieza: 'Pulsera' },
+    ],
     forma: 'flor',
     campos: ['mes', 'grabado'],
     destacado: false,

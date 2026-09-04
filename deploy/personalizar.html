@@ -154,20 +154,12 @@
            graban (y esa banda se oculta entera en esas). script.js lo
            engancha y lo guarda junto al grabado, así viaja con el pedido
            y sabéis cuál enviar. -->
-      <div class="acabado">
-        <p class="acabado-label" id="acabado-label">Acabado</p>
-        <div class="acabado-opciones" id="acabado-opciones"
-             role="radiogroup" aria-labelledby="acabado-label">
-          <button type="button" class="acabado-op" data-acabado="oro" role="radio" aria-checked="true">
-            <span class="acabado-dot acabado-dot--oro" aria-hidden="true"></span>
-            Bañado en oro
-          </button>
-          <button type="button" class="acabado-op" data-acabado="plata" role="radio" aria-checked="false">
-            <span class="acabado-dot acabado-dot--plata" aria-hidden="true"></span>
-            Plateado
-          </button>
-        </div>
-      </div>
+      <!-- Una pieza suelta lleva un solo selector de acabado. Un kit lleva
+           uno POR PIEZA del kit (pueden pedirse en acabados distintos: el
+           collar en oro y la pulsera en plata), así que el contenedor se
+           rellena entero desde script.js según lo que declare el producto
+           en productos.js — nunca es el mismo HTML fijo para los dos casos. -->
+      <div class="acabado" id="acabado-contenedor"></div>
 
       <!-- ===== 4. DESCRIPCIÓN ===== -->
       <section class="producto-detalle">

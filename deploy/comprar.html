@@ -123,15 +123,14 @@
       <h2>Cómpratela</h2>
       <p class="reserva-sub">Pago seguro con tarjeta, a través de Stripe. Envío incluido</p>
 
-      <div class="reserva-recap">
-        <span class="recap-label">Vas a comprar</span>
-        <p class="recap-producto" data-bind="producto">Sin pieza elegida</p>
-        <p class="recap-line" data-bind="resumen"></p>
-        <a href="productos.html" class="recap-edit">Cambiar de pieza</a>
-      </div>
+      <!-- Lista del carrito: script.js la rellena entera (una pieza puede
+           ser más de una fila si es un kit con dos acabados). El total y
+           cada botón "Quitar" también los pinta y engancha script.js. -->
+      <div class="carrito-lista" id="carrito-lista"></div>
+      <a href="productos.html" class="carrito-anadir-mas">+ Añadir otra pieza</a>
 
       <p class="reserva-config-warning" id="sin-pieza" hidden>
-        Todavía no has elegido pieza. Entra en <a href="productos.html">la colección</a> y elige la tuya
+        Todavía no has añadido ninguna pieza. Entra en <a href="productos.html">la colección</a> y elige la tuya
       </p>
 
       <p class="reserva-config-warning" id="reserva-config-warning" hidden>
@@ -210,7 +209,7 @@
         </svg>
       </span>
       <h2>Listo</h2>
-      <p>Hemos recibido tu pago de tu pieza de la edición de lanzamiento</p>
+      <p>Hemos recibido tu pago de la edición de lanzamiento</p>
       <p>Te avisaremos por email en cuanto se envíe</p>
     </div>
 
