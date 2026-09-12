@@ -711,14 +711,24 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    y azul). */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
+  /* Las paradas siguen a las bandas MEDIDAS del texto, no a ojo:
+       titular    15% - 27%
+       subtítulo  32% - 38%
+       botones    77% - 90%
+     Por eso el velo se sostiene hasta el 40% y vuelve a subir a partir
+     del 74%, y se hunde casi a cero entre el 48% y el 70%, que es la
+     ventana de cara, cuello y colgante. */
   background:linear-gradient(to bottom,
-    rgba(11,46,51,.50) 0%,
-    rgba(11,46,51,.30) 14%,
-    rgba(11,46,51,.10) 28%,
-    rgba(11,46,51,0) 40%,
-    rgba(11,46,51,0) 62%,
-    rgba(11,46,51,.14) 78%,
-    rgba(11,46,51,.34) 100%);
+    rgba(11,46,51,.60) 0%,
+    rgba(11,46,51,.54) 14%,
+    rgba(11,46,51,.50) 28%,
+    rgba(11,46,51,.44) 38%,
+    rgba(11,46,51,.20) 46%,
+    rgba(11,46,51,.05) 54%,
+    rgba(11,46,51,.05) 70%,
+    rgba(11,46,51,.26) 78%,
+    rgba(11,46,51,.42) 90%,
+    rgba(11,46,51,.52) 100%);
 }
 /* Bloque de texto alineado a la izquierda, no centrado: el titular y su
    subtítulo arrancan en el margen y forman una columna editorial. El
@@ -745,7 +755,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   font-size:clamp(58px,14vw,78px);
   line-height:.95; letter-spacing:-.025em;
   color:var(--hero-blanco);
-  text-shadow:0 1px 14px rgba(6,26,29,.26);
+  text-shadow:0 1px 2px rgba(6,26,29,.3), 0 2px 20px rgba(6,26,29,.45);
 }
 /* Misma familia en cursiva y algo más pequeño: continuación del titular,
    no una segunda marca. En bloque para poder darle su propio
@@ -754,7 +764,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   display:block;
   font-style:italic; font-weight:400; font-size:.88em; line-height:.9;
   color:var(--hero-arena);
-  text-shadow:0 1px 14px rgba(6,26,29,.3);
+  text-shadow:0 1px 2px rgba(6,26,29,.32), 0 2px 20px rgba(6,26,29,.48);
 }
 /* Filete corto entre el titular y el subtítulo: separa los dos sin
    meter una caja ni un adorno. */
@@ -772,7 +782,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
      las dos líneas y se queda en la franja tranquila de la foto. */
   margin:0; max-width:min(300px, 56vw);
   font-size:17px; line-height:1.45; font-weight:400;
-  color:var(--hero-blanco); text-shadow:none;
+  color:var(--hero-blanco); text-shadow:0 1px 16px rgba(6,26,29,.5);
 }
 
 /* Firma de marca: no aparece en el diseno de movil (ver el mockup del
@@ -2223,13 +2233,23 @@ footer{
      (contain) sobre su propia copia difuminada, así que el degradado se
      aplica encima de las dos capas. */
   .hero-media::after{
+    /* Mismo criterio que en móvil, con las bandas MEDIDAS de escritorio:
+         titular    13% - 28%
+         subtítulo  64% - 70%
+         firma      73% - 78%
+         botones    82% - 96%
+       La ventana limpia (44% - 56%) es donde caen cara y colgante. */
     background-image:
       linear-gradient(to bottom,
-        rgba(11,46,51,.50) 0%,
-        rgba(11,46,51,.22) 20%,
-        rgba(11,46,51,.05) 42%,
-        rgba(11,46,51,.10) 58%,
-        rgba(11,46,51,.35) 80%,
+        rgba(11,46,51,.58) 0%,
+        rgba(11,46,51,.52) 14%,
+        rgba(11,46,51,.46) 28%,
+        rgba(11,46,51,.16) 36%,
+        rgba(11,46,51,.05) 44%,
+        rgba(11,46,51,.05) 56%,
+        rgba(11,46,51,.30) 64%,
+        rgba(11,46,51,.46) 74%,
+        rgba(11,46,51,.56) 88%,
         rgba(11,46,51,.62) 100%),
       url('img/hero-adriana.jpg');
     background-size:auto, contain;
