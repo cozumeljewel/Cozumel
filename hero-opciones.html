@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero · opciones de tipografía</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!-- PÁGINA INTERNA DE TRABAJO. No se publica (no está en deploy/), igual
+     que style-preview.html o direccion-artistica.html. Sirve para
+     comparar opciones del titular del hero en el móvil de verdad, sin
+     tocar la web real. Cuando se elija una, se lleva a style.css y este
+     archivo se puede borrar. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --foam:#F2F8F8;
+    --gold-soft:#E0C88F;
+    --deep:#14454A;
+    --abyss:#0B2E33;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--abyss); font-family:'Jost',sans-serif; color:var(--foam);}
+
+  .intro{padding:28px 22px 24px; max-width:640px; margin:0 auto;}
+  .intro h1{font-family:'Playfair Display'; font-size:22px; font-weight:700; margin-bottom:10px;}
+  .intro p{font-size:14px; line-height:1.6; opacity:.8; margin-bottom:8px;}
+  .intro strong{color:var(--gold-soft); font-weight:500;}
+
+  /* ---- Misma geometría que el hero real (style.css) ---- */
+  .hero{
+    position:relative; overflow:hidden;
+    display:flex; flex-direction:column; align-items:center;
+    min-height:88vh; padding-top:78px;
+    margin-bottom:6px;
+  }
+  .hero-media{
+    position:absolute; inset:0; z-index:0;
+    background-image:url('img/hero-adriana.jpg');
+    background-size:cover; background-position:center top; background-repeat:no-repeat;
+  }
+  /* Velo ACTUAL de la web */
+  .hero-media::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(to bottom,
+      rgba(11,46,51,.58) 0%,
+      rgba(11,46,51,.30) 18%,
+      rgba(11,46,51,.06) 38%,
+      rgba(11,46,51,.10) 52%,
+      rgba(11,46,51,.45) 78%,
+      rgba(11,46,51,.82) 100%);
+  }
+  /* Velo REFORZADO: mantiene el centro limpio (es donde está ella) pero
+     sostiene la zona del titular bastante más abajo. */
+  .velo-fuerte .hero-media::after{
+    background:linear-gradient(to bottom,
+      rgba(11,46,51,.72) 0%,
+      rgba(11,46,51,.58) 14%,
+      rgba(11,46,51,.34) 26%,
+      rgba(11,46,51,.10) 40%,
+      rgba(11,46,51,.10) 52%,
+      rgba(11,46,51,.45) 78%,
+      rgba(11,46,51,.82) 100%);
+  }
+
+  .hero-copy{
+    position:relative; z-index:2; flex:1; width:100%;
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:0 24px 56px; text-align:center;
+  }
+  .hero-copy h1{margin-top:10px; color:var(--foam);}
+  .hero-copy h1 em{font-style:italic; color:var(--gold-soft);}
+  .hero-sub{
+    margin:18px auto 0; max-width:32ch; font-size:15px;
+    color:rgba(242,248,248,.88);
+  }
+  .hero-marca{margin-top:22px;}
+  .hero-marca-nombre{
+    display:block; font-size:11px; letter-spacing:.28em; text-transform:uppercase;
+    color:rgba(242,248,248,.8);
+  }
+  .hero-marca-claim{
+    display:block; margin-top:4px; font-family:'Playfair Display';
+    font-style:italic; font-size:14px; color:var(--gold-soft);
+  }
+  .hero-ctas{margin-top:26px;}
+  .hero-cta{
+    display:block; padding:15px 22px; border:1px solid rgba(242,248,248,.65);
+    color:var(--foam); text-decoration:none; font-size:15px; letter-spacing:.02em;
+  }
+
+  /* Etiqueta de cada opción */
+  .etiqueta{
+    position:absolute; z-index:5; top:0; left:0; right:0;
+    display:flex; align-items:center; gap:8px;
+    padding:9px 14px; background:rgba(11,46,51,.92);
+    font-size:12px; letter-spacing:.06em; text-transform:uppercase;
+  }
+  .etiqueta b{color:var(--gold-soft); font-weight:600;}
+  .etiqueta span{opacity:.62; text-transform:none; letter-spacing:0; font-size:11.5px;}
+
+  /* =======================================================
+     OPCIONES
+     ======================================================= */
+
+  /* A · Instrument Serif — lo que hay AHORA en producción */
+  .op-a h1{
+    font-family:'Instrument Serif'; font-weight:400;
+    font-size:clamp(44px,12.5vw,60px); line-height:1.0; letter-spacing:-.005em;
+    text-shadow:0 1px 3px rgba(6,26,29,.75), 0 2px 16px rgba(6,26,29,.55);
+  }
+  .op-a h1 em{font-weight:400;}
+
+  /* B · Playfair 900 — lo de ANTES, para comparar */
+  .op-b h1{
+    font-family:'Playfair Display'; font-weight:900;
+    font-size:clamp(38px,11vw,52px); line-height:1.05;
+    text-shadow:0 2px 14px rgba(6,26,29,.55);
+  }
+  .op-b h1 em{font-weight:600;}
+
+  /* C · Instrument Serif + velo reforzado + sombra más cerrada */
+  .op-c h1{
+    font-family:'Instrument Serif'; font-weight:400;
+    font-size:clamp(46px,13vw,62px); line-height:1.0; letter-spacing:-.005em;
+    text-shadow:0 1px 2px rgba(6,26,29,.9), 0 3px 20px rgba(6,26,29,.75);
+  }
+  .op-c h1 em{font-weight:400;}
+
+  /* D · Playfair 700 + velo reforzado — término medio */
+  .op-d h1{
+    font-family:'Playfair Display'; font-weight:700;
+    font-size:clamp(40px,11.5vw,56px); line-height:1.06;
+    text-shadow:0 1px 3px rgba(6,26,29,.8), 0 2px 18px rgba(6,26,29,.6);
+  }
+  .op-d h1 em{font-weight:500;}
+
+  /* E · Cormorant Garamond — serif editorial clásico, muy mediterráneo */
+  .op-e h1{
+    font-family:'Cormorant Garamond'; font-weight:600;
+    font-size:clamp(50px,14vw,68px); line-height:.98;
+    text-shadow:0 1px 2px rgba(6,26,29,.9), 0 3px 20px rgba(6,26,29,.7);
+  }
+  .op-e h1 em{font-weight:500;}
+
+  /* F · Fraunces — serif editorial moderno, con algo más de cuerpo */
+  .op-f h1{
+    font-family:'Fraunces'; font-variation-settings:'opsz' 120; font-weight:500;
+    font-size:clamp(40px,11.5vw,55px); line-height:1.04; letter-spacing:-.01em;
+    text-shadow:0 1px 3px rgba(6,26,29,.85), 0 2px 18px rgba(6,26,29,.6);
+  }
+  .op-f h1 em{font-weight:400;}
+
+  .cierre{padding:40px 22px 60px; max-width:640px; margin:0 auto; text-align:center;}
+  .cierre p{font-size:14px; line-height:1.7; opacity:.8;}
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>Hero · opciones de tipografía</h1>
+  <p>Seis versiones del mismo hero, con la foto y la geometría reales. Baja y compáralas <strong>en el móvil</strong>, que es donde se ve el problema.</p>
+  <p>Las que dicen <strong>velo reforzado</strong> no cambian la foto: oscurecen un poco más la franja de arriba (donde va el titular) y dejan el centro igual de limpio, que es donde está Adriana.</p>
+</div>
+
+<!-- A -->
+<section class="hero op-a">
+  <div class="etiqueta"><b>A</b> Instrument Serif <span>— lo que hay ahora en la web</span></div>
+  <div class="hero-media"></div>
+  <div class="hero-copy">
+    <div><h1>Un Pedacito<br><em>de ti</em></h1></div>
+    <div>
+      <p class="hero-sub">Joyas personalizadas para regalar algo que importa</p>
+      <div class="hero-marca">
+        <span class="hero-marca-nombre">Cozumel</span>
+        <span class="hero-marca-claim">Lo que importa, se lleva</span>
+      </div>
+      <div class="hero-ctas"><a class="hero-cta" href="#">Descubrir la colección →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- B -->
+<section class="hero op-b">
+  <div class="etiqueta"><b>B</b> Playfair 900 <span>— como estaba antes</span></div>
+  <div class="hero-media"></div>
+  <div class="hero-copy">
+    <div><h1>Un Pedacito<br><em>de ti</em></h1></div>
+    <div>
+      <p class="hero-sub">Joyas personalizadas para regalar algo que importa</p>
+      <div class="hero-marca">
+        <span class="hero-marca-nombre">Cozumel</span>
+        <span class="hero-marca-claim">Lo que importa, se lleva</span>
+      </div>
+      <div class="hero-ctas"><a class="hero-cta" href="#">Descubrir la colección →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- C -->
+<section class="hero op-c velo-fuerte">
+  <div class="etiqueta"><b>C</b> Instrument Serif <span>— + velo reforzado</span></div>
+  <div class="hero-media"></div>
+  <div class="hero-copy">
+    <div><h1>Un Pedacito<br><em>de ti</em></h1></div>
+    <div>
+      <p class="hero-sub">Joyas personalizadas para regalar algo que importa</p>
+      <div class="hero-marca">
+        <span class="hero-marca-nombre">Cozumel</span>
+        <span class="hero-marca-claim">Lo que importa, se lleva</span>
+      </div>
+      <div class="hero-ctas"><a class="hero-cta" href="#">Descubrir la colección →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- D -->
+<section class="hero op-d velo-fuerte">
+  <div class="etiqueta"><b>D</b> Playfair 700 <span>— + velo reforzado</span></div>
+  <div class="hero-media"></div>
+  <div class="hero-copy">
+    <div><h1>Un Pedacito<br><em>de ti</em></h1></div>
+    <div>
+      <p class="hero-sub">Joyas personalizadas para regalar algo que importa</p>
+      <div class="hero-marca">
+        <span class="hero-marca-nombre">Cozumel</span>
+        <span class="hero-marca-claim">Lo que importa, se lleva</span>
+      </div>
+      <div class="hero-ctas"><a class="hero-cta" href="#">Descubrir la colección →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- E -->
+<section class="hero op-e velo-fuerte">
+  <div class="etiqueta"><b>E</b> Cormorant Garamond <span>— + velo reforzado</span></div>
+  <div class="hero-media"></div>
+  <div class="hero-copy">
+    <div><h1>Un Pedacito<br><em>de ti</em></h1></div>
+    <div>
+      <p class="hero-sub">Joyas personalizadas para regalar algo que importa</p>
+      <div class="hero-marca">
+        <span class="hero-marca-nombre">Cozumel</span>
+        <span class="hero-marca-claim">Lo que importa, se lleva</span>
+      </div>
+      <div class="hero-ctas"><a class="hero-cta" href="#">Descubrir la colección →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- F -->
+<section class="hero op-f velo-fuerte">
+  <div class="etiqueta"><b>F</b> Fraunces <span>— + velo reforzado</span></div>
+  <div class="hero-media"></div>
+  <div class="hero-copy">
+    <div><h1>Un Pedacito<br><em>de ti</em></h1></div>
+    <div>
+      <p class="hero-sub">Joyas personalizadas para regalar algo que importa</p>
+      <div class="hero-marca">
+        <span class="hero-marca-nombre">Cozumel</span>
+        <span class="hero-marca-claim">Lo que importa, se lleva</span>
+      </div>
+      <div class="hero-ctas"><a class="hero-cta" href="#">Descubrir la colección →</a></div>
+    </div>
+  </div>
+</section>
+
+<div class="cierre">
+  <p>Dime la letra que prefieres (o una mezcla: “la E pero con el velo de la A”) y la llevo a la web. Si ninguna convence, probamos otras.</p>
+</div>
+
+</body>
+</html>

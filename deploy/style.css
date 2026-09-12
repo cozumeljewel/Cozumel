@@ -52,13 +52,6 @@
   --border:var(--line-2);
   --font-display:'Playfair Display', serif;
   --font-body:'Jost', sans-serif;
-  /* Serif editorial, SOLO para los dos titulares grandes de marca (el
-     hero de inicio y "Cozumel Stories"). Instrument Serif tiene un único
-     peso (400) y proporciones altas y finas: al tamaño de un titular
-     grande se lee como revista, no como cartel. El resto del sitio sigue
-     con Playfair — el objetivo no es cambiar la tipografía de la marca,
-     sino dar más aire justo donde el texto es enorme. */
-  --font-editorial:'Instrument Serif', 'Playfair Display', serif;
 
   /* Espaciado: escala para componentes nuevos. Lo ya existente en el
      sitio (paddings sueltos por sección) se deja como está — se
@@ -677,9 +670,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   background:linear-gradient(to bottom,
-    rgba(11,46,51,.58) 0%,
-    rgba(11,46,51,.30) 18%,
-    rgba(11,46,51,.06) 38%,
+    rgba(11,46,51,.72) 0%,
+    rgba(11,46,51,.58) 14%,
+    rgba(11,46,51,.34) 26%,
+    rgba(11,46,51,.10) 40%,
     rgba(11,46,51,.10) 52%,
     rgba(11,46,51,.45) 78%,
     rgba(11,46,51,.82) 100%);
@@ -700,15 +694,15 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    y que se mantiene aquí sin más cambio que el texto. */
 .hero-copy h1{
   margin-top:10px;
-  /* Instrument Serif: un solo peso (400) y trazo más fino que Playfair
-     900, así que sube algo de tamaño y baja el interlineado para
-     mantener la misma presencia con menos peso. La sombra se refuerza
-     (doble, como ya hacía el "em"): un trazo fino sobre foto necesita
-     más ayuda para separarse del fondo. */
-  font-family:var(--font-editorial); font-weight:400;
-  font-size:clamp(44px,12.5vw,60px);
-  line-height:1.0; letter-spacing:-.005em; color:var(--foam);
-  text-shadow:0 1px 3px rgba(6,26,29,.75), 0 2px 16px rgba(6,26,29,.55);
+  /* Playfair 700, no el 900 de antes: mismo carácter de marca pero con
+     algo menos de peso, que a este tamaño se lee más editorial y menos
+     de cartel. Sombra doble (una cerrada que perfila la letra y otra
+     abierta que la despega del fondo) para aguantar sobre la foto.
+     Elegido comparando seis variantes en el móvil (opción D). */
+  font-family:'Playfair Display'; font-weight:700;
+  font-size:clamp(40px,11.5vw,56px);
+  line-height:1.06; color:var(--foam);
+  text-shadow:0 1px 3px rgba(6,26,29,.8), 0 2px 18px rgba(6,26,29,.6);
 }
 /* El acento dorado va en --gold-soft, no en --gold: el oro de marca es
    demasiado oscuro para leerse sobre la foto (queda a media luz contra
@@ -717,7 +711,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    que perfila la letra + otra abierta que la despega del fondo) para
    que aguante encima de cualquier foto que se ponga después. */
 .hero-copy h1 em{
-  font-style:italic; font-weight:400; color:var(--gold-soft);
+  font-style:italic; font-weight:500; color:var(--gold-soft);
   text-shadow:0 1px 3px rgba(6,26,29,.85), 0 2px 18px rgba(6,26,29,.7);
 }
 .hero-sub{
@@ -782,20 +776,15 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    "imagen pendiente" que ya usan las fichas de producto. */
 .stories{padding:64px 24px 56px; background:var(--white); text-align:center;}
 .stories h2{
-  /* Mismo criterio que el hero: es el nombre de la sección, el titular
-     editorial más grande de la página después del hero. */
-  font-family:var(--font-editorial); font-weight:400; font-size:38px; color:var(--deep);
-  margin-top:10px; line-height:1.04; max-width:20ch; margin-left:auto; margin-right:auto;
+  font-family:'Playfair Display'; font-weight:800; font-size:32px; color:var(--deep);
+  margin-top:10px; line-height:1.16; max-width:20ch; margin-left:auto; margin-right:auto;
 }
 /* Lema de la sección, bajo el título. Mismo tratamiento que el nombre de
    la edición en la página de colección (.coleccion-edicion): serif con la
    segunda parte en cursiva dorada, siempre por debajo del título en
    tamaño — el que manda es "Cozumel Stories". */
-/* Peso 500, no 700: con el titular de arriba ya en Instrument Serif (un
-   solo peso, trazo fino), un claim en negrita pesaba más que el propio
-   nombre de la sección e invertía la jerarquía. */
 .stories-claim{
-  margin:8px auto 0; font-family:'Playfair Display'; font-weight:500;
+  margin:8px auto 0; font-family:'Playfair Display'; font-weight:700;
   font-size:24px; line-height:1.15; color:var(--deep); text-wrap:balance;
 }
 .stories-claim em{font-style:italic; font-weight:500; color:var(--gold-deep);}
@@ -2100,7 +2089,7 @@ footer{
      del texto y el aire lateral. */
   .hero{margin-top:56px; min-height:92vh;}
   .hero-copy{padding:0 70px 96px; max-width:760px;}
-  .hero-copy h1{font-size:clamp(62px,6.8vw,88px);}
+  .hero-copy h1{font-size:clamp(58px,6.4vw,90px);}
   /* El ritmo vertical de móvil (pensado para un titular de 52px) se queda
      corto junto a uno de hasta 92px: todo el bloque se veía apelotonado.
      Estos márgenes escalan con el tamaño del titular. */
@@ -2153,7 +2142,7 @@ footer{
      tamaño de móvil, junto a un h2 de 42px vuelve a desaparecer. */
   .eyebrow{font-size:16px; margin-bottom:3px;}
   .stories{padding:90px 90px 100px;}
-  .stories h2{font-size:50px;}
+  .stories h2{font-size:42px;}
   .stories-claim{font-size:32px;}
   .stories-intro{font-size:16.5px;}
   .stories-lineas{font-size:21px; margin-top:24px;}
