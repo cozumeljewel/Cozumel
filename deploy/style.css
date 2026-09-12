@@ -639,8 +639,14 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    propósito por uno editorial de marca premium. */
 .hero{
   position:relative; overflow:hidden; box-sizing:border-box;
-  display:flex; flex-direction:column; align-items:center;
-  min-height:88vh;
+  display:flex; flex-direction:column;
+  /* A pantalla completa. "svh" es el alto de pantalla SIN contar la barra
+     del navegador cuando está desplegada: con "vh" a secas, en móvil el
+     indicador de "seguir explorando" quedaba cortado por debajo del
+     borde hasta que hacías scroll. El vh de antes queda de respaldo para
+     navegadores viejos que no entienden svh. */
+  min-height:92vh;
+  min-height:100svh;
   /* El texto no puede subir por encima de esta línea: la cabecera flota
      fija encima del hero, así que sin este suelo el titular se le metía
      debajo en viewports bajos (~600px, frecuente en Android en
@@ -662,100 +668,108 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   background-position:center top, center, center;
   background-repeat:no-repeat;
 }
-/* Velo oscuro en los dos extremos, transparente en el centro: sigue a
-   donde está el texto ahora. Antes solo oscurecía abajo, porque todo el
-   texto vivía ahí; con el titular subido al cielo, arriba quedaba a un 5%
-   de velo y el blanco sobre cielo claro casi no se leía. El centro se
-   deja limpio a propósito: es donde está ella. */
+/* Velo en los dos extremos y centro limpio: arriba sostiene el titular
+   sobre el cielo, abajo sostiene el botón y el indicador de scroll. La
+   franja central se deja casi sin tocar a propósito — es donde está
+   ella, y es lo que tiene que verse. */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   background:linear-gradient(to bottom,
-    rgba(11,46,51,.72) 0%,
-    rgba(11,46,51,.58) 14%,
-    rgba(11,46,51,.34) 26%,
-    rgba(11,46,51,.10) 40%,
-    rgba(11,46,51,.10) 52%,
-    rgba(11,46,51,.45) 78%,
-    rgba(11,46,51,.82) 100%);
+    rgba(11,46,51,.62) 0%,
+    rgba(11,46,51,.46) 18%,
+    rgba(11,46,51,.24) 34%,
+    rgba(11,46,51,.10) 50%,
+    rgba(11,46,51,.16) 64%,
+    rgba(11,46,51,.42) 82%,
+    rgba(11,46,51,.66) 100%);
 }
-/* Ocupa todo el alto del hero y reparte sus dos bloques a los extremos:
-   el titular arriba (sobre el cielo, por encima de la cabeza) y el resto
-   abajo. Así el centro de la foto — donde está ella — queda despejado en
-   vez de tener el texto cruzándole el cuerpo. */
+/* Bloque de texto alineado a la izquierda, no centrado: el titular y su
+   subtítulo arrancan en el margen y forman una columna editorial. El
+   bloque de abajo (botón + "seguir explorando") se empuja al pie con
+   margin-top:auto, así el centro de la foto queda despejado. */
 .hero-copy{
   position:relative; z-index:2; flex:1; width:100%;
-  display:flex; flex-direction:column; justify-content:space-between;
-  padding:0 24px 56px; text-align:center;
+  display:flex; flex-direction:column;
+  padding:0 26px 28px; text-align:left;
 }
+.hero-copy-alto{margin-top:4vh;}
+.hero-copy-bajo{margin-top:auto;}
 
-/* Titular de la edición: mismo tratamiento de siempre en el hero (serif
-   grande en blanco + acento en cursiva dorada con "em"), no un bloque
-   monocromo en mayúsculas — esa es la estética de marca que ya existía
-   y que se mantiene aquí sin más cambio que el texto. */
+/* Titular de la edición: serif grande en blanco con el acento en cursiva
+   dorada ("em"), cada parte en su propia línea. Peso 500: a este tamaño
+   la Playfair fina se lee editorial; en negrita se convierte en cartel. */
 .hero-copy h1{
-  margin-top:10px;
-  /* Playfair 700, no el 900 de antes: mismo carácter de marca pero con
-     algo menos de peso, que a este tamaño se lee más editorial y menos
-     de cartel. Sombra doble (una cerrada que perfila la letra y otra
-     abierta que la despega del fondo) para aguantar sobre la foto.
-     Elegido comparando seis variantes en el móvil (opción D). */
-  font-family:'Playfair Display'; font-weight:700;
-  font-size:clamp(40px,11.5vw,56px);
-  line-height:1.06; color:var(--foam);
-  text-shadow:0 1px 3px rgba(6,26,29,.8), 0 2px 18px rgba(6,26,29,.6);
+  font-family:'Playfair Display'; font-weight:500;
+  font-size:clamp(46px,13.6vw,66px);
+  line-height:1.0; color:var(--foam);
+  text-shadow:0 1px 3px rgba(6,26,29,.5), 0 2px 22px rgba(6,26,29,.42);
 }
 /* El acento dorado va en --gold-soft, no en --gold: el oro de marca es
    demasiado oscuro para leerse sobre la foto (queda a media luz contra
    las zonas claras). El oro claro mantiene el color de marca pero con
-   bastante más contraste. Peso algo mayor y doble sombra (una cerrada
-   que perfila la letra + otra abierta que la despega del fondo) para
-   que aguante encima de cualquier foto que se ponga después. */
+   bastante más contraste. */
 .hero-copy h1 em{
-  font-style:italic; font-weight:500; color:var(--gold-soft);
-  text-shadow:0 1px 3px rgba(6,26,29,.85), 0 2px 18px rgba(6,26,29,.7);
+  font-style:italic; font-weight:400; color:var(--gold-soft);
+  text-shadow:0 1px 3px rgba(6,26,29,.6), 0 2px 20px rgba(6,26,29,.5);
+}
+/* Filete corto entre el titular y el subtítulo: separa los dos sin
+   meter una caja ni un adorno. */
+.hero-filete{
+  display:block; width:58px; height:1px; margin:26px 0 18px;
+  background:rgba(242,248,248,.55);
 }
 .hero-sub{
-  margin:18px auto 0; max-width:32ch; font-size:15px; color:rgba(242,248,248,.88);
+  margin:0; max-width:21ch;
+  font-size:16px; line-height:1.5; color:rgba(242,248,248,.92);
+  text-shadow:0 1px 10px rgba(6,26,29,.55);
 }
 
-/* Firma de marca: discreta a propósito (más pequeña que la edición de
-   arriba), para que quede claro que "Cozumel · Lo que importa, se lleva"
-   es la marca de siempre y "un pedacito de ti" es solo el nombre de esta
-   edición. Este bloque NO cambia entre ediciones. Sin filete ni caja:
-   solo aire, como el resto del hero — así todo el bloque se lee como un
-   único mensaje centrado, no como tarjetas apiladas a distinto nivel. */
-.hero-marca{margin:26px auto 0; max-width:30ch;}
-.hero-marca-nombre{
-  display:block; font-family:'Jost'; font-size:11px; font-weight:600;
-  letter-spacing:.28em; text-transform:uppercase; color:rgba(242,248,248,.7);
-}
-.hero-marca-claim{
-  display:block; margin-top:6px; font-family:'Playfair Display'; font-style:italic;
-  font-size:14.5px; color:rgba(242,248,248,.75);
-}
-
-.hero-ctas{
-  margin-top:28px; display:flex; flex-direction:column; align-items:center; gap:14px;
-}
+.hero-ctas{display:flex; flex-direction:column;}
+/* Botón ancho de borde fino, con la flecha empujada al extremo derecho:
+   ocupa el ancho de la columna, así que no compite con nada y marca el
+   final del bloque. Relleno muy tenue para separarlo de la foto sin
+   taparla. */
 .hero-cta{
-  background:transparent; color:var(--foam); border-color:rgba(242,248,248,.7);
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:19px 24px;
+  border:1px solid rgba(242,248,248,.6);
+  background:rgba(11,46,51,.26);
+  color:var(--foam); text-decoration:none;
+  font-family:'Jost'; font-size:13px; font-weight:400;
+  letter-spacing:.17em; text-transform:uppercase;
   transition:background .25s, color .25s, border-color .25s;
 }
 .hero-cta:hover{background:var(--foam); color:var(--deep); border-color:var(--foam);}
-/* CTA secundaria: solo texto, sin caja — para que la principal ("Descubrir
-   la colección") siga siendo la única llamada a la acción con peso
-   visual. Lleva a la identidad de marca (Quiénes somos), no a venta. */
+.hero-cta-flecha{flex:none; font-size:15px; line-height:1;}
+/* CTA secundaria: solo texto subrayado y centrada bajo el botón — para
+   que la principal siga siendo la única llamada con peso visual. Lleva a
+   la identidad de marca (Quiénes somos), no a venta. */
 .hero-cta-secundaria{
-  font-family:'Jost'; font-size:13px; letter-spacing:.08em; color:rgba(242,248,248,.85);
-  text-decoration:underline; text-underline-offset:4px; text-decoration-color:rgba(242,248,248,.4);
+  align-self:center; margin-top:22px;
+  font-family:'Jost'; font-size:14px; letter-spacing:.04em; color:rgba(242,248,248,.9);
+  text-decoration:underline; text-underline-offset:6px; text-decoration-color:rgba(242,248,248,.45);
   transition:color .2s, text-decoration-color .2s;
 }
 .hero-cta-secundaria:hover{color:var(--foam); text-decoration-color:var(--foam);}
 
+/* Indicador de scroll al pie. Es un enlace real a la sección siguiente,
+   no un adorno: funciona con teclado y con lector de pantalla. */
+.hero-scroll{
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  margin-top:34px; color:rgba(242,248,248,.85); text-decoration:none;
+  transition:color .2s;
+}
+.hero-scroll:hover{color:var(--foam);}
+.hero-scroll-flecha{display:block; line-height:0;}
+.hero-scroll-texto{
+  font-family:'Jost'; font-size:10.5px; font-weight:400;
+  letter-spacing:.24em; text-transform:uppercase;
+}
+
 @keyframes heroMediaFade{ from{opacity:0;} to{opacity:1;} }
 @keyframes heroRise{ from{opacity:0; transform:translateY(16px) scale(.99);} to{opacity:1; transform:translateY(0) scale(1);} }
-/* La entrada escalonada (fondo → edición → titular → subtítulo → firma de
-   marca → CTA) vive SOLO aquí, no como regla base con un "apagado" aparte:
+/* La entrada escalonada (fondo → titular → filete → subtítulo → CTA →
+   indicador) vive SOLO aquí, no como regla base con un "apagado" aparte:
    ".hero-copy h1" tiene más especificidad que una clase suelta como
    ".reveal-hero", así que un override posterior con esa clase perdería y
    la animación se colaría igual con el movimiento reducido activado. Dentro
@@ -764,9 +778,11 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 @media (prefers-reduced-motion:no-preference){
   .hero-media{animation:heroMediaFade 1.4s ease-out both;}
   .hero-copy h1{animation:heroRise .8s ease-out .18s both;}
-  .hero-sub{animation:heroRise .8s ease-out .38s both;}
-  .hero-marca{animation:heroRise .8s ease-out .56s both;}
-  .hero-ctas{animation:heroRise .8s ease-out .74s both;}
+  .hero-filete{animation:heroRise .8s ease-out .38s both;}
+  .hero-sub{animation:heroRise .8s ease-out .5s both;}
+  .hero-ctas{animation:heroRise .8s ease-out .68s both;}
+  .hero-scroll{animation:heroRise .8s ease-out .86s both;}
+}
 }
 
 /* ---------- COZUMEL STORIES ----------
@@ -2087,18 +2103,22 @@ footer{
   /* 1. HERO: a pantalla casi completa también en escritorio, mismo
      hero de fondo a sangre completa que en móvil, solo cambia el tamaño
      del texto y el aire lateral. */
-  .hero{margin-top:56px; min-height:92vh;}
-  .hero-copy{padding:0 70px 96px; max-width:760px;}
-  .hero-copy h1{font-size:clamp(58px,6.4vw,90px);}
-  /* El ritmo vertical de móvil (pensado para un titular de 52px) se queda
-     corto junto a uno de hasta 92px: todo el bloque se veía apelotonado.
-     Estos márgenes escalan con el tamaño del titular. */
-  .hero-sub{margin-top:26px; font-size:17px; max-width:42ch;}
-  .hero-marca{margin-top:40px; max-width:none;}
-  .hero-marca-claim{font-size:15px;}
-  /* Apiladas también en escritorio (no en fila): la principal manda y la
-     secundaria queda debajo, sin competir con ella en la misma línea. */
-  .hero-ctas{margin-top:44px; gap:18px;}
+  .hero{margin-top:56px; min-height:92vh; min-height:100svh;}
+  .hero-copy{padding:0 70px 64px; max-width:760px;}
+  .hero-copy h1{font-size:clamp(58px,6.4vw,88px);}
+  /* El ritmo vertical de móvil (pensado para un titular de ~52px) se
+     queda corto junto a uno de hasta 88px: el bloque se veía
+     apelotonado. Estos valores escalan con el tamaño del titular. */
+  .hero-filete{width:76px; margin:34px 0 24px;}
+  .hero-sub{font-size:18px; max-width:34ch;}
+  /* El botón no se estira a los 760px de la columna: a ese ancho deja de
+     leerse como un botón y parece una franja. */
+  .hero-cta{max-width:420px; padding:20px 28px; font-size:13.5px;}
+  .hero-cta-secundaria{align-self:flex-start; margin-left:0;}
+  .hero-ctas{margin-top:8px;}
+  /* En escritorio el indicador de scroll se alinea con la columna de
+     texto, no al centro de la pantalla. */
+  .hero-scroll{align-items:flex-start; margin-top:44px;}
 
   /* Solo en escritorio: el hueco del hero es muy ancho y bajo comparado
      con la foto (vertical), así que a "cover" solo cabría un 43% de su
