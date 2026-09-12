@@ -8,5 +8,5 @@
   La clave anon es pública por diseño — lo que protege los datos son las
   políticas RLS definidas en supabase-schema.sql, no el secreto de esta clave.
 */
-const SUPABASE_URL = "https://ddcrkglgdbasbxanbjkc.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_M5vHAuk47kuZMLMf9xhwPA_AMMIu17E";
+const SUPABASE_URL = "https://qesyjtqxbouodgldvbtq.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_lmFNgpMEy4Axi6dYQ9E1UA_b63xSwJ6";
