@@ -254,7 +254,14 @@ section[id]{scroll-margin-top:var(--header-h);}
 .btn-primary:active{opacity:.85;}
 .btn-lg{width:100%; padding:18px 28px; font-size:16px;}
 
+/* La etiqueta "imagen pendiente" es una nota interna para nosotros
+   (qué hueco de foto falta todavía), nunca algo que deba leer un
+   cliente. Se oculta aquí, en un solo sitio: el fondo degradado que
+   queda debajo ya funciona como marcador neutro de foto pendiente y
+   mantiene el aspect-ratio del hueco (sin salto de layout) mientras
+   llegan las fotos reales. */
 .ph-tag{
+  display:none;
   font-size:10px; letter-spacing:.08em; text-transform:uppercase;
   color:rgba(18,51,58,.5); background:rgba(255,255,255,.6);
   padding:4px 8px; border-radius:2px; position:absolute; top:12px; left:12px;
@@ -1710,6 +1717,13 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 #cta-reservar.is-success{background:var(--sea-dark); border-color:var(--sea-dark); color:var(--foam);}
 #cta-reservar.is-success .cta-texto::before{content:"✓ ";}
 #cta-reservar.is-error{background:#8A4038; border-color:#8A4038; color:var(--foam); cursor:pointer;}
+
+/* Pieza sin precio todavía: el CTA se ve apagado en vez de invitar a
+   comprar algo que no se puede cobrar. Se aplica también al sticky
+   (mismo selector de clase, ver script.js). */
+#cta-reservar.is-disabled, .cta-sticky-btn.is-disabled{
+  opacity:.45; cursor:not-allowed; pointer-events:none;
+}
 
 @media (prefers-reduced-motion:reduce){
   #cta-reservar{transition:none;}

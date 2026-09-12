@@ -123,31 +123,28 @@
 
     <div class="contact-grid">
 
-      <form class="contact-form" onsubmit="return false;">
+      <form class="contact-form" id="contact-form" novalidate>
         <div class="field">
           <label for="c-name">Nombre</label>
-          <input id="c-name" type="text" placeholder="Tu nombre">
+          <input id="c-name" name="nombre" type="text" placeholder="Tu nombre" required>
         </div>
         <div class="field">
           <label for="c-email">Email</label>
-          <input id="c-email" type="email" placeholder="tucorreo@email.com">
+          <input id="c-email" name="email" type="email" placeholder="tucorreo@email.com" required>
         </div>
         <div class="field">
           <label for="c-msg">Mensaje</label>
-          <textarea id="c-msg" rows="4" placeholder="Cuéntanos"></textarea>
+          <textarea id="c-msg" name="mensaje" rows="4" placeholder="Cuéntanos" required></textarea>
         </div>
-        <button class="btn btn-primary btn-lg" type="submit">Enviar mensaje</button>
-        <p class="form-note">Prototipo: el formulario todavía no envía nada</p>
+        <button class="btn btn-primary btn-lg" type="submit" id="contact-submit">Enviar mensaje</button>
+        <p class="reserva-error" id="contact-error" role="status" aria-live="polite" hidden></p>
+        <p class="form-note">Al enviar, se abre tu correo con el mensaje ya escrito</p>
       </form>
 
       <aside class="contact-info">
         <div class="contact-item">
           <span class="contact-label">Email</span>
           <p><a class="contact-link" href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a></p>
-        </div>
-        <div class="contact-item">
-          <span class="contact-label">Instagram</span>
-          <p class="ph-inline">pendiente de definir</p>
         </div>
         <div class="contact-item">
           <span class="contact-label">Respuesta</span>

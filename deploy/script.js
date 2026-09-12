@@ -514,6 +514,21 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
   if (resPrecio) resPrecio.textContent = precioTxt || '— · — €';
   if (resNota) resNota.hidden = !!precioTxt;
 
+  // Si la pieza todavía no tiene precio, "Añadir al carrito" no puede
+  // quedar habilitado: llevaría a comprar.html con un precio inválido.
+  // Se apaga aquí el CTA principal y el sticky (que reutiliza el mismo
+  // botón vía click(), así que basta con tocar uno).
+  [document.getElementById('cta-reservar'), document.getElementById('cta-sticky-btn')].forEach(btn => {
+    if (!btn) return;
+    if (!precioTxt) {
+      btn.setAttribute('aria-disabled', 'true');
+      btn.classList.add('is-disabled');
+    } else {
+      btn.removeAttribute('aria-disabled');
+      btn.classList.remove('is-disabled');
+    }
+  });
+
   // Ficha larga del producto (opcional). Todo con textContent: nunca
   // interpretamos HTML venido del catálogo.
   const ficha = document.getElementById('producto-ficha');
@@ -1086,8 +1101,16 @@ if (ctaReservar) {
       return;
     }
 
+    // Pieza todavía sin precio: el CTA se ve apagado (ver pintado de
+    // arriba), pero un <a> siempre es clicable, así que se corta aquí
+    // también por si acaso.
+    if (ctaReservar.classList.contains('is-disabled')) {
+      e.preventDefault();
+      return;
+    }
+
     const prod = getProductoElegido();
-    if (!prod) return; // no debería poder pasar en esta página, pero por si acaso deja el <a> navegar tal cual
+    if (!prod) { e.preventDefault(); return; } // producto no resuelto: no navega con el carrito a medias
 
     e.preventDefault();
     añadirAlCarrito({ producto: prod.id, personalizacion: getGrabado() });
@@ -1864,4 +1887,60 @@ if (reservaForm) {
       });
     }
   }
+}
+
+/* ---------- Formulario de contacto (contacto.html) ----------
+   No hay backend propio todavía: en vez de fingir un envío que no
+   ocurre (o dejar el formulario roto), arma un mailto: con lo escrito
+   y abre el cliente de correo del visitante. Es real (el mensaje sí
+   sale), solo que a través de su propio correo en vez de nuestro
+   servidor. Cuando exista un endpoint de verdad, esto se cambia por un
+   fetch aquí mismo, sin tocar el HTML. */
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  const nombreInput = document.getElementById('c-name');
+  const emailInput = document.getElementById('c-email');
+  const msgInput = document.getElementById('c-msg');
+  const submitBtn = document.getElementById('contact-submit');
+  const errorEl = document.getElementById('contact-error');
+
+  const showError = (msg) => { errorEl.hidden = false; errorEl.textContent = msg; };
+  const hideError = () => { errorEl.hidden = true; };
+  const emailValido = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+  let enviando = false;
+
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (enviando) return; // evita doble envío con doble click
+
+    const nombre = nombreInput.value.trim();
+    const email = emailInput.value.trim();
+    const mensaje = msgInput.value.trim();
+
+    if (!nombre) return showError('Escribe tu nombre');
+    if (!email || !emailValido(email)) return showError('Escribe un email válido');
+    if (!mensaje) return showError('Escribe tu mensaje');
+    hideError();
+
+    enviando = true;
+    submitBtn.disabled = true;
+    const textoOriginal = submitBtn.textContent;
+    submitBtn.textContent = 'Abriendo tu correo…';
+
+    const asunto = `Contacto desde la web · ${nombre}`;
+    const cuerpo = `${mensaje}\n\n—\n${nombre}\n${email}`;
+    const mailto = `mailto:cozumeljewel@gmail.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+    window.location.href = mailto;
+
+    // No hay forma fiable de saber si el cliente de correo abrió de
+    // verdad (el navegador no lo cuenta), así que se deja constancia
+    // clara de lo que acaba de pasar y se reactiva el botón por si hace
+    // falta reintentar o corregir algo.
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = textoOriginal;
+      enviando = false;
+    }, 1200);
+  });
 }
