@@ -136,35 +136,49 @@
     <!-- Dos bloques, uno arriba y otro abajo, para no tapar a Adriana:
          el titular va sobre su cabeza (cielo) y todo lo demás al pie. El
          hueco del medio lo reparte el space-between de .hero-copy. -->
+    <!-- Un solo HTML para dos heros distintos: MÓVIL lleva el diseño
+         nuevo (titular a la izquierda, filete, botón ancho e indicador de
+         scroll) y ESCRITORIO se queda como estaba antes (todo centrado,
+         con la firma de marca y sin indicador). Lo que sobra en cada
+         caso se oculta desde el CSS, no se duplica el marcado.
+
+         Los hijos van planos (sin los dos div de antes) justamente para
+         poder recolocarlos por separado en cada tamaño. El titular queda
+         arriba y todo lo demás se empuja al pie con margin-top:auto en
+         .hero-sub, que es como ya se comportaba. -->
     <div class="hero-copy">
-      <div class="hero-copy-alto">
-        <h1 class="reveal-hero">Un Pedacito<br><em>de ti</em></h1>
-        <span class="hero-filete reveal-hero" aria-hidden="true"></span>
-        <p class="hero-sub reveal-hero">Joyas personalizadas para regalar algo que importa.</p>
+      <h1 class="reveal-hero">Un Pedacito<br><em>de ti</em></h1>
+      <span class="hero-filete reveal-hero" aria-hidden="true"></span>
+
+      <!-- Va al pie, no pegado al titular: ahí arriba le cruzaba la cara
+           a Adriana. Abajo cae sobre la falda, zona oscura y despejada. -->
+      <p class="hero-sub reveal-hero">Joyas personalizadas para regalar algo que importa.</p>
+
+      <div class="hero-marca reveal-hero">
+        <span class="hero-marca-nombre">Cozumel</span>
+        <span class="hero-marca-claim">Lo que importa, se lleva</span>
       </div>
 
-      <div class="hero-copy-bajo">
-        <div class="hero-ctas reveal-hero">
-          <a class="hero-cta" href="productos.html">
-            <span>Descubrir la colección</span>
-            <span class="hero-cta-flecha" aria-hidden="true">→</span>
-          </a>
-          <a class="hero-cta-secundaria" href="historia.html">Conoce Cozumel</a>
-        </div>
-
-        <!-- Indicador de scroll: lleva a la primera sección de debajo.
-             Es un enlace de verdad (no un adorno) para que también
-             funcione con teclado. -->
-        <a class="hero-scroll reveal-hero" href="#stories">
-          <span class="hero-scroll-flecha" aria-hidden="true">
-            <svg viewBox="0 0 24 40" width="16" height="26" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v33"/>
-              <path d="M5 28l7 7 7-7"/>
-            </svg>
-          </span>
-          <span class="hero-scroll-texto">Seguir explorando</span>
+      <div class="hero-ctas reveal-hero">
+        <a class="hero-cta" href="productos.html">
+          <span>Descubrir la colección</span>
+          <span class="hero-cta-flecha" aria-hidden="true">→</span>
         </a>
+        <a class="hero-cta-secundaria" href="historia.html">Conoce Cozumel</a>
       </div>
+
+      <!-- Indicador de scroll (solo móvil): lleva a la primera sección de
+           debajo. Es un enlace de verdad, no un adorno, para que también
+           funcione con teclado. -->
+      <a class="hero-scroll reveal-hero" href="#stories">
+        <span class="hero-scroll-flecha" aria-hidden="true">
+          <svg viewBox="0 0 24 40" width="16" height="26" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v33"/>
+            <path d="M5 28l7 7 7-7"/>
+          </svg>
+        </span>
+        <span class="hero-scroll-texto">Seguir explorando</span>
+      </a>
     </div>
   </section>
 

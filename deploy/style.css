@@ -690,15 +690,17 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 .hero-copy{
   position:relative; z-index:2; flex:1; width:100%;
   display:flex; flex-direction:column;
-  padding:0 26px 28px; text-align:left;
+  padding:0 26px 28px;
+  /* Centrado de base (como en escritorio y como estaba siempre). En
+     movil solo el titular y su filete se sacan a la izquierda. */
+  text-align:center;
 }
-.hero-copy-alto{margin-top:4vh;}
-.hero-copy-bajo{margin-top:auto;}
 
 /* Titular de la edición: serif grande en blanco con el acento en cursiva
    dorada ("em"), cada parte en su propia línea. Peso 500: a este tamaño
    la Playfair fina se lee editorial; en negrita se convierte en cartel. */
 .hero-copy h1{
+  margin-top:4vh; text-align:left;
   font-family:'Playfair Display'; font-weight:500;
   font-size:clamp(46px,13.6vw,66px);
   line-height:1.0; color:var(--foam);
@@ -715,16 +717,32 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 /* Filete corto entre el titular y el subtítulo: separa los dos sin
    meter una caja ni un adorno. */
 .hero-filete{
-  display:block; width:58px; height:1px; margin:26px 0 18px;
+  display:block; width:58px; height:1px; margin:26px 0 0;
   background:rgba(242,248,248,.55);
 }
+/* margin-top:auto empuja este parrafo y todo lo que va detras al pie del
+   hero, dejando el titular arriba. Es el mismo reparto de siempre, ahora
+   sin necesidad de dos contenedores. */
 .hero-sub{
-  margin:0; max-width:21ch;
+  margin:auto auto 0; max-width:26ch;
   font-size:16px; line-height:1.5; color:rgba(242,248,248,.92);
   text-shadow:0 1px 10px rgba(6,26,29,.55);
 }
 
-.hero-ctas{display:flex; flex-direction:column;}
+/* Firma de marca: no aparece en el diseno de movil (ver el mockup del
+   cliente), pero sigue en escritorio, donde separa el nombre de la
+   edicion del claim permanente de la marca. */
+.hero-marca{display:none;}
+.hero-marca-nombre{
+  display:block; font-family:'Jost'; font-size:11px; font-weight:600;
+  letter-spacing:.28em; text-transform:uppercase; color:rgba(242,248,248,.7);
+}
+.hero-marca-claim{
+  display:block; margin-top:6px; font-family:'Playfair Display'; font-style:italic;
+  font-size:14.5px; color:rgba(242,248,248,.75);
+}
+
+.hero-ctas{display:flex; flex-direction:column; margin-top:26px;}
 /* Botón ancho de borde fino, con la flecha empujada al extremo derecho:
    ocupa el ancho de la columna, así que no compite con nada y marca el
    final del bloque. Relleno muy tenue para separarlo de la foto sin
@@ -780,8 +798,9 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   .hero-copy h1{animation:heroRise .8s ease-out .18s both;}
   .hero-filete{animation:heroRise .8s ease-out .38s both;}
   .hero-sub{animation:heroRise .8s ease-out .5s both;}
-  .hero-ctas{animation:heroRise .8s ease-out .68s both;}
-  .hero-scroll{animation:heroRise .8s ease-out .86s both;}
+  .hero-marca{animation:heroRise .8s ease-out .6s both;}
+  .hero-ctas{animation:heroRise .8s ease-out .72s both;}
+  .hero-scroll{animation:heroRise .8s ease-out .9s both;}
 }
 }
 
@@ -2103,22 +2122,41 @@ footer{
   /* 1. HERO: a pantalla casi completa también en escritorio, mismo
      hero de fondo a sangre completa que en móvil, solo cambia el tamaño
      del texto y el aire lateral. */
-  .hero{margin-top:56px; min-height:92vh; min-height:100svh;}
-  .hero-copy{padding:0 70px 64px; max-width:760px;}
-  .hero-copy h1{font-size:clamp(58px,6.4vw,88px);}
+  /* ===== HERO EN ESCRITORIO =====
+     El rediseño del titular a la izquierda, con filete e indicador de
+     scroll, es SOLO para móvil (lo pidió así el cliente sobre un mockup
+     de teléfono). Aquí se deshace pieza a pieza para dejar el hero
+     centrado de siempre, con su firma de marca. */
+  .hero{margin-top:56px; min-height:92vh; align-items:center;}
+  .hero-copy{padding:0 70px 96px; max-width:760px;}
+  /* Titular: centrado y en el peso de antes (700), no el 500 de móvil. */
+  .hero-copy h1{
+    margin-top:10px; text-align:center;
+    font-weight:700; font-size:clamp(58px,6.4vw,90px); line-height:1.06;
+    text-shadow:0 1px 3px rgba(6,26,29,.8), 0 2px 18px rgba(6,26,29,.6);
+  }
+  .hero-copy h1 em{font-weight:500;}
+  /* Filete e indicador de scroll: piezas exclusivas del móvil. */
+  .hero-filete, .hero-scroll{display:none;}
   /* El ritmo vertical de móvil (pensado para un titular de ~52px) se
-     queda corto junto a uno de hasta 88px: el bloque se veía
-     apelotonado. Estos valores escalan con el tamaño del titular. */
-  .hero-filete{width:76px; margin:34px 0 24px;}
-  .hero-sub{font-size:18px; max-width:34ch;}
-  /* El botón no se estira a los 760px de la columna: a ese ancho deja de
-     leerse como un botón y parece una franja. */
-  .hero-cta{max-width:420px; padding:20px 28px; font-size:13.5px;}
-  .hero-cta-secundaria{align-self:flex-start; margin-left:0;}
-  .hero-ctas{margin-top:8px;}
-  /* En escritorio el indicador de scroll se alinea con la columna de
-     texto, no al centro de la pantalla. */
-  .hero-scroll{align-items:flex-start; margin-top:44px;}
+     queda corto junto a uno de hasta 90px: el bloque se veía
+     apelotonado. Estos márgenes escalan con el tamaño del titular. */
+  .hero-sub{margin:auto auto 0; padding-top:26px; font-size:17px; max-width:42ch;}
+  .hero-marca{display:block; margin:40px auto 0;}
+  .hero-marca-claim{font-size:15px;}
+  /* Apiladas también en escritorio (no en fila): la principal manda y la
+     secundaria queda debajo, sin competir con ella en la misma línea. */
+  .hero-ctas{margin-top:44px; align-items:center; gap:18px;}
+  /* El CTA vuelve al botón de antes: caja centrada de ancho propio, sin
+     la flecha empujada al extremo ni las versalitas espaciadas. */
+  .hero-cta{
+    display:inline-flex; justify-content:center; gap:10px;
+    width:auto; padding:16px 28px;
+    font-size:var(--text-base); font-weight:500; letter-spacing:.03em;
+    text-transform:none; border-radius:var(--radius-sm);
+    background:transparent; border:1px solid rgba(242,248,248,.7);
+  }
+  .hero-cta-secundaria{margin-top:0; font-size:13px; letter-spacing:.08em;}
 
   /* Solo en escritorio: el hueco del hero es muy ancho y bajo comparado
      con la foto (vertical), así que a "cover" solo cabría un 43% de su
