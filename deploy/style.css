@@ -680,7 +680,11 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   /* "cover" a propósito: la foto llena el hero de borde a borde, en
      grande. Si el archivo todavía no existe, la imagen falla en silencio
      y se ve el degradado marino de siempre — nunca un hueco roto. */
-  background-size:cover, auto, auto;
+  /* "auto 108%" en vez de "cover": un acercamiento del 8% que recorta
+     por ABAJO (el fondo está anclado arriba), o sea por las piernas,
+     que es justo donde van los botones. A cambio, cara, cuello y collar
+     ganan tamaño y presencia, que es lo que tiene que verse. */
+  background-size:auto 108%, auto, auto;
   /* Vertical: la cara está casi pegada al borde superior de la foto, así
      que con "cover" hay que anclar arriba del todo, si no se recorta la
      cabeza.
@@ -691,7 +695,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
      ~234px de recorte horizontal a 375px de ancho, así que hay margen de
      sobra; el valor es un porcentaje, o sea que escala solo con el
      tamaño de pantalla. */
-  background-position:30% top, center, center;
+  background-position:32% top, center, center;
   background-repeat:no-repeat;
 }
 /* Pantallas cortas (iPhone SE/8 y similares, ~667px de alto): con
@@ -739,7 +743,8 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   display:flex; flex-direction:column;
   /* El suelo generoso es a propósito: deja los botones en la franja
      abdominal de la foto, ni sobre el collar ni pegados al borde. */
-  padding:0 30px clamp(64px,11vh,110px);
+  /* +35px sobre el suelo anterior: sube el grupo de botones. */
+  padding:0 30px clamp(99px, calc(11vh + 35px), 145px);
   /* Móvil: columna editorial alineada a la izquierda (el diseño que pidió
      el cliente). En escritorio se vuelve a centrar, más abajo. */
   text-align:left;
@@ -750,12 +755,15 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    es casi imperceptible a propósito: la legibilidad la da el velo suave
    del cielo, no un contorno oscuro alrededor de la letra. */
 .hero-copy h1{
-  margin-top:5vh; text-align:left;
+  /* +25px sobre el 5vh de antes: despega el titular de la cabecera. */
+  margin-top:calc(5vh + 25px); text-align:left;
   font-family:'Playfair Display'; font-weight:400;
   font-size:clamp(58px,14vw,78px);
   line-height:.95; letter-spacing:-.025em;
   color:var(--hero-blanco);
-  text-shadow:0 1px 2px rgba(6,26,29,.3), 0 2px 20px rgba(6,26,29,.45);
+  /* Sin sombra: el velo del cielo ya sostiene el titular, y cualquier
+     sombra perceptible lo devolvía al aspecto de "texto pegado encima". */
+  text-shadow:none;
 }
 /* Misma familia en cursiva y algo más pequeño: continuación del titular,
    no una segunda marca. En bloque para poder darle su propio
@@ -764,12 +772,12 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   display:block;
   font-style:italic; font-weight:400; font-size:.88em; line-height:.9;
   color:var(--hero-arena);
-  text-shadow:0 1px 2px rgba(6,26,29,.32), 0 2px 20px rgba(6,26,29,.48);
+  text-shadow:none;
 }
 /* Filete corto entre el titular y el subtítulo: separa los dos sin
    meter una caja ni un adorno. */
 .hero-filete{
-  display:block; width:50px; height:1px; margin:24px 0 18px;
+  display:block; width:50px; height:1px; margin:24px 0 3px;
   background:var(--hero-blanco); opacity:.7;
 }
 /* En móvil va pegado al titular, bajo el filete (así lo pidió el
@@ -781,7 +789,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
      bloque de 300px se metía de lleno en la cara. Así mantiene siempre
      las dos líneas y se queda en la franja tranquila de la foto. */
   margin:0; max-width:min(300px, 56vw);
-  font-size:17px; line-height:1.45; font-weight:400;
+  font-size:16px; line-height:1.45; font-weight:400;
   color:var(--hero-blanco); text-shadow:0 1px 16px rgba(6,26,29,.5);
 }
 
@@ -798,13 +806,19 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   font-size:14.5px; color:rgba(242,248,248,.75);
 }
 
-.hero-ctas{display:flex; flex-direction:column; margin-top:auto;}
+/* Los márgenes negativos anulan el padding lateral de .hero-copy solo
+   para este bloque, para que el botón pueda medirse contra el ancho real
+   de la pantalla (86vw) sin desbordar. */
+.hero-ctas{display:flex; flex-direction:column; margin-top:auto; margin-inline:-30px;}
 /* Botón de borde fino y poca altura: editorial y ligero, no una caja
    grande. Fondo casi inexistente (5% de negro) — lo justo para asentarlo
    sobre la foto sin taparla. La flecha va al extremo derecho. */
 .hero-cta{
   display:flex; align-items:center; justify-content:space-between; gap:16px;
-  width:100%; max-width:440px; min-height:62px; margin:0 auto;
+  /* 86vw, no el 100% de la columna: el ancho se mide contra la pantalla,
+     no contra el padding del bloque de texto. Por eso .hero-ctas cancela
+     ese padding justo debajo. */
+  width:86vw; max-width:440px; min-height:60px; margin:0 auto;
   padding:0 22px;
   border:1px solid rgba(246,241,232,.75); border-radius:2px;
   background:rgba(20,20,20,.05);
@@ -2199,7 +2213,10 @@ footer{
   .hero-marca-claim{font-size:15px;}
   /* Apiladas también en escritorio (no en fila): la principal manda y la
      secundaria queda debajo, sin competir con ella en la misma línea. */
-  .hero-ctas{margin-top:30px; align-items:center; gap:18px;}
+  /* margin-inline vuelve a 0: el -30px de móvil existe solo para que el
+     botón de 86vw escape del padding lateral, y aquí el botón es de
+     ancho propio. */
+  .hero-ctas{margin-top:30px; margin-inline:0; align-items:center; gap:18px;}
   /* CTA contenido: caja de ancho propio centrada, no una franja. */
   .hero-cta{
     display:inline-flex; justify-content:center; gap:12px;
@@ -2219,9 +2236,11 @@ footer{
     background-image:
       radial-gradient(circle at 32% 22%, rgba(255,255,255,.5), transparent 55%),
       linear-gradient(160deg, #C9E6E4 0%, var(--surf) 28%, var(--sea) 62%, var(--deep) 100%);
-    /* Aquí la foto vive en ::before/::after, así que esto solo coloca los
-       dos degradados: se centra, sin heredar el 30% del móvil. */
+    /* Aquí la foto vive en ::before/::after, así que esto solo coloca y
+       dimensiona los dos degradados: sin heredar ni el encuadre ni el
+       acercamiento del móvil. */
     background-position:center, center;
+    background-size:auto, auto;
   }
   .hero-media::before{
     content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
