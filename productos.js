@@ -63,7 +63,7 @@ const PRODUCTOS = [
     caracteristicas: [
       'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Doble cadena: fina + placa grabable',
-      'Grabado a mano, personalizable con nombre, fecha o mensaje corto',
+      'Grabado de alta calidad, personalizable con nombre, fecha o mensaje corto',
     ],
     cierre: 'Para que lleve puesto un pedacito de ti',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
@@ -106,7 +106,7 @@ const PRODUCTOS = [
     caracteristicas: [
       'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Cadena fina con placa, cierre ajustable',
-      'Grabado a mano: frase, fecha o coordenadas',
+      'Grabado de alta calidad: frase, fecha o coordenadas',
     ],
     cierre: 'Un sitio que solo ustedes dos saben leer',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
@@ -128,7 +128,7 @@ const PRODUCTOS = [
     caracteristicas: [
       'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Cuff ajustable, diseño minimalista',
-      'Grabado a mano: frase, fecha o coordenadas',
+      'Grabado de alta calidad: frase, fecha o coordenadas',
     ],
     cierre: 'Se ve desde lejos y se recuerda de cerca',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)

@@ -20,3 +20,15 @@
 # futuro sin ese flag volvería a romper los pagos en silencio.
 [functions.webhook-stripe]
 verify_jwt = false
+
+# El formulario de contacto lo rellena gente que NO ha iniciado sesión
+# (nadie se registra para escribir un mensaje), así que tampoco puede
+# mandar un token de sesión. Con la verificación activada, Supabase
+# rechazaría todos los mensajes con 401.
+#
+# La función no queda desprotegida: valida longitudes y formato, lleva un
+# campo trampa (honeypot) para bots, limita a 3 envíos por IP cada 10
+# minutos y solo acepta llamadas desde el dominio de Cozumel. Además no
+# toca la base de datos: como mucho, manda un email.
+[functions.enviar-contacto]
+verify_jwt = false

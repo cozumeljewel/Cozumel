@@ -1201,7 +1201,7 @@ if (ctaReservar) {
 
 
 /* Prefijos telefonicos internacionales, para el desplegable del campo
-   WhatsApp de reservar.html. Primero los 20 paises de habla hispana
+   WhatsApp de comprar.html. Primero los 20 paises de habla hispana
    (Mexico y Espana delante, por peso de audiencia; el resto alfabetico),
    luego el resto del mundo, tambien alfabetico. Varios paises comparten
    el mismo prefijo a proposito (+1 para EE. UU., Canada y el Caribe
@@ -1434,7 +1434,7 @@ const PAISES_TELEFONO = [
   { pais: 'Zimbabue', codigo: '+263', iso: 'zw' },
 ];
 
-/* ---------- Formulario de reserva (reservar.html) ---------- */
+/* ---------- Formulario de reserva (comprar.html) ---------- */
 const reservaForm = document.getElementById('reserva-form');
 
 if (reservaForm) {
@@ -1890,27 +1890,32 @@ if (reservaForm) {
 }
 
 /* ---------- Formulario de contacto (contacto.html) ----------
-   No hay backend propio todavía: en vez de fingir un envío que no
-   ocurre (o dejar el formulario roto), arma un mailto: con lo escrito
-   y abre el cliente de correo del visitante. Es real (el mensaje sí
-   sale), solo que a través de su propio correo en vez de nuestro
-   servidor. Cuando exista un endpoint de verdad, esto se cambia por un
-   fetch aquí mismo, sin tocar el HTML. */
+   Manda el mensaje a la Edge Function "enviar-contacto", que lo reenvía
+   por email a Cozumel con Resend. El visitante NO necesita iniciar
+   sesión ni tener un cliente de correo configurado: se envía desde el
+   servidor.
+
+   Si el envío falla (sin red, función caída), no se finge un éxito: se
+   dice lo que pasa y se ofrece el email de siempre como salida. */
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
   const nombreInput = document.getElementById('c-name');
   const emailInput = document.getElementById('c-email');
   const msgInput = document.getElementById('c-msg');
+  const trampaInput = document.getElementById('c-web');
   const submitBtn = document.getElementById('contact-submit');
   const errorEl = document.getElementById('contact-error');
+  const okEl = document.getElementById('contact-ok');
 
-  const showError = (msg) => { errorEl.hidden = false; errorEl.textContent = msg; };
+  // Se destapa ANTES de escribir el texto: un lector de pantalla no
+  // anuncia cambios dentro de una región aria-live que sigue oculta.
+  const showError = (msg) => { okEl.hidden = true; errorEl.hidden = false; errorEl.textContent = msg; };
   const hideError = () => { errorEl.hidden = true; };
   const emailValido = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
   let enviando = false;
 
-  contactForm.addEventListener('submit', (e) => {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (enviando) return; // evita doble envío con doble click
 
@@ -1923,24 +1928,54 @@ if (contactForm) {
     if (!mensaje) return showError('Escribe tu mensaje');
     hideError();
 
+    if (!SUPA_READY) {
+      showError('No se puede enviar ahora mismo. Escríbenos a cozumeljewel@gmail.com');
+      return;
+    }
+
     enviando = true;
     submitBtn.disabled = true;
     const textoOriginal = submitBtn.textContent;
-    submitBtn.textContent = 'Abriendo tu correo…';
+    submitBtn.textContent = 'Enviando…';
 
-    const asunto = `Contacto desde la web · ${nombre}`;
-    const cuerpo = `${mensaje}\n\n—\n${nombre}\n${email}`;
-    const mailto = `mailto:cozumeljewel@gmail.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-    window.location.href = mailto;
+    try {
+      const resp = await fetch(`${SUPABASE_URL}/functions/v1/enviar-contacto`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({
+          nombre,
+          email,
+          mensaje,
+          web: trampaInput ? trampaInput.value : '',
+        }),
+      });
 
-    // No hay forma fiable de saber si el cliente de correo abrió de
-    // verdad (el navegador no lo cuenta), así que se deja constancia
-    // clara de lo que acaba de pasar y se reactiva el botón por si hace
-    // falta reintentar o corregir algo.
-    setTimeout(() => {
+      const resultado = await resp.json().catch(() => ({}));
+
+      if (!resp.ok) {
+        throw new Error(resultado.error || `HTTP ${resp.status}`);
+      }
+
+      contactForm.reset();
+      okEl.hidden = false;
+      okEl.textContent = 'Mensaje enviado. Te contestamos en cuanto lo leamos';
+      submitBtn.textContent = 'Enviado';
+      // El botón se queda desactivado tras el éxito: no hay motivo para
+      // volver a mandar el mismo mensaje, y evita duplicados por
+      // impaciencia. Recargar la página lo reinicia.
+    } catch (err) {
+      console.error(err);
+      showError(
+        err.message && err.message.includes('varios mensajes')
+          ? err.message
+          : 'No se pudo enviar. Inténtalo de nuevo o escríbenos a cozumeljewel@gmail.com'
+      );
       submitBtn.disabled = false;
       submitBtn.textContent = textoOriginal;
       enviando = false;
-    }, 1200);
+    }
   });
 }

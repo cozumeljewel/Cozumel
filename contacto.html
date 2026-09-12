@@ -24,7 +24,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&family=Petit+Formal+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="supabase-config.js" defer></script>
@@ -136,9 +136,20 @@
           <label for="c-msg">Mensaje</label>
           <textarea id="c-msg" name="mensaje" rows="4" placeholder="Cuéntanos" required></textarea>
         </div>
+
+        <!-- Campo trampa para bots: invisible y fuera del recorrido de
+             teclado, así que una persona nunca lo rellena. Si llega con
+             algo, el servidor descarta el mensaje. No se usa display:none
+             porque algunos bots detectan justamente eso. -->
+        <div class="campo-trampa" aria-hidden="true">
+          <label for="c-web">No rellenes este campo</label>
+          <input id="c-web" name="web" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
         <button class="btn btn-primary btn-lg" type="submit" id="contact-submit">Enviar mensaje</button>
         <p class="reserva-error" id="contact-error" role="status" aria-live="polite" hidden></p>
-        <p class="form-note">Al enviar, se abre tu correo con el mensaje ya escrito</p>
+        <p class="contact-ok" id="contact-ok" role="status" aria-live="polite" hidden></p>
+        <p class="form-note">Te contestamos al email que nos dejes</p>
       </form>
 
       <aside class="contact-info">

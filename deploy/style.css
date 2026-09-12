@@ -52,6 +52,13 @@
   --border:var(--line-2);
   --font-display:'Playfair Display', serif;
   --font-body:'Jost', sans-serif;
+  /* Serif editorial, SOLO para los dos titulares grandes de marca (el
+     hero de inicio y "Cozumel Stories"). Instrument Serif tiene un único
+     peso (400) y proporciones altas y finas: al tamaño de un titular
+     grande se lee como revista, no como cartel. El resto del sitio sigue
+     con Playfair — el objetivo no es cambiar la tipografía de la marca,
+     sino dar más aire justo donde el texto es enorme. */
+  --font-editorial:'Instrument Serif', 'Playfair Display', serif;
 
   /* Espaciado: escala para componentes nuevos. Lo ya existente en el
      sitio (paddings sueltos por sección) se deja como está — se
@@ -693,9 +700,15 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    y que se mantiene aquí sin más cambio que el texto. */
 .hero-copy h1{
   margin-top:10px;
-  font-family:'Playfair Display'; font-weight:900; font-size:clamp(38px,11vw,52px);
-  line-height:1.05; color:var(--foam);
-  text-shadow:0 2px 14px rgba(6,26,29,.55);
+  /* Instrument Serif: un solo peso (400) y trazo más fino que Playfair
+     900, así que sube algo de tamaño y baja el interlineado para
+     mantener la misma presencia con menos peso. La sombra se refuerza
+     (doble, como ya hacía el "em"): un trazo fino sobre foto necesita
+     más ayuda para separarse del fondo. */
+  font-family:var(--font-editorial); font-weight:400;
+  font-size:clamp(44px,12.5vw,60px);
+  line-height:1.0; letter-spacing:-.005em; color:var(--foam);
+  text-shadow:0 1px 3px rgba(6,26,29,.75), 0 2px 16px rgba(6,26,29,.55);
 }
 /* El acento dorado va en --gold-soft, no en --gold: el oro de marca es
    demasiado oscuro para leerse sobre la foto (queda a media luz contra
@@ -704,7 +717,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    que perfila la letra + otra abierta que la despega del fondo) para
    que aguante encima de cualquier foto que se ponga después. */
 .hero-copy h1 em{
-  font-style:italic; font-weight:600; color:var(--gold-soft);
+  font-style:italic; font-weight:400; color:var(--gold-soft);
   text-shadow:0 1px 3px rgba(6,26,29,.85), 0 2px 18px rgba(6,26,29,.7);
 }
 .hero-sub{
@@ -769,15 +782,20 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    "imagen pendiente" que ya usan las fichas de producto. */
 .stories{padding:64px 24px 56px; background:var(--white); text-align:center;}
 .stories h2{
-  font-family:'Playfair Display'; font-weight:800; font-size:32px; color:var(--deep);
-  margin-top:10px; line-height:1.16; max-width:20ch; margin-left:auto; margin-right:auto;
+  /* Mismo criterio que el hero: es el nombre de la sección, el titular
+     editorial más grande de la página después del hero. */
+  font-family:var(--font-editorial); font-weight:400; font-size:38px; color:var(--deep);
+  margin-top:10px; line-height:1.04; max-width:20ch; margin-left:auto; margin-right:auto;
 }
 /* Lema de la sección, bajo el título. Mismo tratamiento que el nombre de
    la edición en la página de colección (.coleccion-edicion): serif con la
    segunda parte en cursiva dorada, siempre por debajo del título en
    tamaño — el que manda es "Cozumel Stories". */
+/* Peso 500, no 700: con el titular de arriba ya en Instrument Serif (un
+   solo peso, trazo fino), un claim en negrita pesaba más que el propio
+   nombre de la sección e invertía la jerarquía. */
 .stories-claim{
-  margin:8px auto 0; font-family:'Playfair Display'; font-weight:700;
+  margin:8px auto 0; font-family:'Playfair Display'; font-weight:500;
   font-size:24px; line-height:1.15; color:var(--deep); text-wrap:balance;
 }
 .stories-claim em{font-style:italic; font-weight:500; color:var(--gold-deep);}
@@ -1928,6 +1946,21 @@ details p{margin-top:10px; font-size:13.5px; color:var(--ink-soft); line-height:
 .contact-form{margin-top:30px; display:flex; flex-direction:column; gap:16px;}
 .form-note{font-size:11.5px; color:var(--ink-soft); text-align:center;}
 
+/* Confirmación de que el mensaje de contacto salió de verdad. Mismo
+   tamaño que el error (.reserva-error) pero en el verde del mar, no en
+   rojo. */
+.contact-ok{margin-top:14px; font-size:12.5px; color:var(--sea-dark); text-align:center;}
+
+/* Campo trampa para bots (contacto.html): tiene que estar en el DOM y
+   ser rellenable por un bot, pero invisible e inalcanzable para una
+   persona. No se usa display:none ni hidden porque los bots que valen
+   algo los detectan y saltan el campo — que es justo lo que no
+   queremos. */
+.campo-trampa{
+  position:absolute; width:1px; height:1px; overflow:hidden;
+  clip-path:inset(50%); white-space:nowrap;
+}
+
 .contact-info{
   margin-top:34px; padding-top:26px; border-top:1px solid var(--line-2);
   display:flex; flex-direction:column; gap:20px;
@@ -2067,7 +2100,7 @@ footer{
      del texto y el aire lateral. */
   .hero{margin-top:56px; min-height:92vh;}
   .hero-copy{padding:0 70px 96px; max-width:760px;}
-  .hero-copy h1{font-size:clamp(56px,6.2vw,92px);}
+  .hero-copy h1{font-size:clamp(62px,6.8vw,88px);}
   /* El ritmo vertical de móvil (pensado para un titular de 52px) se queda
      corto junto a uno de hasta 92px: todo el bloque se veía apelotonado.
      Estos márgenes escalan con el tamaño del titular. */
@@ -2120,7 +2153,7 @@ footer{
      tamaño de móvil, junto a un h2 de 42px vuelve a desaparecer. */
   .eyebrow{font-size:16px; margin-bottom:3px;}
   .stories{padding:90px 90px 100px;}
-  .stories h2{font-size:42px;}
+  .stories h2{font-size:50px;}
   .stories-claim{font-size:32px;}
   .stories-intro{font-size:16.5px;}
   .stories-lineas{font-size:21px; margin-top:24px;}
