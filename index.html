@@ -147,7 +147,11 @@
          arriba y todo lo demás se empuja al pie con margin-top:auto en
          .hero-sub, que es como ya se comportaba. -->
     <div class="hero-copy">
-      <h1 class="reveal-hero">Un Pedacito<br><em>de ti</em></h1>
+      <!-- "de ti" va en <em> y como bloque (sin <br>): misma familia
+           serif en cursiva, con su propio tamaño e interlineado, para que
+           se lea como continuación natural del titular y no como un
+           segundo logotipo. -->
+      <h1 class="reveal-hero">Un Pedacito<em>de ti</em></h1>
       <span class="hero-filete reveal-hero" aria-hidden="true"></span>
 
       <!-- Va al pie, no pegado al titular: ahí arriba le cruzaba la cara
@@ -166,19 +170,6 @@
         </a>
         <a class="hero-cta-secundaria" href="historia.html">Conoce Cozumel</a>
       </div>
-
-      <!-- Indicador de scroll (solo móvil): lleva a la primera sección de
-           debajo. Es un enlace de verdad, no un adorno, para que también
-           funcione con teclado. -->
-      <a class="hero-scroll reveal-hero" href="#stories">
-        <span class="hero-scroll-flecha" aria-hidden="true">
-          <svg viewBox="0 0 24 40" width="16" height="26" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v33"/>
-            <path d="M5 28l7 7 7-7"/>
-          </svg>
-        </span>
-        <span class="hero-scroll-texto">Seguir explorando</span>
-      </a>
     </div>
   </section>
 

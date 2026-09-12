@@ -53,6 +53,13 @@
   --font-display:'Playfair Display', serif;
   --font-body:'Jost', sans-serif;
 
+  /* Color SOLO del hero de inicio. No entra en la paleta general: son
+     los dos tonos que casan con la luz de atardecer de la foto, en vez
+     del blanco puro y el oro de marca, que ahí se veían "pegados
+     encima" en vez de formar parte de la imagen. */
+  --hero-blanco:#F6F1E8;   /* blanco cálido, no puro */
+  --hero-arena:#E7C98E;    /* dorado arena / champagne, no oro brillante */
+
   /* Espaciado: escala para componentes nuevos. Lo ya existente en el
      sitio (paddings sueltos por sección) se deja como está — se
      migra progresivamente, no de golpe. */
@@ -413,14 +420,25 @@ body[data-page="personalizar"] .volver-arriba{
    para que quede igual que el header sólido normal. */
 body[data-page="inicio"] .site-header{
   position:fixed; top:0; left:0; right:0;
-  background:linear-gradient(to bottom, rgba(11,46,51,.4), transparent);
+  /* Tono sacado del propio cielo de la foto (azul apagado, no el verde
+     corporativo saturado) y más suave que antes, para que la cabecera se
+     lea como parte de la imagen y no como una barra puesta encima. */
+  background:linear-gradient(to bottom, rgba(34,58,76,.34), transparent);
   border-bottom-color:transparent; box-shadow:none;
 }
 body[data-page="inicio"] .site-header .logo-name,
 body[data-page="inicio"] .site-header .logo-sub,
 body[data-page="inicio"] .site-header .nav-toggle span,
 body[data-page="inicio"] .site-header .header-carrito{
-  color:var(--foam);
+  /* Mismo blanco cálido del titular, no el blanco frío general: sobre
+     esta foto el --foam se veía algo azulado. */
+  color:var(--hero-blanco);
+}
+/* Las barras de la hamburguesa se pintan con background, no con color:
+   hay que dárselo aparte para que igualen el grosor y el tono del
+   carrito. */
+body[data-page="inicio"] .site-header:not(.scrolled) .nav-toggle span{
+  background:var(--hero-blanco);
 }
 body[data-page="inicio"] .site-header .nav a{color:rgba(242,248,248,.85);}
 /* El desplegable de "Personaliza" tiene su propio fondo claro siempre
@@ -676,20 +694,31 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   background-position:30% top, center, center;
   background-repeat:no-repeat;
 }
-/* Velo en los dos extremos y centro limpio: arriba sostiene el titular
-   sobre el cielo, abajo sostiene el botón y el indicador de scroll. La
-   franja central se deja casi sin tocar a propósito — es donde está
-   ella, y es lo que tiene que verse. */
+/* Pantallas cortas (iPhone SE/8 y similares, ~667px de alto): con
+   "cover" la foto se escala por alto, así que cuanto más baja es la
+   pantalla menos ancho sobra para recortar — a 812px sobran 234px y a
+   667px solo 125px. Con el mismo 30% ella se desplazaba la mitad y el
+   texto volvía a caerle encima. Aquí se lleva el encuadre al extremo
+   izquierdo para recuperar ese desplazamiento. */
+@media (max-height:740px){
+  .hero-media{background-position:2% top, center, center;}
+}
+/* Dos velos localizados, no una capa oscura uniforme: uno arriba para
+   que se lean cabecera y titular sobre el cielo, y otro muy tenue abajo
+   para los botones. Entre el 40% y el 62% el velo es CERO — esa franja
+   es la cara, el collar y el torso, o sea el producto, y tiene que
+   verse con la luz real de la foto (piel, naranja del atardecer, verde
+   y azul). */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   background:linear-gradient(to bottom,
-    rgba(11,46,51,.62) 0%,
-    rgba(11,46,51,.46) 18%,
-    rgba(11,46,51,.24) 34%,
-    rgba(11,46,51,.10) 50%,
-    rgba(11,46,51,.16) 64%,
-    rgba(11,46,51,.42) 82%,
-    rgba(11,46,51,.66) 100%);
+    rgba(11,46,51,.50) 0%,
+    rgba(11,46,51,.30) 14%,
+    rgba(11,46,51,.10) 28%,
+    rgba(11,46,51,0) 40%,
+    rgba(11,46,51,0) 62%,
+    rgba(11,46,51,.14) 78%,
+    rgba(11,46,51,.34) 100%);
 }
 /* Bloque de texto alineado a la izquierda, no centrado: el titular y su
    subtítulo arrancan en el margen y forman una columna editorial. El
@@ -698,43 +727,52 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 .hero-copy{
   position:relative; z-index:2; flex:1; width:100%;
   display:flex; flex-direction:column;
-  padding:0 26px 28px;
+  /* El suelo generoso es a propósito: deja los botones en la franja
+     abdominal de la foto, ni sobre el collar ni pegados al borde. */
+  padding:0 30px clamp(64px,11vh,110px);
   /* Móvil: columna editorial alineada a la izquierda (el diseño que pidió
      el cliente). En escritorio se vuelve a centrar, más abajo. */
   text-align:left;
 }
 
-/* Titular de la edición: serif grande en blanco con el acento en cursiva
-   dorada ("em"), cada parte en su propia línea. Peso 500: a este tamaño
-   la Playfair fina se lee editorial; en negrita se convierte en cartel. */
+/* Titular: serif en peso normal (400), no en negrita — a este tamaño la
+   Playfair fina se lee editorial y deja de parecer un cartel. La sombra
+   es casi imperceptible a propósito: la legibilidad la da el velo suave
+   del cielo, no un contorno oscuro alrededor de la letra. */
 .hero-copy h1{
-  margin-top:4vh; text-align:left;
-  font-family:'Playfair Display'; font-weight:500;
-  font-size:clamp(46px,13.6vw,66px);
-  line-height:1.0; color:var(--foam);
-  text-shadow:0 1px 3px rgba(6,26,29,.5), 0 2px 22px rgba(6,26,29,.42);
+  margin-top:5vh; text-align:left;
+  font-family:'Playfair Display'; font-weight:400;
+  font-size:clamp(58px,14vw,78px);
+  line-height:.95; letter-spacing:-.025em;
+  color:var(--hero-blanco);
+  text-shadow:0 1px 14px rgba(6,26,29,.26);
 }
-/* El acento dorado va en --gold-soft, no en --gold: el oro de marca es
-   demasiado oscuro para leerse sobre la foto (queda a media luz contra
-   las zonas claras). El oro claro mantiene el color de marca pero con
-   bastante más contraste. */
+/* Misma familia en cursiva y algo más pequeño: continuación del titular,
+   no una segunda marca. En bloque para poder darle su propio
+   interlineado sin arrastrar el de la línea de arriba. */
 .hero-copy h1 em{
-  font-style:italic; font-weight:400; color:var(--gold-soft);
-  text-shadow:0 1px 3px rgba(6,26,29,.6), 0 2px 20px rgba(6,26,29,.5);
+  display:block;
+  font-style:italic; font-weight:400; font-size:.88em; line-height:.9;
+  color:var(--hero-arena);
+  text-shadow:0 1px 14px rgba(6,26,29,.3);
 }
 /* Filete corto entre el titular y el subtítulo: separa los dos sin
    meter una caja ni un adorno. */
 .hero-filete{
-  display:block; width:58px; height:1px; margin:26px 0 18px;
-  background:rgba(242,248,248,.55);
+  display:block; width:50px; height:1px; margin:24px 0 18px;
+  background:var(--hero-blanco); opacity:.7;
 }
 /* En móvil va pegado al titular, bajo el filete (así lo pidió el
-   cliente). En escritorio se empuja al pie con margin-top:auto. */
+   cliente). En escritorio se empuja al pie con margin-top:auto.
+   Sin sombra: cae sobre cielo y hierba, zonas tranquilas donde el
+   contraste de la propia foto ya basta. */
 .hero-sub{
-  margin:0; max-width:21ch;
-  /* 15px y no 16: a 16 la segunda línea llegaba a rozarle el pelo. */
-  font-size:15px; line-height:1.5; color:rgba(242,248,248,.92);
-  text-shadow:0 1px 10px rgba(6,26,29,.55);
+  /* 300px es el techo, pero nunca más del 56% del ancho: a 375px un
+     bloque de 300px se metía de lleno en la cara. Así mantiene siempre
+     las dos líneas y se queda en la franja tranquila de la foto. */
+  margin:0; max-width:min(300px, 56vw);
+  font-size:17px; line-height:1.45; font-weight:400;
+  color:var(--hero-blanco); text-shadow:none;
 }
 
 /* Firma de marca: no aparece en el diseno de movil (ver el mockup del
@@ -751,49 +789,39 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 }
 
 .hero-ctas{display:flex; flex-direction:column; margin-top:auto;}
-/* Botón ancho de borde fino, con la flecha empujada al extremo derecho:
-   ocupa el ancho de la columna, así que no compite con nada y marca el
-   final del bloque. Relleno muy tenue para separarlo de la foto sin
-   taparla. */
+/* Botón de borde fino y poca altura: editorial y ligero, no una caja
+   grande. Fondo casi inexistente (5% de negro) — lo justo para asentarlo
+   sobre la foto sin taparla. La flecha va al extremo derecho. */
 .hero-cta{
   display:flex; align-items:center; justify-content:space-between; gap:16px;
-  padding:19px 24px;
-  border:1px solid rgba(242,248,248,.6);
-  background:rgba(11,46,51,.26);
-  color:var(--foam); text-decoration:none;
-  font-family:'Jost'; font-size:13px; font-weight:400;
-  letter-spacing:.17em; text-transform:uppercase;
+  width:100%; max-width:440px; min-height:62px; margin:0 auto;
+  padding:0 22px;
+  border:1px solid rgba(246,241,232,.75); border-radius:2px;
+  background:rgba(20,20,20,.05);
+  color:var(--hero-blanco); text-decoration:none;
+  font-family:'Jost'; font-size:15px; font-weight:500;
+  letter-spacing:.12em; text-transform:uppercase;
   transition:background .25s, color .25s, border-color .25s;
 }
-.hero-cta:hover{background:var(--foam); color:var(--deep); border-color:var(--foam);}
-.hero-cta-flecha{flex:none; font-size:15px; line-height:1;}
-/* CTA secundaria: solo texto subrayado y centrada bajo el botón — para
-   que la principal siga siendo la única llamada con peso visual. Lleva a
-   la identidad de marca (Quiénes somos), no a venta. */
+.hero-cta:hover{background:var(--hero-blanco); color:var(--deep); border-color:var(--hero-blanco);}
+.hero-cta-flecha{flex:none; font-size:16px; line-height:1;}
+/* CTA secundaria: solo texto subrayado, sin caja — la principal sigue
+   siendo la única llamada con peso visual. Lleva a la identidad de marca
+   (Quiénes somos), no a venta. */
 .hero-cta-secundaria{
-  align-self:center; margin-top:22px;
-  font-family:'Jost'; font-size:14px; letter-spacing:.04em; color:rgba(242,248,248,.9);
-  text-decoration:underline; text-underline-offset:6px; text-decoration-color:rgba(242,248,248,.45);
-  transition:color .2s, text-decoration-color .2s;
+  align-self:center; margin-top:24px;
+  font-family:'Jost'; font-size:16px; font-weight:400; letter-spacing:.01em;
+  color:var(--hero-blanco);
+  text-decoration:underline; text-underline-offset:6px;
+  text-decoration-thickness:1px; text-decoration-color:rgba(246,241,232,.5);
+  transition:text-decoration-color .2s;
 }
-.hero-cta-secundaria:hover{color:var(--foam); text-decoration-color:var(--foam);}
-
-/* Indicador de scroll al pie. Es un enlace real a la sección siguiente,
-   no un adorno: funciona con teclado y con lector de pantalla. */
-.hero-scroll{
-  display:flex; flex-direction:column; align-items:center; gap:10px;
-  margin-top:34px; color:rgba(242,248,248,.85); text-decoration:none;
-  transition:color .2s;
-}
-.hero-scroll:hover{color:var(--foam);}
-.hero-scroll-flecha{display:block; line-height:0;}
-.hero-scroll-texto{
-  font-family:'Jost'; font-size:10.5px; font-weight:400;
-  letter-spacing:.24em; text-transform:uppercase;
-}
+.hero-cta-secundaria:hover{text-decoration-color:var(--hero-blanco);}
 
 @keyframes heroMediaFade{ from{opacity:0;} to{opacity:1;} }
-@keyframes heroRise{ from{opacity:0; transform:translateY(16px) scale(.99);} to{opacity:1; transform:translateY(0) scale(1);} }
+/* Sin "scale" y con la mitad de recorrido que antes: se nota que el
+   bloque entra, no que hace una animación. */
+@keyframes heroRise{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
 /* La entrada escalonada (fondo → titular → filete → subtítulo → CTA →
    indicador) vive SOLO aquí, no como regla base con un "apagado" aparte:
    ".hero-copy h1" tiene más especificidad que una clase suelta como
@@ -808,7 +836,6 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   .hero-sub{animation:heroRise .8s ease-out .5s both;}
   .hero-marca{animation:heroRise .8s ease-out .6s both;}
   .hero-ctas{animation:heroRise .8s ease-out .72s both;}
-  .hero-scroll{animation:heroRise .8s ease-out .9s both;}
 }
 
 /* ---------- COZUMEL STORIES ----------
@@ -2135,37 +2162,41 @@ footer{
      de teléfono). Aquí se deshace pieza a pieza para dejar el hero
      centrado de siempre, con su firma de marca. */
   .hero{margin-top:56px; min-height:92vh; align-items:center;}
-  .hero-copy{padding:0 70px 96px; max-width:760px; text-align:center;}
-  /* Titular: centrado y en el peso de antes (700), no el 500 de móvil. */
+  /* Suelo corto a propósito: empuja el bloque de texto por DEBAJO del
+     colgante. Con el padding anterior (96px) el subtítulo y la firma de
+     marca caían justo sobre el cuello y la joya, que es lo que nunca
+     debe taparse. */
+  .hero-copy{padding:0 70px 32px; max-width:760px; text-align:center;}
+  /* Titular centrado, pero NO una simple ampliación del móvil: se queda
+     en un tamaño contenido (72px como techo, no 90) para que no se coma
+     la pantalla ni compita con la foto. Mismo peso 400 y misma sombra
+     casi imperceptible que en móvil. */
   .hero-copy h1{
     margin-top:10px; text-align:center;
-    font-weight:700; font-size:clamp(58px,6.4vw,90px); line-height:1.06;
-    text-shadow:0 1px 3px rgba(6,26,29,.8), 0 2px 18px rgba(6,26,29,.6);
+    font-size:clamp(54px,5vw,72px); line-height:1.02; letter-spacing:-.02em;
   }
-  .hero-copy h1 em{font-weight:500;}
-  /* Filete e indicador de scroll: piezas exclusivas del móvil. */
-  .hero-filete, .hero-scroll{display:none;}
+  /* Aquí "de ti" vuelve a la misma línea visual centrada. */
+  .hero-copy h1 em{font-size:.9em;}
+  /* El filete es una pieza exclusiva del móvil. */
+  .hero-filete{display:none;}
   /* El ritmo vertical de móvil (pensado para un titular de ~52px) se
      queda corto junto a uno de hasta 90px: el bloque se veía
      apelotonado. Estos márgenes escalan con el tamaño del titular. */
   /* Aquí sí va al pie (con la firma y el CTA detrás), que es como
      estaba el hero de escritorio de siempre. */
   .hero-sub{margin:auto auto 0; padding-top:26px; font-size:17px; max-width:42ch;}
-  .hero-marca{display:block; margin:40px auto 0;}
+  .hero-marca{display:block; margin:26px auto 0;}
   .hero-marca-claim{font-size:15px;}
   /* Apiladas también en escritorio (no en fila): la principal manda y la
      secundaria queda debajo, sin competir con ella en la misma línea. */
-  .hero-ctas{margin-top:44px; align-items:center; gap:18px;}
-  /* El CTA vuelve al botón de antes: caja centrada de ancho propio, sin
-     la flecha empujada al extremo ni las versalitas espaciadas. */
+  .hero-ctas{margin-top:30px; align-items:center; gap:18px;}
+  /* CTA contenido: caja de ancho propio centrada, no una franja. */
   .hero-cta{
-    display:inline-flex; justify-content:center; gap:10px;
-    width:auto; padding:16px 28px;
-    font-size:var(--text-base); font-weight:500; letter-spacing:.03em;
-    text-transform:none; border-radius:var(--radius-sm);
-    background:transparent; border:1px solid rgba(242,248,248,.7);
+    display:inline-flex; justify-content:center; gap:12px;
+    width:auto; max-width:none; min-height:56px; padding:0 30px;
+    font-size:14px; letter-spacing:.1em;
   }
-  .hero-cta-secundaria{margin-top:0; font-size:13px; letter-spacing:.08em;}
+  .hero-cta-secundaria{margin-top:20px; font-size:15px;}
 
   /* Solo en escritorio: el hueco del hero es muy ancho y bajo comparado
      con la foto (vertical), así que a "cover" solo cabría un 43% de su
