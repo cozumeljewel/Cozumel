@@ -802,7 +802,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 }
 /* Móvil: tres niveles. Escritorio: la frase de una línea (ver el bloque
    de min-width:900px). */
-.hero-sub-movil{display:block;}
+/* Los tres niveles se destacan con la propia letra, sin sombras: 18px
+   (antes 16) y blanco pleno en vez del blanco cálido, que sobre el cielo
+   pálido del horizonte se perdía. Solo afecta a esta versión móvil. */
+.hero-sub-movil{display:block; font-size:18px; line-height:1.4; color:#FFFFFF;}
 .hero-sub-escritorio{display:none;}
 
 /* Firma de marca: no aparece en el diseno de movil (ver el mockup del
