@@ -400,10 +400,9 @@ body[data-page="personalizar"] .volver-arriba{
   .volver-arriba{transition:none;}
   .volver-arriba:active{transform:none;}
 }
-/* Retirado también en móvil: la cabecera ya va fija/pegada arriba en
-   todas las páginas y el botón flotante competía con el contenido. Se
-   deja el marcado y volver-arriba.js intactos por si se recupera. */
-.volver-arriba{display:none !important;}
+@media (min-width:900px){
+  .volver-arriba{display:none;}
+}
 
 .popup-contacto-link{
   display:block; margin-top:14px; font-size:12.5px; color:var(--sea-dark);
@@ -1127,17 +1126,14 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    corrido. */
 /* Interludio tras las piezas principales: una pausa, no una sección.
    Cursiva del sistema, contenida, sin fondo ni adornos. */
-.coleccion-interludio{margin:72px auto 0; max-width:36ch;}
-.coleccion-interludio + .coleccion-divisor{margin-top:64px;}
+.coleccion-interludio{margin:64px auto 0; max-width:34ch;}
+.coleccion-interludio + .coleccion-divisor{margin-top:72px;}
 .coleccion-lineas{
   margin:0 auto; font-family:var(--font-serif); font-style:italic; font-weight:400;
-  font-size:19px; line-height:1.5; color:var(--deep);
+  font-size:20px; line-height:1.4; color:var(--deep); text-wrap:balance;
 }
-/* En pantallas estrechas la línea más larga no cabe entera; balance la
-   parte por la mitad en vez de dejar la última palabra sola. */
-.coleccion-lineas span{display:block; text-wrap:balance;}
 .coleccion-cierre{
-  margin:18px auto 0; max-width:46ch; font-family:var(--font-sans); font-weight:400;
+  margin:10px auto 0; max-width:46ch; font-family:var(--font-sans); font-weight:400;
   font-size:15.5px; line-height:1.6; color:var(--ink-soft); text-wrap:pretty;
 }
 .producto-grid{
@@ -1148,10 +1144,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 /* Separador entre las piezas principales y los kits: una línea que se
    desvanece a los lados, con la etiqueta en el mismo registro editorial
    que el subtítulo (Playfair cursiva). */
-.coleccion-divisor{
-  display:flex; align-items:center; justify-content:center; gap:18px;
-  margin:76px auto 0; max-width:420px;
-}
+.coleccion-divisor{margin:88px auto 0; text-align:center;}
 .coleccion-divisor-linea{
   flex:1; height:1px;
   background:linear-gradient(to right, transparent, rgba(33,31,28,.22), transparent);
@@ -1159,10 +1152,13 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 /* El comentario de arriba ya decía "mismo registro que el subtítulo,
    Playfair cursiva" pero la regla nunca lo aplicaba — se quedó en texto
    plano de 14.5px, sin apenas presencia frente al filete a los lados. */
-.coleccion-divisor-texto{
-  font-family:var(--font-serif); font-style:italic; font-weight:400;
-  font-size:20px; color:var(--deep); white-space:nowrap;
+/* "Los kits" como título de sección: misma serif regular y escala que
+   "La colección", un punto por debajo. Sin filetes a los lados. */
+.coleccion .coleccion-divisor-texto{
+  font-family:var(--font-serif); font-style:normal; font-weight:400;
+  font-size:clamp(38px,10.5vw,44px); line-height:1; letter-spacing:-.02em; color:var(--deep);
 }
+.coleccion .coleccion-divisor-texto::after{content:none;}
 .producto-card{
   display:block; text-decoration:none;
 }
@@ -1399,7 +1395,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 /* Nuestra historia sigue el sistema del hero de inicio: textos a la
    izquierda (no centrados ni justificados), Playfair regular en
    titulares, cursiva solo como acento, Jost 400 en la prosa. */
-.qs-hero-intro, .qs-hero-resto{text-align:left;}
+.qs-hero-intro, .qs-hero-resto{text-align:center;}
 /* text-wrap:balance reparte las palabras entre líneas en vez de dejar
    una suelta al final. Sustituye a los <br> forzados, que en móvil
    partían el titular en sitios raros. Donde no está soportado se
@@ -1412,7 +1408,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 /* Eyebrow de esta página: pequeño, en el dorado oscuro de siempre (el que
    da 4.5:1 en texto pequeño sobre claro), sin protagonismo. */
 body[data-page="historia"] .eyebrow{
-  font-size:12px; font-weight:500; letter-spacing:.2em; text-align:left; margin-bottom:0;
+  font-size:12px; font-weight:500; letter-spacing:.2em; text-align:center; margin-bottom:0;
 }
 /* Sin ondas bajo los titulares de esta página. */
 body[data-page="historia"] .historia-hero h1::after{content:none;}
@@ -1427,7 +1423,7 @@ body[data-page="historia"] .historia-hero h1::after{content:none;}
 .historia{background:transparent;}
 body[data-page="historia"] .historia::before{content:none;}
 .qs-capitulo{padding:56px var(--space-5) 0;}
-.qs-capitulo-texto{text-align:left; max-width:56ch; margin:0 auto;}
+.qs-capitulo-texto{text-align:center; max-width:56ch; margin:0 auto;}
 .qs-capitulo-texto h2{
   font-family:var(--font-serif); font-weight:400; font-size:clamp(32px,8.6vw,38px);
   line-height:1.05; letter-spacing:-.02em; color:var(--deep); margin-top:16px;
@@ -1448,10 +1444,10 @@ body[data-page="historia"] .historia::before{content:none;}
 .qs-prosa p{
   font-family:var(--font-sans); font-weight:400;
   font-size:16.5px; line-height:1.6; color:var(--ink-soft);
-  margin:0; max-width:40ch;
-  /* A la izquierda, nunca justificado: en una columna de móvil el
+  margin:0 auto; max-width:40ch;
+  /* Centrado y nunca justificado: en una columna de móvil el
      justificado abría huecos enormes entre palabras. */
-  text-align:left; hyphens:manual; -webkit-hyphens:manual;
+  text-align:center; hyphens:manual; -webkit-hyphens:manual;
   text-wrap:pretty;
 }
 .qs-prosa p + p{margin-top:12px;}
@@ -1461,7 +1457,7 @@ body[data-page="historia"] .historia::before{content:none;}
    corta, no un párrafo, y justificarla abriría huecos entre palabras.
    Rompe el bloque de prosa del hero en dos y le da ritmo. */
 .qs-destacado{
-  margin:0;
+  margin:0 auto;
   font-family:var(--font-serif); font-style:italic; font-weight:400;
   font-size:clamp(28px,7.6vw,32px); line-height:1.25; color:var(--deep); max-width:22ch;
   text-wrap:balance;
@@ -1474,14 +1470,14 @@ body[data-page="historia"] .historia::before{content:none;}
 /* El gran momento en cursiva de la página (el otro es el cierre de
    marca). Sin filete dorado encima: el aire lo separa. */
 .pull-quote{
-  margin:48px 0 0; max-width:20ch;
+  margin:48px auto 0; max-width:20ch;
   font-family:var(--font-serif); font-style:italic; font-weight:400;
   font-size:clamp(32px,8.8vw,38px); line-height:1.15; color:var(--deep);
   position:relative;
 }
 /* Cursivas secundarias de cierre de bloque: acento, no titular. */
 .qs-cita-menor{
-  margin:32px 0 0; max-width:26ch;
+  margin:32px auto 0; max-width:26ch;
   font-family:var(--font-serif); font-style:italic; font-weight:400;
   font-size:clamp(26px,7.2vw,30px); line-height:1.25; color:var(--deep);
   text-wrap:balance;
@@ -2480,10 +2476,11 @@ footer{
      exacto de piezas: se rompía cada vez que se añadía o quitaba una). */
   .coleccion{padding:72px 90px 120px;}
   .coleccion h2{font-size:58px;}
-  .coleccion-divisor-texto{font-size:23px;}
+  .coleccion .coleccion-divisor-texto{font-size:52px;}
+  .coleccion-divisor{margin-top:110px;}
   .coleccion-edicion{font-size:40px; margin-top:26px;}
   .coleccion-intro{font-size:17px; max-width:36ch; margin-top:14px;}
-  .coleccion-lineas{font-size:22px;}
+  .coleccion-lineas{font-size:24px;}
   .coleccion-cierre{font-size:16px; margin-top:22px; max-width:54ch;}
   .edicion-badge{font-size:13.5px; padding:10px 24px;}
   .coleccion .edicion-badge{font-size:12px; padding:0; margin-bottom:18px;}
@@ -2506,10 +2503,10 @@ footer{
     display:grid; grid-template-columns:1.05fr .95fr;
     grid-template-rows:auto auto;
     gap:var(--space-6) var(--space-8);
-    align-content:center; text-align:left; max-width:1240px; margin:0 auto;
+    align-content:center; text-align:center; max-width:1240px; margin:0 auto;
   }
-  .qs-hero-intro{grid-column:1; grid-row:1; text-align:left; align-self:end;}
-  .qs-hero-resto{grid-column:1; grid-row:2; text-align:left; align-self:start;}
+  .qs-hero-intro{grid-column:1; grid-row:1; text-align:center; align-self:end;}
+  .qs-hero-resto{grid-column:1; grid-row:2; text-align:center; align-self:start;}
 
   .historia-hero .qs-foto,
   .qs-hero .qs-foto{
@@ -2517,16 +2514,16 @@ footer{
     margin:0; max-width:none; align-self:stretch; height:100%;
   }
   .historia-hero .eyebrow,
-  .qs-capitulo-texto .eyebrow{text-align:left;}
-  .qs-destacado{margin-left:0; margin-right:0;}
+  .qs-capitulo-texto .eyebrow{text-align:center;}
+  .qs-destacado{margin-left:auto; margin-right:auto;}
 
   .qs-capitulo{
     padding:var(--space-9) var(--space-7);
     display:grid; grid-template-columns:.9fr 1.1fr; gap:var(--space-9);
     align-items:center; max-width:1240px; margin:0 auto;
   }
-  .qs-capitulo-texto{text-align:left; max-width:52ch; margin:0;}
-  .qs-prosa p, .pull-quote{margin-left:0;}
+  .qs-capitulo-texto{text-align:center; max-width:52ch; margin:0 auto;}
+  .qs-prosa p, .pull-quote, .qs-cita-menor{margin-left:auto; margin-right:auto;}
   .qs-prosa p{font-size:17px; max-width:52ch;}
   .historia-hero h1{font-size:52px;}
   .qs-capitulo-texto h2{font-size:42px;}
