@@ -800,6 +800,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   font-size:16px; line-height:1.45; font-weight:600;
   color:var(--hero-blanco); text-shadow:none;
 }
+/* Móvil: tres niveles. Escritorio: la frase de una línea (ver el bloque
+   de min-width:900px). */
+.hero-sub-movil{display:block;}
+.hero-sub-escritorio{display:none;}
 
 /* Firma de marca: no aparece en el diseno de movil (ver el mockup del
    cliente), pero sigue en escritorio, donde separa el nombre de la
@@ -2217,6 +2221,8 @@ footer{
   /* Aquí sí va al pie (con la firma y el CTA detrás), que es como
      estaba el hero de escritorio de siempre. */
   .hero-sub{margin:auto auto 0; padding-top:26px; font-size:17px; font-weight:500; max-width:42ch;}
+  .hero-sub-movil{display:none;}
+  .hero-sub-escritorio{display:inline;}
   .hero-marca{display:block; margin:26px auto 0;}
   .hero-marca-claim{font-size:15px;}
   /* Apiladas también en escritorio (no en fila): la principal manda y la

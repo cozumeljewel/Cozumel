@@ -156,7 +156,14 @@
 
       <!-- Va al pie, no pegado al titular: ahí arriba le cruzaba la cara
            a Adriana. Abajo cae sobre la falda, zona oscura y despejada. -->
-      <p class="hero-sub reveal-hero">Joyas personalizadas para regalar algo que importa.</p>
+      <!-- Dos versiones del mismo texto: en móvil va en tres niveles (así
+           lo pidió el cliente), en escritorio sigue la frase de una línea
+           de siempre. La que no toca se oculta con display:none, que
+           también la saca del lector de pantalla: nunca se leen las dos. -->
+      <p class="hero-sub reveal-hero">
+        <span class="hero-sub-movil">Joyas Personalizadas<br>Para regalar algo<br>Que Importa</span>
+        <span class="hero-sub-escritorio">Joyas personalizadas para regalar algo que importa.</span>
+      </p>
 
       <div class="hero-marca reveal-hero">
         <span class="hero-marca-nombre">Cozumel</span>
