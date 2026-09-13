@@ -1072,46 +1072,71 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    ninguna otra sección. */
 .coleccion{
   --marfil:#FAF7F1; --marfil-hondo:#F3EEE4; --negro-suave:#211F1C; --negro-tenue:#5B564C;
-  padding:56px 24px 60px; background:var(--marfil); text-align:center;
+  padding:40px 24px 60px; background:var(--marfil); text-align:center;
 }
+/* Introducción con el mismo lenguaje que el hero de inicio: Playfair
+   regular (como "Un Pedacito"), la cursiva champagne del hero para el
+   acento, Jost 400 para la información. Pocas piezas y poco alto, para
+   que la primera joya aparezca cuanto antes. */
 .coleccion h2{
-  font-family:'Playfair Display'; font-weight:800; font-size:34px; color:var(--deep);
-  margin-top:10px; line-height:1.12;
+  font-family:'Playfair Display'; font-weight:400; font-size:clamp(46px,12.5vw,52px); color:var(--deep);
+  margin-top:0; line-height:1; letter-spacing:-.02em;
+}
+/* Sin la onda dorada bajo "La colección": aquí el aire hace de separador. */
+.coleccion h2::after{content:none;}
+/* La etiqueta de edición deja de parecer un botón: sin borde ni cápsula,
+   pequeña y espaciada. Mismo dorado oscuro que ya usaba (el que da 4.5:1
+   en texto pequeño sobre claro). Solo en esta página: comprar.html y
+   personalizar.html siguen con la etiqueta de siempre. */
+.coleccion .edicion-badge{
+  padding:0; border:0; border-radius:0; margin-bottom:14px;
+  font-size:11px; font-weight:500; letter-spacing:.14em; line-height:1.6;
+  /* En móvil no cabe en una línea: balance la parte en dos mitades
+     parecidas en vez de dejar "LIMITADAS" sola abajo. */
+  max-width:100%; text-wrap:balance;
 }
 /* Nombre de la edición, bajo "La colección": mismo gesto que el titular
    del hero (serif con la segunda parte en cursiva dorada), a menor
    tamaño. Deja claro que la colección tiene nombre propio y que "La
    colección" es solo la etiqueta de la página. */
 .coleccion-edicion{
-  margin:8px auto 0; font-family:'Playfair Display'; font-weight:700;
-  font-size:24px; line-height:1.15; color:var(--deep);
+  margin:22px auto 0; font-family:'Playfair Display'; font-weight:400;
+  font-size:clamp(32px,9vw,38px); line-height:1.05; letter-spacing:-.02em; color:var(--deep);
 }
-.coleccion-edicion em{font-style:italic; font-weight:500; color:var(--gold-deep);}
+/* Mismo tratamiento que "de ti" del hero (cursiva 400, --hero-arena), pero
+   en la misma línea: aquí se lee como una sola frase. */
+.coleccion-edicion em{font-style:italic; font-weight:400; font-size:.92em; color:var(--hero-arena);}
 /* Descripción de la colección: qué significa, no solo qué es. Algo más
    ancha que la línea suelta que había antes ("Piezas que cuentan algo"),
    porque ahora sí es una frase de dos o tres líneas. */
 .coleccion-intro{
-  margin:12px auto 0; max-width:40ch;
-  font-size:15px; line-height:1.65; color:var(--ink-soft);
-  text-wrap:pretty;
+  margin:12px auto 0; max-width:30ch;
+  font-family:var(--font-body); font-weight:400; font-size:16px; line-height:1.5; color:var(--ink-soft);
+  text-wrap:balance;
 }
 /* Mismo patrón que Cozumel Stories: las líneas sueltas en cursiva serif
    entre los dos párrafos, para que la descripción no sea un bloque
    corrido. */
+/* Interludio tras las piezas principales: una pausa, no una sección.
+   Cursiva del sistema, contenida, sin fondo ni adornos. */
+.coleccion-interludio{margin:72px auto 0; max-width:36ch;}
+.coleccion-interludio + .coleccion-divisor{margin-top:64px;}
 .coleccion-lineas{
-  margin:20px auto 0; font-family:'Playfair Display'; font-style:italic;
-  font-size:18px; line-height:1.5; color:var(--sea-dark);
+  margin:0 auto; font-family:'Playfair Display'; font-style:italic; font-weight:400;
+  font-size:19px; line-height:1.5; color:var(--deep);
 }
 /* En pantallas estrechas la línea más larga no cabe entera; balance la
    parte por la mitad en vez de dejar la última palabra sola. */
 .coleccion-lineas span{display:block; text-wrap:balance;}
 .coleccion-cierre{
-  margin:20px auto 0; max-width:46ch; font-size:15px; line-height:1.65;
-  color:var(--ink-soft); text-wrap:pretty;
+  margin:18px auto 0; max-width:46ch; font-family:var(--font-body); font-weight:400;
+  font-size:15.5px; line-height:1.6; color:var(--ink-soft); text-wrap:pretty;
 }
 .producto-grid{
   margin-top:52px; display:grid; grid-template-columns:1fr; gap:56px;
 }
+/* La primera rejilla, justo tras la introducción, más cerca. */
+.coleccion-intro + .producto-grid{margin-top:36px;}
 /* Separador entre las piezas principales y los kits: una línea que se
    desvanece a los lados, con la etiqueta en el mismo registro editorial
    que el subtítulo (Playfair cursiva). */
@@ -2424,15 +2449,17 @@ footer{
      que no lea como cuadrícula perfecta pero sin depender de cuántos
      productos haya (a diferencia del reparto anterior, atado al total
      exacto de piezas: se rompía cada vez que se añadía o quitaba una). */
-  .coleccion{padding:110px 90px 120px;}
-  .coleccion h2{font-size:50px;}
+  .coleccion{padding:72px 90px 120px;}
+  .coleccion h2{font-size:58px;}
   .coleccion-divisor-texto{font-size:23px;}
-  .coleccion-edicion{font-size:32px;}
-  .coleccion-intro{font-size:16.5px; max-width:46ch;}
-  .coleccion-lineas{font-size:21px; margin-top:24px;}
-  .coleccion-cierre{font-size:16px; margin-top:24px; max-width:54ch;}
+  .coleccion-edicion{font-size:40px; margin-top:26px;}
+  .coleccion-intro{font-size:17px; max-width:36ch; margin-top:14px;}
+  .coleccion-lineas{font-size:22px;}
+  .coleccion-cierre{font-size:16px; margin-top:22px; max-width:54ch;}
   .edicion-badge{font-size:13.5px; padding:10px 24px;}
+  .coleccion .edicion-badge{font-size:12px; padding:0; margin-bottom:18px;}
   .producto-grid{grid-template-columns:1fr 1fr; gap:64px 48px; margin-top:64px;}
+  .coleccion-intro + .producto-grid{margin-top:48px;}
   .producto-card:nth-child(2n){margin-top:96px;}
 
   /* 3. "QUIÉNES SOMOS": aquí sí se parte en columnas — es la única
