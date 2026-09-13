@@ -388,9 +388,10 @@ body[data-page="personalizar"] .volver-arriba{
   .volver-arriba{transition:none;}
   .volver-arriba:active{transform:none;}
 }
-@media (min-width:900px){
-  .volver-arriba{display:none;}
-}
+/* Retirado también en móvil: la cabecera ya va fija/pegada arriba en
+   todas las páginas y el botón flotante competía con el contenido. Se
+   deja el marcado y volver-arriba.js intactos por si se recupera. */
+.volver-arriba{display:none !important;}
 
 .popup-contacto-link{
   display:block; margin-top:14px; font-size:12.5px; color:var(--sea-dark);
@@ -882,22 +883,36 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    tarjeta, en vez de cuadrados uniformes. Todo son placeholders por
    ahora (ver comentario en index.html), reutilizando el mismo patrón de
    "imagen pendiente" que ya usan las fichas de producto. */
-.stories{padding:64px 24px 56px; background:var(--white); text-align:center;}
+/* Cabecera de Stories con el mismo sistema que el hero de inicio:
+   Playfair regular para los titulares (como "Un Pedacito"), la cursiva
+   champagne en su propia línea (como "de ti") y Jost 400 para el texto.
+   Aquí los titulares van en el verde oscuro de marca porque el fondo es
+   claro. Arriba, ~30% menos de aire que antes (64+10px -> 50px) para que
+   la sección enlace con el hero sin un hueco en blanco en medio. */
+.stories{padding:50px 24px 56px; background:var(--white); text-align:center;}
 .stories h2{
-  font-family:'Playfair Display'; font-weight:800; font-size:32px; color:var(--deep);
-  margin-top:10px; line-height:1.16; max-width:20ch; margin-left:auto; margin-right:auto;
+  font-family:'Playfair Display'; font-weight:400; font-size:clamp(36px,9.6vw,44px); color:var(--deep);
+  margin-top:0; line-height:.98; letter-spacing:-.025em;
+  max-width:20ch; margin-left:auto; margin-right:auto;
 }
 /* Lema de la sección, bajo el título. Mismo tratamiento que el nombre de
    la edición en la página de colección (.coleccion-edicion): serif con la
    segunda parte en cursiva dorada, siempre por debajo del título en
    tamaño — el que manda es "Cozumel Stories". */
 .stories-claim{
-  margin:8px auto 0; font-family:'Playfair Display'; font-weight:700;
-  font-size:24px; line-height:1.15; color:var(--deep); text-wrap:balance;
+  margin:16px auto 0; font-family:'Playfair Display'; font-weight:400;
+  font-size:clamp(30px,8vw,38px); line-height:.98; letter-spacing:-.025em;
+  color:var(--deep);
 }
-.stories-claim em{font-style:italic; font-weight:500; color:var(--gold-deep);}
+/* Exactamente el tratamiento de "de ti": misma cursiva, mismo peso, .88em,
+   en bloque con su propio interlineado y el mismo champagne del hero. */
+.stories-claim em{
+  display:block; font-style:italic; font-weight:400; font-size:.88em; line-height:.9;
+  color:var(--hero-arena);
+}
 .stories-intro{
-  margin:12px auto 0; max-width:38ch; font-size:15px; line-height:1.6;
+  margin:20px auto 0; max-width:34ch;
+  font-family:var(--font-body); font-weight:400; font-size:16.5px; line-height:1.5;
   color:var(--ink-soft); text-wrap:pretty;
 }
 /* Las cuatro líneas sueltas ("Quién la lleva. / Quién la regaló. ...").
@@ -924,15 +939,27 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 .stories-foto{position:relative; overflow:hidden; border-radius:2px;}
 .stories-foto-capa{
   position:absolute; inset:0;
-  background:linear-gradient(150deg, var(--surf) 0%, var(--sea) 55%, var(--deep) 100%);
+  /* Hueco neutro mientras llega la foto: nada de degradado turquesa, que
+     competía con la fotografía del hero justo encima. */
+  background-color:#E9E5DF;
   background-repeat:no-repeat; background-position:center; background-size:cover;
 }
+/* Foto real: vale tanto un <img> dentro de .stories-foto-capa como un
+   background-image en su style="". El <img> llena el hueco con
+   object-fit:cover, sin deformar, sea cual sea la proporción. */
+.stories-foto-capa img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center; display:block;
+}
 .stories-foto-capa .ph-tag{top:14px; left:14px;}
+/* Sobre el hueco neutro la nota va en tinta; con foto real pasa a claro
+   (ver .con-foto más abajo). */
 .stories-foto-nota{
   position:absolute; left:14px; bottom:14px; right:14px; z-index:1; pointer-events:none;
   font-family:'Playfair Display'; font-style:italic; font-size:12.5px;
-  color:rgba(242,248,248,.85); text-align:left;
+  color:var(--ink-soft); text-align:left;
 }
+.stories-foto.con-foto .stories-foto-nota{color:rgba(246,241,232,.92);}
 /* Foto real (cuando la haya): en vez del degradado, pon
    "background-image" en style="" del div .stories-foto-capa
    correspondiente (igual que hace script.js con las de producto) — no
@@ -2300,9 +2327,10 @@ footer{
      tamaño de móvil, junto a un h2 de 42px vuelve a desaparecer. */
   .eyebrow{font-size:16px; margin-bottom:3px;}
   .stories{padding:90px 90px 100px;}
-  .stories h2{font-size:42px;}
-  .stories-claim{font-size:32px;}
-  .stories-intro{font-size:16.5px;}
+  .stories{padding-top:80px;}
+  .stories h2{font-size:52px;}
+  .stories-claim{font-size:42px; margin-top:20px;}
+  .stories-intro{font-size:17px; margin-top:24px;}
   .stories-lineas{font-size:21px; margin-top:24px;}
   .stories-cierre{font-size:16px; margin-top:24px; max-width:50ch;}
   .stories-galeria{
