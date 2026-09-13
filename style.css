@@ -789,10 +789,15 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
      bloque de 300px se metía de lleno en la cara. Así mantiene siempre
      las dos líneas y se queda en la franja tranquila de la foto. */
   margin:0; max-width:min(300px, 56vw);
-  /* Peso 500 en vez de 400: sobre una foto, engordar el trazo es lo que
-     de verdad despega la letra del fondo. No es una sombra ni un
-     contorno — es la propia letra, solo que con más cuerpo. */
-  font-size:16px; line-height:1.45; font-weight:500;
+  /* Peso 600: la descripción cae sobre la franja MÁS pálida de la foto
+     (el cielo del horizonte, casi blanco). Se midió que ningún
+     oscurecimiento del cielo llega a leerse cómodo sin oscurecerle
+     también la cara — el texto termina justo donde empieza su frente, a
+     la misma altura. Engordar la propia letra es la única vía que no
+     tiene ese conflicto: sin sombras, sin velo y sin tocar la foto.
+     Comprobado en 375, 390 y 430px: sigue en 2 líneas y el borde
+     derecho (217px) cae sobre el pelo, no sobre la piel. */
+  font-size:16px; line-height:1.45; font-weight:600;
   color:var(--hero-blanco); text-shadow:none;
 }
 
@@ -2211,7 +2216,7 @@ footer{
      apelotonado. Estos márgenes escalan con el tamaño del titular. */
   /* Aquí sí va al pie (con la firma y el CTA detrás), que es como
      estaba el hero de escritorio de siempre. */
-  .hero-sub{margin:auto auto 0; padding-top:26px; font-size:17px; max-width:42ch;}
+  .hero-sub{margin:auto auto 0; padding-top:26px; font-size:17px; font-weight:500; max-width:42ch;}
   .hero-marca{display:block; margin:26px auto 0;}
   .hero-marca-claim{font-size:15px;}
   /* Apiladas también en escritorio (no en fila): la principal manda y la
