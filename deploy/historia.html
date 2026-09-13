@@ -137,31 +137,33 @@
       </div>
     </div>
 
-    <!-- La foto va DENTRO del hero, entre la entradilla y el resto del
-         texto: en móvil rompe el muro de texto (antes había una pantalla
-         entera de letra seguida antes de ver una sola imagen). En
-         escritorio ocupa la columna derecha entera (grid-row 1/-1). -->
+    <!-- FOTO 1. En móvil rompe el texto justo después de la entradilla;
+         en escritorio ocupa la columna derecha entera. Cuando llegue la
+         foto real, va como etiqueta img dentro de la figure. -->
     <figure class="qs-foto reveal" aria-hidden="true">
-      <span class="ph-tag">imagen pendiente · foto lifestyle principal</span>
+      <span class="ph-tag">imagen pendiente · foto lifestyle principal</span>
     </figure>
 
     <div class="qs-hero-resto">
-      <!-- Única frase destacada de la página (cursiva, sin justificar):
-           marca el ritmo entre los dos bloques de prosa del hero. -->
+      <!-- Interludio: pausa en cursiva, a menor escala que el titular. -->
       <p class="qs-destacado reveal">Un nombre. Una fecha. Una frase. Un lugar. Una historia. O simplemente alguien.</p>
 
       <div class="qs-prosa">
         <p class="reveal">Por eso creamos joyas que guardan algo más que un significado: guardan una parte de lo que somos y de quienes forman parte de nosotros.</p>
       </div>
 
+      <!-- Gran momento en cursiva nº 1 de 2 (el otro es el cierre de marca). -->
       <blockquote class="pull-quote reveal">Porque hay recuerdos que no deberían quedarse solo en la memoria. Algunos merecen llevarse.</blockquote>
     </div>
   </section>
 
-  <!-- ===== CAPÍTULO 1: NUESTRA HISTORIA (lleva la marca de agua) ===== -->
+  <!-- ===== NUESTRA HISTORIA =====
+       Compacto, sin marca de agua. La antigua cita "Porque, a veces, las
+       cosas que importan simplemente se llevan contigo." pasa a párrafo
+       normal: ya no compite como frase destacada. -->
   <section class="historia qs-capitulo">
     <figure class="qs-foto reveal" aria-hidden="true">
-      <span class="ph-tag">imagen pendiente · persona llevando la pieza</span>
+      <span class="ph-tag">imagen pendiente · persona llevando la pieza</span>
     </figure>
 
     <div class="qs-capitulo-texto">
@@ -171,37 +173,22 @@
       <div class="qs-prosa">
         <p class="reveal">En Cozumel creemos en el valor de los pequeños detalles. En que un regalo no tiene que ser grande para significar mucho y que una joya puede convertirse en parte de una historia.</p>
         <p class="reveal">Cada pieza está pensada para ser personal: un nombre, una fecha, un recuerdo o un significado que solo tú conoces.</p>
+        <p class="reveal">Porque, a veces, las cosas que importan simplemente se llevan contigo.</p>
       </div>
-
-      <blockquote class="pull-quote reveal">Porque, a veces, las cosas que importan simplemente se llevan contigo.</blockquote>
     </div>
   </section>
 
-  <!-- ===== CAPÍTULO 2: MÁS QUE UNA JOYA ===== -->
-  <section class="qs-capitulo qs-capitulo--invertido">
+  <!-- ===== LO QUE QUEREMOS TRANSMITIR =====
+       Bloque compacto de solo texto (va ANTES de "Más que una joya" para
+       que la personalización quede como último bloque antes del cierre).
+       Su foto se retira de momento: la página queda con 3 momentos
+       fotográficos (intro, historia, personalización). Se deja
+       comentada para recuperarla.
     <figure class="qs-foto reveal" aria-hidden="true">
-      <span class="ph-tag">imagen pendiente · detalle de una pieza</span>
+      <span class="ph-tag">imagen pendiente · foto emocional, recuerdo/vínculo</span>
     </figure>
-
-    <div class="qs-capitulo-texto">
-      <p class="eyebrow reveal">Más que una joya</p>
-      <h2 class="reveal">Personalizar es hacerla tuya</h2>
-
-      <div class="qs-prosa">
-        <p class="reveal">Cada persona tiene algo que quiere recordar. Por eso algunas de nuestras piezas pueden personalizarse con un nombre, una fecha, un mensaje o una palabra.</p>
-        <p class="reveal">Cada grabado se realiza a mano, pieza a pieza, para que cada joya tenga su propia historia.</p>
-      </div>
-
-      <blockquote class="pull-quote reveal">No queremos que lleves una joya más. Queremos que lleves algo que signifique algo para ti.</blockquote>
-    </div>
-  </section>
-
-  <!-- ===== CAPÍTULO 3: LO QUE QUEREMOS TRANSMITIR ===== -->
-  <section class="qs-capitulo">
-    <figure class="qs-foto reveal" aria-hidden="true">
-      <span class="ph-tag">imagen pendiente · foto emocional, recuerdo/vínculo</span>
-    </figure>
-
+  -->
+  <section class="qs-capitulo qs-capitulo--solo-texto">
     <div class="qs-capitulo-texto">
       <p class="eyebrow reveal">Lo que queremos transmitir</p>
       <h2 class="reveal">Llevar cerca lo que importa</h2>
@@ -211,7 +198,28 @@
         <p class="reveal">Pueden ser una forma de recordar, regalar, conectar y decir algo sin palabras.</p>
       </div>
 
-      <blockquote class="pull-quote reveal">Sobre todo, pueden ser una pequeña forma de llevar contigo aquello que hace que alguien sea importante para ti.</blockquote>
+      <p class="qs-cita-menor reveal">Sobre todo, pueden ser una pequeña forma de llevar contigo aquello que hace que alguien sea importante para ti.</p>
+    </div>
+  </section>
+
+  <!-- ===== MÁS QUE UNA JOYA ===== -->
+  <section class="qs-capitulo qs-capitulo--invertido">
+    <figure class="qs-foto reveal" aria-hidden="true">
+      <span class="ph-tag">imagen pendiente · detalle de una pieza</span>
+    </figure>
+
+    <div class="qs-capitulo-texto">
+      <p class="eyebrow reveal">Más que una joya</p>
+      <h2 class="reveal">Personalizar es hacerla tuya</h2>
+
+      <div class="qs-prosa">
+        <p class="reveal">Cada persona tiene algo que quiere recordar. Por eso algunas de nuestras piezas pueden personalizarse con un nombre, una fecha, un mensaje o una palabra.</p>
+        <!-- PENDIENTE DE REVISIÓN HUMANA: confirmar que "a mano" describe
+             el proceso real de fabricación antes de publicar definitivo. -->
+        <p class="reveal">Cada grabado se realiza a mano, pieza a pieza, para que cada joya tenga su propia historia.</p>
+      </div>
+
+      <p class="qs-cita-menor reveal">No queremos que lleves una joya más. Queremos que lleves algo que signifique algo para ti.</p>
     </div>
   </section>
 

@@ -1387,29 +1387,42 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    izquierda. Centrar párrafos largos deja el borde izquierdo distinto en
    cada línea y se lee como algo descuadrado — es lo que hacía que la
    página no terminara de verse bien. */
-.historia-hero{padding:var(--space-7) var(--space-5) 0;}
-.qs-hero-intro, .qs-hero-resto{text-align:center;}
+.historia-hero{padding:48px var(--space-5) 0;}
+/* Nuestra historia sigue el sistema del hero de inicio: textos a la
+   izquierda (no centrados ni justificados), Playfair regular en
+   titulares, cursiva solo como acento, Jost 400 en la prosa. */
+.qs-hero-intro, .qs-hero-resto{text-align:left;}
 /* text-wrap:balance reparte las palabras entre líneas en vez de dejar
    una suelta al final. Sustituye a los <br> forzados, que en móvil
    partían el titular en sitios raros. Donde no está soportado se
    comporta como siempre. */
 .historia-hero h1{
-  font-family:var(--font-display); font-weight:900; font-size:clamp(30px,7.6vw,46px);
-  line-height:1.16; color:var(--deep); margin-top:14px;
+  font-family:var(--font-display); font-weight:400; font-size:clamp(40px,11.2vw,46px);
+  line-height:1.02; letter-spacing:-.02em; color:var(--deep); margin-top:18px;
   text-wrap:balance;
 }
+/* Eyebrow de esta página: pequeño, en el dorado oscuro de siempre (el que
+   da 4.5:1 en texto pequeño sobre claro), sin protagonismo. */
+body[data-page="historia"] .eyebrow{
+  font-size:12px; font-weight:500; letter-spacing:.2em; text-align:left; margin-bottom:0;
+}
+/* Sin ondas bajo los titulares de esta página. */
+body[data-page="historia"] .historia-hero h1::after{content:none;}
 .qs-capitulo-texto h2, .pull-quote{text-wrap:balance;}
 
 /* Capítulos: fondo alterno solo en el que lleva la marca de agua
    (.historia), el resto respira sobre el fondo base — así cada uno tiene
    un ritmo visual algo distinto sin convertirse en una fila de tarjetas
    idénticas. */
-.historia{background:var(--shallow);}
-.qs-capitulo{padding:var(--space-7) var(--space-5);}
-.qs-capitulo-texto{text-align:center; max-width:56ch; margin:0 auto;}
+/* Sin fondo alterno ni marca de agua: todo el cuerpo sobre el fondo
+   base, como una sola pieza editorial. */
+.historia{background:transparent;}
+body[data-page="historia"] .historia::before{content:none;}
+.qs-capitulo{padding:56px var(--space-5) 0;}
+.qs-capitulo-texto{text-align:left; max-width:56ch; margin:0 auto;}
 .qs-capitulo-texto h2{
-  font-family:var(--font-display); font-weight:700; font-size:clamp(24px,5.5vw,32px);
-  line-height:1.25; color:var(--deep); margin-top:10px;
+  font-family:var(--font-display); font-weight:400; font-size:clamp(32px,8.6vw,38px);
+  line-height:1.05; letter-spacing:-.02em; color:var(--deep); margin-top:16px;
 }
 
 /* Prosa justificada a ambos lados. El guionado automático va de la mano:
@@ -1418,43 +1431,52 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    hyphens:auto el navegador parte por sílabas — funciona porque el
    <html> declara lang="es". text-wrap:pretty evita además dejar una
    palabra sola en la última línea. */
-.qs-prosa{margin-top:var(--space-5);}
+.qs-prosa{margin-top:24px;}
 /* 15.5px en móvil no es un capricho: a 16px entraban 40 caracteres por
    línea y el justificado necesita ~45 para no abrir huecos entre
    palabras. Bajando medio punto entran ~44 y el texto cierra limpio a
    ambos lados. En escritorio la columna es mucho más ancha y vuelve a
    16px (ver min-width:900px). */
 .qs-prosa p{
-  font-size:15.5px; line-height:1.72; color:var(--ink-soft);
-  margin:0 auto; max-width:42ch;
-  text-align:justify; hyphens:auto; -webkit-hyphens:auto;
+  font-family:var(--font-body); font-weight:400;
+  font-size:16.5px; line-height:1.6; color:var(--ink-soft);
+  margin:0; max-width:40ch;
+  /* A la izquierda, nunca justificado: en una columna de móvil el
+     justificado abría huecos enormes entre palabras. */
+  text-align:left; hyphens:manual; -webkit-hyphens:manual;
   text-wrap:pretty;
 }
-.qs-prosa p + p{margin-top:var(--space-3);}
+.qs-prosa p + p{margin-top:12px;}
 
 /* Frase destacada del hero ("Un nombre. Una fecha. ..."): la única de la
    página. Va en cursiva y centrada, sin justificar — es una enumeración
    corta, no un párrafo, y justificarla abriría huecos entre palabras.
    Rompe el bloque de prosa del hero en dos y le da ritmo. */
 .qs-destacado{
-  margin:var(--space-5) auto 0;
-  font-family:var(--font-display); font-style:italic; font-size:19px;
-  line-height:1.5; color:var(--sea-dark); max-width:34ch;
+  margin:0;
+  font-family:var(--font-display); font-style:italic; font-weight:400;
+  font-size:clamp(28px,7.6vw,32px); line-height:1.25; color:var(--deep); max-width:22ch;
   text-wrap:balance;
 }
+.qs-destacado + .qs-prosa{margin-top:24px;}
 
 /* Cita de cierre de cada capítulo. Va en tinta profunda, más grande que
    la prosa y precedida de un filete dorado corto, para que se lea como
    el remate del capítulo y no se confunda con el resto del texto. */
+/* El gran momento en cursiva de la página (el otro es el cierre de
+   marca). Sin filete dorado encima: el aire lo separa. */
 .pull-quote{
-  margin:var(--space-6) auto 0; padding-top:var(--space-5); max-width:30ch;
-  font-family:var(--font-display); font-style:italic; font-weight:500;
-  font-size:24px; line-height:1.38; color:var(--deep);
+  margin:48px 0 0; max-width:20ch;
+  font-family:var(--font-display); font-style:italic; font-weight:400;
+  font-size:clamp(32px,8.8vw,38px); line-height:1.15; color:var(--deep);
   position:relative;
 }
-.pull-quote::before{
-  content:""; position:absolute; top:0; left:50%; transform:translateX(-50%);
-  width:38px; height:1px; background:var(--gold-deep);
+/* Cursivas secundarias de cierre de bloque: acento, no titular. */
+.qs-cita-menor{
+  margin:32px 0 0; max-width:26ch;
+  font-family:var(--font-display); font-style:italic; font-weight:400;
+  font-size:clamp(26px,7.2vw,30px); line-height:1.25; color:var(--deep);
+  text-wrap:balance;
 }
 
 /* Foto: mismo patrón "imagen pendiente" que ya usa el resto del sitio
@@ -1464,9 +1486,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    para que se note como un gesto fotográfico, no como el mismo fundido
    del texto. */
 .qs-foto{
-  position:relative; aspect-ratio:4/5; border-radius:var(--radius-sm);
-  background:linear-gradient(155deg, var(--surf) 0%, var(--sea) 45%, var(--deep) 100%);
-  margin:var(--space-6) auto 0; max-width:520px; overflow:hidden;
+  /* Hueco neutro mientras llega la foto real: sin degradado turquesa. */
+  position:relative; aspect-ratio:4/5; border-radius:0;
+  background:#E9E5DF;
+  margin:48px auto 0; max-width:520px; overflow:hidden;
 }
 .qs-foto img{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
@@ -1482,16 +1505,17 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   .qs-foto.reveal-visto{transform:scale(1);}
 }
 
-.qs-hero .qs-foto{margin-top:var(--space-7);}
+.qs-hero .qs-foto{margin-top:48px;}
 /* En móvil la foto va delante del texto (así está en el HTML): sin este
    margen el eyebrow del capítulo quedaba pegado al borde de la imagen. */
 .qs-foto + .qs-capitulo-texto,
-.qs-foto + .qs-hero-resto{margin-top:var(--space-6);}
+.qs-foto + .qs-hero-resto{margin-top:56px;}
 /* Solo la del hero es vertical (es la protagonista); las de los
    capítulos van cuadradas. Da un ritmo visual distinto entre la apertura
    y el cuerpo, y recorta bastante scroll en móvil, donde una vertical a
    ancho completo se come media pantalla ella sola. */
-.qs-capitulo .qs-foto{aspect-ratio:1;}
+.qs-capitulo .qs-foto{aspect-ratio:4/5; margin-top:0;}
+.qs-capitulo--solo-texto{padding-top:64px;}
 
 /* Menos movimiento en móvil (gran parte del tráfico llega de TikTok/
    Instagram, en redes lentas): el fundido del texto se acorta un poco y
@@ -1510,16 +1534,17 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    oscuro (mismo lenguaje que el CTA final del resto del sitio) para
    cerrar con un ritmo distinto al de los capítulos claros de arriba. */
 .qs-cierre{
+  margin-top:72px;
   padding:var(--space-8) var(--space-5); background:var(--abyss);
   text-align:center;
 }
 .qs-cierre-marca{
-  font-family:var(--font-body); font-size:12px; letter-spacing:.3em;
-  text-transform:uppercase; color:var(--gold-soft);
+  font-family:var(--font-body); font-size:12px; font-weight:500; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--hero-arena);
 }
 .qs-cierre-claim{
-  margin-top:var(--space-3); font-family:var(--font-display); font-style:italic;
-  font-weight:500; font-size:clamp(26px,7vw,36px); color:var(--foam);
+  margin-top:14px; font-family:var(--font-display); font-style:italic;
+  font-weight:400; font-size:clamp(30px,8vw,34px); line-height:1.15; color:var(--hero-blanco);
 }
 
 /* ---------- 4. CONFIANZA ---------- */
@@ -2481,7 +2506,7 @@ footer{
   }
   .qs-hero-intro{grid-column:1; grid-row:1; text-align:left; align-self:end;}
   .qs-hero-resto{grid-column:1; grid-row:2; text-align:left; align-self:start;}
-  .historia-hero h1::after{margin-left:0; margin-right:auto;}
+
   .historia-hero .qs-foto,
   .qs-hero .qs-foto{
     grid-column:2; grid-row:1 / -1;
@@ -2498,10 +2523,11 @@ footer{
   }
   .qs-capitulo-texto{text-align:left; max-width:52ch; margin:0;}
   .qs-prosa p, .pull-quote{margin-left:0;}
-  .qs-prosa p{font-size:16px;}
-  /* El filete de la cita se alinea al texto (a la izquierda), no al
-     centro como en móvil. */
-  .pull-quote::before{left:0; transform:none;}
+  .qs-prosa p{font-size:17px; max-width:52ch;}
+  .historia-hero h1{font-size:52px;}
+  .qs-capitulo-texto h2{font-size:42px;}
+  .qs-capitulo--solo-texto{display:block; padding-top:var(--space-8); padding-bottom:0;}
+  .qs-capitulo--solo-texto .qs-capitulo-texto{margin:0 auto;}
   /* En escritorio la foto del capítulo vuelve a ser vertical: aquí es una
      columna alta junto al texto, no una banda a lo ancho como en móvil. */
   .qs-capitulo .qs-foto{margin:0; max-width:none; order:-1; aspect-ratio:4/5;}
@@ -2517,8 +2543,11 @@ footer{
   .qs-capitulo--invertido .qs-capitulo-texto{order:-1;}
   .qs-capitulo--invertido .qs-foto{order:0;}
 
-  .pull-quote{font-size:24px;}
+  .pull-quote{font-size:40px; max-width:18ch;}
+  .qs-cita-menor{font-size:30px;}
+  .qs-destacado{font-size:32px;}
   .qs-cierre{padding:var(--space-9) var(--space-7);}
+  .qs-cierre-claim{font-size:40px;}
 
   /* 4. CONFIANZA: los tres bloques ya no tienen el mismo ancho (depende
      de si el texto es "Pieza única" o "Grabado por artesanos"), así que
