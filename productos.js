@@ -115,6 +115,12 @@ const PRODUCTOS = [
     forma: 'placa',
     campos: ['grabado'],
     destacado: true,
+    // FOTOS PROVISIONALES: primera tanda para que Adri vea cómo quedan,
+    // pendientes de edición antes de darlas por definitivas.
+    fotos: {
+      oro: ['img/mi-cielo-oro-1.jpg', 'img/mi-cielo-oro-2.jpg', 'img/mi-cielo-oro-3.jpg'],
+      plata: ['img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg'],
+    },
   },
   {
     id: 'brazalete_mensaje',

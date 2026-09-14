@@ -981,7 +981,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 /* Alterna proporciones incluso apiladas en móvil, para que no se lea
    como una cuadrícula de Instagram ni en una sola columna. */
 .stories-foto{aspect-ratio:4/5;}
-.stories-foto:nth-child(2), .stories-foto:nth-child(3){aspect-ratio:16/10;}
+.stories-foto:nth-child(2){aspect-ratio:16/10;}
+/* "Un momento cotidiano" es una foto vertical: hueco más alto para que
+   quepa entera sin recortar (a diferencia de las apaisadas de al lado). */
+.stories-foto:nth-child(3){aspect-ratio:3/4;}
 .stories-cta{margin-top:40px;}
 
 @media (prefers-reduced-motion:no-preference){
@@ -1401,8 +1404,8 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    partían el titular en sitios raros. Donde no está soportado se
    comporta como siempre. */
 .historia-hero h1{
-  font-family:var(--font-serif); font-weight:400; font-size:clamp(40px,11.2vw,46px);
-  line-height:1.02; letter-spacing:-.02em; color:var(--deep); margin-top:18px;
+  font-family:var(--font-serif); font-weight:400; font-size:clamp(46px,13vw,56px);
+  line-height:1.0; letter-spacing:-.02em; color:var(--deep); margin-top:18px;
   text-wrap:balance;
 }
 /* Eyebrow de esta página: pequeño, en el dorado oscuro de siempre (el que
@@ -1425,8 +1428,8 @@ body[data-page="historia"] .historia::before{content:none;}
 .qs-capitulo{padding:56px var(--space-5) 0;}
 .qs-capitulo-texto{text-align:center; max-width:56ch; margin:0 auto;}
 .qs-capitulo-texto h2{
-  font-family:var(--font-serif); font-weight:400; font-size:clamp(32px,8.6vw,38px);
-  line-height:1.05; letter-spacing:-.02em; color:var(--deep); margin-top:16px;
+  font-family:var(--font-serif); font-weight:400; font-size:clamp(38px,10.5vw,46px);
+  line-height:1.02; letter-spacing:-.02em; color:var(--deep); margin-top:16px;
 }
 
 /* Prosa justificada a ambos lados. El guionado automático va de la mano:
@@ -2393,7 +2396,7 @@ footer{
   }
   .stories-foto:nth-child(1){grid-area:a; aspect-ratio:4/5;}
   .stories-foto:nth-child(2){grid-area:b; aspect-ratio:16/9;}
-  .stories-foto:nth-child(3){grid-area:c; aspect-ratio:16/9;}
+  .stories-foto:nth-child(3){grid-area:c; aspect-ratio:3/4;}
   .stories-foto:nth-child(4){grid-area:d; aspect-ratio:1/1;}
   .stories-foto:nth-child(5){grid-area:e; aspect-ratio:1/1;}
   .stories-foto:nth-child(6){grid-area:f; aspect-ratio:1/1;}
@@ -2525,8 +2528,8 @@ footer{
   .qs-capitulo-texto{text-align:center; max-width:52ch; margin:0 auto;}
   .qs-prosa p, .pull-quote, .qs-cita-menor{margin-left:auto; margin-right:auto;}
   .qs-prosa p{font-size:17px; max-width:52ch;}
-  .historia-hero h1{font-size:52px;}
-  .qs-capitulo-texto h2{font-size:42px;}
+  .historia-hero h1{font-size:66px;}
+  .qs-capitulo-texto h2{font-size:54px;}
   .qs-capitulo--solo-texto{display:block; padding-top:var(--space-8); padding-bottom:0;}
   .qs-capitulo--solo-texto .qs-capitulo-texto{margin:0 auto;}
   /* En escritorio la foto del capítulo vuelve a ser vertical: aquí es una

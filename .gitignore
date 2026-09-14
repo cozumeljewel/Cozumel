@@ -6,3 +6,8 @@ media_kit_adriana_carballo_2026.pdf
 
 # Metadata local de la CLI de Supabase (enlace al proyecto, versiones)
 supabase/.temp/
+
+# Carpetas de fotos en bruto que Adri organiza dentro de img/ (una por
+# pieza, en mayúsculas) mientras decide/edita cuáles usar. Solo las
+# versiones ya procesadas (img/nombre.jpg, sin carpeta) van al repo.
+img/*/
