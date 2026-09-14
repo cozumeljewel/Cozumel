@@ -1649,16 +1649,16 @@ body[data-page="historia"] .historia::before{content:none;}
     linear-gradient(150deg, var(--surf) 0%, var(--sea) 55%, var(--deep) 100%);
   background-repeat:no-repeat; background-position:center; background-size:cover;
 }
-/* Con foto: la pieza va ENTERA (contain), con el degradado debajo
-   rellenando lo que sobre. La ruta la pone script.js en --foto. */
+/* Con foto: rellena todo el cuadro (cover), sin degradado asomando por
+   los bordes cuando la foto no es cuadrada. La ruta la pone script.js
+   en --foto. Se puede tocar/pulsar para ampliarla (ver abrirZoomFoto en
+   script.js). */
 .galeria-foto.con-foto{
-  background-image:
-    var(--foto),
-    radial-gradient(circle at 32% 22%, rgba(255,255,255,.5), transparent 55%),
-    linear-gradient(150deg, var(--surf) 0%, var(--sea) 55%, var(--deep) 100%);
-  background-size:contain, auto, auto;
-  background-position:center, center, center;
+  background-image:var(--foto);
+  background-size:cover;
+  background-position:center;
   background-repeat:no-repeat;
+  cursor:zoom-in;
 }
 /* Marco difuminado: se funde hacia dentro por los cuatro lados, sin
    recortar la foto. Mismo recurso que el hero. */
@@ -1670,6 +1670,37 @@ body[data-page="historia"] .historia::before{content:none;}
     linear-gradient(to bottom, rgba(255,255,255,.92) 0%, rgba(255,255,255,.28) 2.5%, transparent 8%),
     linear-gradient(to top,    rgba(255,255,255,.92) 0%, rgba(255,255,255,.28) 2.5%, transparent 8%);
 }
+/* ---------- ZOOM DE FOTO (ficha de producto) ----------
+   Overlay a pantalla completa que abre abrirZoomFoto() en script.js al
+   tocar una foto de la galería. Mismo lenguaje que los pop-ups (capa
+   oscura, cruz para cerrar) pero sin caja: aquí la protagonista es la
+   foto. Zoom con rueda/pellizco y arrastre para moverse una vez
+   ampliada (ver script.js). */
+.foto-zoom-capa{
+  position:fixed; inset:0; z-index:110;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(11,46,51,.92);
+  opacity:0; transition:opacity .25s ease;
+}
+.foto-zoom-capa.visible{opacity:1;}
+.foto-zoom-marco{
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; touch-action:none;
+}
+.foto-zoom-img{
+  max-width:92vw; max-height:88vh; object-fit:contain;
+  border-radius:2px; user-select:none;
+}
+.foto-zoom-cerrar{
+  position:absolute; top:18px; right:20px; z-index:1;
+  background:rgba(11,46,51,.55); border:none; border-radius:50%;
+  width:40px; height:40px; cursor:pointer;
+  font-family:var(--font-sans); font-size:24px; line-height:1; color:var(--foam);
+  display:flex; align-items:center; justify-content:center;
+}
+.foto-zoom-cerrar:hover{background:rgba(11,46,51,.8);}
+
 /* Los puntos solo aparecen si hay más de una foto (lo decide script.js) */
 .galeria-puntos{display:flex; justify-content:center; gap:7px; margin-top:14px;}
 /* En móvil son puntos pequeños (mismo aspecto de siempre); en escritorio

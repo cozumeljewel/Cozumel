@@ -400,8 +400,16 @@ function pintarGaleria(prod, acabado) {
     // Va como variable CSS: el degradado de respaldo sigue debajo, así que
     // si el archivo no existe no queda un hueco roto.
     card.style.setProperty('--foto', `url('${src}')`);
-    card.setAttribute('role', 'img');
-    card.setAttribute('aria-label', `${prod.nombre}, imagen ${i + 1} de ${fotos.length}`);
+    const etiqueta = `${prod.nombre}, imagen ${i + 1} de ${fotos.length}`;
+    // role="button" y no "img": ya no es solo ilustrativa, se puede
+    // pulsar para ampliarla (abrirZoomFoto).
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', `Ampliar foto: ${etiqueta}`);
+    card.addEventListener('click', () => abrirZoomFoto(src, etiqueta));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirZoomFoto(src, etiqueta); }
+    });
     pista.appendChild(card);
   });
 
@@ -443,6 +451,148 @@ function pintarGaleria(prod, acabado) {
       temporizador = setTimeout(marcarPuntoActivo, 60);
     }, { passive: true });
   }
+}
+
+/* =========================================================
+   ZOOM DE FOTO (ficha de producto)
+   Al pulsar una foto de la galería se abre a pantalla completa. Un
+   clic/toque alterna entre ajustada y ampliada (centrado en el punto
+   pulsado); ya ampliada, se puede arrastrar para moverse, y también
+   hay zoom continuo con la rueda del ratón o pellizcando en móvil.
+   Mismo patrón de overlay que los pop-ups (capa + Escape + clic
+   fuera para cerrar), reconstruido cada vez porque solo hace falta
+   mientras está abierto. ========================================================= */
+let capaZoomFoto = null;
+function abrirZoomFoto(src, etiqueta) {
+  if (capaZoomFoto) capaZoomFoto.remove();
+
+  const capa = document.createElement('div');
+  capa.className = 'foto-zoom-capa';
+  capa.setAttribute('role', 'dialog');
+  capa.setAttribute('aria-modal', 'true');
+  capa.setAttribute('aria-label', etiqueta || 'Foto ampliada');
+
+  const cerrarBtn = document.createElement('button');
+  cerrarBtn.type = 'button';
+  cerrarBtn.className = 'foto-zoom-cerrar';
+  cerrarBtn.setAttribute('aria-label', 'Cerrar');
+  cerrarBtn.textContent = '×';
+
+  const marco = document.createElement('div');
+  marco.className = 'foto-zoom-marco';
+
+  const img = document.createElement('img');
+  img.className = 'foto-zoom-img';
+  img.src = src;
+  img.alt = etiqueta || '';
+  img.draggable = false;
+
+  marco.appendChild(img);
+  capa.append(cerrarBtn, marco);
+
+  const antesDelZoom = document.activeElement;
+  const MIN = 1, MAX = 4;
+  let escala = 1, x = 0, y = 0;
+
+  function aplicar() {
+    img.style.transform = `translate(${x}px, ${y}px) scale(${escala})`;
+    img.style.cursor = escala > 1 ? 'grab' : 'zoom-in';
+  }
+  // Cuanto más ampliada, más margen hay para moverse; a escala 1 no se
+  // mueve nada (no tendría sentido arrastrar una foto que ya cabe entera).
+  function limitar() {
+    const maxX = (escala - 1) * marco.clientWidth / 2;
+    const maxY = (escala - 1) * marco.clientHeight / 2;
+    x = Math.max(-maxX, Math.min(maxX, x));
+    y = Math.max(-maxY, Math.min(maxY, y));
+  }
+
+  function cerrarZoom() {
+    capa.remove();
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', porTecla);
+    capaZoomFoto = null;
+    if (antesDelZoom && antesDelZoom.focus) antesDelZoom.focus();
+  }
+  function porTecla(e) { if (e.key === 'Escape') cerrarZoom(); }
+
+  cerrarBtn.addEventListener('click', cerrarZoom);
+  capa.addEventListener('click', e => { if (e.target === capa) cerrarZoom(); });
+  document.addEventListener('keydown', porTecla);
+
+  // Clic/toque sobre la foto: alterna ajustada ↔ ampliada, centrado en
+  // el punto exacto donde se pulsó.
+  img.addEventListener('click', e => {
+    e.stopPropagation();
+    if (escala > 1) {
+      escala = 1; x = 0; y = 0;
+    } else {
+      const r = img.getBoundingClientRect();
+      // Si la foto aún no ha terminado de cargar, el rect puede venir a
+      // 0: sin esta guarda, dividir por 0 da NaN y el navegador descarta
+      // el transform en silencio (el zoom no se aplicaría). Sin tamaño
+      // fiable, se centra en vez de fallar.
+      const px = r.width ? (e.clientX - r.left) / r.width - 0.5 : 0;
+      const py = r.height ? (e.clientY - r.top) / r.height - 0.5 : 0;
+      escala = 2.4;
+      x = -px * r.width * (escala - 1) / escala;
+      y = -py * r.height * (escala - 1) / escala;
+      limitar();
+    }
+    aplicar();
+  });
+
+  // Rueda del ratón: zoom continuo centrado en el cursor.
+  marco.addEventListener('wheel', e => {
+    e.preventDefault();
+    escala = Math.max(MIN, Math.min(MAX, escala * (e.deltaY < 0 ? 1.15 : 1 / 1.15)));
+    if (escala === MIN) { x = 0; y = 0; }
+    limitar();
+    aplicar();
+  }, { passive: false });
+
+  // Arrastre (ratón o dedo) para moverse por la foto ya ampliada.
+  let arrastrando = false, inicioX = 0, inicioY = 0, origenX = 0, origenY = 0;
+  marco.addEventListener('pointerdown', e => {
+    if (escala <= 1) return;
+    arrastrando = true;
+    inicioX = e.clientX; inicioY = e.clientY;
+    origenX = x; origenY = y;
+    marco.setPointerCapture(e.pointerId);
+  });
+  marco.addEventListener('pointermove', e => {
+    if (!arrastrando) return;
+    x = origenX + (e.clientX - inicioX);
+    y = origenY + (e.clientY - inicioY);
+    limitar();
+    aplicar();
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
+    marco.addEventListener(ev, () => { arrastrando = false; })
+  );
+
+  // Pellizco con dos dedos: la distancia entre ellos marca la escala.
+  let pellizco = null;
+  const distancia = (t0, t1) => Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+  marco.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) pellizco = { d: distancia(e.touches[0], e.touches[1]), escala };
+  }, { passive: true });
+  marco.addEventListener('touchmove', e => {
+    if (e.touches.length === 2 && pellizco) {
+      e.preventDefault();
+      escala = Math.max(MIN, Math.min(MAX, pellizco.escala * (distancia(e.touches[0], e.touches[1]) / pellizco.d)));
+      limitar();
+      aplicar();
+    }
+  }, { passive: false });
+  marco.addEventListener('touchend', e => { if (e.touches.length < 2) pellizco = null; });
+
+  document.body.appendChild(capa);
+  capaZoomFoto = capa;
+  document.body.style.overflow = 'hidden';
+  void capa.offsetWidth;
+  capa.classList.add('visible');
+  cerrarBtn.focus();
 }
 
 /* Cartita del mes: solo tiene sentido en las piezas con campo "mes"
