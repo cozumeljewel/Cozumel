@@ -95,13 +95,12 @@ const PRODUCTOS = [
     destacado: false,
     // FOTOS PROVISIONALES, mismo esquema que Pulsera Mi Cielo: la 4/4a de
     // cada acabado es la portada y a la vez la última de la galería de
-    // dentro. OJO: "2a" (plata) no se usa: la foto de esa carpeta es un
-    // brazalete rígido grabado, no esta pulsera de los dos círculos —
-    // pendiente de que Adri suba la correcta.
+    // dentro. "2a" ya corregida (antes traía un brazalete grabado por
+    // error).
     fotoPortada: ['img/dos-almas-oro-4.jpg', 'img/dos-almas-plata-4.jpg'],
     fotos: {
       oro: ['img/dos-almas-oro-1.jpg', 'img/dos-almas-oro-2.jpg', 'img/dos-almas-oro-3.jpg', 'img/dos-almas-oro-4.jpg'],
-      plata: ['img/dos-almas-plata-1.jpg', 'img/dos-almas-plata-3.jpg', 'img/dos-almas-plata-4.jpg'],
+      plata: ['img/dos-almas-plata-1.jpg', 'img/dos-almas-plata-2.jpg', 'img/dos-almas-plata-3.jpg', 'img/dos-almas-plata-4.jpg'],
     },
   },
   {
