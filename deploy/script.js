@@ -315,7 +315,9 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
 /* =========================================================
    DESPLEGABLE "PERSONALIZA" DEL MENÚ (todas las páginas, escritorio)
    Enlaces a las piezas que sí se personalizan, directo desde el menú
-   de arriba, sin pasar primero por la colección.
+   de arriba, sin pasar primero por la colección. Pulsera Dos Almas no
+   lleva grabado (campos: []) pero igualmente vive aquí: se añade a
+   mano para que no falte de la lista.
    ========================================================= */
 (function () {
   const panel = document.getElementById('nav-personaliza-panel');
@@ -324,7 +326,7 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
   if (!panel || typeof PRODUCTOS === 'undefined') return;
 
   PRODUCTOS
-    .filter(prod => prod.campos.length > 0)
+    .filter(prod => prod.campos.length > 0 || prod.id === 'pulsera_vinculo')
     .forEach(prod => {
       const a = document.createElement('a');
       a.href = 'personalizar.html?p=' + encodeURIComponent(prod.slug);
@@ -355,7 +357,7 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
   if (!toggle || !lista || typeof PRODUCTOS === 'undefined') return;
 
   PRODUCTOS
-    .filter(prod => prod.campos.length > 0)
+    .filter(prod => prod.campos.length > 0 || prod.id === 'pulsera_vinculo')
     .forEach(prod => {
       const a = document.createElement('a');
       a.href = 'personalizar.html?p=' + encodeURIComponent(prod.slug);

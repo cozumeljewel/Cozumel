@@ -52,28 +52,6 @@
 
 const PRODUCTOS = [
   {
-    id: 'collar_esencial',
-    slug: 'collar-esencial',
-    nombre: 'Collar Esencia',
-    resumen: 'Doble cadena con placa grabable',
-    descripcion: 'Dos cadenas que caen juntas: una fina, casi invisible, y otra con una placa esperando lo que tengas que decirle. Su nombre. La fecha en que todo empezó. Esas tres palabras que nunca dices en voz alta',
-    parrafos: [
-      'Hay cosas que no salen bien dichas en voz alta, pero caben enteras en unas letras grabadas. Ella lo va a llevar puesto un martes cualquiera, sin ocasión, y lo va a tocar sin darse cuenta mientras piensa en otra cosa. Ahí es donde vive un buen regalo: en los días normales',
-    ],
-    caracteristicas: [
-      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
-      'Doble cadena: fina + placa grabable',
-      'Grabado de alta calidad, personalizable con nombre, fecha o mensaje corto',
-    ],
-    cierre: 'Para que lleve puesto un pedacito de ti',
-    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
-    // SKU proveedor (Yiwu Lantiao). El grabado va como linea aparte: 'diaoke'
-    sku: { oro:'CDNN067-2', plata:'CDNN067-1', grabado:'diaoke' },
-    forma: 'placa',
-    campos: ['nombre', 'fecha', 'mensaje'],
-    destacado: false,
-  },
-  {
     id: 'pulsera_vinculo',
     slug: 'pulsera-vinculo',
     nombre: 'Pulsera Dos Almas',
@@ -176,6 +154,28 @@ const PRODUCTOS = [
       ],
       plata: ['img/brazalete-plata-1.jpg', 'img/brazalete-plata-2.jpg', 'img/brazalete-plata-3.jpg', 'img/brazalete-plata-4.jpg'],
     },
+  },
+  {
+    id: 'collar_esencial',
+    slug: 'collar-esencial',
+    nombre: 'Collar Esencia',
+    resumen: 'Doble cadena con placa grabable',
+    descripcion: 'Dos cadenas que caen juntas: una fina, casi invisible, y otra con una placa esperando lo que tengas que decirle. Su nombre. La fecha en que todo empezó. Esas tres palabras que nunca dices en voz alta',
+    parrafos: [
+      'Hay cosas que no salen bien dichas en voz alta, pero caben enteras en unas letras grabadas. Ella lo va a llevar puesto un martes cualquiera, sin ocasión, y lo va a tocar sin darse cuenta mientras piensa en otra cosa. Ahí es donde vive un buen regalo: en los días normales',
+    ],
+    caracteristicas: [
+      'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
+      'Doble cadena: fina + placa grabable',
+      'Grabado de alta calidad, personalizable con nombre, fecha o mensaje corto',
+    ],
+    cierre: 'Para que lleve puesto un pedacito de ti',
+    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // SKU proveedor (Yiwu Lantiao). El grabado va como linea aparte: 'diaoke'
+    sku: { oro:'CDNN067-2', plata:'CDNN067-1', grabado:'diaoke' },
+    forma: 'placa',
+    campos: ['nombre', 'fecha', 'mensaje'],
+    destacado: false,
   },
   {
     id: 'collar_flor_natal',
