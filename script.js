@@ -386,6 +386,15 @@ if (grid && typeof PRODUCTOS !== 'undefined') {
    Si un acabado todavía no tiene fotos propias, cae al otro antes que a
    dejar el hueco vacío: mejor enseñar la pieza en el otro color que un
    placeholder. */
+/* Cada foto es normalmente solo una ruta, pero puede venir como
+   {src, pos} cuando el encuadre por defecto (centrado) deja la pieza
+   fuera o justo en el borde: "pos" es el valor CSS de
+   background-position que corrige ese recorte para esa foto en
+   concreto (ver mi-cielo-oro-1 en productos.js). */
+function normFoto(f) {
+  return typeof f === 'string' ? { src: f, pos: null } : { src: f.src, pos: f.pos || null };
+}
+
 function fotosDe(prod, acabado) {
   const f = prod.fotos;
   if (f && !Array.isArray(f) && typeof f === 'object') {
@@ -420,12 +429,14 @@ function pintarGaleria(prod, acabado) {
     return;
   }
 
-  fotos.forEach((src, i) => {
+  fotos.forEach((f, i) => {
+    const { src, pos } = normFoto(f);
     const card = document.createElement('div');
     card.className = 'galeria-foto con-foto';
     // Va como variable CSS: el degradado de respaldo sigue debajo, así que
     // si el archivo no existe no queda un hueco roto.
     card.style.setProperty('--foto', `url('${src}')`);
+    if (pos) card.style.setProperty('--foto-pos', pos);
     const etiqueta = `${prod.nombre}, imagen ${i + 1} de ${fotos.length}`;
     // role="button" y no "img": ya no es solo ilustrativa, se puede
     // pulsar para ampliarla (abrirZoomFoto).
@@ -443,11 +454,13 @@ function pintarGaleria(prod, acabado) {
   // en escritorio se ven como miniaturas y se puede pulsar para saltar
   // directo a esa foto (en móvil siguen siendo solo puntos pequeños).
   if (puntos && fotos.length > 1) {
-    fotos.forEach((src, i) => {
+    fotos.forEach((f, i) => {
+      const { src, pos } = normFoto(f);
       const p = document.createElement('button');
       p.type = 'button';
       p.className = 'galeria-punto' + (i === 0 ? ' activo' : '');
       p.style.backgroundImage = `url('${src}')`;
+      if (pos) p.style.backgroundPosition = pos;
       p.setAttribute('aria-label', `Ver imagen ${i + 1} de ${fotos.length}`);
       p.addEventListener('click', () => {
         pista.children[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });

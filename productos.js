@@ -93,6 +93,16 @@ const PRODUCTOS = [
     forma: 'circulos',
     campos: [],
     destacado: false,
+    // FOTOS PROVISIONALES, mismo esquema que Pulsera Mi Cielo: la 4/4a de
+    // cada acabado es la portada y a la vez la última de la galería de
+    // dentro. OJO: "2a" (plata) no se usa: la foto de esa carpeta es un
+    // brazalete rígido grabado, no esta pulsera de los dos círculos —
+    // pendiente de que Adri suba la correcta.
+    fotoPortada: ['img/dos-almas-oro-4.jpg', 'img/dos-almas-plata-4.jpg'],
+    fotos: {
+      oro: ['img/dos-almas-oro-1.jpg', 'img/dos-almas-oro-2.jpg', 'img/dos-almas-oro-3.jpg', 'img/dos-almas-oro-4.jpg'],
+      plata: ['img/dos-almas-plata-1.jpg', 'img/dos-almas-plata-3.jpg', 'img/dos-almas-plata-4.jpg'],
+    },
   },
   {
     id: 'pulsera_nombre',
@@ -117,12 +127,18 @@ const PRODUCTOS = [
     destacado: true,
     // FOTOS PROVISIONALES, pendientes de edición final. La 4/4a de cada
     // acabado es la portada (tarjeta de la colección, deslizable entre
-    // oro y plata); la 1-2-3 de cada una va dentro de la ficha, en ese
-    // orden.
+    // oro y plata) y AL MISMO TIEMPO la última de la galería de dentro
+    // de la ficha: por eso se repite su ruta al final de "fotos".
     fotoPortada: ['img/mi-cielo-oro-4.jpg', 'img/mi-cielo-plata-4.jpg'],
     fotos: {
-      oro: ['img/mi-cielo-oro-1.jpg', 'img/mi-cielo-oro-2.jpg', 'img/mi-cielo-oro-3.jpg'],
-      plata: ['img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg', 'img/mi-cielo-plata-3.jpg'],
+      oro: [
+        // Foto apaisada con la pulsera pegada al borde izquierdo: el
+        // recorte centrado por defecto la dejaba casi fuera. "pos"
+        // desplaza el encuadre hacia la izquierda para que se vea entera.
+        { src: 'img/mi-cielo-oro-1.jpg', pos: '9% center' },
+        'img/mi-cielo-oro-2.jpg', 'img/mi-cielo-oro-3.jpg', 'img/mi-cielo-oro-4.jpg',
+      ],
+      plata: ['img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg', 'img/mi-cielo-plata-3.jpg', 'img/mi-cielo-plata-4.jpg'],
     },
   },
   {
@@ -146,6 +162,21 @@ const PRODUCTOS = [
     forma: 'brazalete',
     campos: ['grabado'],
     destacado: false,
+    // FOTOS PROVISIONALES, mismo esquema que Pulsera Mi Cielo: la 4/4a de
+    // cada acabado es la portada y a la vez la última de la galería de
+    // dentro.
+    fotoPortada: ['img/brazalete-oro-4.jpg', 'img/brazalete-plata-4.jpg'],
+    fotos: {
+      oro: [
+        'img/brazalete-oro-1.jpg', 'img/brazalete-oro-2.jpg',
+        // Foto de cuerpo entero con el brazalete abajo del todo: el
+        // recorte centrado por defecto lo dejaba casi fuera. "pos" baja
+        // el encuadre para que se vea completo.
+        { src: 'img/brazalete-oro-3.jpg', pos: 'center 78%' },
+        'img/brazalete-oro-4.jpg',
+      ],
+      plata: ['img/brazalete-plata-1.jpg', 'img/brazalete-plata-2.jpg', 'img/brazalete-plata-3.jpg', 'img/brazalete-plata-4.jpg'],
+    },
   },
   {
     id: 'collar_flor_natal',

@@ -1648,16 +1648,17 @@ body[data-page="historia"] .historia::before{content:none;}
   scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;
   /* El padding deja hueco para que la PRIMERA y la ÚLTIMA foto puedan
-     llegar al centro. Va atado al ancho fijo de la tarjeta, no en %:
-     un flex-basis en % se calcula sobre la caja YA sin padding, así que
-     mezclar los dos porcentajes los multiplica y la foto sale enana. */
-  padding:0 calc(50% - 145px) 4px;
+     llegar al centro. Va atado al ancho de la tarjeta (mismo cálculo que
+     su flex-basis, mitad y mitad), no en %: un flex-basis en % se
+     calcula sobre la caja YA sin padding, así que mezclar los dos
+     porcentajes los multiplica y la foto sale enana. */
+  padding:0 calc(50% - min(86vw, 400px) / 2) 4px;
   scrollbar-width:none;          /* la barra sobra: ya están los puntos */
   -ms-overflow-style:none;
 }
 .galeria-pista::-webkit-scrollbar{display:none;}
 .galeria-foto{
-  position:relative; flex:0 0 290px; scroll-snap-align:center;
+  position:relative; flex:0 0 min(86vw, 400px); scroll-snap-align:center;
   aspect-ratio:1; border-radius:2px;
   display:flex; align-items:center; justify-content:center;
   /* Sin foto: el degradado marino de siempre, nunca un hueco roto */
@@ -1673,7 +1674,10 @@ body[data-page="historia"] .historia::before{content:none;}
 .galeria-foto.con-foto{
   background-image:var(--foto);
   background-size:cover;
-  background-position:center;
+  /* Centrado salvo que la foto traiga su propio encuadre en --foto-pos
+     (ver normFoto en script.js), para las que el recorte centrado deja
+     la pieza fuera o pegada al borde. */
+  background-position:var(--foto-pos, center);
   background-repeat:no-repeat;
   cursor:zoom-in;
 }
