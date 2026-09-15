@@ -222,22 +222,48 @@ function crearTarjetaProducto(prod) {
   const media = document.createElement('div');
   media.className = 'producto-media forma-' + prod.forma;
 
-  // Acepta "fotos" (varias, la segunda se usa en el hover) o el "foto"
-  // antiguo (una sola). Sin ninguna, se queda el degradado con el aviso.
-  const fotos = prod.fotos && prod.fotos.length ? prod.fotos : (prod.foto ? [prod.foto] : []);
-  if (fotos[0]) {
-    const foto1 = document.createElement('div');
-    foto1.className = 'producto-foto';
-    foto1.style.backgroundImage = `url('${fotos[0]}')`;
-    media.appendChild(foto1);
+  // Portada dedicada (p.ej. una foto en oro y otra en plata) si existe;
+  // si no, "fotos" en formato lista antigua o el "foto" suelto de
+  // siempre. Sin ninguna, se queda el degradado con el aviso.
+  const fotos = prod.fotoPortada && prod.fotoPortada.length
+    ? prod.fotoPortada
+    : (Array.isArray(prod.fotos) && prod.fotos.length ? prod.fotos : (prod.foto ? [prod.foto] : []));
+
+  if (fotos.length) {
     media.classList.add('con-foto');
 
-    // Segunda foto solo si existe de verdad: nunca se inventa.
-    if (fotos[1]) {
-      const foto2 = document.createElement('div');
-      foto2.className = 'producto-foto producto-foto-2';
-      foto2.style.backgroundImage = `url('${fotos[1]}')`;
-      media.appendChild(foto2);
+    // Tira con scroll-snap: con una foto no hay nada que arrastrar: con
+    // varias (p.ej. portada en oro y en plata) se desliza para verlas,
+    // en vez de depender del hover, que en móvil no existe.
+    const tira = document.createElement('div');
+    tira.className = 'producto-tira';
+    fotos.forEach(src => {
+      const foto = document.createElement('div');
+      foto.className = 'producto-foto';
+      foto.style.backgroundImage = `url('${src}')`;
+      tira.appendChild(foto);
+    });
+    media.appendChild(tira);
+
+    if (fotos.length > 1) {
+      const puntos = document.createElement('div');
+      puntos.className = 'producto-puntos';
+      puntos.setAttribute('aria-hidden', 'true');
+      fotos.forEach((_, i) => {
+        const p = document.createElement('span');
+        p.className = 'producto-punto' + (i === 0 ? ' activo' : '');
+        puntos.appendChild(p);
+      });
+      media.appendChild(puntos);
+
+      let temporizadorTira = null;
+      tira.addEventListener('scroll', () => {
+        clearTimeout(temporizadorTira);
+        temporizadorTira = setTimeout(() => {
+          const activo = Math.round(tira.scrollLeft / tira.clientWidth);
+          [...puntos.children].forEach((p, i) => p.classList.toggle('activo', i === activo));
+        }, 60);
+      }, { passive: true });
     }
   } else {
     const tag = document.createElement('span');

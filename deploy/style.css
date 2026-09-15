@@ -1172,16 +1172,33 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   position:relative; overflow:hidden; aspect-ratio:4/5; border-radius:2px;
   background:linear-gradient(150deg, var(--marfil-hondo) 0%, #E4DCCB 100%);
 }
-.producto-foto{
-  position:absolute; inset:0;
-  background-repeat:no-repeat; background-position:center; background-size:contain;
-  transition:opacity .5s ease;
+/* Portada: tira horizontal con scroll-snap. Con una sola foto no hay
+   nada que arrastrar (el overflow no tiene a dónde ir); con varias
+   (p.ej. oro y plata) se desliza para verlas todas, en vez de depender
+   del hover, que en móvil no existe. */
+.producto-tira{
+  position:absolute; inset:0; display:flex;
+  overflow-x:auto; scroll-snap-type:x mandatory;
+  scrollbar-width:none; -ms-overflow-style:none;
+  touch-action:pan-x;
 }
-/* Segunda foto: solo existe en el DOM si el producto tiene más de una
-   (lo decide script.js), así que nunca hay una transición vacía. El
-   cruce es solo de opacidad, se mantiene igual con o sin reduced-motion. */
-.producto-foto-2{opacity:0;}
-.producto-card:hover .producto-foto-2{opacity:1;}
+.producto-tira::-webkit-scrollbar{display:none;}
+.producto-foto{
+  flex:0 0 100%; scroll-snap-align:start;
+  background-repeat:no-repeat; background-position:center; background-size:cover;
+}
+/* Puntos solo si hay más de una foto (lo decide script.js). Mismo
+   patrón que la galería de la ficha, en miniatura. */
+.producto-puntos{
+  position:absolute; left:0; right:0; bottom:12px; z-index:1;
+  display:flex; justify-content:center; gap:6px; pointer-events:none;
+}
+.producto-punto{
+  width:5px; height:5px; border-radius:50%; background:var(--foam);
+  opacity:.55; box-shadow:0 0 0 1px rgba(11,46,51,.25);
+  transition:opacity .2s, transform .2s;
+}
+.producto-punto.activo{opacity:1; transform:scale(1.3);}
 /* "Ver producto" aparece encima de la imagen solo al pasar el ratón, con
    un velo muy ligero para que se lea sin tapar la foto. */
 .producto-hover-cta{
@@ -1216,8 +1233,8 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    ha pedido menos movimiento. Los cambios de opacidad y color de arriba
    se quedan siempre, con o sin esta preferencia. */
 @media (prefers-reduced-motion:no-preference){
-  .producto-foto{transition:opacity .5s ease, transform .6s ease;}
-  .producto-card:hover .producto-foto{transform:scale(1.035);}
+  .producto-tira{transition:transform .6s ease;}
+  .producto-card:hover .producto-tira{transform:scale(1.035);}
 
   .producto-body h3{transition:transform .3s ease;}
   .producto-card:hover .producto-body h3{transform:translateY(-3px);}

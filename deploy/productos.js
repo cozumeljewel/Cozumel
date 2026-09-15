@@ -115,12 +115,14 @@ const PRODUCTOS = [
     forma: 'placa',
     campos: ['grabado'],
     destacado: true,
-    // FOTOS PROVISIONALES: todo lo que había en la carpeta de fotos en
-    // bruto, para que Adri vea cómo queda, pendientes de edición antes
-    // de darlas por definitivas.
+    // FOTOS PROVISIONALES, pendientes de edición final. La 4/4a de cada
+    // acabado es la portada (tarjeta de la colección, deslizable entre
+    // oro y plata); la 1-2-3 de cada una va dentro de la ficha, en ese
+    // orden.
+    fotoPortada: ['img/mi-cielo-oro-4.jpg', 'img/mi-cielo-plata-4.jpg'],
     fotos: {
-      oro: ['img/mi-cielo-oro-1.jpg', 'img/mi-cielo-oro-2.jpg', 'img/mi-cielo-oro-3.jpg', 'img/mi-cielo-oro-4.jpg', 'img/mi-cielo-oro-5.jpg', 'img/mi-cielo-oro-6.jpg'],
-      plata: ['img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg'],
+      oro: ['img/mi-cielo-oro-1.jpg', 'img/mi-cielo-oro-2.jpg', 'img/mi-cielo-oro-3.jpg'],
+      plata: ['img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg', 'img/mi-cielo-plata-3.jpg'],
     },
   },
   {
