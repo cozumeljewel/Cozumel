@@ -676,8 +676,14 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
      indicador de "seguir explorando" quedaba cortado por debajo del
      borde hasta que hacías scroll. El vh de antes queda de respaldo para
      navegadores viejos que no entienden svh. */
-  min-height:92vh;
-  min-height:100svh;
+  /* Móvil: el hero deja de ser pantalla completa y pasa a seguir la
+     proporción de la foto (referencia del cliente). A pantalla completa
+     había que recortar la foto tantísimo a lo ancho que ella se comía
+     el hueco del texto; con esta altura entra la escena entera (mar a la
+     izquierda, ella a la derecha) y las letras caben en su sitio. De
+     paso asoma la sección siguiente, que invita a seguir bajando.
+     El techo en svh evita que en móviles muy estrechos se pase de alto. */
+  min-height:min(126vw, 82svh);
   /* El texto no puede subir por encima de esta línea: la cabecera flota
      fija encima del hero, así que sin este suelo el titular se le metía
      debajo en viewports bajos (~600px, frecuente en Android en
@@ -693,59 +699,34 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   /* "cover" a propósito: la foto llena el hero de borde a borde, en
      grande. Si el archivo todavía no existe, la imagen falla en silencio
      y se ve el degradado marino de siempre — nunca un hueco roto. */
-  /* "auto 108%" en vez de "cover": un acercamiento del 8% que recorta
-     por ABAJO (el fondo está anclado arriba), o sea por las piernas,
-     que es justo donde van los botones. A cambio, cara, cuello y collar
-     ganan tamaño y presencia, que es lo que tiene que verse. */
-  background-size:auto 108%, auto, auto;
-  /* Vertical: la cara está casi pegada al borde superior de la foto, así
-     que con "cover" hay que anclar arriba del todo, si no se recorta la
-     cabeza.
-     Horizontal: 30% en vez de centrado. En móvil el titular y su
-     subtítulo ocupan la franja izquierda, y con la foto centrada el
-     texto le caía sobre la cara. Encuadrar más a la izquierda de la foto
-     la desplaza a ella hacia la derecha y deja el hueco libre. Sobran
-     ~234px de recorte horizontal a 375px de ancho, así que hay margen de
-     sobra; el valor es un porcentaje, o sea que escala solo con el
-     tamaño de pantalla. */
-  background-position:32% top, center, center;
+  /* Acercamiento del 48% sobre "cover" y anclaje a la izquierda: en esta
+     foto Adri está CENTRADA y de cuerpo entero, así que a tamaño natural
+     solo quedaban ~110px limpios a su izquierda, donde tiene que caber
+     el texto. Ampliando y encuadrando por la izquierda, ella se desplaza
+     al borde derecho (se le recorta un poco el pelo) y la columna de
+     mar y roca crece hasta caber el titular. */
+  background-size:auto 148%, auto, auto;
+  /* Pegado al borde izquierdo de la foto (0%): es lo que empuja a Adri
+     hacia la derecha. En vertical, un 12% para que entren cabeza y
+     torso y se recorte por las piernas. */
+  background-position:0% 12%, center, center;
   background-repeat:no-repeat;
 }
-/* Pantallas cortas (iPhone SE/8 y similares, ~667px de alto): con
-   "cover" la foto se escala por alto, así que cuanto más baja es la
-   pantalla menos ancho sobra para recortar — a 812px sobran 234px y a
-   667px solo 125px. Con el mismo 30% ella se desplazaba la mitad y el
-   texto volvía a caerle encima. Aquí se lleva el encuadre al extremo
-   izquierdo para recuperar ese desplazamiento. */
-@media (max-height:740px){
-  .hero-media{background-position:2% top, center, center;}
-}
-/* Dos velos localizados, no una capa oscura uniforme: uno arriba para
-   que se lean cabecera y titular sobre el cielo, y otro muy tenue abajo
-   para los botones. Entre el 40% y el 62% el velo es CERO — esa franja
-   es la cara, el collar y el torso, o sea el producto, y tiene que
-   verse con la luz real de la foto (piel, naranja del atardecer, verde
-   y azul). */
+/* Nada de velo general sobre la foto (el cliente lo descartó y además el
+   texto va en tinta oscura, que necesita la foto CLARA). La única
+   excepción es la esquina inferior izquierda, donde va la frase en
+   cursiva: ahí la foto es gris medio con reflejos del sol (luminancia
+   medida 0,49, con picos de 0,73), y a ese fondo no se le agarra ningún
+   color plano — blanco 1,9:1 y tinta 1,9:1, cuando el mínimo legible es
+   3:1. Este degradado va SOLO en esa esquina, muere antes de llegar a
+   ella y deja la foto intacta en el resto. */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
-  /* Las paradas siguen a las bandas MEDIDAS del texto, no a ojo:
-       titular    15% - 27%
-       subtítulo  32% - 38%
-       botones    77% - 90%
-     Por eso el velo se sostiene hasta el 40% y vuelve a subir a partir
-     del 74%, y se hunde casi a cero entre el 48% y el 70%, que es la
-     ventana de cara, cuello y colgante. */
-  background:linear-gradient(to bottom,
-    rgba(11,46,51,.60) 0%,
-    rgba(11,46,51,.54) 14%,
-    rgba(11,46,51,.50) 28%,
-    rgba(11,46,51,.44) 38%,
-    rgba(11,46,51,.20) 46%,
-    rgba(11,46,51,.05) 54%,
-    rgba(11,46,51,.05) 70%,
-    rgba(11,46,51,.26) 78%,
-    rgba(11,46,51,.42) 90%,
-    rgba(11,46,51,.52) 100%);
+  background:linear-gradient(to top right,
+    rgba(11,46,51,.58) 0%,
+    rgba(11,46,51,.34) 20%,
+    rgba(11,46,51,.10) 36%,
+    transparent 50%);
 }
 /* Bloque de texto alineado a la izquierda, no centrado: el titular y su
    subtítulo arrancan en el margen y forman una columna editorial. El
@@ -754,10 +735,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 .hero-copy{
   position:relative; z-index:2; flex:1; width:100%;
   display:flex; flex-direction:column;
-  /* El suelo generoso es a propósito: deja los botones en la franja
-     abdominal de la foto, ni sobre el collar ni pegados al borde. */
-  /* +35px sobre el suelo anterior: sube el grupo de botones. */
-  padding:0 30px clamp(99px, calc(11vh + 35px), 145px);
+  /* Suelo corto: el hero ya no es de pantalla completa, así que el
+     bloque de texto ocupa casi todo el alto y solo necesita respirar
+     un poco por abajo. */
+  padding:0 26px 24px;
   /* Móvil: columna editorial alineada a la izquierda (el diseño que pidió
      el cliente). En escritorio se vuelve a centrar, más abajo. */
   text-align:left;
@@ -768,14 +749,16 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    es casi imperceptible a propósito: la legibilidad la da el velo suave
    del cielo, no un contorno oscuro alrededor de la letra. */
 .hero-copy h1{
-  /* +25px sobre el 5vh de antes: despega el titular de la cabecera. */
-  margin-top:calc(5vh + 25px); text-align:left;
+  margin-top:10px; text-align:left;
+  /* Bastante más pequeño que antes (78px) a propósito: el titular tiene
+     que caber en la franja del mar, a la izquierda, sin llegar a su
+     cara — medido a 375px, "Un Pedacito" termina justo antes del pelo. */
+  font-size:clamp(32px,9.1vw,46px);
   font-family:var(--font-serif); font-weight:400;
-  font-size:clamp(58px,14vw,78px);
-  line-height:.95; letter-spacing:-.025em;
-  color:var(--hero-blanco);
-  /* Sin sombra: el velo del cielo ya sostiene el titular, y cualquier
-     sombra perceptible lo devolvía al aspecto de "texto pegado encima". */
+  line-height:.98; letter-spacing:-.02em;
+  /* Tinta oscura, no blanco: la foto nueva es clara justo donde cae el
+     texto. El contraste lo da el color, no un velo sobre la foto. */
+  color:var(--deep);
   text-shadow:none;
 }
 /* Misma familia en cursiva y algo más pequeño: continuación del titular,
@@ -783,15 +766,16 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    interlineado sin arrastrar el de la línea de arriba. */
 .hero-copy h1 em{
   display:block;
-  font-style:italic; font-weight:400; font-size:.88em; line-height:.9;
-  color:var(--hero-arena);
+  font-style:italic; font-weight:400; font-size:.94em; line-height:.95;
+  /* Dorado con cuerpo: sobre el cielo claro el champagne (--hero-arena)
+     desaparecía; este es el oro pensado para fondo claro. */
+  color:var(--gold-deep);
   text-shadow:none;
 }
-/* Filete corto entre el titular y el subtítulo: separa los dos sin
-   meter una caja ni un adorno. */
+/* Filete corto sobre el titular, lo primero del bloque. */
 .hero-filete{
-  display:block; width:50px; height:1px; margin:24px 0 3px;
-  background:var(--hero-blanco); opacity:.7;
+  display:block; width:44px; height:1px; margin:4px 0 0;
+  background:var(--gold-deep); opacity:.85;
 }
 /* En móvil va pegado al titular, bajo el filete (así lo pidió el
    cliente). En escritorio se empuja al pie con margin-top:auto.
@@ -801,7 +785,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   /* 300px es el techo, pero nunca más del 56% del ancho: a 375px un
      bloque de 300px se metía de lleno en la cara. Así mantiene siempre
      las dos líneas y se queda en la franja tranquila de la foto. */
-  margin:0; max-width:min(300px, 56vw);
+  /* Pegada al titular otra vez, como en la referencia: etiqueta,
+     titular, descripción y botón forman un solo bloque compacto arriba
+     a la izquierda, y el hueco libre queda abajo para la firma. */
+  margin:18px 0 0; max-width:min(300px, 60vw);
   /* Peso 600: la descripción cae sobre la franja MÁS pálida de la foto
      (el cielo del horizonte, casi blanco). Se midió que ningún
      oscurecimiento del cielo llega a leerse cómodo sin oscurecerle
@@ -810,15 +797,19 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
      tiene ese conflicto: sin sombras, sin velo y sin tocar la foto.
      Comprobado en 375, 390 y 430px: sigue en 2 líneas y el borde
      derecho (217px) cae sobre el pelo, no sobre la piel. */
-  font-size:16px; line-height:1.45; font-weight:600;
-  color:var(--hero-blanco); text-shadow:none;
+  /* Peso 500 y la tinta más oscura de la paleta: las dos últimas líneas
+     caen sobre el mar, que es un azul medio, y con el gris-verde normal
+     a peso 400 se quedaban blandas. Ni sombra ni velo: contraste por
+     color y peso, como el resto del hero. */
+  font-size:16px; line-height:1.45; font-weight:500;
+  color:var(--abyss); text-shadow:none;
 }
 /* Móvil: tres niveles. Escritorio: la frase de una línea (ver el bloque
    de min-width:900px). */
 /* Los tres niveles se destacan con la propia letra, sin sombras: 18px
    (antes 16) y blanco pleno en vez del blanco cálido, que sobre el cielo
    pálido del horizonte se perdía. Solo afecta a esta versión móvil. */
-.hero-sub-movil{display:block; font-size:18px; line-height:1.4; color:#FFFFFF;}
+.hero-sub-movil{display:block; font-size:17.5px; line-height:1.5; color:var(--abyss);}
 .hero-sub-escritorio{display:none;}
 
 /* Firma de marca: no aparece en el diseno de movil (ver el mockup del
@@ -833,41 +824,59 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   display:block; margin-top:6px; font-family:var(--font-serif); font-style:italic;
   font-size:14.5px; color:rgba(242,248,248,.75); font-weight:400;}
 
-/* Los márgenes negativos anulan el padding lateral de .hero-copy solo
-   para este bloque, para que el botón pueda medirse contra el ancho real
-   de la pantalla (86vw) sin desbordar. */
-.hero-ctas{display:flex; flex-direction:column; margin-top:auto; margin-inline:-30px;}
-/* Botón de borde fino y poca altura: editorial y ligero, no una caja
-   grande. Fondo casi inexistente (5% de negro) — lo justo para asentarlo
-   sobre la foto sin taparla. La flecha va al extremo derecho. */
+/* El botón deja de ser una franja de 86vw: ahora vive dentro de la
+   columna de texto, alineado con el titular, como en la referencia. */
+.hero-ctas{display:flex; flex-direction:column; align-items:flex-start; margin-top:22px;}
+/* Botón de fondo lleno (antes borde fino sobre la foto): sobre una foto
+   clara el contorno se perdía, y relleno se lee de lejos y da el peso
+   que le falta al bloque. */
 .hero-cta{
-  display:flex; align-items:center; justify-content:space-between; gap:16px;
-  /* 86vw, no el 100% de la columna: el ancho se mide contra la pantalla,
-     no contra el padding del bloque de texto. Por eso .hero-ctas cancela
-     ese padding justo debajo. */
-  width:86vw; max-width:440px; min-height:60px; margin:0 auto;
-  padding:0 22px;
-  border:1px solid rgba(246,241,232,.75); border-radius:2px;
-  background:rgba(20,20,20,.05);
-  color:var(--hero-blanco); text-decoration:none;
-  font-family:var(--font-sans); font-size:15px; font-weight:500;
-  letter-spacing:.12em; text-transform:uppercase;
+  display:inline-flex; align-items:center; justify-content:space-between; gap:18px;
+  min-height:54px; padding:0 22px; border-radius:2px;
+  border:1px solid var(--gold-deep);
+  background:var(--gold-deep);
+  color:var(--foam); text-decoration:none;
+  font-family:var(--font-sans); font-size:13.5px; font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase;
   transition:background .25s, color .25s, border-color .25s;
 }
-.hero-cta:hover{background:var(--hero-blanco); color:var(--deep); border-color:var(--hero-blanco);}
+.hero-cta:hover{background:var(--deep); border-color:var(--deep); color:var(--foam);}
 .hero-cta-flecha{flex:none; font-size:16px; line-height:1;}
 /* CTA secundaria: solo texto subrayado, sin caja — la principal sigue
    siendo la única llamada con peso visual. Lleva a la identidad de marca
    (Quiénes somos), no a venta. */
 .hero-cta-secundaria{
-  align-self:center; margin-top:24px;
-  font-family:var(--font-sans); font-size:16px; font-weight:500; letter-spacing:.01em;
-  color:var(--hero-blanco);
+  align-self:flex-start; margin-top:16px;
+  font-family:var(--font-sans); font-size:14px; font-weight:500; letter-spacing:.01em;
+  color:var(--ink);
   text-decoration:underline; text-underline-offset:6px;
-  text-decoration-thickness:1px; text-decoration-color:rgba(246,241,232,.5);
+  text-decoration-thickness:1px; text-decoration-color:rgba(18,51,58,.4);
   transition:text-decoration-color .2s;
 }
-.hero-cta-secundaria:hover{text-decoration-color:var(--hero-blanco);}
+.hero-cta-secundaria:hover{text-decoration-color:var(--ink);}
+
+/* Firma manuscrita al pie de la foto: cursiva de la casa (Playfair
+   italic), no una tercera fuente. "margin-top:auto" la pega al suelo del
+   hero, que es donde la pone la referencia, y así el hueco libre del
+   medio queda para la foto. En blanco puro (no en el crema de la marca):
+   cae sobre roca al sol, y el crema cálido se le confundía; el blanco
+   pleno es el que lo despega. */
+.hero-firma{
+  /* El padding es el suelo mínimo: "margin-top:auto" la manda abajo del
+     todo cuando sobra sitio, pero en pantallas cortas no sobra nada y sin
+     él se pegaba al enlace de encima. */
+  margin:auto 0 0; padding-top:22px; max-width:16ch;
+  /* Peso 500, que es el que de verdad se descarga de Playfair en cursiva
+     (el import trae 1,500), y más cuerpo que antes: sobre la roca al sol
+     el blanco fino a 22px se deshacía. Tamaño y peso en vez de sombra. */
+  font-family:var(--font-serif); font-style:italic; font-weight:500;
+  font-size:27px; line-height:1.18; color:#FFFFFF;
+}
+/* La secundaria ("Conoce Cozumel") sale del hero en móvil: en la
+   referencia no existe, y con el hero ya a media pantalla chocaba con la
+   frase en cursiva del pie. Sigue accesible desde el menú (Nuestra
+   historia) y vuelve a aparecer en escritorio, donde sí hay sitio. */
+.hero-cta-secundaria{display:none;}
 
 @keyframes heroMediaFade{ from{opacity:0;} to{opacity:1;} }
 /* Sin "scale" y con la mitad de recorrido que antes: se nota que el
@@ -882,11 +891,12 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    en absoluto si el usuario pide menos movimiento. */
 @media (prefers-reduced-motion:no-preference){
   .hero-media{animation:heroMediaFade 1.4s ease-out both;}
-  .hero-copy h1{animation:heroRise .8s ease-out .18s both;}
-  .hero-filete{animation:heroRise .8s ease-out .38s both;}
-  .hero-sub{animation:heroRise .8s ease-out .5s both;}
+  .hero-filete{animation:heroRise .8s ease-out .2s both;}
+  .hero-copy h1{animation:heroRise .8s ease-out .32s both;}
+  .hero-sub{animation:heroRise .8s ease-out .46s both;}
   .hero-marca{animation:heroRise .8s ease-out .6s both;}
-  .hero-ctas{animation:heroRise .8s ease-out .72s both;}
+  .hero-ctas{animation:heroRise .8s ease-out .66s both;}
+  .hero-firma{animation:heroRise .8s ease-out .82s both;}
 }
 
 /* ---------- COZUMEL STORIES ----------
@@ -1180,7 +1190,14 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   position:absolute; inset:0; display:flex;
   overflow-x:auto; scroll-snap-type:x mandatory;
   scrollbar-width:none; -ms-overflow-style:none;
-  touch-action:pan-x;
+  /* Sin touch-action:pan-x a propósito: esta tira vive dentro de la
+     tarjeta, que a su vez vive en una página que se hace scroll
+     vertical. "pan-x" le decía al navegador que solo gestionase el
+     gesto horizontal él mismo, y con eso un dedo deslizando hacia
+     abajo sobre CUALQUIER foto de producto (la mayor parte de cada
+     tarjeta) dejaba de mover la página en móvil. Sin la propiedad, el
+     navegador decide solo según hacia dónde se mueve el dedo, como en
+     cualquier carrusel nativo. */
 }
 .producto-tira::-webkit-scrollbar{display:none;}
 .producto-foto{
@@ -2328,102 +2345,48 @@ footer{
      hero de fondo a sangre completa que en móvil, solo cambia el tamaño
      del texto y el aire lateral. */
   /* ===== HERO EN ESCRITORIO =====
-     El rediseño del titular a la izquierda, con filete e indicador de
-     scroll, es SOLO para móvil (lo pidió así el cliente sobre un mockup
-     de teléfono). Aquí se deshace pieza a pieza para dejar el hero
-     centrado de siempre, con su firma de marca. */
-  .hero{margin-top:56px; min-height:92vh; align-items:center;}
-  /* Suelo corto a propósito: empuja el bloque de texto por DEBAJO del
-     colgante. Con el padding anterior (96px) el subtítulo y la firma de
-     marca caían justo sobre el cuello y la joya, que es lo que nunca
-     debe taparse. */
-  .hero-copy{padding:0 70px 32px; max-width:760px; text-align:center;}
-  /* Titular centrado, pero NO una simple ampliación del móvil: se queda
-     en un tamaño contenido (72px como techo, no 90) para que no se coma
-     la pantalla ni compita con la foto. Mismo peso 400 y misma sombra
-     casi imperceptible que en móvil. */
-  .hero-copy h1{
-    margin-top:10px; text-align:center;
-    font-size:clamp(54px,5vw,72px); line-height:1.02; letter-spacing:-.02em;
+     Mismo lenguaje que el móvil (columna de texto a la izquierda sobre
+     el mar, ella a la derecha), solo que con más aire y tipos mayores.
+     Antes eran dos heros distintos: el de móvil a la izquierda y el de
+     escritorio centrado con velo oscuro y texto en blanco. Con la foto
+     nueva, clara y con ella descentrada, un texto centrado le caía justo
+     encima de la cara. */
+  .hero{margin-top:56px; min-height:86vh; align-items:center;}
+  .hero-copy{
+    width:100%; max-width:1240px; margin:0 auto;
+    padding:0 70px 40px; text-align:left;
   }
-  /* Aquí "de ti" vuelve a la misma línea visual centrada. */
-  .hero-copy h1 em{font-size:.9em;}
-  /* El filete es una pieza exclusiva del móvil. */
-  .hero-filete{display:none;}
-  /* El ritmo vertical de móvil (pensado para un titular de ~52px) se
-     queda corto junto a uno de hasta 90px: el bloque se veía
-     apelotonado. Estos márgenes escalan con el tamaño del titular. */
-  /* Aquí sí va al pie (con la firma y el CTA detrás), que es como
-     estaba el hero de escritorio de siempre. */
-  .hero-sub{margin:auto auto 0; padding-top:26px; font-size:17px; font-weight:500; max-width:42ch;}
+  .hero-copy h1{
+    margin-top:12px; text-align:left;
+    font-size:clamp(54px,5vw,72px); line-height:1.0; letter-spacing:-.02em;
+  }
+  .hero-copy h1 em{font-size:.92em;}
+  .hero-filete{width:52px; margin-top:12px;}
+  /* La frase larga de escritorio, en la misma columna del titular. */
+  .hero-sub{margin:20px 0 0; font-size:18px; font-weight:400; max-width:30ch;}
   .hero-sub-movil{display:none;}
   .hero-sub-escritorio{display:inline;}
-  .hero-marca{display:block; margin:26px auto 0;}
-  .hero-marca-claim{font-size:15px;}
-  /* Apiladas también en escritorio (no en fila): la principal manda y la
-     secundaria queda debajo, sin competir con ella en la misma línea. */
-  /* margin-inline vuelve a 0: el -30px de móvil existe solo para que el
-     botón de 86vw escape del padding lateral, y aquí el botón es de
-     ancho propio. */
-  .hero-ctas{margin-top:30px; margin-inline:0; align-items:center; gap:18px;}
-  /* CTA contenido: caja de ancho propio centrada, no una franja. */
-  .hero-cta{
-    display:inline-flex; justify-content:center; gap:12px;
-    width:auto; max-width:none; min-height:56px; padding:0 30px;
-    font-size:14px; letter-spacing:.1em;
-  }
-  .hero-cta-secundaria{margin-top:20px; font-size:15px;}
+  /* La firma de marca se queda fuera también en escritorio: con la
+     etiqueta de arriba y la frase en cursiva del pie, un tercer bloque
+     de marca en el mismo hueco era ruido. */
+  .hero-marca{display:none;}
+  .hero-ctas{margin-top:28px; margin-inline:0; align-items:flex-start; gap:14px;}
+  .hero-cta{min-height:56px; padding:0 30px; font-size:14px; letter-spacing:.12em;}
+  .hero-cta-secundaria{display:inline-block; margin-top:18px; font-size:15px;}
+  .hero-firma{font-size:30px; max-width:16ch;}
 
-  /* Solo en escritorio: el hueco del hero es muy ancho y bajo comparado
-     con la foto (vertical), así que a "cover" solo cabría un 43% de su
-     alto — no entran cabeza y cuerpo a la vez, sea cual sea el
-     encuadre. Aquí se ve la foto ENTERA sin recortar (contain), con una
-     copia difuminada y ampliada de la misma detrás para rellenar los
-     bordes. En móvil, donde la proporción del hueco sí es parecida a la
-     de la foto, se queda "cover" tal cual (ver regla base). */
+  /* La foto: "cover" anclada a la altura de la cara. El hueco de
+     escritorio es ancho y bajo, así que solo cabe una franja de la foto
+     (vertical) — con el encuadre al 18% entran cabeza, collar y manos,
+     que es lo que tiene que verse, y el mar queda a la izquierda, libre
+     para el texto. La copia difuminada de respaldo y el velo oscuro que
+     había aquí ya no hacen falta: la foto llena el hueco de borde a
+     borde y el texto va en tinta oscura sobre la parte clara. */
   .hero-media{
-    background-image:
-      radial-gradient(circle at 32% 22%, rgba(255,255,255,.5), transparent 55%),
-      linear-gradient(160deg, #C9E6E4 0%, var(--surf) 28%, var(--sea) 62%, var(--deep) 100%);
-    /* Aquí la foto vive en ::before/::after, así que esto solo coloca y
-       dimensiona los dos degradados: sin heredar ni el encuadre ni el
-       acercamiento del móvil. */
-    background-position:center, center;
-    background-size:auto, auto;
+    background-size:cover, auto, auto;
+    background-position:center 18%, center, center;
   }
-  .hero-media::before{
-    content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
-    background-image:url('img/hero-adriana.jpg');
-    background-size:cover; background-position:center 22%; background-repeat:no-repeat;
-    filter:blur(32px); transform:scale(1.15);
-  }
-  /* Mismo velo en dos extremos que en móvil: aquí la foto va entera
-     (contain) sobre su propia copia difuminada, así que el degradado se
-     aplica encima de las dos capas. */
-  .hero-media::after{
-    /* Mismo criterio que en móvil, con las bandas MEDIDAS de escritorio:
-         titular    13% - 28%
-         subtítulo  64% - 70%
-         firma      73% - 78%
-         botones    82% - 96%
-       La ventana limpia (44% - 56%) es donde caen cara y colgante. */
-    background-image:
-      linear-gradient(to bottom,
-        rgba(11,46,51,.58) 0%,
-        rgba(11,46,51,.52) 14%,
-        rgba(11,46,51,.46) 28%,
-        rgba(11,46,51,.16) 36%,
-        rgba(11,46,51,.05) 44%,
-        rgba(11,46,51,.05) 56%,
-        rgba(11,46,51,.30) 64%,
-        rgba(11,46,51,.46) 74%,
-        rgba(11,46,51,.56) 88%,
-        rgba(11,46,51,.62) 100%),
-      url('img/hero-adriana.jpg');
-    background-size:auto, contain;
-    background-position:center, center top;
-    background-repeat:no-repeat;
-  }
+  .hero-media::before{content:none;}
 
   /* COZUMEL STORIES: mosaico editorial en vez de columna. Una foto grande
      y vertical a la izquierda, dos apaisadas apiladas a la derecha, y una

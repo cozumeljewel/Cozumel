@@ -147,12 +147,16 @@
          arriba y todo lo demás se empuja al pie con margin-top:auto en
          .hero-sub, que es como ya se comportaba. -->
     <div class="hero-copy">
+      <!-- Solo el filete sobre el titular: la etiqueta "PEDACITO" que
+           llevaba la referencia se quitó a petición del cliente, para no
+           repetir la palabra justo encima del propio titular. -->
+      <span class="hero-filete reveal-hero" aria-hidden="true"></span>
+
       <!-- "de ti" va en <em> y como bloque (sin <br>): misma familia
            serif en cursiva, con su propio tamaño e interlineado, para que
            se lea como continuación natural del titular y no como un
            segundo logotipo. -->
       <h1 class="reveal-hero">Un Pedacito<em>de ti</em></h1>
-      <span class="hero-filete reveal-hero" aria-hidden="true"></span>
 
       <!-- Va al pie, no pegado al titular: ahí arriba le cruzaba la cara
            a Adriana. Abajo cae sobre la falda, zona oscura y despejada. -->
@@ -177,6 +181,12 @@
         </a>
         <a class="hero-cta-secundaria" href="historia.html">Conoce Cozumel</a>
       </div>
+
+      <!-- Acento manuscrito al pie de la foto (referencia del cliente). Va
+           en la cursiva de la casa (Playfair italic), no en una tercera
+           fuente de mano: el sistema tipográfico del sitio es una serif y
+           una sans, y romperlo aquí obligaría a romperlo en todas. -->
+      <p class="hero-firma reveal-hero">Más que joyas,<br>recuerdos</p>
     </div>
   </section>
 
