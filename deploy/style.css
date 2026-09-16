@@ -718,14 +718,16 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    a contraluz: ni la tinta oscura ni el blanco llegaban al mínimo
    legible sobre ella. Sumarle marfil sube el fondo y deja el texto por
    encima de 4,5:1 sin oscurecer la foto (que es lo que el cliente no
-   quiere) y sin tocar la mitad donde está Adri: se apaga antes. */
+   quiere). Recorrido a la mitad del que tenía (llegaba hasta el 72% del
+   ancho y tapaba media foto): ahora se apaga del todo al 36%, así se ve
+   mucho más foto y menos blanco. */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   background:linear-gradient(to right,
     rgba(250,247,241,.88) 0%,
-    rgba(250,247,241,.70) 32%,
-    rgba(250,247,241,.34) 52%,
-    rgba(250,247,241,0) 72%);
+    rgba(250,247,241,.70) 16%,
+    rgba(250,247,241,.34) 26%,
+    rgba(250,247,241,0) 36%);
 }
 /* Bloque de texto alineado a la izquierda, no centrado: el titular y su
    subtítulo arrancan en el margen y forman una columna editorial. El
@@ -2360,6 +2362,11 @@ footer{
     width:100%; max-width:1240px; margin:0 auto;
     padding:0 70px 40px; text-align:left;
     align-items:flex-start;
+    /* En escritorio el bloque ya no se reparte de punta a punta del hero
+       (eso es cosa del móvil, donde la foto es mucho más alta que ancha):
+       aquí se agrupa entero y se centra en el alto disponible, así no
+       queda un hueco vacío entre el botón y la firma de abajo. */
+    justify-content:center;
   }
   .hero-copy h1{
     margin-top:12px; text-align:left;
@@ -2384,8 +2391,12 @@ footer{
     color:var(--ink); text-decoration-color:rgba(18,51,58,.4);
   }
   .hero-cta-secundaria:hover{text-decoration-color:var(--ink);}
+  /* Ya no "margin-top:auto": con el grupo centrado (ver .hero-copy) eso
+     la mandaba al borde inferior del hero, lejos del resto y abriendo el
+     hueco vacío que sobraba en medio. Ahora es parte del mismo grupo,
+     separada solo por un margen fijo. */
   .hero-firma{
-    margin:auto 0 0; padding-top:22px; font-size:30px; max-width:16ch;
+    margin:44px 0 0; font-size:32px; max-width:18ch;
     text-align:left; color:var(--deep);
   }
 

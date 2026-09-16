@@ -176,6 +176,14 @@ const PRODUCTOS = [
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
+    // FOTOS PROVISIONALES. Portada con 4 fotos (no 2 como en las
+    // pulseras): la 4 y la 5 de cada acabado, que también cierran la
+    // galería de dentro.
+    fotoPortada: ['img/collar-esencia-oro-4.jpg', 'img/collar-esencia-plata-4.jpg', 'img/collar-esencia-oro-5.jpg', 'img/collar-esencia-plata-5.jpg'],
+    fotos: {
+      oro: ['img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg', 'img/collar-esencia-oro-3.jpg', 'img/collar-esencia-oro-4.jpg', 'img/collar-esencia-oro-5.jpg'],
+      plata: ['img/collar-esencia-plata-1.jpg', 'img/collar-esencia-plata-2.jpg', 'img/collar-esencia-plata-3.jpg', 'img/collar-esencia-plata-4.jpg', 'img/collar-esencia-plata-5.jpg'],
+    },
   },
   {
     id: 'collar_flor_natal',
