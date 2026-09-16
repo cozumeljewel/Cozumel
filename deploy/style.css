@@ -715,19 +715,16 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 }
 /* Velo CLARO sobre la columna del texto, el mismo recurso que en
    escritorio. La franja izquierda de esta foto es banco de madera y seto
-   a contraluz: ni la tinta oscura ni el blanco llegaban al mínimo
-   legible sobre ella. Sumarle marfil sube el fondo y deja el texto por
-   encima de 4,5:1 sin oscurecer la foto (que es lo que el cliente no
-   quiere). Recorrido a la mitad del que tenía (llegaba hasta el 72% del
-   ancho y tapaba media foto): ahora se apaga del todo al 36%, así se ve
-   mucho más foto y menos blanco. */
+   a contraluz, un fondo con mucha textura, y ni reduciendo el velo a la
+   mitad ni a medio camino se seguía leyendo bien. De vuelta al alcance
+   original (72% del ancho): es el que de verdad sostiene el texto. */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   background:linear-gradient(to right,
     rgba(250,247,241,.88) 0%,
-    rgba(250,247,241,.70) 16%,
-    rgba(250,247,241,.34) 26%,
-    rgba(250,247,241,0) 36%);
+    rgba(250,247,241,.70) 32%,
+    rgba(250,247,241,.34) 52%,
+    rgba(250,247,241,0) 72%);
 }
 /* Bloque de texto alineado a la izquierda, no centrado: el titular y su
    subtítulo arrancan en el margen y forman una columna editorial. El
@@ -755,10 +752,16 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
      que caber en la franja del mar, a la izquierda, sin llegar a su
      cara — medido a 375px, "Un Pedacito" termina justo antes del pelo. */
   font-size:clamp(32px,9.1vw,46px);
-  font-family:var(--font-serif); font-weight:400;
+  font-family:var(--font-serif);
+  /* 700, no 400: en escritorio el titular cae sobre un panel marfil liso
+     y el peso normal se lee editorial; aquí cae sobre foto (valla,
+     hojas), un fondo con mucha textura, y la letra fina se le mezclaba.
+     Escritorio recupera 400 más abajo. */
+  font-weight:700;
   line-height:.98; letter-spacing:-.02em;
   /* Tinta oscura, no blanco: la foto nueva es clara justo donde cae el
-     texto. El contraste lo da el color, no un velo sobre la foto. */
+     texto. El contraste lo da el color y el peso, no un velo sobre la
+     foto ni una sombra. */
   color:var(--deep);
   text-shadow:none;
 }
@@ -810,7 +813,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 /* Los tres niveles se destacan con la propia letra, sin sombras: 18px
    (antes 16) y blanco pleno en vez del blanco cálido, que sobre el cielo
    pálido del horizonte se perdía. Solo afecta a esta versión móvil. */
-.hero-sub-movil{display:block; font-size:17.5px; line-height:1.5; color:var(--abyss);}
+.hero-sub-movil{display:block; font-size:17.5px; font-weight:600; line-height:1.5; color:var(--abyss);}
 .hero-sub-escritorio{display:none;}
 
 /* Firma de marca: no aparece en el diseno de movil (ver el mockup del
@@ -1704,16 +1707,12 @@ body[data-page="historia"] .historia::before{content:none;}
   background-repeat:no-repeat;
   cursor:zoom-in;
 }
-/* Marco difuminado: se funde hacia dentro por los cuatro lados, sin
-   recortar la foto. Mismo recurso que el hero. */
-.galeria-foto::after{
-  content:""; position:absolute; inset:0; pointer-events:none; border-radius:2px;
-  background:
-    linear-gradient(to right,  rgba(255,255,255,.92) 0%, rgba(255,255,255,.28) 3%, transparent 9%),
-    linear-gradient(to left,   rgba(255,255,255,.92) 0%, rgba(255,255,255,.28) 3%, transparent 9%),
-    linear-gradient(to bottom, rgba(255,255,255,.92) 0%, rgba(255,255,255,.28) 2.5%, transparent 8%),
-    linear-gradient(to top,    rgba(255,255,255,.92) 0%, rgba(255,255,255,.28) 2.5%, transparent 8%);
-}
+/* El marco difuminado de los cuatro lados se quita: era para cuando la
+   foto iba con "contain" y podía dejar un hueco sin cubrir en los
+   bordes. Desde que va con "cover" (más arriba) la foto siempre llena
+   el cuadro entero, así que ese difuminado ya no tapaba ningún hueco:
+   difuminaba la FOTO de verdad, y en grande (en escritorio esta caja
+   puede pasar de 600px) se notaba como borroso barato, no premium. */
 /* ---------- ZOOM DE FOTO (ficha de producto) ----------
    Overlay a pantalla completa que abre abrirZoomFoto() en script.js al
    tocar una foto de la galería. Mismo lenguaje que los pop-ups (capa
@@ -2371,6 +2370,9 @@ footer{
   .hero-copy h1{
     margin-top:12px; text-align:left;
     font-size:clamp(54px,5vw,72px); line-height:1.0; letter-spacing:-.02em;
+    /* El peso 700 de móvil es para pelear con una foto de fondo; aquí el
+       titular cae sobre el panel marfil liso y vuelve al 400 editorial. */
+    font-weight:400;
   }
   .hero-copy h1 em{font-size:.92em;}
   .hero-filete{width:52px; margin-top:12px;}
@@ -2468,9 +2470,12 @@ footer{
      protagonista, se queda fija al bajar) y toda la info a la derecha.
      En móvil no hay grid: producto-layout es un bloque normal y todo se
      apila en el orden del HTML (galería primero, luego la info). */
+  /* Columna de fotos más ancha (1.15fr→1.35fr) y contenedor más grande
+     (1280→1400px): la foto de producto es la protagonista de la página
+     y se quedaba pequeña frente al resto. */
   .producto-layout{
-    display:grid; grid-template-columns:1.15fr 1fr; column-gap:56px;
-    align-items:start; padding:60px 60px 0; max-width:1280px; margin:0 auto;
+    display:grid; grid-template-columns:1.35fr 1fr; column-gap:64px;
+    align-items:start; padding:60px 70px 0; max-width:1400px; margin:0 auto;
   }
   .producto-col-galeria{position:sticky; top:calc(var(--header-h) + 28px);}
 

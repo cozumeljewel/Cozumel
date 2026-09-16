@@ -200,13 +200,21 @@ const PRODUCTOS = [
       'Piedra y flor según el mes de nacimiento',
     ],
     cierre: 'Su mes, su piedra, su collar',
-    foto: 'img/collar-destino.jpg',
     precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
     // W1-W12 = mes de la piedra natal (enero..diciembre)
     sku: { oro:'XX49472D0W{mes}', plata:'XX49472A0W{mes}' },
     forma: 'flor',
     campos: ['mes'],
     destacado: false,
+    // FOTOS PROVISIONALES, mismo esquema que el resto: la 4 de cada
+    // acabado es la portada (aquí, la foto con los doce meses juntos) y
+    // a la vez cierra la galería de dentro. Sustituye a la "foto" suelta
+    // antigua, que apuntaba a un archivo ya borrado.
+    fotoPortada: ['img/collar-destino-oro-4.jpg', 'img/collar-destino-plata-4.jpg'],
+    fotos: {
+      oro: ['img/collar-destino-oro-1.jpg', 'img/collar-destino-oro-2.jpg', 'img/collar-destino-oro-3.jpg', 'img/collar-destino-oro-4.jpg'],
+      plata: ['img/collar-destino-plata-1.jpg', 'img/collar-destino-plata-2.jpg', 'img/collar-destino-plata-3.jpg', 'img/collar-destino-plata-4.jpg'],
+    },
   },
   {
     id: 'kit_pedacito_nosotros',
@@ -244,6 +252,29 @@ const PRODUCTOS = [
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
+    // El kit no tiene fotos propias: se arma con las de las dos piezas
+    // que lo forman (Collar Esencia + Pulsera Dos Almas). De cada una,
+    // su foto de portada (la 4, y la 5 del collar) y dos de la pieza
+    // puesta (1 y 2). La primera sí es exclusiva del kit: las dos piezas
+    // juntas en sus cajas de regalo, que es lo que se recibe.
+    fotoPortada: ['img/kit-pedacito-1.jpg', 'img/collar-esencia-oro-4.jpg', 'img/dos-almas-oro-4.jpg'],
+    fotos: {
+      oro: [
+        'img/kit-pedacito-1.jpg',
+        'img/collar-esencia-oro-4.jpg', 'img/collar-esencia-oro-5.jpg',
+        'img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg',
+        'img/dos-almas-oro-4.jpg',
+        'img/dos-almas-oro-1.jpg', 'img/dos-almas-oro-2.jpg',
+      ],
+      // Sin la foto de las cajas: la que hay es en dorado, y en la
+      // galería de plata cantaría.
+      plata: [
+        'img/collar-esencia-plata-4.jpg', 'img/collar-esencia-plata-5.jpg',
+        'img/collar-esencia-plata-1.jpg', 'img/collar-esencia-plata-2.jpg',
+        'img/dos-almas-plata-4.jpg',
+        'img/dos-almas-plata-1.jpg', 'img/dos-almas-plata-2.jpg',
+      ],
+    },
   },
   {
     id: 'kit_mi_consentida',
@@ -274,6 +305,24 @@ const PRODUCTOS = [
     forma: 'flor',
     campos: ['mes', 'grabado'],
     destacado: false,
+    // Mismo criterio que el otro kit: se arma con las fotos de las dos
+    // piezas que lo forman (Collar Destino + Pulsera Mi Cielo), la de
+    // portada (4) de cada una y dos de la pieza puesta (1 y 2).
+    fotoPortada: ['img/collar-destino-oro-4.jpg', 'img/mi-cielo-oro-4.jpg'],
+    fotos: {
+      oro: [
+        'img/collar-destino-oro-4.jpg',
+        'img/collar-destino-oro-1.jpg', 'img/collar-destino-oro-2.jpg',
+        'img/mi-cielo-oro-4.jpg',
+        'img/mi-cielo-oro-1.jpg', 'img/mi-cielo-oro-2.jpg',
+      ],
+      plata: [
+        'img/collar-destino-plata-4.jpg',
+        'img/collar-destino-plata-1.jpg', 'img/collar-destino-plata-2.jpg',
+        'img/mi-cielo-plata-4.jpg',
+        'img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg',
+      ],
+    },
   },
 ];
 
