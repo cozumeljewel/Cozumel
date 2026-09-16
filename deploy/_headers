@@ -3,3 +3,13 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# Las fotos se reemplazan a menudo conservando el mismo nombre de
+# archivo (img/mi-cielo-oro-1.jpg y compañía), y el móvil se quedaba
+# enseñando la versión vieja durante horas. Con esto el navegador puede
+# seguir guardándolas, pero tiene que preguntar al servidor si han
+# cambiado antes de usarlas: si no han cambiado el servidor responde
+# "sigue igual" y no se descarga nada, y si han cambiado se ve al
+# instante.
+/img/*
+  Cache-Control: public, max-age=0, must-revalidate

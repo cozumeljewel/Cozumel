@@ -693,7 +693,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 .hero-media{
   position:absolute; inset:0; z-index:0;
   background-image:
-    url('img/hero-adriana.jpg'),
+    /* El "-2" del nombre no es decorativo: el móvil se quedaba con la
+       foto vieja en caché porque el archivo se llamaba igual. Al
+       cambiar de foto, cambia también el número del nombre. */
+    url('img/hero-adriana-2.jpg'),
     radial-gradient(circle at 32% 22%, rgba(255,255,255,.5), transparent 55%),
     linear-gradient(160deg, #C9E6E4 0%, var(--surf) 28%, var(--sea) 62%, var(--deep) 100%);
   /* "cover" a propósito: la foto llena el hero de borde a borde, en
