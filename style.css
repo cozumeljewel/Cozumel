@@ -2583,6 +2583,13 @@ footer{
   .qs-hero .qs-foto{
     grid-column:2; grid-row:1 / -1;
     margin:0; max-width:none; align-self:stretch; height:100%;
+    /* El "width:100%" es obligatorio, no decorativo: con el alto fijado
+       al 100% de una fila muy alta, la proporción 4/5 heredada calculaba
+       el ancho a partir de ese alto (998px → 798px) y la foto se salía
+       324px del viewport, con scroll horizontal incluido. Dando las dos
+       medidas, la proporción deja de mandar y la foto se queda en su
+       columna; el recorte lo hace el object-fit:cover del img. */
+    width:100%;
   }
   .historia-hero .eyebrow,
   .qs-capitulo-texto .eyebrow{text-align:center;}

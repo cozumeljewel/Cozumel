@@ -252,11 +252,10 @@ const PRODUCTOS = [
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
-    // El kit no tiene fotos propias: se arma con las de las dos piezas
-    // que lo forman (Collar Esencia + Pulsera Dos Almas). De cada una,
-    // su foto de portada (la 4, y la 5 del collar) y dos de la pieza
-    // puesta (1 y 2). La primera sí es exclusiva del kit: las dos piezas
-    // juntas en sus cajas de regalo, que es lo que se recibe.
+    // Abre con su foto propia (las dos piezas en sus cajas de regalo, que
+    // es lo que se recibe) y sigue con las de las dos piezas que lo
+    // forman: de cada una, su foto de portada (la 4, y la 5 del collar) y
+    // dos de la pieza puesta (1 y 2). Ocho en total.
     fotoPortada: ['img/kit-pedacito-1.jpg', 'img/collar-esencia-oro-4.jpg', 'img/dos-almas-oro-4.jpg'],
     fotos: {
       oro: [
@@ -305,16 +304,21 @@ const PRODUCTOS = [
     forma: 'flor',
     campos: ['mes', 'grabado'],
     destacado: false,
-    // Mismo criterio que el otro kit: se arma con las fotos de las dos
-    // piezas que lo forman (Collar Destino + Pulsera Mi Cielo), la de
-    // portada (4) de cada una y dos de la pieza puesta (1 y 2).
-    fotoPortada: ['img/collar-destino-oro-4.jpg', 'img/mi-cielo-oro-4.jpg'],
+    // Mismo criterio que el otro kit: abre con su foto propia y sigue con
+    // las de las dos piezas que lo forman (Collar Destino + Pulsera Mi
+    // Cielo), la de portada (4) de cada una y dos de la pieza puesta (1 y
+    // 2). Cierra con la del regalo a la espalda, que es de marca y no de
+    // una pieza concreta: aquí cabe porque este kit tiene una foto menos
+    // (el Collar Esencia del otro aporta también su número 5).
+    fotoPortada: ['img/kit-consentida-1.jpg', 'img/collar-destino-oro-4.jpg', 'img/mi-cielo-oro-4.jpg'],
     fotos: {
       oro: [
+        'img/kit-consentida-1.jpg',
         'img/collar-destino-oro-4.jpg',
         'img/collar-destino-oro-1.jpg', 'img/collar-destino-oro-2.jpg',
         'img/mi-cielo-oro-4.jpg',
         'img/mi-cielo-oro-1.jpg', 'img/mi-cielo-oro-2.jpg',
+        'img/kit-regalo-1.jpg',
       ],
       plata: [
         'img/collar-destino-plata-4.jpg',
