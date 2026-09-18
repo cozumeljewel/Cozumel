@@ -151,12 +151,19 @@
        botón devuelve a las piezas. Sin descuento: el 10% es solo de los
        dos kits cerrados. La foto es el cartel "Crea tu kit" recortado a
        la caja, sin su texto incrustado. -->
-  <section class="arma-kit" id="arma-tu-kit">
+  <!-- Separador kits → Arma tu kit: la misma banda que "Nuestros kits".
+       Va suelta entre las dos secciones (hija directa de .page), así que
+       ya ocupa todo el ancho de la página sin necesidad de sangrado. Su
+       texto hace de título de la sección de abajo. -->
+  <div class="kits-banda kits-banda--suelta reveal">
+    <h2 class="kits-banda-titulo">Arma tu kit</h2>
+  </div>
+
+  <section class="arma-kit" id="arma-tu-kit" aria-label="Arma tu kit">
     <figure class="arma-kit-foto reveal">
       <img src="img/arma-tu-kit-1.jpg" alt="Caja de regalo de Cozumel abierta con cuatro piezas: dos collares y dos pulseras grabadas" loading="lazy">
     </figure>
     <div class="arma-kit-texto">
-      <h2 class="reveal">Arma tu kit</h2>
       <p class="arma-kit-intro reveal">No todos los pedacitos son iguales, y no todas las historias se cuentan con las mismas piezas. Aquí eliges tú: combina lo que quieras, para quien tú quieras, como tú lo sientas.</p>
       <p class="arma-kit-intro reveal">Un collar para tu mamá y una pulsera para ti. Dos piezas para tu mejor amiga. El set que tenga sentido para tu historia, no para la nuestra.</p>
       <ul class="arma-kit-lista reveal">

@@ -1101,7 +1101,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    ninguna otra sección. */
 .coleccion{
   --marfil:#FAF7F1; --marfil-hondo:#F3EEE4; --negro-suave:#211F1C; --negro-tenue:#5B564C;
-  padding:40px 24px 60px; background:var(--marfil); text-align:center;
+  padding:40px 24px 56px; background:var(--marfil); text-align:center;
 }
 /* Introducción con el mismo lenguaje que el hero de inicio: Playfair
    regular (como "Un Pedacito"), la cursiva champagne del hero para el
@@ -1193,12 +1193,18 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   margin:56px 0 0; padding:30px 0; background:var(--hero-arena); text-align:center;
   box-shadow:0 0 0 100vmax var(--hero-arena); clip-path:inset(0 -100vmax);
 }
-.coleccion .kits-banda-titulo{
+.kits-banda .kits-banda-titulo{
   margin:0; font-family:var(--font-serif); font-style:normal; font-weight:400;
   font-size:clamp(36px,10vw,42px); line-height:1.05; letter-spacing:-.01em;
   text-transform:none; color:var(--deep); text-wrap:balance;
 }
 .kits-banda + .producto-grid{margin-top:40px;}
+.kits-banda-titulo::after{content:none;}
+/* La segunda banda (antes de "Arma tu kit") va fuera de .coleccion, como
+   hija directa de .page: ya ocupa el ancho de la página y no necesita la
+   sombra de sangrado. El aire de arriba lo pone el cierre de .coleccion,
+   el mismo que hay antes de "Nuestros kits". */
+.kits-banda.kits-banda--suelta{margin-top:0; box-shadow:none; clip-path:none;}
 /* La sombra de la banda se corta en el borde de la sección: la página
    tiene un máximo de 1400px (.page) y en pantallas más anchas la banda
    saldría por fuera del resto de secciones. "clip" no crea contenedor de
@@ -2572,11 +2578,11 @@ footer{
      que no lea como cuadrícula perfecta pero sin depender de cuántos
      productos haya (a diferencia del reparto anterior, atado al total
      exacto de piezas: se rompía cada vez que se añadía o quitaba una). */
-  .coleccion{padding:72px 90px 120px;}
+  .coleccion{padding:72px 90px 80px;}
   .coleccion h2{font-size:58px;}
   .coleccion .coleccion-divisor-texto{font-size:52px;}
   .kits-banda{margin-top:80px; padding:42px 0;}
-  .coleccion .kits-banda-titulo{font-size:50px;}
+  .kits-banda .kits-banda-titulo{font-size:50px;}
   .kits-banda + .producto-grid{margin-top:56px;}
   .coleccion-divisor{margin-top:110px;}
   .coleccion-edicion{font-size:40px; margin-top:26px;}
@@ -2714,20 +2720,16 @@ footer{
 /* ---------- ARMA TU KIT (productos.html) ----------
    Cierre de la colección: el kit libre. Mismo registro que "Los kits"
    (serif regular en tinta profunda) y una sola cursiva, la frase final. */
-.arma-kit{padding:32px var(--space-5) 96px; max-width:1120px; margin:0 auto;}
+.arma-kit{padding:40px var(--space-5) 96px; max-width:1120px; margin:0 auto;}
 .arma-kit-foto{margin:0 auto; max-width:520px; aspect-ratio:4/5; overflow:hidden; background:#E9E5DF;}
 .arma-kit-foto img{width:100%; height:100%; object-fit:cover; display:block;}
 .arma-kit-texto{margin:40px auto 0; max-width:44ch; text-align:center;}
-.arma-kit h2{
-  font-family:var(--font-serif); font-weight:400; font-size:clamp(38px,10.5vw,44px);
-  line-height:1; letter-spacing:-.02em; color:var(--deep);
-}
-.arma-kit h2::after{content:none;}
 .arma-kit-intro{
   margin:20px auto 0; font-family:var(--font-sans); font-weight:400;
   font-size:16.5px; line-height:1.65; color:var(--ink-soft); text-wrap:pretty;
 }
 .arma-kit-intro + .arma-kit-intro{margin-top:12px;}
+.arma-kit-intro:first-child{margin-top:0;}
 .arma-kit-lista{
   list-style:none; margin:28px auto 0; padding:0; text-align:left; max-width:36ch;
   font-family:var(--font-sans); font-size:15.5px; line-height:1.5; color:var(--ink);
@@ -2746,12 +2748,11 @@ footer{
 .arma-kit-btn{margin-top:28px;}
 @media (min-width:900px){
   .arma-kit{
-    padding:0 var(--space-7) 120px;
+    padding:56px var(--space-7) 120px;
     display:grid; grid-template-columns:1fr 1fr; gap:var(--space-9); align-items:center;
   }
   .arma-kit-foto{max-width:none; margin:0;}
   .arma-kit-texto{margin:0 auto;}
-  .arma-kit h2{font-size:52px;}
   .arma-kit-intro{font-size:17px;}
 }
 
