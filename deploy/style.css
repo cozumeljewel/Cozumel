@@ -1446,15 +1446,16 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    una suelta al final. Sustituye a los <br> forzados, que en móvil
    partían el titular en sitios raros. Donde no está soportado se
    comporta como siempre. */
+/* Manual de estilo de "Nuestra historia": titulares en serif bold. */
 .historia-hero h1{
-  font-family:var(--font-serif); font-weight:400; font-size:clamp(46px,13vw,56px);
+  font-family:var(--font-serif); font-weight:700; font-size:clamp(46px,13vw,56px);
   line-height:1.0; letter-spacing:-.02em; color:var(--deep); margin-top:18px;
   text-wrap:balance;
 }
 /* Eyebrow de esta página: pequeño, en el dorado oscuro de siempre (el que
    da 4.5:1 en texto pequeño sobre claro), sin protagonismo. */
 body[data-page="historia"] .eyebrow{
-  font-size:12px; font-weight:500; letter-spacing:.2em; text-align:center; margin-bottom:0;
+  font-size:13px; font-weight:500; letter-spacing:.2em; text-align:center; margin-bottom:0;
 }
 /* Sin ondas bajo los titulares de esta página. */
 body[data-page="historia"] .historia-hero h1::after{content:none;}
@@ -1471,7 +1472,7 @@ body[data-page="historia"] .historia::before{content:none;}
 .qs-capitulo{padding:56px var(--space-5) 0;}
 .qs-capitulo-texto{text-align:center; max-width:56ch; margin:0 auto;}
 .qs-capitulo-texto h2{
-  font-family:var(--font-serif); font-weight:400; font-size:clamp(38px,10.5vw,46px);
+  font-family:var(--font-serif); font-weight:700; font-size:clamp(38px,10.5vw,46px);
   line-height:1.02; letter-spacing:-.02em; color:var(--deep); margin-top:16px;
 }
 
@@ -1489,7 +1490,7 @@ body[data-page="historia"] .historia::before{content:none;}
    16px (ver min-width:900px). */
 .qs-prosa p{
   font-family:var(--font-sans); font-weight:400;
-  font-size:16.5px; line-height:1.6; color:var(--ink-soft);
+  font-size:17px; line-height:1.7; color:var(--ink-soft);
   margin:0 auto; max-width:40ch;
   /* Centrado y nunca justificado: en una columna de móvil el
      justificado abría huecos enormes entre palabras. */
@@ -1497,6 +1498,7 @@ body[data-page="historia"] .historia::before{content:none;}
   text-wrap:pretty;
 }
 .qs-prosa p + p{margin-top:12px;}
+.qs-prosa strong{font-weight:600; color:var(--deep);}
 
 /* Frase destacada del hero ("Un nombre. Una fecha. ..."): la única de la
    página. Va en cursiva y centrada, sin justificar — es una enumeración
@@ -1593,7 +1595,7 @@ body[data-page="historia"] .historia::before{content:none;}
   text-transform:uppercase; color:var(--hero-arena);
 }
 .qs-cierre-claim{
-  margin-top:14px; font-family:var(--font-serif); font-style:italic;
+  margin-top:14px; font-family:var(--font-serif); font-style:normal;
   font-weight:400; font-size:clamp(30px,8vw,34px); line-height:1.15; color:var(--hero-blanco);
 }
 
@@ -2679,4 +2681,48 @@ footer{
 
   /* FOOTER */
   footer{padding:44px 40px 56px;}
+}
+
+/* ---------- ARMA TU KIT (productos.html) ----------
+   Cierre de la colección: el kit libre. Mismo registro que "Los kits"
+   (serif regular en tinta profunda) y una sola cursiva, la frase final. */
+.arma-kit{padding:32px var(--space-5) 96px; max-width:1120px; margin:0 auto;}
+.arma-kit-foto{margin:0 auto; max-width:520px; aspect-ratio:4/5; overflow:hidden; background:#E9E5DF;}
+.arma-kit-foto img{width:100%; height:100%; object-fit:cover; display:block;}
+.arma-kit-texto{margin:40px auto 0; max-width:44ch; text-align:center;}
+.arma-kit h2{
+  font-family:var(--font-serif); font-weight:400; font-size:clamp(38px,10.5vw,44px);
+  line-height:1; letter-spacing:-.02em; color:var(--deep);
+}
+.arma-kit h2::after{content:none;}
+.arma-kit-intro{
+  margin:20px auto 0; font-family:var(--font-sans); font-weight:400;
+  font-size:16.5px; line-height:1.65; color:var(--ink-soft); text-wrap:pretty;
+}
+.arma-kit-intro + .arma-kit-intro{margin-top:12px;}
+.arma-kit-lista{
+  list-style:none; margin:28px auto 0; padding:0; text-align:left; max-width:36ch;
+  font-family:var(--font-sans); font-size:15.5px; line-height:1.5; color:var(--ink);
+}
+.arma-kit-lista li{position:relative; padding-left:22px;}
+.arma-kit-lista li + li{margin-top:10px;}
+.arma-kit-lista li::before{
+  content:""; position:absolute; left:4px; top:.62em; width:6px; height:6px;
+  border-radius:50%; background:#7A5F2A;
+}
+.arma-kit-cierre{
+  margin:32px auto 0; max-width:24ch; font-family:var(--font-serif); font-style:italic;
+  font-weight:400; font-size:clamp(24px,6.6vw,28px); line-height:1.25; color:var(--deep);
+  text-wrap:balance;
+}
+.arma-kit-btn{margin-top:28px;}
+@media (min-width:900px){
+  .arma-kit{
+    padding:0 var(--space-7) 120px;
+    display:grid; grid-template-columns:1fr 1fr; gap:var(--space-9); align-items:center;
+  }
+  .arma-kit-foto{max-width:none; margin:0;}
+  .arma-kit-texto{margin:0 auto;}
+  .arma-kit h2{font-size:52px;}
+  .arma-kit-intro{font-size:17px;}
 }
