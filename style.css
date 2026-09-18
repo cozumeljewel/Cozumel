@@ -1481,12 +1481,13 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    jerarquía sale solo de tamaño, peso y cursiva. Header y footer siguen
    con la tipografía global. */
 body[data-page="historia"]{--font-historia:'Lora', Georgia, serif;}
-/* Rótulo: pequeño, mayúsculas, espaciado amplio, en el dorado oscuro de
-   siempre (el que da 4.5:1 en texto pequeño sobre claro). */
+/* Los tres rótulos ("Quiénes somos", "Nuestra historia", "Más que una
+   joya") son los protagonistas de la página, por petición del cliente:
+   grandes, en mayúsculas y en el dorado oscuro de siempre. */
 body[data-page="historia"] .eyebrow{
-  font-family:var(--font-historia); font-size:13px; line-height:1.4; font-weight:600;
-  letter-spacing:.2em; text-transform:uppercase; color:#7A5F2A;
-  text-align:center; margin-bottom:0;
+  font-family:var(--font-historia); font-size:clamp(24px,7vw,28px); line-height:1.2; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; color:#7A5F2A;
+  text-align:center; margin-bottom:0; text-wrap:balance;
 }
 /* Sin ondas bajo los titulares de esta página. */
 body[data-page="historia"] .historia-hero h1::after{content:none;}
@@ -2632,7 +2633,7 @@ footer{
   .qs-capitulo-texto{text-align:center; max-width:52ch; margin:0 auto;}
   .qs-prosa p, .pull-quote, .qs-cita-menor{margin-left:auto; margin-right:auto;}
   .qs-prosa p{font-size:18px; max-width:52ch;}
-  body[data-page="historia"] .eyebrow{font-size:14px;}
+  body[data-page="historia"] .eyebrow{font-size:44px;}
   .historia-hero h1{font-size:48px;}
   .qs-capitulo-texto h2{font-size:40px;}
   .qs-capitulo--solo-texto{display:block; padding-top:var(--space-8); padding-bottom:0;}

@@ -252,14 +252,15 @@ const PRODUCTOS = [
     forma: 'placa',
     campos: ['nombre', 'fecha', 'mensaje'],
     destacado: false,
-    // Abre con su foto propia (las dos piezas en sus cajas de regalo, que
-    // es lo que se recibe) y sigue con las de las dos piezas que lo
+    // Abre con su cartel propio (las dos piezas en sus cajas de regalo,
+    // que es lo que se recibe, con el nombre del kit, igual que el de Mi
+    // Consentida) y sigue con las de las dos piezas que lo
     // forman: de cada una, su foto de portada (la 4, y la 5 del collar) y
     // dos de la pieza puesta (1 y 2). Ocho en total.
-    fotoPortada: ['img/kit-pedacito-1.jpg', 'img/collar-esencia-oro-4.jpg', 'img/dos-almas-oro-4.jpg'],
+    fotoPortada: ['img/kit-pedacito-2.jpg', 'img/collar-esencia-oro-4.jpg', 'img/dos-almas-oro-4.jpg'],
     fotos: {
       oro: [
-        'img/kit-pedacito-1.jpg',
+        'img/kit-pedacito-2.jpg',
         'img/collar-esencia-oro-4.jpg', 'img/collar-esencia-oro-5.jpg',
         'img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg',
         'img/dos-almas-oro-4.jpg',
