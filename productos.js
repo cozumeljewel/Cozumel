@@ -19,6 +19,7 @@
      caracteristicas:['...', '...']   lista con viñetas
      cierre:         '...'            frase final destacada
      oferta:         '...'            reclamo destacado (ej. descuento de kit)
+     tipo:           'pulsera' | 'colgante'  en qué hueco de "Arma tu kit" entra
      fotos:          UNA GALERÍA POR ACABADO (lo recomendado ahora):
                        fotos: {
                          oro:   ['img/collar-esencia-oro-1.jpg', ...],
@@ -55,6 +56,7 @@ const PRODUCTOS = [
     id: 'pulsera_vinculo',
     slug: 'pulsera-vinculo',
     nombre: 'Pulsera Dos Almas',
+    tipo: 'pulsera', // para "Arma tu kit": 1 pulsera + 1 colgante
     resumen: 'Dos círculos, uno para cada una',
     descripcion: 'Dos círculos enlazados que no se sueltan ni se confunden el uno con el otro. Es la pieza que eliges cuando lo que quieres decir no necesita explicarse, porque ya se nota',
     parrafos: [
@@ -85,6 +87,7 @@ const PRODUCTOS = [
     id: 'pulsera_nombre',
     slug: 'pulsera-nombre',
     nombre: 'Pulsera Mi Cielo',
+    tipo: 'pulsera', // para "Arma tu kit": 1 pulsera + 1 colgante
     resumen: 'Un cielo que solo tú conoces',
     descripcion: 'Una placa pequeña en la muñeca para guardar el sitio exacto donde pasó: unas coordenadas, la fecha de aquella noche, la frase que se les quedó de un viaje',
     parrafos: [
@@ -122,6 +125,7 @@ const PRODUCTOS = [
     id: 'brazalete_mensaje',
     slug: 'brazalete-mensaje',
     nombre: 'Brazalete Eterno',
+    tipo: 'pulsera', // para "Arma tu kit": 1 pulsera + 1 colgante
     resumen: 'Un lugar, una fecha, unas palabras',
     descripcion: 'Un brazalete rígido, ancho y limpio, del tipo que se pone una vez y ya no se quita. Grabado con lo que tú decidas: una fecha, un nombre, una frase corta que no necesite contexto',
     parrafos: [
@@ -159,6 +163,7 @@ const PRODUCTOS = [
     id: 'collar_esencial',
     slug: 'collar-esencial',
     nombre: 'Collar Esencia',
+    tipo: 'colgante', // para "Arma tu kit": 1 pulsera + 1 colgante
     resumen: 'Doble cadena con placa grabable',
     descripcion: 'Dos cadenas que caen juntas: una fina, casi invisible, y otra con una placa esperando lo que tengas que decirle. Su nombre. La fecha en que todo empezó. Esas tres palabras que nunca dices en voz alta',
     parrafos: [
@@ -189,6 +194,7 @@ const PRODUCTOS = [
     id: 'collar_flor_natal',
     slug: 'collar-flor-natal',
     nombre: 'Collar Destino',
+    tipo: 'colgante', // para "Arma tu kit": 1 pulsera + 1 colgante
     resumen: 'Su mes, su piedra',
     descripcion: 'Cada mes tiene su piedra y su flor. Eliges el de ella y el collar deja de ser un collar cualquiera: es el suyo, con el color exacto del mes en que nació',
     parrafos: [

@@ -172,7 +172,20 @@
         <li>Envío en caja especial de regalo</li>
       </ul>
       <p class="arma-kit-cierre reveal">Porque no hay una sola forma de regalar un pedacito de ti.</p>
-      <a class="btn btn-primary arma-kit-btn reveal" href="#producto-grid">Arma tu kit</a>
+      <!-- Selector del kit libre: 1 pulsera + 1 colgante. Las opciones las
+           pinta script.js desde productos.js (campo "tipo"). Al continuar
+           se personaliza primero la pulsera y luego el colgante, cada una
+           en su ficha de siempre; las dos acaban en el mismo carrito. -->
+      <div class="kit-selector reveal" id="kit-selector">
+        <p class="kit-paso-titulo" id="kit-titulo-pulsera">1 · Elige tu pulsera</p>
+        <div class="kit-opciones" id="kit-opciones-pulsera" role="radiogroup" aria-labelledby="kit-titulo-pulsera"></div>
+
+        <p class="kit-paso-titulo" id="kit-titulo-colgante">2 · Elige tu colgante</p>
+        <div class="kit-opciones" id="kit-opciones-colgante" role="radiogroup" aria-labelledby="kit-titulo-colgante"></div>
+
+        <a class="btn btn-primary arma-kit-btn is-disabled" id="kit-continuar" href="#kit-selector" aria-disabled="true">Personalizar mi kit →</a>
+        <p class="kit-ayuda" id="kit-ayuda" aria-live="polite">Elige una pulsera y un colgante</p>
+      </div>
     </div>
   </section>
 

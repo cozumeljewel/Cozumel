@@ -1345,6 +1345,115 @@ if (ctaReservar) {
   });
 }
 
+/* =========================================================
+   ARMA TU KIT
+   Kit libre: 1 pulsera + 1 colgante, elegidos entre las piezas sueltas
+   (campo "tipo" en productos.js). No es un producto nuevo ni un SKU
+   propio: cada pieza se personaliza en su ficha de siempre y entra en el
+   carrito como pieza suelta, así que el pedido, el precio y el SKU se
+   resuelven exactamente igual que al comprarlas por separado.
+     Selector (productos.html) → personalizar.html?p=PULSERA&kit=COLGANTE
+     Paso 1: el CTA añade la pulsera y lleva a ?p=COLGANTE&kitpaso=2
+     Paso 2: el CTA añade el colgante y va al carrito, como siempre.
+   ========================================================= */
+(function () {
+  if (typeof PRODUCTOS === 'undefined') return;
+  const piezas = tipo => PRODUCTOS.filter(p => p.tipo === tipo);
+
+  /* ---- Selector, en productos.html ---- */
+  const selector = document.getElementById('kit-selector');
+  if (selector) {
+    const elegido = { pulsera: null, colgante: null };
+    const continuar = document.getElementById('kit-continuar');
+    const ayuda = document.getElementById('kit-ayuda');
+
+    const refrescar = () => {
+      const listo = elegido.pulsera && elegido.colgante;
+      continuar.classList.toggle('is-disabled', !listo);
+      if (listo) {
+        continuar.removeAttribute('aria-disabled');
+        continuar.href = 'personalizar.html?p=' + encodeURIComponent(elegido.pulsera.slug)
+          + '&kit=' + encodeURIComponent(elegido.colgante.slug);
+        ayuda.textContent = elegido.pulsera.nombre + ' + ' + elegido.colgante.nombre;
+      } else {
+        continuar.setAttribute('aria-disabled', 'true');
+        continuar.href = '#kit-selector';
+        ayuda.textContent = !elegido.pulsera && !elegido.colgante
+          ? 'Elige una pulsera y un colgante'
+          : (elegido.pulsera ? 'Ahora elige tu colgante' : 'Ahora elige tu pulsera');
+      }
+    };
+
+    ['pulsera', 'colgante'].forEach(tipo => {
+      const caja = document.getElementById('kit-opciones-' + tipo);
+      if (!caja) return;
+      piezas(tipo).forEach(prod => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'kit-opcion';
+        b.setAttribute('role', 'radio');
+        b.setAttribute('aria-checked', 'false');
+        const foto = document.createElement('span');
+        foto.className = 'kit-opcion-foto';
+        const src = (prod.fotoPortada && prod.fotoPortada[0]) || fotosDe(prod, 'oro').map(f => normFoto(f).src)[0];
+        if (src) foto.style.backgroundImage = `url('${src}')`;
+        const nombre = document.createElement('span');
+        nombre.className = 'kit-opcion-nombre';
+        nombre.textContent = prod.nombre;
+        b.append(foto, nombre);
+        b.addEventListener('click', () => {
+          elegido[tipo] = prod;
+          caja.querySelectorAll('.kit-opcion').forEach(o => o.setAttribute('aria-checked', String(o === b)));
+          refrescar();
+        });
+        caja.appendChild(b);
+      });
+    });
+
+    continuar.addEventListener('click', e => {
+      if (continuar.classList.contains('is-disabled')) {
+        e.preventDefault();
+        ayuda.classList.remove('kit-ayuda--aviso');
+        void ayuda.offsetWidth; // reinicia la animación del aviso
+        ayuda.classList.add('kit-ayuda--aviso');
+      }
+    });
+    refrescar();
+  }
+
+  /* ---- Pasos, en personalizar.html ---- */
+  const pasos = document.getElementById('kit-pasos');
+  const cta = document.getElementById('cta-reservar');
+  if (!pasos || !cta) return;
+  const params = new URLSearchParams(location.search);
+  const actual = getProductoPorSlug(params.get('p') || '');
+  const siguiente = getProductoPorSlug(params.get('kit') || '');
+  const esPaso2 = params.get('kitpaso') === '2';
+
+  const pintar = (paso, texto) => {
+    pasos.textContent = '';
+    const et = document.createElement('p');
+    et.className = 'kit-pasos-etiqueta';
+    et.textContent = 'Arma tu kit · Paso ' + paso + ' de 2';
+    const tx = document.createElement('p');
+    tx.className = 'kit-pasos-texto';
+    tx.textContent = texto;
+    pasos.append(et, tx);
+    pasos.hidden = false;
+  };
+
+  if (actual && actual.tipo === 'pulsera' && siguiente && siguiente.tipo === 'colgante') {
+    pintar(1, 'Personaliza tu pulsera. Después, tu ' + siguiente.nombre + '.');
+    cta.href = 'personalizar.html?p=' + encodeURIComponent(siguiente.slug) + '&kitpaso=2';
+    const t = cta.querySelector('.cta-texto');
+    if (t) t.textContent = 'Siguiente: tu colgante →';
+    const sticky = document.getElementById('cta-sticky-btn');
+    if (sticky) sticky.textContent = 'Siguiente: tu colgante';
+  } else if (actual && actual.tipo === 'colgante' && esPaso2) {
+    pintar(2, 'Tu pulsera ya está en el carrito. Ahora, tu colgante: las dos piezas irán juntas.');
+  }
+})();
+
 /* ---------- CTA STICKY (ficha de producto) ----------
    Aparece cuando #cta-reservar sale del viewport y el usuario ya hizo
    scroll (para no mostrarlo de entrada, antes de que nadie toque nada).

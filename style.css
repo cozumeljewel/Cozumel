@@ -2759,3 +2759,51 @@ footer{
 @media (min-width:900px) and (max-height:720px){
   .producto-col-galeria{position:static;}
 }
+
+/* ---------- ARMA TU KIT · selector (productos.html) ----------
+   Dos filas de opciones (pulseras y colgantes), cada tarjeta a un tercio
+   del ancho: las dos filas tienen el mismo tamaño de tarjeta y la de
+   dos colgantes queda centrada. Elegida = borde
+   dorado y nombre en tinta profunda. */
+.kit-selector{margin:36px auto 0; max-width:420px;}
+.kit-paso-titulo{
+  margin:24px 0 12px; font-family:var(--font-sans); font-size:12px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:#7A5F2A; text-align:center;
+}
+.kit-paso-titulo:first-child{margin-top:0;}
+.kit-opciones{display:flex; flex-wrap:wrap; gap:10px; justify-content:center;}
+.kit-opcion{flex:0 0 calc((100% - 20px) / 3); min-width:0;}
+.kit-opcion{
+  display:flex; flex-direction:column; align-items:stretch; gap:8px; padding:6px 6px 10px;
+  background:var(--white, #fff); border:1.5px solid rgba(20,69,74,.14); border-radius:4px;
+  font:inherit; color:var(--ink-soft); cursor:pointer; text-align:center;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.kit-opcion:hover{border-color:rgba(20,69,74,.35);}
+.kit-opcion:focus-visible{outline:2px solid var(--deep); outline-offset:2px;}
+.kit-opcion[aria-checked="true"]{border-color:#B08A3E; box-shadow:0 0 0 1px #B08A3E; color:var(--deep);}
+.kit-opcion-foto{
+  display:block; aspect-ratio:1; background:#E9E5DF center/175% no-repeat; border-radius:2px;
+}
+.kit-opcion-nombre{font-family:var(--font-sans); font-size:12.5px; line-height:1.3; font-weight:500;}
+.kit-selector .arma-kit-btn{display:flex; justify-content:center; width:100%; margin-top:28px;}
+.kit-selector .arma-kit-btn.is-disabled{opacity:.45; cursor:not-allowed;}
+.kit-ayuda{margin-top:10px; font-family:var(--font-sans); font-size:13.5px; color:var(--ink-soft); text-align:center;}
+.kit-ayuda--aviso{color:var(--deep); font-weight:500; animation:kitAviso .4s ease;}
+@keyframes kitAviso{0%,100%{transform:none;} 25%{transform:translateX(-4px);} 75%{transform:translateX(4px);}}
+@media (prefers-reduced-motion:reduce){.kit-ayuda--aviso{animation:none;}}
+@media (min-width:900px){
+  .kit-selector{max-width:none;}
+  .kit-opcion-nombre{font-size:13.5px;}
+}
+
+/* ---------- ARMA TU KIT · pasos (personalizar.html) ---------- */
+.kit-pasos{
+  margin:0; padding:14px 24px; background:var(--hero-arena); text-align:center;
+}
+.kit-pasos[hidden]{display:none;}
+.kit-pasos-etiqueta{
+  font-family:var(--font-sans); font-size:11.5px; font-weight:600; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--deep);
+}
+.kit-pasos-texto{margin-top:4px; font-family:var(--font-sans); font-size:14.5px; line-height:1.45; color:var(--deep);}
