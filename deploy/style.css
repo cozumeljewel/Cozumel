@@ -2729,7 +2729,7 @@ footer{
   font-size:16.5px; line-height:1.65; color:var(--ink-soft); text-wrap:pretty;
 }
 .arma-kit-intro + .arma-kit-intro{margin-top:12px;}
-.arma-kit-intro:first-child{margin-top:0;}
+.kit-selector + .arma-kit-intro{margin-top:40px;}
 .arma-kit-lista{
   list-style:none; margin:28px auto 0; padding:0; text-align:left; max-width:36ch;
   font-family:var(--font-sans); font-size:15.5px; line-height:1.5; color:var(--ink);
@@ -2749,9 +2749,12 @@ footer{
 @media (min-width:900px){
   .arma-kit{
     padding:56px var(--space-7) 120px;
-    display:grid; grid-template-columns:1fr 1fr; gap:var(--space-9); align-items:center;
+    display:grid; grid-template-columns:1fr 1fr; gap:var(--space-9); align-items:start;
   }
-  .arma-kit-foto{max-width:none; margin:0;}
+  /* La foto acompaña mientras se baja por el selector y el texto: se
+     queda fija bajo el header hasta el final de la sección. Solo en
+     escritorio: en móvil va apilada encima y fija taparía la pantalla. */
+  .arma-kit-foto{max-width:none; margin:0; position:sticky; top:calc(var(--header-h) + 28px);}
   .arma-kit-texto{margin:0 auto;}
   .arma-kit-intro{font-size:17px;}
 }
@@ -2765,7 +2768,7 @@ footer{
    del ancho: las dos filas tienen el mismo tamaño de tarjeta y la de
    dos colgantes queda centrada. Elegida = borde
    dorado y nombre en tinta profunda. */
-.kit-selector{margin:36px auto 0; max-width:420px;}
+.kit-selector{margin:0 auto; max-width:420px;}
 .kit-paso-titulo{
   margin:24px 0 12px; font-family:var(--font-sans); font-size:12px; font-weight:600;
   letter-spacing:.16em; text-transform:uppercase; color:#7A5F2A; text-align:center;
