@@ -24,7 +24,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,500&family=Jost:wght@400;500;600&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="supabase-config.js" defer></script>
@@ -126,38 +126,40 @@
        Adri: lifestyle principal, persona llevando la pieza, detalle de
        pieza, foto emocional. Sustituir por <img> real cuando existan. ===== -->
 
-  <!-- ===== HERO ===== -->
+  <!-- ===== BLOQUE 1 · QUIÉNES SOMOS =====
+       Toda la sección va en UNA familia (Lora): la jerarquía sale solo de
+       tamaño, peso y cursiva. Cursivas: máximo dos en la página, la de
+       "Un nombre. Una fecha..." (mitad) y la de cierre del bloque 4. -->
   <section class="historia-hero qs-hero">
     <div class="qs-hero-intro">
       <p class="eyebrow reveal">Quiénes somos</p>
       <h1 class="reveal">Hay cosas que queremos llevar con nosotros</h1>
 
       <div class="qs-prosa">
-        <p class="reveal">Cozumel nace de una idea sencilla: hay personas, momentos y recuerdos que queremos sentir cerca, incluso cuando no están.</p>
+        <p class="reveal">No es una joya más. Es lo que no quieres soltar.</p>
       </div>
     </div>
 
-    <!-- FOTO 1. En móvil rompe el texto justo después de la entradilla;
-         en escritorio ocupa la columna derecha entera. -->
+    <!-- FOTO 1 (cuaderno + mar). En móvil va entre los bloques 1 y 2; en
+         escritorio ocupa la columna derecha entera. -->
     <figure class="qs-foto reveal">
       <img src="img/historia-1.jpg" alt="Adri dibujando diseños de joyas en un cuaderno frente al mar, junto al cartel de Cozumel" loading="lazy">
     </figure>
 
+    <!-- ===== BLOQUE 2 ===== -->
     <div class="qs-hero-resto">
-      <!-- Cursiva nº 1 de 2 de toda la página (manual de estilo: una sola
-           cursiva por bloque; la otra es el remate de "Más que una joya"). -->
-      <p class="qs-destacado reveal">Un nombre. Una fecha. Una frase. Un lugar. Una historia. O simplemente alguien.</p>
+      <!-- Cursiva nº 1 de 2. -->
+      <p class="qs-destacado reveal">Un nombre. Una fecha. Un lugar. O simplemente alguien.</p>
 
       <div class="qs-prosa">
-        <p class="reveal">Por eso creamos joyas que guardan algo más que un significado: guardan una parte de lo que somos y de quienes forman parte de nosotros. No para recordarlo — para llevarlo puesto.</p>
+        <!-- PENDIENTE DE REVISIÓN HUMANA: "a mano" (aquí y en el bloque 4)
+             tiene que describir el proceso real de grabado. -->
+        <p class="reveal">Escribimos eso en cada pieza — a mano, para que no se pierda.</p>
       </div>
     </div>
   </section>
 
-  <!-- ===== NUESTRA HISTORIA =====
-       Compacto, sin marca de agua. La antigua cita "Porque, a veces, las
-       cosas que importan simplemente se llevan contigo." pasa a párrafo
-       normal: ya no compite como frase destacada. -->
+  <!-- ===== BLOQUE 3 · NUESTRA HISTORIA ===== -->
   <section class="historia qs-capitulo">
     <figure class="qs-foto reveal">
       <img src="img/historia-2.jpg" alt="Manos sosteniendo un collar de flor de Cozumel sobre la mesa de trabajo, con perlas y bocetos" loading="lazy">
@@ -165,54 +167,44 @@
 
     <div class="qs-capitulo-texto">
       <p class="eyebrow reveal">Nuestra historia</p>
-      <h2 class="reveal">Las cosas que importan no siempre se pueden explicar</h2>
+      <h2 class="reveal">No todo se puede decir en voz alta</h2>
 
       <div class="qs-prosa">
-        <!-- Párrafo fusionado. Negrita SOLO en "pedacito": es la palabra que
-             debe atrapar el ojo aunque se lea en diagonal. Sin cursiva en
-             este bloque. -->
-        <p class="reveal">En Cozumel creemos en el valor de los pequeños detalles: un regalo no tiene que ser grande para significar mucho, y una joya puede convertirse en parte de una historia. Cada pieza está pensada para ser personal —un nombre, una fecha, un recuerdo o un significado que solo tú conoces—, un <strong>pedacito</strong> de ti que simplemente se lleva contigo.</p>
+        <!-- Negrita solo en "pedacito". Sin cursiva en este bloque. -->
+        <p class="reveal">Por eso lo grabamos. Un <strong>pedacito</strong> de ti, en algo que se lleva puesto todos los días.</p>
       </div>
     </div>
   </section>
 
-  <!-- ===== MÁS QUE UNA JOYA ===== -->
-  <section class="qs-capitulo qs-capitulo--invertido">
+  <!-- ===== BLOQUE 4 · MÁS QUE UNA JOYA ===== -->
+  <section class="qs-capitulo qs-capitulo--invertido qs-capitulo--final">
     <figure class="qs-foto reveal">
       <img src="img/historia-3.jpg" alt="Cuaderno con los bocetos del collar de flor junto a la pieza terminada en dorado" loading="lazy">
     </figure>
 
     <div class="qs-capitulo-texto">
       <p class="eyebrow reveal">Más que una joya</p>
-      <h2 class="reveal">Personalizar es hacerla tuya</h2>
+      <h2 class="reveal">Tú eliges qué contar</h2>
 
       <div class="qs-prosa">
-        <p class="reveal">Cada persona tiene algo que quiere recordar. Por eso algunas de nuestras piezas pueden personalizarse con un nombre, una fecha, un mensaje o una palabra.</p>
-        <!-- PENDIENTE DE REVISIÓN HUMANA: confirmar que "a mano" describe
-             el proceso real de fabricación antes de publicar definitivo. -->
-        <p class="reveal">Cada grabado se realiza a mano, pieza a pieza, para que cada joya tenga su propia historia.</p>
+        <p class="reveal">Tu nombre. Tu fecha. Tu mensaje. Personalizada a mano, solo para quien se la des.</p>
       </div>
 
-      <!-- Cursiva nº 2 de 2: el remate emocional de toda la página. -->
-      <blockquote class="pull-quote reveal">No queremos que lleves una joya más. Queremos que lleves algo que signifique algo para ti.</blockquote>
+      <!-- Cursiva nº 2 de 2: la última de la página, justo antes del botón. -->
+      <p class="pull-quote reveal">No es una joya más. Es un pedacito de ti.</p>
+
+      <a class="btn btn-primary qs-cta reveal" href="productos.html">Elige tu pieza →</a>
     </div>
   </section>
 
-  <!-- ===== CIERRE DE MARCA =====
-       El paraguas: "Lo que importa, se lleva." Vive solo aquí, no en el
-       footer global (eso sigue con el claim de campaña de esta edición) —
-       así queda listo para cuando existan más colecciones, sin tener que
-       rehacer la identidad de marca otra vez. -->
-  <section class="qs-cierre">
-    <p class="qs-cierre-marca reveal">Cozumel</p>
-    <p class="qs-cierre-claim reveal">Lo que importa, se lleva</p>
-  </section>
+  <!-- El cierre de marca "Lo que importa, se lleva" se retira: competía
+       con el lema principal del footer. -->
 
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-inner">
       <a class="footer-marca" href="index.html">Cozumel</a>
-      <p class="footer-claim">Regala un pedacito de ti.</p>
+      <p class="footer-claim">Un pedacito de lo que regalamos.</p>
 
       <nav class="footer-nav" aria-label="Enlaces del pie de página">
         <a href="productos.html">Colección</a>
@@ -233,7 +225,6 @@
       </div>
 
       <span class="footer-olas" aria-hidden="true"></span>
-      <p class="footer-tagline">Cozumel, somos un pedacito de lo que regalamos.</p>
     </div>
   </footer>
 
