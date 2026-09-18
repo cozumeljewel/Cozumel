@@ -1364,6 +1364,15 @@ if (ctaReservar) {
   const selector = document.getElementById('kit-selector');
   if (selector) {
     const elegido = { pulsera: null, colgante: null };
+    const material = { pulsera: 'oro', colgante: 'oro' };
+
+    // Foto de la opción según el material: la portada de ese acabado
+    // (fotoPortada lleva la de oro y la de plata); si no la hay, la
+    // primera de la galería de ese acabado.
+    const fotoDe = (prod, acabado) => {
+      const portada = (prod.fotoPortada || []).find(f => f.includes('-' + acabado + '-'));
+      return portada || fotosDe(prod, acabado).map(f => normFoto(f).src)[0] || '';
+    };
     const continuar = document.getElementById('kit-continuar');
     const ayuda = document.getElementById('kit-ayuda');
 
@@ -1373,8 +1382,12 @@ if (ctaReservar) {
       if (listo) {
         continuar.removeAttribute('aria-disabled');
         continuar.href = 'personalizar.html?p=' + encodeURIComponent(elegido.pulsera.slug)
-          + '&kit=' + encodeURIComponent(elegido.colgante.slug);
-        ayuda.textContent = elegido.pulsera.nombre + ' + ' + elegido.colgante.nombre;
+          + '&acabado=' + material.pulsera
+          + '&kit=' + encodeURIComponent(elegido.colgante.slug)
+          + '&kitacabado=' + material.colgante;
+        const txt = { oro: 'oro', plata: 'plata' };
+        ayuda.textContent = elegido.pulsera.nombre + ' en ' + txt[material.pulsera]
+          + ' + ' + elegido.colgante.nombre + ' en ' + txt[material.colgante];
       } else {
         continuar.setAttribute('aria-disabled', 'true');
         continuar.href = '#kit-selector';
@@ -1395,8 +1408,9 @@ if (ctaReservar) {
         b.setAttribute('aria-checked', 'false');
         const foto = document.createElement('span');
         foto.className = 'kit-opcion-foto';
-        const src = (prod.fotoPortada && prod.fotoPortada[0]) || fotosDe(prod, 'oro').map(f => normFoto(f).src)[0];
+        const src = fotoDe(prod, material[tipo]);
         if (src) foto.style.backgroundImage = `url('${src}')`;
+        b._prod = prod;
         const nombre = document.createElement('span');
         nombre.className = 'kit-opcion-nombre';
         nombre.textContent = prod.nombre;
@@ -1408,6 +1422,44 @@ if (ctaReservar) {
         });
         caja.appendChild(b);
       });
+    });
+
+    // Material de cada fila: mismas bolitas que el selector de acabado de
+    // la ficha (.acabado-op), para que se reconozca al llegar a ella.
+    document.querySelectorAll('.kit-material').forEach(grupo => {
+      const tipo = grupo.dataset.tipo;
+      const caja = document.getElementById('kit-opciones-' + tipo);
+      const botones = [
+        { valor: 'oro', clase: 'acabado-dot--oro', texto: 'Oro' },
+        { valor: 'plata', clase: 'acabado-dot--plata', texto: 'Plata' },
+      ].map(def => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'acabado-op';
+        b.dataset.acabado = def.valor;
+        b.setAttribute('role', 'radio');
+        const dot = document.createElement('span');
+        dot.className = 'acabado-dot ' + def.clase;
+        dot.setAttribute('aria-hidden', 'true');
+        b.append(dot, document.createTextNode(def.texto));
+        grupo.appendChild(b);
+        return b;
+      });
+      const marcar = () => botones.forEach(b => {
+        const activo = b.dataset.acabado === material[tipo];
+        b.classList.toggle('activo', activo);
+        b.setAttribute('aria-checked', String(activo));
+      });
+      botones.forEach(b => b.addEventListener('click', () => {
+        material[tipo] = b.dataset.acabado;
+        marcar();
+        caja.querySelectorAll('.kit-opcion').forEach(o => {
+          const src = fotoDe(o._prod, material[tipo]);
+          if (src) o.querySelector('.kit-opcion-foto').style.backgroundImage = `url('${src}')`;
+        });
+        refrescar();
+      }));
+      marcar();
     });
 
     continuar.addEventListener('click', e => {
@@ -1430,6 +1482,15 @@ if (ctaReservar) {
   const siguiente = getProductoPorSlug(params.get('kit') || '');
   const esPaso2 = params.get('kitpaso') === '2';
 
+  // Material elegido en el selector: se marca en la ficha pulsando su
+  // botón de acabado, así la galería y lo que se guarda van a la par.
+  const acabadoPedido = params.get('acabado');
+  if (acabadoPedido === 'oro' || acabadoPedido === 'plata') {
+    const op = document.querySelector('#acabado-contenedor .acabado-op[data-acabado="' + acabadoPedido + '"]');
+    if (op && op.getAttribute('aria-checked') !== 'true') op.click();
+  }
+  const acabadoSiguiente = params.get('kitacabado') === 'plata' ? 'plata' : 'oro';
+
   const pintar = (paso, texto) => {
     pasos.textContent = '';
     const et = document.createElement('p');
@@ -1444,7 +1505,8 @@ if (ctaReservar) {
 
   if (actual && actual.tipo === 'pulsera' && siguiente && siguiente.tipo === 'colgante') {
     pintar(1, 'Personaliza tu pulsera. Después, tu ' + siguiente.nombre + '.');
-    cta.href = 'personalizar.html?p=' + encodeURIComponent(siguiente.slug) + '&kitpaso=2';
+    cta.href = 'personalizar.html?p=' + encodeURIComponent(siguiente.slug)
+      + '&acabado=' + acabadoSiguiente + '&kitpaso=2';
     const t = cta.querySelector('.cta-texto');
     if (t) t.textContent = 'Siguiente: tu colgante →';
     const sticky = document.getElementById('cta-sticky-btn');

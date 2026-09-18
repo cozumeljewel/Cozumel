@@ -2771,6 +2771,16 @@ footer{
   letter-spacing:.16em; text-transform:uppercase; color:#7A5F2A; text-align:center;
 }
 .kit-paso-titulo:first-child{margin-top:0;}
+/* Título a la izquierda, material a la derecha, en la misma línea. */
+.kit-paso-cabecera{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin:26px 0 12px;
+}
+.kit-paso-cabecera:first-child{margin-top:0;}
+.kit-paso-cabecera .kit-paso-titulo{margin:0; text-align:left;}
+.kit-material{display:flex; gap:6px; flex-shrink:0;}
+.kit-material .acabado-op{padding:6px 11px 6px 7px; gap:6px; font-size:12.5px;}
+.kit-material .acabado-dot{width:14px; height:14px;}
 .kit-opciones{display:flex; flex-wrap:wrap; gap:10px; justify-content:center;}
 .kit-opcion{flex:0 0 calc((100% - 20px) / 3); min-width:0;}
 .kit-opcion{

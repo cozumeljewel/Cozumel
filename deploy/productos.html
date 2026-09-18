@@ -177,10 +177,18 @@
            se personaliza primero la pulsera y luego el colgante, cada una
            en su ficha de siempre; las dos acaban en el mismo carrito. -->
       <div class="kit-selector reveal" id="kit-selector">
-        <p class="kit-paso-titulo" id="kit-titulo-pulsera">1 · Elige tu pulsera</p>
+        <!-- Cabecera de cada fila: título + material. El material cambia
+             las fotos de la fila y viaja a la ficha ya elegido. -->
+        <div class="kit-paso-cabecera">
+          <p class="kit-paso-titulo" id="kit-titulo-pulsera">1 · Elige tu pulsera</p>
+          <div class="kit-material" data-tipo="pulsera" role="radiogroup" aria-label="Material de la pulsera"></div>
+        </div>
         <div class="kit-opciones" id="kit-opciones-pulsera" role="radiogroup" aria-labelledby="kit-titulo-pulsera"></div>
 
-        <p class="kit-paso-titulo" id="kit-titulo-colgante">2 · Elige tu colgante</p>
+        <div class="kit-paso-cabecera">
+          <p class="kit-paso-titulo" id="kit-titulo-colgante">2 · Elige tu colgante</p>
+          <div class="kit-material" data-tipo="colgante" role="radiogroup" aria-label="Material del colgante"></div>
+        </div>
         <div class="kit-opciones" id="kit-opciones-colgante" role="radiogroup" aria-labelledby="kit-titulo-colgante"></div>
 
         <a class="btn btn-primary arma-kit-btn is-disabled" id="kit-continuar" href="#kit-selector" aria-disabled="true">Personalizar mi kit →</a>
