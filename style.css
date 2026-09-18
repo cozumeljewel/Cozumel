@@ -1181,6 +1181,29 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   font-size:clamp(38px,10.5vw,44px); line-height:1; letter-spacing:-.02em; color:var(--deep);
 }
 .coleccion .coleccion-divisor-texto::after{content:none;}
+/* Banda "Nuestros kits": el separador entre piezas y kits. Fondo del
+   champagne del hero (--hero-arena, el mismo de "de ti"), plano, sin
+   degradado. A todo lo ancho del viewport sea cual sea el ancho de
+   .coleccion: la sombra sin desenfoque pinta el mismo color hasta los
+   bordes y el clip-path la recorta arriba y abajo. No ocupa layout, así
+   que no hay scroll horizontal (100vw sí lo daba en escritorio, porque
+   incluye la barra de scroll). Texto en la serif
+   regular de "Un Pedacito", verde --deep (6.6:1 sobre el champagne). */
+.kits-banda{
+  margin:56px 0 0; padding:30px 0; background:var(--hero-arena); text-align:center;
+  box-shadow:0 0 0 100vmax var(--hero-arena); clip-path:inset(0 -100vmax);
+}
+.coleccion .kits-banda-titulo{
+  margin:0; font-family:var(--font-serif); font-style:normal; font-weight:400;
+  font-size:clamp(36px,10vw,42px); line-height:1.05; letter-spacing:-.01em;
+  text-transform:none; color:var(--deep); text-wrap:balance;
+}
+.kits-banda + .producto-grid{margin-top:40px;}
+/* La sombra de la banda se corta en el borde de la sección: la página
+   tiene un máximo de 1400px (.page) y en pantallas más anchas la banda
+   saldría por fuera del resto de secciones. "clip" no crea contenedor de
+   scroll ni afecta a nada más de la sección. */
+.coleccion{overflow-x:clip;}
 .producto-card{
   display:block; text-decoration:none;
 }
@@ -2563,6 +2586,9 @@ footer{
   .coleccion{padding:72px 90px 120px;}
   .coleccion h2{font-size:58px;}
   .coleccion .coleccion-divisor-texto{font-size:52px;}
+  .kits-banda{margin-top:80px; padding:42px 0;}
+  .coleccion .kits-banda-titulo{font-size:50px;}
+  .kits-banda + .producto-grid{margin-top:56px;}
   .coleccion-divisor{margin-top:110px;}
   .coleccion-edicion{font-size:40px; margin-top:26px;}
   .coleccion-intro{font-size:17px; max-width:36ch; margin-top:14px;}
