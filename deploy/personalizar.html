@@ -128,6 +128,12 @@
         </div>
         <div class="galeria-puntos" id="galeria-puntos" aria-hidden="true"></div>
       </section>
+        <!-- ===== ACABADO, justo bajo las fotos =====
+             Oro o plateado cambia la galería de arriba, así que el
+             selector va pegado a ella. Lo tienen TODAS las piezas; un kit
+             lleva uno POR PIEZA. script.js rellena el contenedor según
+             productos.js. -->
+        <div class="acabado" id="acabado-contenedor"></div>
     </div>
 
     <div class="producto-col-info">
@@ -147,19 +153,6 @@
         <em id="resumen-precio-nota">pendiente de confirmar</em>
         <p class="compra-envio">Envío gratis</p>
       </div>
-
-      <!-- ===== 3. ACABADO =====
-           Va aquí y no dentro de la banda de grabado a propósito: el
-           acabado lo tienen TODAS las piezas, también las que no se
-           graban (y esa banda se oculta entera en esas). script.js lo
-           engancha y lo guarda junto al grabado, así viaja con el pedido
-           y sabéis cuál enviar. -->
-      <!-- Una pieza suelta lleva un solo selector de acabado. Un kit lleva
-           uno POR PIEZA del kit (pueden pedirse en acabados distintos: el
-           collar en oro y la pulsera en plata), así que el contenedor se
-           rellena entero desde script.js según lo que declare el producto
-           en productos.js — nunca es el mismo HTML fijo para los dos casos. -->
-      <div class="acabado" id="acabado-contenedor"></div>
 
       <!-- ===== 4. DESCRIPCIÓN ===== -->
       <section class="producto-detalle">

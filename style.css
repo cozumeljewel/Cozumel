@@ -1448,14 +1448,18 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    comporta como siempre. */
 /* Manual de estilo de "Nuestra historia": titulares en serif bold. */
 .historia-hero h1{
-  font-family:var(--font-serif); font-weight:700; font-size:clamp(46px,13vw,56px);
+  font-family:var(--font-serif); font-weight:700; font-size:clamp(28px,8vw,32px);
   line-height:1.0; letter-spacing:-.02em; color:var(--deep); margin-top:18px;
   text-wrap:balance;
 }
 /* Eyebrow de esta página: pequeño, en el dorado oscuro de siempre (el que
    da 4.5:1 en texto pequeño sobre claro), sin protagonismo. */
+/* Los tres rótulos ("Quiénes somos", "Nuestra historia", "Más que una
+   joya") son los protagonistas de la página: grandes, en dorado. Los
+   titulares, la prosa y las cursivas quedan un escalón por debajo. */
 body[data-page="historia"] .eyebrow{
-  font-size:13px; font-weight:500; letter-spacing:.2em; text-align:center; margin-bottom:0;
+  font-size:clamp(24px,7vw,28px); line-height:1.2; font-weight:600; letter-spacing:.12em;
+  text-wrap:balance; text-align:center; margin-bottom:0;
 }
 /* Sin ondas bajo los titulares de esta página. */
 body[data-page="historia"] .historia-hero h1::after{content:none;}
@@ -1472,7 +1476,7 @@ body[data-page="historia"] .historia::before{content:none;}
 .qs-capitulo{padding:56px var(--space-5) 0;}
 .qs-capitulo-texto{text-align:center; max-width:56ch; margin:0 auto;}
 .qs-capitulo-texto h2{
-  font-family:var(--font-serif); font-weight:700; font-size:clamp(38px,10.5vw,46px);
+  font-family:var(--font-serif); font-weight:700; font-size:clamp(24px,6.8vw,28px);
   line-height:1.02; letter-spacing:-.02em; color:var(--deep); margin-top:16px;
 }
 
@@ -1490,7 +1494,7 @@ body[data-page="historia"] .historia::before{content:none;}
    16px (ver min-width:900px). */
 .qs-prosa p{
   font-family:var(--font-sans); font-weight:400;
-  font-size:17px; line-height:1.7; color:var(--ink-soft);
+  font-size:15.5px; line-height:1.7; color:var(--ink-soft);
   margin:0 auto; max-width:40ch;
   /* Centrado y nunca justificado: en una columna de móvil el
      justificado abría huecos enormes entre palabras. */
@@ -1507,7 +1511,7 @@ body[data-page="historia"] .historia::before{content:none;}
 .qs-destacado{
   margin:0 auto;
   font-family:var(--font-serif); font-style:italic; font-weight:400;
-  font-size:clamp(28px,7.6vw,32px); line-height:1.25; color:var(--deep); max-width:22ch;
+  font-size:clamp(22px,6vw,24px); line-height:1.3; color:var(--deep); max-width:24ch;
   text-wrap:balance;
 }
 .qs-destacado + .qs-prosa{margin-top:24px;}
@@ -1520,8 +1524,8 @@ body[data-page="historia"] .historia::before{content:none;}
 .pull-quote{
   margin:48px auto 0; max-width:20ch;
   font-family:var(--font-serif); font-style:italic; font-weight:400;
-  font-size:clamp(32px,8.8vw,38px); line-height:1.15; color:var(--deep);
-  position:relative;
+  font-size:clamp(22px,6vw,24px); line-height:1.3; color:var(--deep);
+  position:relative; max-width:24ch;
 }
 /* Cursivas secundarias de cierre de bloque: acento, no titular. */
 .qs-cita-menor{
@@ -2480,6 +2484,15 @@ footer{
     align-items:start; padding:60px 70px 0; max-width:1400px; margin:0 auto;
   }
   .producto-col-galeria{position:sticky; top:calc(var(--header-h) + 28px);}
+  /* El selector de acabado va bajo las fotos y la columna es sticky: si
+     fotos + miniaturas + selector no caben en la ventana, el selector se
+     queda fuera de vista para siempre. La galería se limita al alto
+     disponible (lo que sobra del viewport tras header, miniaturas y
+     selector) y se centra en su columna. En pantallas muy bajas, sin
+     sticky: la columna baja con la página y todo se alcanza. */
+  .producto-col-galeria .producto-galeria{
+    max-width:max(420px, calc(100vh - var(--header-h) - 280px)); margin:0 auto;
+  }
 
   .producto-cabecera{padding:0 0 6px; text-align:center;}
   .producto-cabecera h2{font-size:36px;}
@@ -2604,9 +2617,10 @@ footer{
   }
   .qs-capitulo-texto{text-align:center; max-width:52ch; margin:0 auto;}
   .qs-prosa p, .pull-quote, .qs-cita-menor{margin-left:auto; margin-right:auto;}
-  .qs-prosa p{font-size:17px; max-width:52ch;}
-  .historia-hero h1{font-size:66px;}
-  .qs-capitulo-texto h2{font-size:54px;}
+  .qs-prosa p{font-size:16px; max-width:52ch;}
+  body[data-page="historia"] .eyebrow{font-size:44px;}
+  .historia-hero h1{font-size:38px;}
+  .qs-capitulo-texto h2{font-size:32px;}
   .qs-capitulo--solo-texto{display:block; padding-top:var(--space-8); padding-bottom:0;}
   .qs-capitulo--solo-texto .qs-capitulo-texto{margin:0 auto;}
   /* En escritorio la foto del capítulo vuelve a ser vertical: aquí es una
@@ -2624,9 +2638,9 @@ footer{
   .qs-capitulo--invertido .qs-capitulo-texto{order:-1;}
   .qs-capitulo--invertido .qs-foto{order:0;}
 
-  .pull-quote{font-size:40px; max-width:18ch;}
+  .pull-quote{font-size:28px; max-width:24ch;}
   .qs-cita-menor{font-size:30px;}
-  .qs-destacado{font-size:32px;}
+  .qs-destacado{font-size:28px;}
   .qs-cierre{padding:var(--space-9) var(--space-7);}
   .qs-cierre-claim{font-size:40px;}
 
@@ -2725,4 +2739,8 @@ footer{
   .arma-kit-texto{margin:0 auto;}
   .arma-kit h2{font-size:52px;}
   .arma-kit-intro{font-size:17px;}
+}
+
+@media (min-width:900px) and (max-height:720px){
+  .producto-col-galeria{position:static;}
 }
