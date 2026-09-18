@@ -1471,8 +1471,8 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
    comporta como siempre. */
 /* Manual de estilo de "Nuestra historia": titulares en serif bold. */
 .historia-hero h1{
-  font-family:var(--font-historia); font-weight:700; font-size:clamp(32px,8.8vw,36px);
-  line-height:1.15; letter-spacing:-.01em; color:var(--deep); margin-top:16px;
+  font-family:var(--font-historia); font-weight:700; font-size:clamp(21px,5.8vw,23px);
+  line-height:1.25; letter-spacing:-.01em; color:var(--deep); margin-top:16px;
   text-wrap:balance;
 }
 /* Eyebrow de esta página: pequeño, en el dorado oscuro de siempre (el que
@@ -1485,7 +1485,7 @@ body[data-page="historia"]{--font-historia:'Lora', Georgia, serif;}
    joya") son los protagonistas de la página, por petición del cliente:
    grandes, en mayúsculas y en el dorado oscuro de siempre. */
 body[data-page="historia"] .eyebrow{
-  font-family:var(--font-historia); font-size:clamp(24px,7vw,28px); line-height:1.2; font-weight:600;
+  font-family:var(--font-historia); font-size:clamp(26px,7.4vw,30px); line-height:1.2; font-weight:600;
   letter-spacing:.12em; text-transform:uppercase; color:#7A5F2A;
   text-align:center; margin-bottom:0; text-wrap:balance;
 }
@@ -1504,8 +1504,8 @@ body[data-page="historia"] .historia::before{content:none;}
 .qs-capitulo{padding:56px var(--space-5) 0;}
 .qs-capitulo-texto{text-align:center; max-width:56ch; margin:0 auto;}
 .qs-capitulo-texto h2{
-  font-family:var(--font-historia); font-weight:700; font-size:clamp(28px,7.6vw,32px);
-  line-height:1.2; letter-spacing:-.01em; color:var(--deep); margin-top:14px;
+  font-family:var(--font-historia); font-weight:700; font-size:clamp(21px,5.8vw,23px);
+  line-height:1.25; letter-spacing:-.01em; color:var(--deep); margin-top:14px;
 }
 
 /* Prosa justificada a ambos lados. El guionado automático va de la mano:
@@ -1539,7 +1539,7 @@ body[data-page="historia"] .historia::before{content:none;}
 .qs-destacado{
   margin:0 auto;
   font-family:var(--font-historia); font-style:italic; font-weight:400;
-  font-size:clamp(24px,6.6vw,26px); line-height:1.35; color:var(--deep); max-width:24ch;
+  font-size:clamp(21px,5.8vw,23px); line-height:1.35; color:var(--deep); max-width:24ch;
   text-wrap:balance;
 }
 .qs-destacado + .qs-prosa{margin-top:24px;}
@@ -1552,7 +1552,7 @@ body[data-page="historia"] .historia::before{content:none;}
 .pull-quote{
   margin:48px auto 0; max-width:20ch;
   font-family:var(--font-historia); font-style:italic; font-weight:400;
-  font-size:clamp(24px,6.6vw,26px); line-height:1.35; color:var(--deep);
+  font-size:clamp(21px,5.8vw,23px); line-height:1.35; color:var(--deep);
   position:relative; max-width:24ch;
 }
 .qs-cta{margin-top:32px; font-family:var(--font-historia);}
@@ -2634,8 +2634,9 @@ footer{
   .qs-prosa p, .pull-quote, .qs-cita-menor{margin-left:auto; margin-right:auto;}
   .qs-prosa p{font-size:18px; max-width:52ch;}
   body[data-page="historia"] .eyebrow{font-size:44px;}
-  .historia-hero h1{font-size:48px;}
-  .qs-capitulo-texto h2{font-size:40px;}
+  /* Jerarquía: rótulo 44 > titular 30 > prosa 18. */
+  .historia-hero h1{font-size:30px;}
+  .qs-capitulo-texto h2{font-size:30px;}
   .qs-capitulo--solo-texto{display:block; padding-top:var(--space-8); padding-bottom:0;}
   .qs-capitulo--solo-texto .qs-capitulo-texto{margin:0 auto;}
   /* En escritorio la foto del capítulo vuelve a ser vertical: aquí es una
@@ -2653,9 +2654,9 @@ footer{
   .qs-capitulo--invertido .qs-capitulo-texto{order:-1;}
   .qs-capitulo--invertido .qs-foto{order:0;}
 
-  .pull-quote{font-size:32px; max-width:24ch;}
+  .pull-quote{font-size:28px; max-width:24ch;}
   .qs-cita-menor{font-size:30px;}
-  .qs-destacado{font-size:32px;}
+  .qs-destacado{font-size:28px;}
 
   /* 4. CONFIANZA: los tres bloques ya no tienen el mismo ancho (depende
      de si el texto es "Pieza única" o "Grabado por artesanos"), así que
