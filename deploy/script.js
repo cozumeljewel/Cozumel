@@ -452,6 +452,11 @@ function pintarGaleria(prod, acabado) {
     pista.appendChild(card);
   });
 
+  // Al cambiar de acabado la pista se rehace, pero conserva el scroll que
+  // tenía: se veía la foto 3 del nuevo color en vez de la primera. Vuelve
+  // al principio sin animación (el cambio de color ya es el gesto).
+  pista.scrollTo({ left: 0, behavior: 'instant' });
+
   // Un punto por foto, solo si hay más de una. Son <button>, no <span>:
   // en escritorio se ven como miniaturas y se puede pulsar para saltar
   // directo a esa foto (en móvil siguen siendo solo puntos pequeños).
