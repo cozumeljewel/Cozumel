@@ -1376,6 +1376,22 @@ if (ctaReservar) {
     const continuar = document.getElementById('kit-continuar');
     const ayuda = document.getElementById('kit-ayuda');
 
+    // Foto de la sección: en plata solo cuando las dos piezas van en
+    // plata; en cualquier mezcla manda el oro, que es lo que se ve en la
+    // foto dorada.
+    const fotoSeccion = document.getElementById('arma-kit-foto-img');
+    const FOTOS_SECCION = {
+      oro: { src: 'img/arma-tu-kit-oro-1.jpg', alt: 'Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo' },
+      plata: { src: 'img/arma-tu-kit-plata-1.jpg', alt: 'Caja de regalo de Cozumel abierta con un collar y un brazalete plateados, grabados' },
+    };
+    const pintarFotoSeccion = () => {
+      if (!fotoSeccion) return;
+      const cual = (material.pulsera === 'plata' && material.colgante === 'plata') ? 'plata' : 'oro';
+      if (fotoSeccion.getAttribute('src') === FOTOS_SECCION[cual].src) return;
+      fotoSeccion.setAttribute('src', FOTOS_SECCION[cual].src);
+      fotoSeccion.setAttribute('alt', FOTOS_SECCION[cual].alt);
+    };
+
     const refrescar = () => {
       const listo = elegido.pulsera && elegido.colgante;
       continuar.classList.toggle('is-disabled', !listo);
@@ -1453,6 +1469,7 @@ if (ctaReservar) {
       botones.forEach(b => b.addEventListener('click', () => {
         material[tipo] = b.dataset.acabado;
         marcar();
+        pintarFotoSeccion();
         caja.querySelectorAll('.kit-opcion').forEach(o => {
           const src = fotoDe(o._prod, material[tipo]);
           if (src) o.querySelector('.kit-opcion-foto').style.backgroundImage = `url('${src}')`;
