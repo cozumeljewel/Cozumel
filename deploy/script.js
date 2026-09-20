@@ -2213,6 +2213,27 @@ if (reservaForm) {
       session_id: getSessionId(),
     };
 
+    /* Reintento tras cancelar en Stripe: sin esto, cada intento insertaba
+       filas nuevas y dejaba las anteriores huérfanas en 'pendiente_pago'.
+       Se recuerdan los ids del último intento junto con una huella del
+       pedido (piezas + personalización + precio). Si se vuelve con el
+       mismo carrito y el mismo usuario, esas filas se reutilizan: se
+       actualizan los datos de envío y se mandan a Stripe otra vez. Si el
+       carrito cambió, o las filas ya no están pendientes (pagadas o
+       borradas), se insertan nuevas como siempre. La política de UPDATE
+       de Supabase solo deja tocar filas propias en 'pendiente_pago' (ver
+       supabase-migracion-v7.sql), así que esto no abre nada nuevo. */
+    const RESERVA_PENDIENTE_KEY = 'cozumel_reserva_pendiente';
+    const leerReservaPendiente = () => {
+      try {
+        const guardado = JSON.parse(sessionStorage.getItem(RESERVA_PENDIENTE_KEY));
+        return guardado && Array.isArray(guardado.ids) && guardado.ids.length ? guardado : null;
+      } catch (_) { return null; }
+    };
+    const guardarReservaPendiente = (datos) => {
+      try { sessionStorage.setItem(RESERVA_PENDIENTE_KEY, JSON.stringify(datos)); } catch (_) {}
+    };
+
     const payloads = items.map(({ item, prod }) => ({
       ...datosComunes,
       personalizacion: item.personalizacion,
@@ -2223,10 +2244,35 @@ if (reservaForm) {
     reservaSubmitBtn.disabled = true;
     reservaSubmitBtn.textContent = items.length > 1 ? 'Guardando tu pedido...' : 'Guardando...';
 
-    // Una fila por pieza, todas en el mismo insert (Supabase valida cada
-    // una contra la misma política RLS de siempre, fila a fila — no hace
-    // falta tocar la base de datos para admitir varias a la vez).
-    const { data: filasCreadas, error } = await sb.from('reservas').insert(payloads).select('id');
+    const huellaPedido = JSON.stringify(payloads.map(p => [p.producto, p.precio_pagado, p.personalizacion]));
+    const pendiente = leerReservaPendiente();
+
+    // 1) ¿Hay filas del intento anterior que sirvan? Se actualizan.
+    let filasCreadas = null;
+    if (pendiente && pendiente.huella === huellaPedido && pendiente.user === sesionActual.user.id) {
+      const { data: filasReusadas, error: errorUpdate } = await sb
+        .from('reservas')
+        .update(datosComunes)
+        .in('id', pendiente.ids)
+        .eq('estado', 'pendiente_pago')
+        .select('id');
+      if (!errorUpdate && filasReusadas && filasReusadas.length === payloads.length) {
+        filasCreadas = filasReusadas;
+      } else if (errorUpdate) {
+        console.error(errorUpdate); // no es fatal: se insertan nuevas abajo
+      }
+    }
+
+    // 2) Si no, una fila por pieza, todas en el mismo insert (Supabase
+    // valida cada una contra la misma política RLS de siempre, fila a
+    // fila — no hace falta tocar la base de datos para admitir varias a
+    // la vez).
+    let error = null;
+    if (!filasCreadas) {
+      const inserto = await sb.from('reservas').insert(payloads).select('id');
+      filasCreadas = inserto.data;
+      error = inserto.error;
+    }
 
     if (error || !filasCreadas || filasCreadas.length !== payloads.length) {
       console.error(error ?? `esperadas ${payloads.length} filas, llegaron ${filasCreadas?.length ?? 0}`);
@@ -2235,6 +2281,12 @@ if (reservaForm) {
       showReservaError('No se pudo guardar tu pedido. Inténtalo de nuevo');
       return;
     }
+
+    guardarReservaPendiente({
+      ids: filasCreadas.map(f => f.id),
+      huella: huellaPedido,
+      user: sesionActual.user.id,
+    });
 
     reservaSubmitBtn.textContent = 'Conectando con Stripe...';
 
@@ -2318,6 +2370,8 @@ if (reservaForm) {
       if (data && data.length > 0 && data.every(fila => fila.estado === 'pagado')) {
         data.forEach(fila => trackEvent('compra_completada', fila.producto));
         vaciarCarrito(); // ahora sí: el pago ya está confirmado de verdad
+        // Esas filas ya están pagadas: no se pueden reutilizar nunca más.
+        try { sessionStorage.removeItem('cozumel_reserva_pendiente'); } catch (_) {}
         confirmando.hidden = true;
         done.hidden = false;
         done.scrollIntoView({ behavior: 'smooth', block: 'start' });

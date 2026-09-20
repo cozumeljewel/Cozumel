@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# El paso de pago no aporta nada en buscadores.
+Disallow: /comprar.html
+
+Sitemap: https://cozumeljewelry.es/sitemap.xml

@@ -380,12 +380,13 @@ Queda una fila de prueba en `reservas` de esa prueba real, pendiente de
 borrar junto con las demás (ver el punto de filas de prueba, más abajo).
 
 ### Contenido (decisiones del cliente)
-2. **Fotos de 6 de los 7 productos.** Solo Collar Destino tiene
-   (`img/collar-destino.png`). Las demás muestran "imagen pendiente".
-   Se añaden guardando los archivos en `img/` **y** `deploy/img/`, y
-   poniendo `fotos: ['img/a.png', 'img/b.png']` en `productos.js`. Sin
-   espacios ni acentos en los nombres. Ahora la ficha admite **varias por
-   pieza**: conviene pedirlas cuadradas, que la galería las muestra así.
+2. ~~Fotos de los productos~~ **HECHO (2026-09-17/20).** Las 5 piezas, los
+   2 kits, "Nuestra historia" y "Arma tu kit" tienen fotos reales, en oro
+   y en plata. No queda ningún hueco de "imagen pendiente". Se añaden
+   guardando los archivos en `img/` **y** `deploy/img/`, y poniendo
+   `fotos: { oro: [...], plata: [...] }` en `productos.js`. Sin espacios
+   ni acentos en los nombres. Ya están comprimidas (recomprimirlas al 82%
+   no baja ni un 10%, así que no hace falta tocarlas).
 3. **Precios.** Todos en `null` → sale "Precio pendiente". Ojo: el Kit
    promete "10% de descuento", así que su precio debe cuadrar con eso.
 4. **Email real en Contacto: hecho (2026-08-27)**, `cozumeljewel@gmail.com`.
@@ -416,7 +417,9 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
    afirmación de escasez concreta y visible en el pop-up: conviene que el
    número sea real y se respete, porque una escasez falsa es un problema
    de consumo, no solo de marketing.
-10. **El formulario de Contacto no envía nada.** Es solo maqueta.
+10. ~~El formulario de Contacto no envía nada~~ **YA ENVÍA.** Va contra la
+    función `enviar-contacto` de Supabase, con campo trampa antibots. Si
+    Supabase no responde, enseña el correo para escribir a mano.
 11. **Filas de prueba en Supabase** pendientes de borrar: `TEST — borrar`
     y `TEST MIGRACION — borrar` en `reservas`, la reserva real de prueba
     de la Tarea 6 del login (2026-08-27, con `user_id` relleno), y algún
@@ -425,24 +428,34 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
     Se arranca con el packaging estándar de EMANCO, que ya sirve como caja
     de regalo, y se pasa al personalizado con el logo cuando suba el
     volumen. La línea "Envío en caja especial de regalo" se queda.
-13. **Pago cancelado crea una fila nueva al reintentar**, en vez de
-    reanudar la misma. Cada cancelación en Stripe deja una fila huérfana en
-    `pendiente_pago` (el `reserva_id` no se recuerda entre reintentos). No
-    afecta al cobro (nunca se cobra dos veces), pero ensucia la tabla: al
-    exportar pedidos a Excel, filtrar siempre por `estado = 'pagado'`.
+13. ~~Pago cancelado crea una fila nueva al reintentar~~ **RESUELTO
+    (2026-09-20).** Los ids del intento anterior se guardan en
+    sessionStorage con una huella del pedido (piezas + personalización +
+    precio). Si se vuelve con el mismo carrito y el mismo usuario, esas
+    filas se reutilizan (UPDATE sobre filas propias en `pendiente_pago`,
+    que ya permitía la migración v7) en vez de insertar nuevas. Si el
+    carrito cambió, o las filas ya están pagadas, se insertan nuevas como
+    antes. Aun así, al exportar pedidos conviene filtrar por
+    `estado = 'pagado'`.
 14. **Pendientes de "hacerlo real" antes de lanzar con dinero real**
     (aplazado el 2026-08-28, revisar cuando Stripe esté activo y probado):
     - Página de política de privacidad (con login de Google y datos de
       envío guardados, casi obligatoria legalmente)
     - Página de términos y condiciones (plazos de envío, devoluciones)
     - Banner de cookies (revisar si hace falta según qué analítica se use)
-    - Texto alternativo (`alt`) en las imágenes de producto, casi ninguna
-      lo lleva ahora mismo
-    - `sitemap.xml`, para que Google indexe las páginas más rápido
-    - Comprimir las fotos de producto al subirlas (punto 2 de esta misma
-      lista)
-    - Repasar que no quede ningún enlace roto tras el cambio de
-      `reservar.html` a `comprar.html`
+    - ~~Texto alternativo (`alt`) en las imágenes~~ **REVISADO
+      (2026-09-20).** Las fotos de producto se pintan como fondo y se
+      anuncian con `aria-label` en la galería; las `<img>` sin `alt` que
+      quedan son decorativas (la bandera del teléfono, la segunda capa del
+      pase de fotos) y van con `aria-hidden`.
+    - ~~`sitemap.xml`~~ **HECHO (2026-09-20).** `sitemap.xml` con las 10
+      páginas públicas y `robots.txt` que lo apunta y deja fuera
+      `comprar.html`. Al añadir una página, actualizar los dos.
+    - ~~Comprimir las fotos de producto~~ **COMPROBADO (2026-09-20)**, ya
+      están comprimidas.
+    - ~~Enlaces rotos tras el cambio de `reservar.html` a
+      `comprar.html`~~ **COMPROBADO (2026-09-20)**: no queda ninguna
+      referencia a `reservar.html` ni ningún enlace interno roto.
 
 ---
 
