@@ -414,10 +414,11 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
    confirman que **graban a mano**. La afirmación se queda tal cual está en
    las fichas, en la banda de grabado, en el bloque de confianza y en el
    pop-up. No hace falta tocar nada.
-8. **La foto del hero tiene el logo y un eslogan QUEMADOS en el JPG**
-   (logo del 7,5% al 14,4% de la altura; eslogan del 90,6% al 94,2%,
-   medido píxel a píxel). Se intentó recortar y el resultado no gustó.
-   **La solución real es reexportar la foto sin texto.**
+8. ~~La foto del hero tiene el logo y un eslogan quemados en el JPG~~
+   **YA NO APLICA (2026-09-20).** Aquella foto se sustituyó el 2026-09-17:
+   el hero usa ahora `hero-pc-3.jpg` en escritorio y el mismo encuadre
+   recortado en móvil, y ninguna de las dos lleva texto dentro de la
+   imagen. Todo lo que se lee sobre el hero es texto de la web.
 9. **La preventa promete "edición limitada a 100 piezas".** Es una
    afirmación de escasez concreta y visible en el pop-up: conviene que el
    número sea real y se respete, porque una escasez falsa es un problema

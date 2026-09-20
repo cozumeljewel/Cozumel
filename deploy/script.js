@@ -1395,7 +1395,7 @@ if (ctaReservar) {
       { src: 'img/arma-tu-kit-oro-2.jpg', alt: 'Caja de regalo abierta con un collar de flor y un brazalete dorados, grabado con una fecha' },
       { src: 'img/arma-tu-kit-plata-2.jpg', alt: 'Caja de regalo abierta con un collar de flor y un brazalete plateados' },
     ];
-    const PASE_MS = 6500; // con el fundido de 2,2 s, el cambio se nota tranquilo
+    const PASE_MS = 3000; // cada 3 s, con el fundido de 1,2 s de style.css
     let indiceFoto = 0, capaVisible = capaA, temporizadorFoto = null;
     const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
 
