@@ -5,79 +5,64 @@
 -- Resend devolvió 429 (demasiados por segundo) en 18 de ellos. El plan
 -- gratuito admite ~2 envíos por segundo y cada pieza manda 2 correos.
 --
--- Esto vuelve a marcar cada pedido como pagado DE UNO EN UNO, con una
--- pausa entre medias, así que el disparador manda 2 correos cada vez y
--- Resend ya no los rechaza.
+-- Por qué NO se puede automatizar con una pausa: el SQL Editor de
+-- Supabase ejecuta todo dentro de una misma transacción, y pg_net no
+-- manda nada hasta que esa transacción termina. Da igual dónde pongas la
+-- espera: los correos salen todos de golpe al final. (Un procedimiento
+-- con COMMIT tampoco vale: el editor lo rechaza con "invalid transaction
+-- termination".) Por eso se hace a mano, un Run por pieza.
 --
--- ⚠️ Cada vuelta reenvía los DOS correos de esa pieza (cliente y
---    negocio), también de las que sí llegaron: acabarás con algún
---    duplicado de esas. Es lo normal en una prueba.
+-- ⚠️ Reenvía los DOS correos de cada pieza, también de las que sí
+--    llegaron: tendrás algún duplicado de esas. En una prueba da igual.
 -- ============================================================
 
 
--- ===== OPCIÓN A · automática (recomendada) =====
--- Un procedimiento que va pieza por pieza, confirma cada cambio y espera
--- 3 segundos antes del siguiente. Tarda ~45 segundos en total: si el
--- editor se queja de tiempo de espera, usa la opción B.
-create or replace procedure public.reenviar_pruebas_despacio(pausa numeric default 3)
-language plpgsql
-as $$
-declare
-  fila record;
-begin
-  for fila in
-    select stripe_session_id
-    from public.reservas
-    where stripe_session_id like 'TEST-SKU-%'
-    order by stripe_session_id
-  loop
-    -- Ida y vuelta: el disparador salta al pasar de otro estado a 'pagado'.
-    update public.reservas set estado = 'pendiente_pago'
-    where stripe_session_id = fila.stripe_session_id;
-    commit;
-
-    update public.reservas set estado = 'pagado'
-    where stripe_session_id = fila.stripe_session_id;
-    commit;
-
-    perform pg_sleep(pausa);
-  end loop;
-end;
-$$;
-
-call public.reenviar_pruebas_despacio(3);
-
--- Cuando termine la prueba, se puede quitar:
--- drop procedure if exists public.reenviar_pruebas_despacio(numeric);
+-- ===== PASO 1 · devolver las 14 a pendiente (no envía nada) =====
+-- Selecciona SOLO esta línea y pulsa Run.
+update public.reservas set estado = 'pendiente_pago'
+where stripe_session_id like 'TEST-SKU-%';
 
 
--- ===== OPCIÓN B · a mano, si la A falla =====
--- Ejecuta estas dos líneas, espera unos segundos, cambia la etiqueta del
--- final por la siguiente y repite. Las 14 etiquetas están abajo.
---
--- update public.reservas set estado = 'pendiente_pago' where stripe_session_id = 'TEST-SKU-01-esencia-oro-sin-grabado';
--- update public.reservas set estado = 'pagado'         where stripe_session_id = 'TEST-SKU-01-esencia-oro-sin-grabado';
---
---   01-esencia-oro-sin-grabado     02-esencia-plata-grabado
---   03-dos-almas-oro               04-dos-almas-plata
---   05-mi-cielo-oro-grabado        06-mi-cielo-plata-sin-grabar
---   07-brazalete-oro-grabado       08-brazalete-plata-grabado
---   09-destino-oro-enero           10-destino-plata-diciembre
---   11-kit-pedacito-oro-grabado    12-kit-pedacito-mixto
---   13-kit-consentida-plata-sept   14-kit-consentida-mixto-junio
+-- ===== PASO 2 · disparar los correos, uno por Run =====
+-- Selecciona UNA línea, Run, cuenta hasta tres, y pasa a la siguiente.
+-- Cada línea manda 2 correos (cliente y negocio) de esa pieza.
+
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-01-esencia-oro-sin-grabado';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-02-esencia-plata-grabado';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-03-dos-almas-oro';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-04-dos-almas-plata';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-05-mi-cielo-oro-grabado';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-06-mi-cielo-plata-sin-grabar';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-07-brazalete-oro-grabado';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-08-brazalete-plata-grabado';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-09-destino-oro-enero';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-10-destino-plata-diciembre';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-11-kit-pedacito-oro-grabado';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-12-kit-pedacito-mixto';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-13-kit-consentida-plata-sept';
+update public.reservas set estado='pagado' where stripe_session_id='TEST-SKU-14-kit-consentida-mixto-junio';
+
+
+-- ===== SI PREFIERES NO IR UNA A UNA =====
+-- Con 4 piezas por Run (8 correos) también suele colarse algún 429, pero
+-- se tarda menos. Selecciona un bloque de 4 líneas del paso 2, Run,
+-- espera ~5 segundos y sigue con el siguiente bloque. Luego comprueba
+-- abajo y relanza solo las que fallen.
 
 
 -- ===== COMPROBAR CÓMO FUE =====
--- Los envíos de los últimos 10 minutos, por código. 200 = enviado,
--- 429 = rechazado por ir demasiado rápido.
+-- 200 = enviado. 429 = rechazado por ir demasiado rápido.
 select status_code, count(*)
 from net._http_response
-where created > now() - interval '10 minutes'
+where created > now() - interval '15 minutes'
 group by status_code
 order by 2 desc;
 
--- Y el detalle, por si algún 429 se coló otra vez:
--- select created, status_code, left(content, 200) as respuesta
--- from net._http_response
--- where created > now() - interval '10 minutes'
--- order by created desc;
+
+-- ===== LIMPIEZA =====
+-- El procedimiento de la versión anterior de este archivo, si llegó a
+-- crearse, ya no sirve para nada:
+-- drop procedure if exists public.reenviar_pruebas_despacio(numeric);
+--
+-- Y para borrar las filas de prueba cuando termines la revisión:
+-- delete from public.reservas where stripe_session_id like 'TEST-SKU-%';
