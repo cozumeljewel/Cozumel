@@ -400,6 +400,29 @@ mes + si lleva grabado**. Esa resolución vive en Supabase.
   verificador lo comprueba en cada pasada, así que si alguien cambia una
   de las dos cosas, salta.
 
+### Límite de envíos de Resend (visto en la prueba del 2026-09-20)
+
+Los 14 pedidos de prueba dispararon 28 emails casi a la vez y **Resend
+devolvió 429 en 18 de ellos**: el plan gratuito admite ~2 envíos por
+segundo y cada pieza manda 2 correos (cliente + negocio). Los emails
+perdidos no se reintentan solos.
+
+En producción esto afecta a **los pedidos de varias piezas**: un carrito
+de 3 piezas son 6 correos de golpe, así que puede perderse alguno —
+incluido el aviso al negocio, que es el que lleva el SKU a pedir. El
+pedido se cobra y se guarda bien igual; lo que se pierde es el aviso.
+
+Formas de arreglarlo, de menos a más trabajo:
+1. Subir de plan en Resend (el de pago sube el límite).
+2. Mandar **un solo email por pedido** en vez de uno por pieza: hoy el
+   disparador es "for each row" (ver `supabase-migracion-v12.sql`).
+   Agrupar por `stripe_session_id` reduce los envíos y de paso deja el
+   email de negocio más legible.
+3. Reintentar los 429 (cola propia). Es lo más costoso.
+
+Para comprobarlo en cualquier momento:
+`select status_code, count(*) from net._http_response group by status_code;`
+
 ## 8. Lo que falta
 
 ### Bloqueante
