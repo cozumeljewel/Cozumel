@@ -161,9 +161,8 @@
 
   <section class="arma-kit" id="arma-tu-kit" aria-label="Arma tu kit">
     <figure class="arma-kit-foto reveal">
-      <!-- Pase automático: las fotos se van cambiando solas con un
-           fundido. Las de plata entran cuando las dos piezas van en
-           plata; en el resto de casos, las de oro (script.js). Las dos
+      <!-- Pase automático: todas las fotos del kit, una detrás de otra,
+           con un fundido y sin depender de lo que se elija abajo. Las dos
            capas se turnan: una se ve y la otra carga la siguiente. -->
       <img src="img/arma-tu-kit-oro-1.jpg" alt="Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo" id="arma-kit-foto-img" class="arma-kit-capa visible">
       <img src="" alt="" aria-hidden="true" class="arma-kit-capa" id="arma-kit-foto-img-b">
@@ -187,6 +186,19 @@
           <div class="kit-material" data-tipo="colgante" role="radiogroup" aria-label="Material del colgante"></div>
         </div>
         <div class="kit-opciones" id="kit-opciones-colgante" role="radiogroup" aria-labelledby="kit-titulo-colgante"></div>
+
+        <!-- Lo elegido, en grande: una foto por pieza, con su material.
+             Las rellena script.js. -->
+        <div class="kit-resumen" id="kit-resumen">
+          <figure class="kit-resumen-pieza" data-hueco="pulsera">
+            <span class="kit-resumen-foto"></span>
+            <figcaption class="kit-resumen-pie"><span class="kit-resumen-rol">Tu pulsera</span><span class="kit-resumen-nombre">Sin elegir</span></figcaption>
+          </figure>
+          <figure class="kit-resumen-pieza" data-hueco="colgante">
+            <span class="kit-resumen-foto"></span>
+            <figcaption class="kit-resumen-pie"><span class="kit-resumen-rol">Tu colgante</span><span class="kit-resumen-nombre">Sin elegir</span></figcaption>
+          </figure>
+        </div>
 
         <a class="btn btn-primary arma-kit-btn is-disabled" id="kit-continuar" href="#kit-selector" aria-disabled="true">Personalizar mi kit →</a>
         <p class="kit-ayuda" id="kit-ayuda" aria-live="polite">Elige una pulsera y un colgante</p>

@@ -2726,7 +2726,7 @@ footer{
 .arma-kit-foto img{width:100%; height:100%; object-fit:cover; display:block;}
 /* Las dos capas del pase, una encima de otra; solo cambia la opacidad,
    así el fundido no mueve ni redibuja el resto de la sección. */
-.arma-kit-capa{position:absolute; inset:0; opacity:0; transition:opacity .9s ease;}
+.arma-kit-capa{position:absolute; inset:0; opacity:0; transition:opacity 2.2s cubic-bezier(.4,0,.2,1);}
 .arma-kit-capa.visible{opacity:1;}
 @media (prefers-reduced-motion:reduce){.arma-kit-capa{transition:none;}}
 .arma-kit-texto{margin:40px auto 0; max-width:44ch; text-align:center;}
@@ -2805,6 +2805,26 @@ footer{
   display:block; aspect-ratio:1; background:#E9E5DF center/175% no-repeat; border-radius:2px;
 }
 .kit-opcion-nombre{font-family:var(--font-sans); font-size:12.5px; line-height:1.3; font-weight:500;}
+/* Resumen de lo elegido: una foto por hueco, con su material. */
+.kit-resumen{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:28px;}
+.kit-resumen-pieza{margin:0;}
+.kit-resumen-foto{
+  display:block; aspect-ratio:1; border-radius:3px;
+  background:#E9E5DF center/cover no-repeat;
+  border:1px dashed rgba(20,69,74,.22);
+}
+.kit-resumen-pieza.esta-elegida .kit-resumen-foto{border:1px solid rgba(20,69,74,.14);}
+.kit-resumen-pie{display:block; margin-top:8px; text-align:center;}
+.kit-resumen-rol{
+  display:block; font-family:var(--font-sans); font-size:10.5px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:#7A5F2A;
+}
+.kit-resumen-nombre{
+  display:block; margin-top:2px; font-family:var(--font-sans); font-size:13px;
+  line-height:1.35; color:var(--ink-soft);
+}
+.kit-resumen-pieza.esta-elegida .kit-resumen-nombre{color:var(--deep); font-weight:500;}
+
 .kit-selector .arma-kit-btn{display:flex; justify-content:center; width:100%; margin-top:28px;}
 .kit-selector .arma-kit-btn.is-disabled{opacity:.45; cursor:not-allowed;}
 .kit-ayuda{margin-top:10px; font-family:var(--font-sans); font-size:13.5px; color:var(--ink-soft); text-align:center;}
