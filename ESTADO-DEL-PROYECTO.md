@@ -390,9 +390,11 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
 3. **Precios.** Todos en `null` → sale "Precio pendiente". Ojo: el Kit
    promete "10% de descuento", así que su precio debe cuadrar con eso.
 4. **Email real en Contacto: hecho (2026-08-27)**, `cozumeljewel@gmail.com`.
-   **Instagram y TikTok** siguen pendientes de definir: el menú móvil
-   (2026-08-29) ya tiene un hueco para los dos, marcado "muy pronto"
-   hasta que haya cuentas/enlaces reales que poner.
+   **Redes sociales: fuera por decisión del cliente (2026-09-20).** La web
+   publicada no enlaza ni menciona Instagram ni TikTok en ninguna página;
+   solo aparecen en `landing-preview.html` y `direccion-artistica.html`,
+   que son páginas de trabajo y no se suben. Cuando haya cuentas, se
+   añaden al menú móvil y al pie.
 5. ~~La imagen de previsualización al compartir~~ **HECHO (2026-08-27).**
    `img/og-image.png`, 1200×630: emblema, COZUMEL JEWELRY y "Regala un
    pedacito de ti" sobre fondo espuma, con el mismo lenguaje visual que la
@@ -401,10 +403,13 @@ borrar junto con las demás (ver el punto de filas de prueba, más abajo).
    `og:description`; `404.html` no lleva.
 
 ### Riesgos señalados y no resueltos
-6. **Las fichas afirman "Acero inoxidable, no se oxida ni pierde color con
-   el uso diario".** No se ha confirmado con el proveedor ni el grado
-   (316L vs 304) ni el tipo de baño. Es una promesa al cliente: conviene
-   verificarla antes de que llegue tráfico real.
+6. ~~Las fichas afirman "Acero inoxidable..."~~ **CONFIRMADO POR EL
+   CLIENTE (2026-09-20).** Las piezas son de acero inoxidable y las
+   doradas llevan baño de oro. Es justo lo que dicen las fichas ("Acero
+   inoxidable de alta calidad, en acabado dorado (baño de oro) o plata"),
+   y los cuidados ya avisan de que el baño de oro puede desgastarse con el
+   uso. No hace falta tocar nada. La frase antigua "no se oxida ni pierde
+   color" solo sobrevive en `landing-preview.html`, que no se publica.
 7. ~~El grabado a mano~~ **RESUELTO (2026-08-26).** Se preguntó a EMANCO y
    confirman que **graban a mano**. La afirmación se queda tal cual está en
    las fichas, en la banda de grabado, en el bloque de confianza y en el
