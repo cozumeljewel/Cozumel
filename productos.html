@@ -161,9 +161,12 @@
 
   <section class="arma-kit" id="arma-tu-kit" aria-label="Arma tu kit">
     <figure class="arma-kit-foto reveal">
-      <!-- La foto sigue al material elegido: en plata cuando las dos
-           piezas van en plata, en oro en el resto de casos (script.js). -->
-      <img src="img/arma-tu-kit-oro-1.jpg" alt="Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo" loading="lazy" id="arma-kit-foto-img">
+      <!-- Pase automático: las fotos se van cambiando solas con un
+           fundido. Las de plata entran cuando las dos piezas van en
+           plata; en el resto de casos, las de oro (script.js). Las dos
+           capas se turnan: una se ve y la otra carga la siguiente. -->
+      <img src="img/arma-tu-kit-oro-1.jpg" alt="Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo" id="arma-kit-foto-img" class="arma-kit-capa visible">
+      <img src="" alt="" aria-hidden="true" class="arma-kit-capa" id="arma-kit-foto-img-b">
     </figure>
     <div class="arma-kit-texto">
       <!-- Selector del kit libre: 1 pulsera + 1 colgante. Las opciones las

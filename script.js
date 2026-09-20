@@ -1379,18 +1379,79 @@ if (ctaReservar) {
     // Foto de la sección: en plata solo cuando las dos piezas van en
     // plata; en cualquier mezcla manda el oro, que es lo que se ve en la
     // foto dorada.
-    const fotoSeccion = document.getElementById('arma-kit-foto-img');
+    /* Pase automático de la foto de la sección. Dos capas <img> que se
+       turnan: la de abajo carga la siguiente y se funde encima. Cambia
+       sola cada 5 s, se para si la pestaña no está a la vista o si el
+       sistema pide menos movimiento, y al cambiar de material arranca de
+       nuevo con las fotos de ese acabado. */
+    const capaA = document.getElementById('arma-kit-foto-img');
+    const capaB = document.getElementById('arma-kit-foto-img-b');
     const FOTOS_SECCION = {
-      oro: { src: 'img/arma-tu-kit-oro-1.jpg', alt: 'Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo' },
-      plata: { src: 'img/arma-tu-kit-plata-1.jpg', alt: 'Caja de regalo de Cozumel abierta con un collar y un brazalete plateados, grabados' },
+      oro: [
+        { src: 'img/arma-tu-kit-oro-1.jpg', alt: 'Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo' },
+        { src: 'img/arma-tu-kit-oro-2.jpg', alt: 'Caja de regalo abierta con un collar de flor y un brazalete dorados, grabado con una fecha' },
+      ],
+      plata: [
+        { src: 'img/arma-tu-kit-plata-1.jpg', alt: 'Caja de regalo abierta con un collar de placa y un brazalete plateados, grabados' },
+        { src: 'img/arma-tu-kit-plata-2.jpg', alt: 'Caja de regalo abierta con un collar de flor y un brazalete plateados' },
+      ],
     };
+    const PASE_MS = 5000;
+    let acabadoFoto = 'oro', indiceFoto = 0, capaVisible = capaA, temporizadorFoto = null;
+    const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const ponerFoto = (foto, conFundido) => {
+      if (!capaA || !capaB) return;
+      const entra = capaVisible === capaA ? capaB : capaA;
+      if (!conFundido) {
+        capaVisible.src = foto.src;
+        capaVisible.alt = foto.alt;
+        return;
+      }
+      // Si había un cambio esperando a que cargase su foto, se descarta:
+      // si no, al resolverse los dos se apagaban entre sí y la sección se
+      // quedaba sin foto.
+      capaA.onload = null;
+      capaB.onload = null;
+      entra.src = foto.src;
+      entra.alt = foto.alt;
+      const mostrar = () => {
+        entra.classList.add('visible');
+        const sale = entra === capaA ? capaB : capaA;
+        sale.classList.remove('visible');
+        // La que sale deja de anunciarse al lector de pantalla.
+        sale.setAttribute('aria-hidden', 'true');
+        sale.alt = '';
+        entra.removeAttribute('aria-hidden');
+        capaVisible = entra;
+      };
+      if (entra.complete && entra.naturalWidth) mostrar();
+      else entra.onload = mostrar;
+    };
+
+    const pararPase = () => { clearInterval(temporizadorFoto); temporizadorFoto = null; };
+    const arrancarPase = () => {
+      pararPase();
+      if (!capaA || !capaB || sinMovimiento.matches) return;
+      if (FOTOS_SECCION[acabadoFoto].length < 2) return;
+      temporizadorFoto = setInterval(() => {
+        if (document.hidden) return;
+        indiceFoto = (indiceFoto + 1) % FOTOS_SECCION[acabadoFoto].length;
+        ponerFoto(FOTOS_SECCION[acabadoFoto][indiceFoto], true);
+      }, PASE_MS);
+    };
+
     const pintarFotoSeccion = () => {
-      if (!fotoSeccion) return;
       const cual = (material.pulsera === 'plata' && material.colgante === 'plata') ? 'plata' : 'oro';
-      if (fotoSeccion.getAttribute('src') === FOTOS_SECCION[cual].src) return;
-      fotoSeccion.setAttribute('src', FOTOS_SECCION[cual].src);
-      fotoSeccion.setAttribute('alt', FOTOS_SECCION[cual].alt);
+      if (cual === acabadoFoto) return;
+      acabadoFoto = cual;
+      indiceFoto = 0;
+      ponerFoto(FOTOS_SECCION[cual][0], true);
+      arrancarPase();
     };
+
+    sinMovimiento.addEventListener('change', arrancarPase);
+    arrancarPase();
 
     const refrescar = () => {
       const listo = elegido.pulsera && elegido.colgante;
