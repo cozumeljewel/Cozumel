@@ -79,6 +79,17 @@ def variantes():
 def main():
     excel = pd.read_excel(EXCEL)
     catalogo = set(str(s).strip() for s in excel['SKU'].dropna())
+
+    # Mes de cada referencia del Collar Destino, anotado por el cliente en
+    # el Excel del proveedor (columna suelta, sin encabezado). Confirma el
+    # orden W1=enero ... W12=diciembre que usa la función de Supabase.
+    col_mes = [c for c in excel.columns if str(c).startswith('Unnamed')]
+    meses_excel = {}
+    for col in col_mes:
+        for sku, val in zip(excel['SKU'], excel[col]):
+            texto = str(val).strip().lower()
+            if texto in MESES:
+                meses_excel[str(sku).strip()] = texto
     # El Excel lista los sub-SKU del collar de dos cadenas, pero EMANCO
     # pide el combinado: se añaden a mano desde la columna ITEM.
     catalogo |= set(str(s).strip() for s in excel['ITEM'].dropna() if str(s).startswith('CDNN'))
@@ -90,6 +101,15 @@ def main():
         desconocidas = [t for t in piezas if t not in catalogo]
         if desconocidas:
             fallos.append((nombre, pers, sku, desconocidas))
+
+        # Si la pieza lleva mes, la referencia dorada tiene que ser la que
+        # el Excel marca con ESE mes (el plateado comparte número).
+        if pers.get('mes'):
+            for t in piezas:
+                dorado = t.replace('A0W', 'D0W')
+                if dorado in meses_excel and meses_excel[dorado] != pers['mes']:
+                    fallos.append((nombre, pers, sku,
+                                   [f"{t} es de {meses_excel[dorado]}, no de {pers['mes']}"]))
         filas.append({
             'Pieza': nombre,
             'Acabado': pers.get('acabado') or f"collar {pers.get('acabado__collar_esencial') or pers.get('acabado__collar_flor_natal')} / pulsera {pers.get('acabado__pulsera_vinculo') or pers.get('acabado__pulsera_nombre')}",
@@ -105,6 +125,7 @@ def main():
         w.writeheader(); w.writerows(filas)
 
     print(f'{len(filas)} variantes comprobadas contra {len(catalogo)} referencias del Excel')
+    print(f'{len(meses_excel)} referencias del Collar Destino con mes anotado en el Excel')
     print(f'CSV: {os.path.relpath(SALIDA, RAIZ)}')
     if fallos:
         print(f'\n{len(fallos)} VARIANTES CON SKU QUE NO ESTÁ EN EL EXCEL:')

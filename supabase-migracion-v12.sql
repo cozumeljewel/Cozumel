@@ -22,11 +22,10 @@
 --      Solo pedidos PAGADOS: los carritos abandonados y los pagos
 --      cancelados no aparecen.
 --
--- ⚠️ SIGUE SIN CONFIRMAR con EMANCO el orden de los meses del Collar
--- Destino (enero = W1 ... diciembre = W12). Es una suposición tomada del
--- orden del Excel de SKU. Si el proveedor dice otra cosa, se corrige en
--- el bloque "mes_num :=" de la función de abajo y queda corregido a la
--- vez en el email y en la exportación.
+-- Orden de los meses del Collar Destino: CONFIRMADO (2026-09-20). El
+-- Excel del proveedor trae anotado el mes de cada referencia y coincide
+-- con lo que hace esta función: W1 = enero ... W12 = diciembre. Lo
+-- comprueba también scripts/verificar-sku.py en cada pasada.
 -- ============================================================
 
 -- ---- 1) La referencia de EMANCO para una pieza ya configurada ----

@@ -394,11 +394,11 @@ mes + si lleva grabado**. Esa resolución vive en Supabase.
   `nombre`, `fecha`, `mensaje`, `grabado`) son exactamente las que lee la
   función. Se verificó abriendo las 7 fichas en oro y en plata y leyendo
   lo que se guarda.
-- **Lo único sin confirmar sigue siendo el orden de los meses** del
-  Collar Destino (enero = W1 ... diciembre = W12). Es una suposición del
-  orden del Excel. Si EMANCO dice otra cosa, se corrige en el bloque
-  `mes_num :=` de la función y queda arreglado en el email y en la
-  exportación a la vez.
+- **Orden de los meses del Collar Destino: CONFIRMADO (2026-09-20).** El
+  cliente anotó en el Excel del proveedor el mes de cada referencia:
+  W1 = enero ... W12 = diciembre, que es justo lo que hace la función. El
+  verificador lo comprueba en cada pasada, así que si alguien cambia una
+  de las dos cosas, salta.
 
 ## 8. Lo que falta
 
