@@ -368,6 +368,38 @@ horizontal y errores de JS. El objetivo siempre es **0 fallos**.
 
 ---
 
+## 7 bis. Pedidos para el proveedor (SKU y exportación)
+
+La referencia que hay que pedirle a EMANCO sale de **producto + acabado +
+mes + si lleva grabado**. Esa resolución vive en Supabase.
+
+- **`supabase-migracion-v12.sql` (pendiente de ejecutar).** Saca el
+  cálculo del SKU fuera del email a una función,
+  `public.sku_de_pedido(producto, personalizacion)`, y crea la vista
+  **`public.pedidos_proveedor`**: una fila por pieza, con el SKU ya
+  resuelto, el grabado, el importe y los datos de envío, solo de pedidos
+  pagados. Se exporta desde el panel de Supabase: Table Editor →
+  `pedidos_proveedor` → Export to CSV. Antes de esto, el SKU solo existía
+  dentro del email de pedido pagado.
+- **`scripts/verificar-sku.py`.** Recorre las 94 combinaciones comprables
+  (7 piezas × acabados × 12 meses × con y sin grabado), resuelve el SKU
+  con la misma lógica y comprueba una a una que existe en
+  `SKU PRODUCTOS COLECCIÓN 1/Cozumel SKU.xls`. Deja la matriz completa en
+  `docs/sku-todas-las-variantes.csv`. Ejecutar después de tocar
+  `productos.js`, la función SQL o el Excel del proveedor.
+- **Comprobado el 2026-09-20:** las 94 variantes resuelven un SKU que
+  existe en el Excel, y las claves que guarda la web (`acabado`,
+  `acabado__collar_esencial`, `acabado__pulsera_vinculo`,
+  `acabado__collar_flor_natal`, `acabado__pulsera_nombre`, `mes`,
+  `nombre`, `fecha`, `mensaje`, `grabado`) son exactamente las que lee la
+  función. Se verificó abriendo las 7 fichas en oro y en plata y leyendo
+  lo que se guarda.
+- **Lo único sin confirmar sigue siendo el orden de los meses** del
+  Collar Destino (enero = W1 ... diciembre = W12). Es una suposición del
+  orden del Excel. Si EMANCO dice otra cosa, se corrige en el bloque
+  `mes_num :=` de la función y queda arreglado en el email y en la
+  exportación a la vez.
+
 ## 8. Lo que falta
 
 ### Bloqueante
