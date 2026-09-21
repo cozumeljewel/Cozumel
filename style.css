@@ -2134,9 +2134,23 @@ details p{margin-top:10px; font-size:13.5px; color:var(--ink-soft); line-height:
   background:none; border:none; color:var(--ink-soft); font-size:18px; line-height:1; cursor:pointer;
 }
 .carrito-item-quitar:hover{color:#8A4038;}
+/* "Añadir otra pieza" era un enlace subrayado de 12px que no se veía.
+   Ahora es un botón de verdad, del ancho del carrito y con borde dorado
+   punteado: se lee como una invitación a seguir eligiendo, sin competir
+   con el botón de pagar, que sigue siendo el único relleno. */
 .carrito-anadir-mas{
-  display:block; margin:14px auto 0; text-align:center;
-  font-size:12.5px; color:var(--sea-dark); text-decoration:underline;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  max-width:340px; margin:18px auto 0; padding:15px 20px;
+  border:1.5px dashed var(--gold-deep); border-radius:var(--radius-full);
+  background:var(--white, #fff);
+  font-family:var(--font-sans); font-size:15px; font-weight:500; letter-spacing:.02em;
+  color:var(--deep); text-decoration:none;
+  transition:background-color .2s ease, border-color .2s ease;
+}
+.carrito-anadir-mas:hover{background:var(--shallow); border-style:solid;}
+.carrito-anadir-mas:focus-visible{outline:2px solid var(--deep); outline-offset:2px;}
+@media (min-width:900px){
+  .carrito-anadir-mas{font-size:16px; padding:16px 22px;}
 }
 .carrito-total{
   margin:20px auto 0; max-width:340px; padding-top:14px; border-top:1px solid var(--line-2);
