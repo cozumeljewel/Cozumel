@@ -1991,9 +1991,21 @@ body[data-page="historia"] .historia::before{content:none;}
 }
 /* Microinteracción al pulsar: un pequeño "hundido" elegante, nada de
    rebotes. Solo con movimiento activado (ver la guardia de abajo). */
+/* El botón de comprar es el que más tiene que pesar de la página: más
+   alto, más texto y con algo de relieve para que se note pulsable. No se
+   toca el color de marca ni la forma, solo la escala. */
 #cta-reservar{
   display:flex; align-items:center; justify-content:center; gap:10px;
-  transition:transform .15s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+  padding:22px 28px; font-size:17.5px; letter-spacing:.02em;
+  box-shadow:0 6px 18px rgba(11,46,51,.18);
+  transition:transform .15s ease, background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+#cta-reservar:hover{box-shadow:0 8px 22px rgba(11,46,51,.24);}
+/* El precio, justo encima, acompaña al botón. */
+.price-placeholder strong{font-size:30px;}
+@media (min-width:900px){
+  #cta-reservar{padding:24px 32px; font-size:19px;}
+  .price-placeholder strong{font-size:34px;}
 }
 #cta-reservar:active{transform:scale(.97);}
 

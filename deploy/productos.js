@@ -27,6 +27,8 @@
                                las piezas sueltas menos el del kit) y solo
                                se enseña si sale positivo.
      piezas:         ['id','id']      qué piezas forman un kit (para ese ahorro)
+     limites:        { grabado: 0 }   tope de caracteres de un campo, si se
+                               quiere distinto del general. 0 = sin tope.
      tipo:           'pulsera' | 'colgante'  en qué hueco de "Arma tu kit" entra
      fotos:          UNA GALERÍA POR ACABADO (lo recomendado ahora):
                        fotos: {
@@ -189,7 +191,7 @@ const PRODUCTOS = [
     caracteristicas: [
       'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Doble cadena: fina + placa grabable',
-      'Grabado de alta calidad, personalizable con nombre, fecha o mensaje corto',
+      'Grabado de alta calidad, personalizable con lo que quieras: un nombre, una fecha o una frase',
     ],
     cierre: 'Para que lleve puesto un pedacito de ti',
     // Precio maestro en pesos mexicanos. El resto de mercados se
@@ -199,7 +201,13 @@ const PRODUCTOS = [
     // SKU proveedor (Yiwu Lantiao). El grabado va como linea aparte: 'diaoke'
     sku: { oro:'CDNN067-2', plata:'CDNN067-1', grabado:'diaoke' },
     forma: 'placa',
-    campos: ['nombre', 'fecha', 'mensaje'],
+    // Una sola casilla de grabado, libre: cabe un nombre, una fecha o una
+    // frase, y quien compra decide. "limites: { grabado: 0 }" quita el
+    // tope de caracteres (0 = sin límite). Antes eran tres casillas
+    // (nombre + fecha + mensaje); los pedidos viejos con esas claves se
+    // siguen leyendo igual en el carrito y en el email.
+    campos: ['grabado'],
+    limites: { grabado: 0 },
     destacado: false,
     // FOTOS PROVISIONALES. Portada con 4 fotos (no 2 como en las
     // pulseras): la 4 y la 5 de cada acabado, que también cierran la
@@ -284,7 +292,9 @@ const PRODUCTOS = [
       { campo: 'acabado__pulsera_vinculo', label: 'Acabado de la pulsera', pieza: 'Pulsera' },
     ],
     forma: 'placa',
-    campos: ['nombre', 'fecha', 'mensaje'],
+    // El kit lleva el Collar Esencia: mismo grabado libre que la pieza suelta.
+    campos: ['grabado'],
+    limites: { grabado: 0 },
     destacado: false,
     // Abre con su cartel propio (las dos piezas en sus cajas de regalo,
     // que es lo que se recibe, con el nombre del kit, igual que el de Mi

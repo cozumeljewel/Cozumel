@@ -338,6 +338,15 @@ function esKitLibre(prod) {
   return !!prod && prod.id === 'kit_personalizado';
 }
 
+/* Tope de caracteres de un campo: manda el del producto ("limites") si lo
+   declara, y 0 significa sin tope (el Collar Esencia, con su grabado
+   libre). Si no declara nada, el general de CAMPOS_META. */
+function topeDeCampo(prod, campo, meta) {
+  const propio = prod && prod.limites ? prod.limites[campo] : undefined;
+  const tope = propio === undefined ? (meta ? meta.max : null) : propio;
+  return tope ? tope : null; // null = sin maxlength
+}
+
 /* Resumen en una línea, para el recap y el bloque de producto */
 function resumenGrabado(prod, datos) {
   if (esKitLibre(prod)) {
@@ -989,7 +998,8 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
     const input = document.createElement('input');
     input.type = 'text';
     input.id = 'in-' + campo;
-    input.maxLength = meta.max;
+    const tope = topeDeCampo(prod, campo, meta);
+    if (tope) input.maxLength = tope;
     input.placeholder = meta.placeholder;
     input.value = datos[campo] || '';
 
@@ -1675,7 +1685,8 @@ if (ctaReservar) {
         input.type = 'text';
         input.id = idCampo;
         input.className = 'kit-campo-input';
-        input.maxLength = meta.max || 30;
+        const tope = topeDeCampo(prod, campo, meta);
+        if (tope) input.maxLength = tope;
         input.placeholder = meta.placeholder || '';
         input.value = grabados[hueco][campo] || '';
         input.addEventListener('input', () => { grabados[hueco][campo] = input.value.trim(); });
