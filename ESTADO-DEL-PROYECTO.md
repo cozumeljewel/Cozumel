@@ -452,6 +452,14 @@ calcula solo.
 - **Kits:** tienen precio propio (949 MXN), no la suma de las piezas. El
   ahorro que se enseña se calcula (piezas sueltas − kit) y solo aparece
   si es positivo.
+- **"Arma tu kit" (kit a tu gusto):** se configura ENTERO en esa sección
+  —pieza, acabado y grabado de cada una— y de ahí se va directo al pago.
+  Viaja como el producto `kit_personalizado`, que **cuesta lo mismo que
+  los kits cerrados** lleve las piezas que lleve. Qué piezas lleva va en
+  `personalizacion` (`pieza_1`, `pieza_2`, `acabado__pieza_N`, y el
+  grabado de cada una con prefijo `p1__`/`p2__`), y el SKU lo compone
+  `supabase-migracion-v15.sql` juntando el de cada pieza. El recorrido
+  antiguo en dos pasos (una ficha por pieza) ya no existe.
 - **Carrito:** cada línea guarda producto, variante, cantidad, mercado,
   moneda y precio. Al cambiar de país se repuntúa sola, sin perder
   grabados ni duplicar piezas.

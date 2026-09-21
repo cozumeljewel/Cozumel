@@ -318,8 +318,36 @@ function lineasDePieza(prod, datos) {
   return ['', '', ''];
 }
 
+/* El kit a tu gusto no tiene campos propios: lleva dos piezas dentro,
+   cada una con su grabado bajo el prefijo p1__ / p2__. Esto lo deshace
+   para poder enseñarlo en el carrito y en el recap igual que el resto. */
+function piezasDelKitLibre(datos) {
+  if (!datos) return [];
+  return [['pieza_1', 'p1__'], ['pieza_2', 'p2__']].map(([clave, prefijo]) => {
+    const prod = (typeof PRODUCTOS !== 'undefined') ? PRODUCTOS.find(p => p.id === datos[clave]) : null;
+    if (!prod) return null;
+    const grabado = {};
+    Object.keys(datos).forEach(k => {
+      if (k.startsWith(prefijo)) grabado[k.slice(prefijo.length)] = datos[k];
+    });
+    return { prod, grabado, acabado: datos['acabado__' + clave] || 'oro' };
+  }).filter(Boolean);
+}
+
+function esKitLibre(prod) {
+  return !!prod && prod.id === 'kit_personalizado';
+}
+
 /* Resumen en una línea, para el recap y el bloque de producto */
 function resumenGrabado(prod, datos) {
+  if (esKitLibre(prod)) {
+    return piezasDelKitLibre(datos)
+      .map(({ prod: pieza, grabado }) => {
+        const texto = lineasDePieza(pieza, grabado).filter(Boolean).join(' · ');
+        return texto ? pieza.nombre + ': ' + texto : pieza.nombre;
+      })
+      .join('  ·  ');
+  }
   return lineasDePieza(prod, datos).filter(Boolean).join(' · ');
 }
 
@@ -430,7 +458,7 @@ const gridKits = document.getElementById('producto-grid-kits');
 if (grid && typeof PRODUCTOS !== 'undefined') {
   // Los kits (id que empieza por "kit_") van en su propia rejilla, con el
   // separador que hay en productos.html entre las dos.
-  PRODUCTOS.forEach(prod => {
+  PRODUCTOS.filter(prod => !prod.oculto).forEach(prod => {
     const destino = prod.id.startsWith('kit_') && gridKits ? gridKits : grid;
     destino.appendChild(crearTarjetaProducto(prod));
   });
@@ -1585,6 +1613,79 @@ if (ctaReservar) {
     /* Resumen: la pieza elegida de cada hueco, en foto grande y con el
        material puesto. Es lo que deja ver de verdad qué se está armando;
        la foto de arriba va a su aire. */
+    // Grabado de cada hueco: { pulsera: {grabado:'...'}, colgante: {...} }
+    const grabados = { pulsera: {}, colgante: {} };
+
+    /* Campos de grabado de una pieza, dentro del propio panel: la
+       selección entera (pieza + material + grabado) se hace en esta
+       pantalla, y de aquí se va directo al pago. Reutiliza CAMPOS_META,
+       el mismo catálogo de campos que usa la ficha de producto. */
+    const pintarCamposPieza = (fig, prod, hueco) => {
+      const previa = fig.querySelector('.kit-campos');
+      if (previa) previa.remove();
+      if (!prod || !prod.campos || !prod.campos.length) return;
+
+      const caja = document.createElement('div');
+      caja.className = 'kit-campos';
+
+      prod.campos.forEach(campo => {
+        const meta = CAMPOS_META[campo];
+        if (!meta) return;
+
+        if (meta.tipo === 'color') {
+          const wrap = document.createElement('div');
+          wrap.className = 'kit-campo kit-campo--mes';
+          const label = document.createElement('label');
+          label.className = 'kit-campo-label';
+          label.textContent = meta.label;
+          const picker = document.createElement('div');
+          picker.className = 'kit-meses';
+          grabados[hueco][campo] = grabados[hueco][campo] || meta.opciones[0].valor;
+          meta.opciones.forEach(opcion => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'kit-mes' + (opcion.valor === grabados[hueco][campo] ? ' activo' : '');
+            btn.title = opcion.mes;
+            const punto = document.createElement('span');
+            punto.className = 'dot';
+            punto.style.background = opcion.color;
+            const abr = document.createElement('span');
+            abr.textContent = opcion.mes.slice(0, 3);
+            btn.append(punto, abr);
+            btn.addEventListener('click', () => {
+              grabados[hueco][campo] = opcion.valor;
+              picker.querySelectorAll('.kit-mes').forEach(b => b.classList.remove('activo'));
+              btn.classList.add('activo');
+            });
+            picker.appendChild(btn);
+          });
+          wrap.append(label, picker);
+          caja.appendChild(wrap);
+          return;
+        }
+
+        const wrap = document.createElement('div');
+        wrap.className = 'kit-campo';
+        const idCampo = 'kit-' + hueco + '-' + campo;
+        const label = document.createElement('label');
+        label.className = 'kit-campo-label';
+        label.setAttribute('for', idCampo);
+        label.textContent = meta.label + (meta.opcional ? ' (opcional)' : '');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = idCampo;
+        input.className = 'kit-campo-input';
+        input.maxLength = meta.max || 30;
+        input.placeholder = meta.placeholder || '';
+        input.value = grabados[hueco][campo] || '';
+        input.addEventListener('input', () => { grabados[hueco][campo] = input.value.trim(); });
+        wrap.append(label, input);
+        caja.appendChild(wrap);
+      });
+
+      fig.appendChild(caja);
+    };
+
     const pintarResumen = () => {
       document.querySelectorAll('.kit-resumen-pieza').forEach(fig => {
         const hueco = fig.dataset.hueco;
@@ -1595,33 +1696,40 @@ if (ctaReservar) {
         if (!prod) {
           foto.style.backgroundImage = '';
           nombre.textContent = 'Sin elegir';
+          pintarCamposPieza(fig, null, hueco);
           return;
         }
         const src = fotosDe(prod, material[hueco]).map(f => normFoto(f).src)[0] || fotoDe(prod, material[hueco]);
         foto.style.backgroundImage = src ? `url('${src}')` : '';
         nombre.textContent = prod.nombre + ' · ' + (material[hueco] === 'plata' ? 'plata' : 'oro');
+        pintarCamposPieza(fig, prod, hueco);
       });
     };
 
     sinMovimiento.addEventListener('change', arrancarPase);
     arrancarPase();
 
+    // El kit a tu gusto cuesta lo MISMO que los kits cerrados: es un
+    // producto con precio propio, no la suma de las dos piezas.
+    const productoKit = PRODUCTOS.find(p => p.id === 'kit_personalizado');
+
     const refrescar = () => {
       pintarResumen();
       const listo = elegido.pulsera && elegido.colgante;
       continuar.classList.toggle('is-disabled', !listo);
+      const precioKit = productoKit ? precioTexto(productoKit) : null;
+      continuar.textContent = listo && precioKit ? 'Ir a pagar · ' + precioKit : 'Arma tu kit';
       if (listo) {
         continuar.removeAttribute('aria-disabled');
-        continuar.href = 'personalizar.html?p=' + encodeURIComponent(elegido.pulsera.slug)
-          + '&acabado=' + material.pulsera
-          + '&kit=' + encodeURIComponent(elegido.colgante.slug)
-          + '&kitacabado=' + material.colgante;
         const txt = { oro: 'oro', plata: 'plata' };
+        const ahorro = productoKit
+          ? ahorroKit(productoKit, [elegido.pulsera.id, elegido.colgante.id])
+          : null;
         ayuda.textContent = elegido.pulsera.nombre + ' en ' + txt[material.pulsera]
-          + ' + ' + elegido.colgante.nombre + ' en ' + txt[material.colgante];
+          + ' + ' + elegido.colgante.nombre + ' en ' + txt[material.colgante]
+          + (ahorro ? ' · ahorras ' + ahorro.texto : '');
       } else {
         continuar.setAttribute('aria-disabled', 'true');
-        continuar.href = '#kit-selector';
         ayuda.textContent = !elegido.pulsera && !elegido.colgante
           ? 'Elige una pulsera y un colgante'
           : (elegido.pulsera ? 'Ahora elige tu colgante' : 'Ahora elige tu pulsera');
@@ -1694,58 +1802,68 @@ if (ctaReservar) {
       marcar();
     });
 
+    const avisar = (texto) => {
+      if (texto) ayuda.textContent = texto;
+      ayuda.classList.remove('kit-ayuda--aviso');
+      void ayuda.offsetWidth; // reinicia la animación del aviso
+      ayuda.classList.add('kit-ayuda--aviso');
+    };
+
     continuar.addEventListener('click', e => {
-      if (continuar.classList.contains('is-disabled')) {
-        e.preventDefault();
-        ayuda.classList.remove('kit-ayuda--aviso');
-        void ayuda.offsetWidth; // reinicia la animación del aviso
-        ayuda.classList.add('kit-ayuda--aviso');
+      e.preventDefault();
+
+      if (continuar.classList.contains('is-disabled') || !productoKit) {
+        avisar();
+        return;
       }
+
+      // Falta algún grabado obligatorio: se avisa y no se sigue.
+      const falta = ['pulsera', 'colgante'].find(hueco => (elegido[hueco].campos || []).some(campo => {
+        const meta = CAMPOS_META[campo];
+        return meta && !meta.opcional && meta.tipo !== 'color' && !(grabados[hueco][campo] || '').trim();
+      }));
+      if (falta) {
+        avisar('Escribe el grabado de tu ' + falta);
+        const vacio = document.querySelector('.kit-resumen-pieza[data-hueco="' + falta + '"] .kit-campo-input');
+        if (vacio) vacio.focus();
+        return;
+      }
+
+      /* Qué dos piezas, con qué acabado y con qué grabado cada una. El
+         prefijo p1__/p2__ mantiene separados los grabados de las dos
+         piezas; la base de datos lo deshace para resolver el SKU de cada
+         una (ver supabase-migracion-v15.sql). */
+      const personalizacion = {
+        pieza_1: elegido.pulsera.id,
+        pieza_2: elegido.colgante.id,
+        acabado__pieza_1: material.pulsera,
+        acabado__pieza_2: material.colgante,
+      };
+      Object.entries(grabados.pulsera).forEach(([k, v]) => { if (v) personalizacion['p1__' + k] = v; });
+      Object.entries(grabados.colgante).forEach(([k, v]) => { if (v) personalizacion['p2__' + k] = v; });
+
+      const precio = precioDe(productoKit);
+      anadirKitAlCarrito(productoKit, personalizacion, precio);
+      window.location.href = 'comprar.html';
     });
+
+    function anadirKitAlCarrito(prodKit, personalizacion, precio) {
+      añadirAlCarrito(normalizarItemCarrito({
+        producto: prodKit.id,
+        cantidad: 1,
+        personalizacion,
+        mercado: precio ? precio.mercado : null,
+        moneda: precio ? precio.moneda : null,
+        precio: precio ? precio.importe : null,
+      }));
+    }
     refrescar();
   }
 
-  /* ---- Pasos, en personalizar.html ---- */
-  const pasos = document.getElementById('kit-pasos');
-  const cta = document.getElementById('cta-reservar');
-  if (!pasos || !cta) return;
-  const params = new URLSearchParams(location.search);
-  const actual = getProductoPorSlug(params.get('p') || '');
-  const siguiente = getProductoPorSlug(params.get('kit') || '');
-  const esPaso2 = params.get('kitpaso') === '2';
-
-  // Material elegido en el selector: se marca en la ficha pulsando su
-  // botón de acabado, así la galería y lo que se guarda van a la par.
-  const acabadoPedido = params.get('acabado');
-  if (acabadoPedido === 'oro' || acabadoPedido === 'plata') {
-    const op = document.querySelector('#acabado-contenedor .acabado-op[data-acabado="' + acabadoPedido + '"]');
-    if (op && op.getAttribute('aria-checked') !== 'true') op.click();
-  }
-  const acabadoSiguiente = params.get('kitacabado') === 'plata' ? 'plata' : 'oro';
-
-  const pintar = (paso, texto) => {
-    pasos.textContent = '';
-    const et = document.createElement('p');
-    et.className = 'kit-pasos-etiqueta';
-    et.textContent = 'Arma tu kit · Paso ' + paso + ' de 2';
-    const tx = document.createElement('p');
-    tx.className = 'kit-pasos-texto';
-    tx.textContent = texto;
-    pasos.append(et, tx);
-    pasos.hidden = false;
-  };
-
-  if (actual && actual.tipo === 'pulsera' && siguiente && siguiente.tipo === 'colgante') {
-    pintar(1, 'Personaliza tu pulsera. Después, tu ' + siguiente.nombre + '.');
-    cta.href = 'personalizar.html?p=' + encodeURIComponent(siguiente.slug)
-      + '&acabado=' + acabadoSiguiente + '&kitpaso=2';
-    const t = cta.querySelector('.cta-texto');
-    if (t) t.textContent = 'Siguiente: tu colgante →';
-    const sticky = document.getElementById('cta-sticky-btn');
-    if (sticky) sticky.textContent = 'Siguiente: tu colgante';
-  } else if (actual && actual.tipo === 'colgante' && esPaso2) {
-    pintar(2, 'Tu pulsera ya está en el carrito. Ahora, tu colgante: las dos piezas irán juntas.');
-  }
+  /* Antes, el kit se armaba en dos pasos (una ficha por pieza). Ahora se
+     configura entero en la propia sección "Arma tu kit" y de ahí se va al
+     pago, así que ese recorrido y su aviso de "Paso 1 de 2" ya no
+     existen. */
 })();
 
 /* ---------- CTA STICKY (ficha de producto) ----------
@@ -2158,6 +2276,12 @@ if (reservaForm) {
      Una pieza suelta: "Bañado en oro". Un kit (varios grupos): una línea
      por pieza del kit, con su etiqueta corta ("pieza" en productos.js). */
   function resumenAcabado(prod, datos) {
+    if (esKitLibre(prod)) {
+      return piezasDelKitLibre(datos)
+        .map(({ prod: pieza, acabado }) =>
+          pieza.nombre + ': ' + (acabado === 'plata' ? 'Plateado' : 'Bañado en oro'))
+        .join(' · ');
+    }
     const grupos = (prod.acabados && prod.acabados.length)
       ? prod.acabados
       : [{ campo: 'acabado', pieza: null }];

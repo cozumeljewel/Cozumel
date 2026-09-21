@@ -2877,13 +2877,32 @@ footer{
   .kit-opcion-nombre{font-size:13.5px;}
 }
 
-/* ---------- ARMA TU KIT · pasos (personalizar.html) ---------- */
-.kit-pasos{
-  margin:0; padding:14px 24px; background:var(--hero-arena); text-align:center;
+
+/* ---------- ARMA TU KIT · grabado de cada pieza ----------
+   Va dentro de la tarjeta de la pieza elegida: toda la configuración del
+   kit (pieza, material y grabado) ocurre en esta pantalla, y de aquí se
+   pasa al pago. */
+.kit-campos{margin-top:10px; display:flex; flex-direction:column; gap:10px; text-align:left;}
+.kit-campo-label{
+  display:block; margin-bottom:4px;
+  font-family:var(--font-sans); font-size:10.5px; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; color:#7A5F2A;
 }
-.kit-pasos[hidden]{display:none;}
-.kit-pasos-etiqueta{
-  font-family:var(--font-sans); font-size:11.5px; font-weight:600; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--deep);
+.kit-campo-input{
+  width:100%; box-sizing:border-box; padding:9px 10px;
+  border:1px solid rgba(20,69,74,.2); border-radius:3px; background:var(--white, #fff);
+  font-family:var(--font-sans); font-size:13.5px; color:var(--ink);
 }
-.kit-pasos-texto{margin-top:4px; font-family:var(--font-sans); font-size:14.5px; line-height:1.45; color:var(--deep);}
+.kit-campo-input::placeholder{color:var(--muted); opacity:.8;}
+.kit-campo-input:focus-visible{outline:2px solid var(--deep); outline-offset:1px;}
+/* Los 12 meses, en rejilla compacta para que quepan en el panel. */
+.kit-meses{display:grid; grid-template-columns:repeat(4, 1fr); gap:5px;}
+.kit-mes{
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:6px 2px; cursor:pointer;
+  background:var(--white, #fff); border:1px solid rgba(20,69,74,.16); border-radius:3px;
+  font-family:var(--font-sans); font-size:10px; letter-spacing:.04em; color:var(--ink-soft);
+}
+.kit-mes .dot{width:12px; height:12px; border-radius:50%; box-shadow:0 1px 2px rgba(20,69,74,.25);}
+.kit-mes.activo{border-color:#B08A3E; color:var(--deep); font-weight:600;}
+.kit-mes:focus-visible{outline:2px solid var(--deep); outline-offset:1px;}

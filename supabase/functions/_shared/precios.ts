@@ -21,6 +21,7 @@ export const PRECIOS_MXN: Record<string, number | null> = {
   collar_flor_natal: 599,     // Colgante de los meses
   kit_pedacito_nosotros: 949, // Kit de 2 piezas (precio propio, no la suma)
   kit_mi_consentida: 949,
+  kit_personalizado: 949,      // Kit a tu gusto: mismo precio que los cerrados
 };
 
 // ---- Precios manuales por mercado ----

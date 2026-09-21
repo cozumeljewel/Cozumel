@@ -367,6 +367,32 @@ const PRODUCTOS = [
       ],
     },
   },
+
+  /* ---------------------------------------------------------------
+     KIT A TU GUSTO · el kit que arma el cliente (1 pulsera + 1 colgante)
+     No sale en la colección (oculto) ni tiene ficha propia: se configura
+     entero en la sección "Arma tu kit" de productos.html y de ahí va al
+     pago. Cuesta lo MISMO que los kits cerrados, tenga las piezas que
+     tenga: por eso es un producto con precio propio y no la suma de dos.
+     Qué piezas lleva y con qué grabado viaja en "personalizacion":
+       pieza_1 / pieza_2            → ids de las piezas elegidas
+       acabado__pieza_1 / _pieza_2  → oro o plata, una por pieza
+       p1__nombre, p2__mes, ...     → el grabado de cada pieza
+     El SKU lo resuelve la base de datos juntando el de cada pieza (ver
+     supabase-migracion-v15.sql).
+     --------------------------------------------------------------- */
+  {
+    id: 'kit_personalizado',
+    slug: 'kit-a-tu-gusto',
+    nombre: 'Kit a tu gusto',
+    oculto: true, // no se pinta en las rejillas de la colección
+    resumen: 'Una pulsera y un colgante, a tu elección',
+    descripcion: 'Las dos piezas que tú elijas, cada una con su acabado y su grabado, en la misma caja de regalo',
+    precios: { MX: 949 },
+    forma: 'placa',
+    campos: [],
+    destacado: false,
+  },
 ];
 
 /* Los 12 meses y su tono, con los nombres de piedra de las cartitas.
