@@ -234,7 +234,7 @@ en todas las páginas.
 | `pulsera_nombre` | Pulsera Mi Cielo | grabado libre |
 | `brazalete_mensaje` | Brazalete Eterno | grabado libre |
 | `collar_flor_natal` | Collar Destino | mes de nacimiento (color) |
-| `kit_pedacito_nosotros` | Kit El Pedacito de Nosotros | nombre + fecha + mensaje |
+| `kit_pedacito_nosotros` | Kit Pedacito de Nosotros | nombre + fecha + mensaje |
 | `kit_mi_consentida` | Kit Mi Consentida | mes de nacimiento + grabado libre |
 
 **Los `id` y `slug` NO coinciden con los nombres nuevos** (ej. "Pulsera Dos

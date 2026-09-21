@@ -244,7 +244,7 @@ function nombreProducto(id: string): string {
     pulsera_nombre: "Pulsera Mi Cielo",
     brazalete_mensaje: "Brazalete Eterno",
     collar_flor_natal: "Collar Destino",
-    kit_pedacito_nosotros: "Kit El Pedacito de Nosotros",
+    kit_pedacito_nosotros: "Kit Pedacito de Nosotros",
     kit_mi_consentida: "Kit Mi Consentida",
   };
   return nombres[id] ?? id;

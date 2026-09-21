@@ -251,7 +251,7 @@ const PRODUCTOS = [
     // suma): esto solo sirve para calcular el ahorro que se enseña.
     piezas: ['collar_esencial', 'pulsera_vinculo'],
     slug: 'kit-pedacito-nosotros',
-    nombre: 'Kit El Pedacito de Nosotros',
+    nombre: 'Kit Pedacito de Nosotros',
     resumen: 'Collar Esencia + Pulsera Dos Almas',
     descripcion: 'El Collar Esencia y la Pulsera Dos Almas juntos, que es como mejor funcionan: uno guarda lo que le escribes, la otra dice lo que no hace falta escribir',
     parrafos: [
