@@ -347,6 +347,36 @@ function topeDeCampo(prod, campo, meta) {
   return tope ? tope : null; // null = sin maxlength
 }
 
+/* A partir de aquí, un grabado libre empieza a no caber cómodamente en
+   la placa. No se bloquea (el cliente escribe lo que quiera): solo se
+   avisa, y el taller lo ajusta con él antes de grabar. */
+const GRABADO_COMODO = 30;
+
+/* Engancha a un campo sin tope el aviso de "esto igual no cabe". Devuelve
+   el <p> por si quien llama quiere colocarlo en otro sitio. */
+function ponerAvisoGrabadoLargo(input, contenedor) {
+  const aviso = document.createElement('p');
+  aviso.className = 'campo-aviso';
+  aviso.setAttribute('role', 'status');
+  aviso.setAttribute('aria-live', 'polite');
+  aviso.hidden = true;
+  contenedor.appendChild(aviso);
+
+  const revisar = () => {
+    const n = (input.value || '').trim().length;
+    if (n > GRABADO_COMODO) {
+      aviso.textContent = 'Son ' + n + ' caracteres. Es posible que no quepan en la placa: '
+        + 'si hace falta ajustarlo, te escribimos antes de grabar.';
+      aviso.hidden = false;
+    } else {
+      aviso.hidden = true;
+    }
+  };
+  input.addEventListener('input', revisar);
+  revisar();
+  return aviso;
+}
+
 /* Resumen en una línea, para el recap y el bloque de producto */
 function resumenGrabado(prod, datos) {
   if (esKitLibre(prod)) {
@@ -1004,6 +1034,9 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
     input.value = datos[campo] || '';
 
     wrap.append(label, input);
+    // Campo sin tope (el grabado libre del Collar Esencia): se avisa si
+    // el texto se alarga, pero nunca se corta.
+    if (!tope) ponerAvisoGrabadoLargo(input, wrap);
     campos.appendChild(wrap);
     entradas[campo] = input;
   });
@@ -1691,6 +1724,7 @@ if (ctaReservar) {
         input.value = grabados[hueco][campo] || '';
         input.addEventListener('input', () => { grabados[hueco][campo] = input.value.trim(); });
         wrap.append(label, input);
+        if (!tope) ponerAvisoGrabadoLargo(input, wrap);
         caja.appendChild(wrap);
       });
 
