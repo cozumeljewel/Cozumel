@@ -460,9 +460,15 @@ calcula solo.
   navegador. Rechaza un pedido que mezcle mercados (una sesión de Stripe
   = una moneda) y manda `unit_amount` en unidades para COP, CLP y ARS,
   que Stripe cobra sin decimales.
-- **`supabase-migracion-v14.sql` (pendiente de ejecutar):** añade
+- **`supabase-migracion-v14.sql` (EJECUTADA el 2026-09-21):** añade
   `mercado` y `moneda` a `reservas`, los saca en `pedidos_proveedor` y
   hace que el email use la moneda real en vez de "€".
+- **Las funciones hay que desplegarlas aparte.** El SQL Editor solo
+  actualiza la base de datos; el código de `supabase/functions/` vive en
+  los servidores de Supabase y se sube con la CLI:
+  `supabase functions deploy crear-sesion-pago`. Hecho el 2026-09-21 con
+  los precios internacionales. Si se toca `precios.ts` o `index.ts`, hay
+  que volver a desplegar o el cobro seguirá con la versión vieja.
 - **`scripts/verificar-precios.py`** compara las dos copias de precios
   (navegador y servidor) y enseña la tabla de los siete mercados. Pasarlo
   después de tocar cualquier precio.

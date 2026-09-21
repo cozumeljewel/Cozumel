@@ -32,7 +32,7 @@ guardar sus secretos.
 4. Enlaza este proyecto local con el proyecto de Supabase real:
    ```bash
    cd "ruta/a/ADRI 2"
-   supabase link --project-ref ddcrkglgdbasbxanbjkc
+   supabase link --project-ref qesyjtqxbouodgldvbtq
    ```
    Te pedirá la contraseña de la base de datos (la misma que usaste al
    crear el proyecto en Supabase; si no la recuerdas, se puede resetear
