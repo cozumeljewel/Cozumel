@@ -412,13 +412,18 @@ de 3 piezas son 6 correos de golpe, así que puede perderse alguno —
 incluido el aviso al negocio, que es el que lleva el SKU a pedir. El
 pedido se cobra y se guarda bien igual; lo que se pierde es el aviso.
 
-Formas de arreglarlo, de menos a más trabajo:
-1. Subir de plan en Resend (el de pago sube el límite).
-2. Mandar **un solo email por pedido** en vez de uno por pieza: hoy el
-   disparador es "for each row" (ver `supabase-migracion-v12.sql`).
-   Agrupar por `stripe_session_id` reduce los envíos y de paso deja el
-   email de negocio más legible.
-3. Reintentar los 429 (cola propia). Es lo más costoso.
+**RESUELTO en `supabase-migracion-v13.sql` (pendiente de ejecutar).** El
+disparador pasa de "for each row" a "for each statement" con tablas de
+transición y agrupa por `stripe_session_id`: **un email por pedido**, no
+uno por pieza. Un pedido de 5 piezas pasa de 10 emails a 2. El de negocio
+llega con la lista de SKU y la dirección una sola vez; el de cliente, con
+todas sus piezas. Se prueba con `supabase-pedido-de-prueba-multiple.sql`.
+
+Si aun así aparecieran 429 (dos pedidos pagados en el mismo segundo),
+quedan dos salidas: subir de plan en Resend, o montar una cola propia con
+reintentos, que es bastante más trabajo. En cualquier caso **el pedido
+nunca se pierde**: vive en `reservas` y se consulta en la vista
+`pedidos_proveedor`; el email es solo el aviso.
 
 Para comprobarlo en cualquier momento:
 `select status_code, count(*) from net._http_response group by status_code;`
