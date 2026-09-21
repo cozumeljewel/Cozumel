@@ -268,8 +268,14 @@ $$;
 drop trigger if exists notificar_pedido_pagado on public.reservas;
 drop trigger if exists notificar_pedidos_pagados on public.reservas;
 
+-- Sin "of estado": Postgres no admite tablas de transición en un
+-- disparador limitado a una columna ("transition tables cannot be
+-- specified for triggers with column lists"). No cambia nada en la
+-- práctica: salta en cualquier UPDATE, pero la función solo manda email
+-- por las filas que ACABAN de pasar a 'pagado' (el join con "viejas"),
+-- así que un update de dirección o de cualquier otro campo no envía nada.
 create trigger notificar_pedidos_pagados
-  after update of estado on public.reservas
+  after update on public.reservas
   referencing new table as nuevas old table as viejas
   for each statement
   execute function public.notificar_pedidos_pagados();
