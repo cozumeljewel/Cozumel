@@ -1,30 +1,113 @@
-// Copia del lado del servidor de los precios de productos.js.
+// Copia del lado del servidor de los precios y los mercados de
+// mercados.js + productos.js.
 //
-// Por qué existe esta copia y no se comparte el archivo: productos.js es
-// JS de navegador (sin módulos, cargado por <script>) y esta función corre
-// en Deno; importar uno desde el otro añadiría una complicación de build
-// que no compensa para siete números. El precio real que se cobra SIEMPRE
-// sale de aquí, nunca de lo que mande el navegador (evita manipulación).
+// Por qué existe esta copia y no se comparte el archivo: mercados.js es
+// JS de navegador (sin módulos, cargado por <script>) y esto corre en
+// Deno; importar uno desde el otro añadiría una complicación de build que
+// no compensa para siete piezas y siete mercados. El precio que se cobra
+// SIEMPRE sale de aquí, nunca de lo que mande el navegador.
 //
-// IMPORTANTE: si cambias un precio en productos.js, cámbialo también aquí,
-// y viceversa. Si algún día esto se sale de sincronía a menudo, vale la
-// pena automatizarlo; con un catálogo de 7 piezas fijas, no por ahora.
-//
-// ⚠️ ESTOS NO SON LOS PRECIOS REALES ⚠️
-// Todo a 1 € a propósito, para probar el flujo de compra con el modo de
-// prueba de Stripe (tarjeta 4242 4242 4242 4242, dinero falso). El valor
-// es obviamente falso para que nadie lo confunda con un precio definitivo.
-// ANTES DE LANZAR: poner los precios reales aquí Y en productos.js, y
-// cambiar los secretos de Supabase a las claves live de Stripe.
+// IMPORTANTE: si cambias un precio, una tasa o una regla de redondeo en
+// mercados.js / productos.js, cámbialo también aquí. Las dos copias tienen
+// que dar exactamente el mismo número, o el cliente vería un precio y
+// Stripe cobraría otro. scripts/verificar-precios.py compara las dos.
 
-export const PRECIOS: Record<string, number | null> = {
-  collar_esencial: 1,
-  pulsera_vinculo: 1,
-  pulsera_nombre: 1,
-  brazalete_mensaje: 1,
-  collar_flor_natal: 1,
-  kit_pedacito_nosotros: 1,
-  kit_mi_consentida: 1,
+// ---- Precio maestro en pesos mexicanos (fuente de todo) ----
+export const PRECIOS_MXN: Record<string, number | null> = {
+  collar_esencial: 549,       // Colgante placa grabable
+  pulsera_vinculo: 549,       // Pulsera Dos Almas
+  pulsera_nombre: 449,        // Pulsera grabable
+  brazalete_mensaje: 499,     // Brazalete grabable
+  collar_flor_natal: 599,     // Colgante de los meses
+  kit_pedacito_nosotros: 949, // Kit de 2 piezas (precio propio, no la suma)
+  kit_mi_consentida: 949,
 };
 
-export const PRODUCTOS_VALIDOS = Object.keys(PRECIOS);
+// ---- Precios manuales por mercado ----
+// Si un producto tiene precio fijado a mano para un país, manda sobre la
+// conversión. Mismo criterio que "precios: { US: 24.99 }" en productos.js.
+export const PRECIOS_MANUALES: Record<string, Record<string, number>> = {
+  // collar_esencial: { US: 29.99, ES: 27.90 },
+};
+
+export const MERCADOS: Record<string, { moneda: string }> = {
+  MX: { moneda: "MXN" },
+  US: { moneda: "USD" },
+  ES: { moneda: "EUR" },
+  CO: { moneda: "COP" },
+  CL: { moneda: "CLP" },
+  PE: { moneda: "PEN" },
+  AR: { moneda: "ARS" },
+};
+
+export const MERCADO_FALLBACK = "US";
+
+// ---- Tasas desde MXN (fijas a propósito, ver mercados.js) ----
+export const TASAS: Record<string, number> = {
+  MXN: 1,
+  USD: 0.055,
+  EUR: 0.051,
+  COP: 215,
+  CLP: 52,
+  PEN: 0.20,
+  ARS: 55,
+};
+
+// ---- Redondeo comercial, igual que en mercados.js ----
+const REDONDEO: Record<string, (v: number) => number> = {
+  USD: (v) => Math.max(Math.ceil(v), 1) - 0.01,
+  EUR: (v) => Math.max(Math.ceil(v), 1) - 0.10,
+  COP: (v) => Math.ceil(v / 1000) * 1000 - 100,
+  CLP: (v) => Math.ceil(v / 1000) * 1000 - 10,
+  PEN: (v) => {
+    const n = Math.ceil(v);
+    const r = n % 10;
+    return n + (r === 9 ? 0 : 9 - r);
+  },
+  ARS: (v) => Math.ceil(v / 1000) * 1000 - 1,
+  MXN: (v) => v,
+};
+
+// Monedas que Stripe cobra sin decimales (y que tampoco se enseñan con
+// céntimos). Para estas, unit_amount va en unidades, no en céntimos.
+export const SIN_DECIMALES = ["COP", "CLP", "ARS"];
+
+export const PRODUCTOS_VALIDOS = Object.keys(PRECIOS_MXN);
+
+export function mercadoValido(mercado: string | null | undefined): string {
+  return mercado && MERCADOS[mercado] ? mercado : MERCADO_FALLBACK;
+}
+
+/** Precio de una pieza en un mercado: manual si lo hay, si no conversión
+ *  desde MXN + redondeo comercial. Devuelve null si la pieza no tiene
+ *  precio maestro. */
+export function precioDe(
+  producto: string,
+  mercado: string,
+): { importe: number; moneda: string; mercado: string } | null {
+  const m = mercadoValido(mercado);
+  const moneda = MERCADOS[m].moneda;
+
+  const manual = PRECIOS_MANUALES[producto]?.[m];
+  if (typeof manual === "number") {
+    return { importe: redondearSalida(manual, moneda), moneda, mercado: m };
+  }
+
+  const base = PRECIOS_MXN[producto];
+  if (base === null || base === undefined) return null;
+
+  if (moneda === "MXN") return { importe: base, moneda, mercado: m };
+
+  const convertido = base * (TASAS[moneda] ?? 1);
+  const redondear = REDONDEO[moneda] ?? ((v: number) => v);
+  return { importe: redondearSalida(redondear(convertido), moneda), moneda, mercado: m };
+}
+
+function redondearSalida(valor: number, moneda: string): number {
+  return SIN_DECIMALES.includes(moneda) ? Math.round(valor) : Math.round(valor * 100) / 100;
+}
+
+/** Lo que hay que mandarle a Stripe: entero en la unidad mínima. */
+export function importeStripe(importe: number, moneda: string): number {
+  return SIN_DECIMALES.includes(moneda) ? Math.round(importe) : Math.round(importe * 100);
+}

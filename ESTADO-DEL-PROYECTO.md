@@ -428,6 +428,45 @@ nunca se pierde**: vive en `reservas` y se consulta en la vista
 Para comprobarlo en cualquier momento:
 `select status_code, count(*) from net._http_response group by status_code;`
 
+## 7 ter. Precios internacionales (2026-09-21)
+
+Un mismo catálogo, siete mercados. **El precio maestro está en pesos
+mexicanos**, en `productos.js` (`precios: { MX: 449 }`); el resto se
+calcula solo.
+
+- **`mercados.js`** es la fuente única del navegador: mercados, tasas
+  desde MXN, redondeo comercial por moneda, mercado activo y el precio ya
+  formateado. Todo lo que pinta precio (tarjetas, ficha, kit, carrito) va
+  por ahí; no hay ningún precio suelto en el resto del código.
+- **Detección de país:** función de borde de Netlify en `/api/geo`
+  (`netlify/edge-functions/geo.js`), que lee el país de la IP. Se
+  pregunta UNA vez y se guarda 30 días; no hay llamada por página. Si
+  falla, se cae a la zona horaria del navegador y, en último caso, a
+  México. No se pide permiso de ubicación.
+- **Elección manual:** el selector del header guarda el país en
+  `cozumel_mercado_manual` y a partir de ahí la IP no vuelve a pisarlo.
+- **Precios manuales por país:** basta añadirlos en `productos.js`
+  (`precios: { MX: 449, US: 24.99 }`) y en `PRECIOS_MANUALES` de
+  `supabase/functions/_shared/precios.ts`. Si existen, mandan sobre la
+  conversión; ningún componente cambia.
+- **Kits:** tienen precio propio (949 MXN), no la suma de las piezas. El
+  ahorro que se enseña se calcula (piezas sueltas − kit) y solo aparece
+  si es positivo.
+- **Carrito:** cada línea guarda producto, variante, cantidad, mercado,
+  moneda y precio. Al cambiar de país se repuntúa sola, sin perder
+  grabados ni duplicar piezas.
+- **Cobro:** `crear-sesion-pago` **recalcula** el precio desde el
+  producto y el mercado de la fila; nunca usa el importe que manda el
+  navegador. Rechaza un pedido que mezcle mercados (una sesión de Stripe
+  = una moneda) y manda `unit_amount` en unidades para COP, CLP y ARS,
+  que Stripe cobra sin decimales.
+- **`supabase-migracion-v14.sql` (pendiente de ejecutar):** añade
+  `mercado` y `moneda` a `reservas`, los saca en `pedidos_proveedor` y
+  hace que el email use la moneda real en vez de "€".
+- **`scripts/verificar-precios.py`** compara las dos copias de precios
+  (navegador y servidor) y enseña la tabla de los siete mercados. Pasarlo
+  después de tocar cualquier precio.
+
 ## 8. Lo que falta
 
 ### Bloqueante

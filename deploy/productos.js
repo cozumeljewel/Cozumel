@@ -8,8 +8,12 @@
    política de seguridad en Supabase (ver supabase-migracion-v2.sql),
    o la base de datos rechazará las reservas de ese producto.
 
-   precio: null  → muestra "pendiente de confirmar"
-   precio: 39.9  → muestra "39,90 €"
+   precios: { MX: 449 }        precio maestro en pesos mexicanos. Los demás
+                               mercados se calculan desde este (mercados.js).
+   precios: { MX: 449, US: 24.99 }  precio manual para un país concreto: si
+                               está, manda sobre la conversión. Se pueden
+                               añadir MX, US, ES, CO, CL, PE, AR.
+   Sin "precios" → la pieza muestra "Precio pendiente" y no se puede comprar.
 
    campos: []  → producto sin personalizar, no pide nada
    campos admitidos: 'nombre', 'fecha', 'mensaje', 'mes'
@@ -18,7 +22,11 @@
      parrafos:       ['...', '...']   texto largo bajo el precio
      caracteristicas:['...', '...']   lista con viñetas
      cierre:         '...'            frase final destacada
-     oferta:         '...'            reclamo destacado (ej. descuento de kit)
+     oferta:         '...'            reclamo destacado. En los kits NO se pone
+                               a mano: el ahorro se calcula solo (precio de
+                               las piezas sueltas menos el del kit) y solo
+                               se enseña si sale positivo.
+     piezas:         ['id','id']      qué piezas forman un kit (para ese ahorro)
      tipo:           'pulsera' | 'colgante'  en qué hueco de "Arma tu kit" entra
      fotos:          UNA GALERÍA POR ACABADO (lo recomendado ahora):
                        fotos: {
@@ -68,7 +76,10 @@ const PRODUCTOS = [
       'Dos círculos entrelazados como símbolo de unión',
     ],
     cierre: 'Lo que no se dice, pero se lleva puesto',
-    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Precio maestro en pesos mexicanos. El resto de mercados se
+    // calculan solos (mercados.js). Para fijar un precio manual de un
+    // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
+    precios: { MX: 549 },
     sku: { oro:'YS14924D0W0', plata:'YS14924A0W0' },
     forma: 'circulos',
     campos: [],
@@ -99,7 +110,10 @@ const PRODUCTOS = [
       'Grabado de alta calidad: frase, fecha o coordenadas',
     ],
     cierre: 'Un sitio que solo ustedes dos saben leer',
-    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Precio maestro en pesos mexicanos. El resto de mercados se
+    // calculan solos (mercados.js). Para fijar un precio manual de un
+    // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
+    precios: { MX: 449 },
     // El sufijo -KZ ya lleva incluida la tarifa de grabado
     sku: { oro:'YS15777D0W0-KZ', plata:'YS15777A0W0-KZ' },
     forma: 'placa',
@@ -137,7 +151,10 @@ const PRODUCTOS = [
       'Grabado de alta calidad: frase, fecha o coordenadas',
     ],
     cierre: 'Se ve desde lejos y se recuerda de cerca',
-    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Precio maestro en pesos mexicanos. El resto de mercados se
+    // calculan solos (mercados.js). Para fijar un precio manual de un
+    // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
+    precios: { MX: 499 },
     // El sufijo -KZ ya lleva incluida la tarifa de grabado
     sku: { oro:'FZ28329D0W0-KZ', plata:'FZ28329A0W0-KZ' },
     forma: 'brazalete',
@@ -175,7 +192,10 @@ const PRODUCTOS = [
       'Grabado de alta calidad, personalizable con nombre, fecha o mensaje corto',
     ],
     cierre: 'Para que lleve puesto un pedacito de ti',
-    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Precio maestro en pesos mexicanos. El resto de mercados se
+    // calculan solos (mercados.js). Para fijar un precio manual de un
+    // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
+    precios: { MX: 549 },
     // SKU proveedor (Yiwu Lantiao). El grabado va como linea aparte: 'diaoke'
     sku: { oro:'CDNN067-2', plata:'CDNN067-1', grabado:'diaoke' },
     forma: 'placa',
@@ -206,7 +226,10 @@ const PRODUCTOS = [
       'Piedra y flor según el mes de nacimiento',
     ],
     cierre: 'Su mes, su piedra, su collar',
-    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Precio maestro en pesos mexicanos. El resto de mercados se
+    // calculan solos (mercados.js). Para fijar un precio manual de un
+    // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
+    precios: { MX: 599 },
     // W1-W12 = mes de la piedra natal (enero..diciembre)
     sku: { oro:'XX49472D0W{mes}', plata:'XX49472A0W{mes}' },
     forma: 'flor',
@@ -224,6 +247,9 @@ const PRODUCTOS = [
   },
   {
     id: 'kit_pedacito_nosotros',
+    // Las dos piezas que lo forman. El kit tiene PRECIO PROPIO (no es la
+    // suma): esto solo sirve para calcular el ahorro que se enseña.
+    piezas: ['collar_esencial', 'pulsera_vinculo'],
     slug: 'kit-pedacito-nosotros',
     nombre: 'Kit El Pedacito de Nosotros',
     resumen: 'Collar Esencia + Pulsera Dos Almas',
@@ -233,13 +259,15 @@ const PRODUCTOS = [
       'Ella se queda con las dos piezas, o te quedas tú con una. Eso ya lo deciden ustedes. Lo que no cambia es que las dos salen del mismo sitio y cuentan la misma historia',
     ],
     caracteristicas: [
-      'Collar Esencia: doble cadena con placa grabable a mano',
+      'Collar Esencia: doble cadena con placa grabable',
       'Pulsera Dos Almas: dos círculos entrelazados, símbolo de unión',
       'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
     ],
-    oferta: '10% de descuento al llevar el kit completo',
     cierre: 'Porque el amor también se lleva puesto',
-    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Precio maestro en pesos mexicanos. El resto de mercados se
+    // calculan solos (mercados.js). Para fijar un precio manual de un
+    // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
+    precios: { MX: 949 },
     // Kit = las dos piezas sueltas, no un SKU propio de EMANCO. Se piden
     // las dos por separado, más "diaoke" si hay grabado. La resolución
     // real (con acabado y grabado ya aplicados) vive en la migración v9
@@ -284,6 +312,7 @@ const PRODUCTOS = [
   },
   {
     id: 'kit_mi_consentida',
+    piezas: ['collar_flor_natal', 'pulsera_nombre'],
     slug: 'kit-mi-consentida',
     nombre: 'Kit Mi Consentida',
     resumen: 'Collar Destino + Pulsera Mi Cielo',
@@ -298,7 +327,10 @@ const PRODUCTOS = [
       'Envío en caja especial de regalo',
     ],
     cierre: 'Un pedacito de lo que regalamos',
-    precio: 1, // PRECIO DE PRUEBA, no es el real (ver aviso arriba)
+    // Precio maestro en pesos mexicanos. El resto de mercados se
+    // calculan solos (mercados.js). Para fijar un precio manual de un
+    // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
+    precios: { MX: 949 },
     // Kit = las dos piezas sueltas; W{mes} se resuelve como en Collar
     // Destino. La resolución real vive en la migración v9 de Supabase.
     sku: { oro:'XX49472D0W{mes} + YS15777D0W0-KZ', plata:'XX49472A0W{mes} + YS15777A0W0-KZ' },
@@ -444,7 +476,13 @@ function productoPorDefecto() {
   return PRODUCTOS.find(p => p.destacado) || PRODUCTOS[0];
 }
 
+/* OBSOLETA: la daba en euros fijos. El precio de verdad, en la moneda del
+   mercado activo, lo da precioTexto(prod) de mercados.js. Se deja porque
+   alguna página antigua podría llamarla. */
 function formatearPrecio(precio) {
   if (precio === null || precio === undefined) return null;
+  if (typeof formatearImporte === 'function' && typeof getMoneda === 'function') {
+    return formatearImporte(precio, getMoneda());
+  }
   return precio.toFixed(2).replace('.', ',') + ' €';
 }

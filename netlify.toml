@@ -1,0 +1,17 @@
+# Configuración de Netlify.
+#
+# La web es estática: no hay build. Lo único que corre en Netlify, además
+# de servir archivos, es la función de borde que dice el país de quien
+# visita (/api/geo), que usa mercados.js para elegir moneda.
+#
+# Si se despliega arrastrando la carpeta "deploy", este archivo y la
+# carpeta netlify/ tienen que ir DENTRO de ella (el script
+# scripts/comprobar-deploy.py lo vigila).
+
+[build]
+  publish = "."
+  command = ""
+
+[[edge_functions]]
+  path = "/api/geo"
+  function = "geo"

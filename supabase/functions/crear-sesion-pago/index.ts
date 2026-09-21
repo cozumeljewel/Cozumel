@@ -15,7 +15,7 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@17";
-import { PRECIOS, PRODUCTOS_VALIDOS } from "../_shared/precios.ts";
+import { PRODUCTOS_VALIDOS, precioDe, mercadoValido, importeStripe } from "../_shared/precios.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -123,7 +123,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
 
   const { data: filas, error: filasError } = await sb
     .from("reservas")
-    .select("id, producto, estado")
+    .select("id, producto, estado, mercado, moneda")
     .in("id", idsPedidos);
 
   if (filasError) {
@@ -159,12 +159,28 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     });
   }
 
-  // Precio real de cada pieza, SIEMPRE desde PRECIOS (servidor), nunca de
-  // lo que mande el navegador — igual que con una sola pieza, solo que
-  // ahora se repite por fila.
-  const lineas = filas.map((f) => ({ id: f.id, producto: f.producto, precio: PRECIOS[f.producto] }));
+  // Mercado del pedido. Todas las piezas de una misma compra tienen que
+  // ir en el mismo mercado: si no, Stripe no podría cobrarlas juntas
+  // (una sesión = una moneda). Si llegan mezcladas, se rechaza.
+  const mercados = [...new Set(filas.map((f) => mercadoValido(f.mercado)))];
+  if (mercados.length > 1) {
+    return new Response(
+      JSON.stringify({ error: "El pedido mezcla varios países: vacía el carrito y vuelve a añadirlo" }),
+      { status: 400, headers: jsonHeaders },
+    );
+  }
+  const mercado = mercados[0];
 
-  const lineaSinPrecio = lineas.find((l) => l.precio === null || l.precio === undefined);
+  // Precio real de cada pieza, SIEMPRE recalculado aquí a partir del
+  // producto y el mercado — nunca del precio que mandó el navegador. Si
+  // alguien edita el precio desde DevTools, esto lo ignora.
+  const lineas = filas.map((f) => ({
+    id: f.id,
+    producto: f.producto,
+    precio: precioDe(f.producto, mercado),
+  }));
+
+  const lineaSinPrecio = lineas.find((l) => !l.precio);
   if (lineaSinPrecio) {
     return new Response(
       JSON.stringify({ error: "Alguna pieza de este pedido todavía no tiene precio" }),
@@ -172,12 +188,18 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     );
   }
 
+  // Una sesión de Stripe = una moneda; aquí ya está garantizado que todas
+  // las líneas comparten mercado, así que basta con la de la primera.
+  const moneda = lineas[0].precio!.moneda;
+
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items: lineas.map((l) => ({
       price_data: {
-        currency: "eur",
-        unit_amount: Math.round((l.precio as number) * 100),
+        currency: moneda.toLowerCase(),
+        // Las monedas sin decimales (COP, CLP, ARS) van en unidades, no
+        // en céntimos: si no, Stripe cobraría cien veces de más.
+        unit_amount: importeStripe(l.precio!.importe, moneda),
         product_data: { name: nombreProducto(l.producto) },
       },
       quantity: 1,
@@ -193,7 +215,12 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   for (const l of lineas) {
     const { error: updateError } = await sb
       .from("reservas")
-      .update({ stripe_session_id: session.id, precio_pagado: l.precio })
+      .update({
+        stripe_session_id: session.id,
+        precio_pagado: l.precio!.importe,
+        mercado: l.precio!.mercado,
+        moneda: l.precio!.moneda,
+      })
       .eq("id", l.id);
 
     if (updateError) {

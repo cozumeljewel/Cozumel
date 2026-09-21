@@ -54,13 +54,62 @@ function setProductoElegido(prod) {
    ========================================================= */
 const CARRITO_KEY = 'cozumel_carrito';
 
+/* Cada línea del carrito guarda, además de la pieza y su grabado, el
+   mercado y el precio con los que se añadió:
+
+     { producto, variante, cantidad, mercado, moneda, precio, personalizacion }
+
+   El precio guardado NO es el que manda al cobrar (eso lo recalcula el
+   servidor): sirve para detectar que se cambió de país y refrescar la
+   línea. Las líneas antiguas, de antes de los mercados, se completan al
+   vuelo para que a nadie se le vacíe el carrito con esta versión. */
 function getCarrito() {
   try {
     const items = JSON.parse(localStorage.getItem(CARRITO_KEY));
-    return Array.isArray(items) ? items : [];
+    if (!Array.isArray(items)) return [];
+    return items.map(normalizarItemCarrito);
   } catch {
     return [];
   }
+}
+
+function normalizarItemCarrito(item) {
+  if (!item || typeof item !== 'object') return item;
+  const pers = item.personalizacion || {};
+  const linea = {
+    producto: item.producto,
+    // La "variante" es lo que distingue dos unidades de la misma pieza:
+    // hoy, el acabado (y el de cada pieza en los kits).
+    variante: item.variante || Object.keys(pers)
+      .filter(k => k.startsWith('acabado'))
+      .sort()
+      .map(k => k + '=' + pers[k])
+      .join(','),
+    cantidad: typeof item.cantidad === 'number' && item.cantidad > 0 ? item.cantidad : 1,
+    mercado: item.mercado || null,
+    moneda: item.moneda || null,
+    precio: typeof item.precio === 'number' ? item.precio : null,
+    personalizacion: pers,
+  };
+  return linea;
+}
+
+/* Reprecia el carrito al mercado activo. Se llama al cambiar de país: no
+   se tocan ni las piezas ni sus grabados, solo mercado/moneda/precio. */
+function repreciarCarrito() {
+  if (typeof PRODUCTOS === 'undefined' || typeof precioDe !== 'function') return;
+  const items = getCarrito();
+  if (!items.length) return;
+  let cambio = false;
+  const nuevos = items.map(item => {
+    const prod = PRODUCTOS.find(p => p.id === item.producto);
+    const precio = prod ? precioDe(prod) : null;
+    if (!precio) return item;
+    if (item.mercado === precio.mercado && item.precio === precio.importe) return item;
+    cambio = true;
+    return { ...item, mercado: precio.mercado, moneda: precio.moneda, precio: precio.importe };
+  });
+  if (cambio) guardarCarrito(nuevos);
 }
 
 function guardarCarrito(items) {
@@ -107,6 +156,84 @@ function actualizarBadgeCarrito() {
   });
 }
 actualizarBadgeCarrito();
+
+/* =========================================================
+   SELECTOR DE PAÍS / MONEDA
+   Va en el header (junto al carrito) y en el menú móvil. Se inyecta por
+   JS, igual que la insignia del carrito, para no tener que tocar las 12
+   páginas y para que no pueda faltar en ninguna.
+
+   Al cambiar de país: se guarda la elección (a partir de ahí la IP ya no
+   la pisa), se repuntúan las líneas del carrito y se recarga la página.
+   La recarga es a propósito: es la forma más simple de garantizar que NO
+   quede ni un precio viejo en pantalla, y no se pierde nada porque el
+   carrito y el grabado viven en localStorage/sessionStorage.
+   ========================================================= */
+function pintarSelectorMercado() {
+  if (typeof MERCADOS === 'undefined') return;
+
+  const crear = () => {
+    const caja = document.createElement('div');
+    caja.className = 'mercado-selector';
+
+    const etiqueta = document.createElement('label');
+    etiqueta.className = 'sr-only';
+    const id = 'mercado-select-' + Math.random().toString(36).slice(2, 8);
+    etiqueta.setAttribute('for', id);
+    etiqueta.textContent = 'País y moneda';
+
+    const select = document.createElement('select');
+    select.className = 'mercado-select';
+    select.id = id;
+    Object.keys(MERCADOS).forEach(codigo => {
+      const op = document.createElement('option');
+      op.value = codigo;
+      op.textContent = MERCADOS[codigo].pais + ' · ' + MERCADOS[codigo].moneda;
+      select.appendChild(op);
+    });
+    select.value = getMercado();
+    select.addEventListener('change', () => {
+      setMercado(select.value);
+      repreciarCarrito();
+      window.location.reload();
+    });
+
+    caja.append(etiqueta, select);
+    return caja;
+  };
+
+  const acciones = document.querySelector('.header-acciones');
+  if (acciones && !acciones.querySelector('.mercado-selector')) {
+    acciones.insertBefore(crear(), acciones.firstChild);
+  }
+  const menuMovil = document.querySelector('.menu-movil-nav');
+  if (menuMovil && !menuMovil.querySelector('.mercado-selector')) {
+    menuMovil.appendChild(crear());
+  }
+}
+
+/* Mantiene los selectores al día si el mercado cambia por detección. */
+function sincronizarSelectorMercado() {
+  document.querySelectorAll('.mercado-select').forEach(sel => { sel.value = getMercado(); });
+}
+
+if (typeof MERCADOS !== 'undefined') {
+  pintarSelectorMercado();
+  alCambiarMercado(() => { sincronizarSelectorMercado(); repreciarCarrito(); });
+
+  /* Detección por IP: una sola vez cada 30 días, nunca por página, y sin
+     pedir permiso de ubicación. Si el resultado cambia el mercado que ya
+     se estaba enseñando (primera visita), se repinta la página para que
+     no quede ningún precio del mercado anterior. */
+  const mercadoAlCargar = getMercado();
+  resolverMercadoAutomatico().then(mercadoFinal => {
+    sincronizarSelectorMercado();
+    if (mercadoFinal !== mercadoAlCargar) {
+      repreciarCarrito();
+      window.location.reload();
+    }
+  }).catch(() => {});
+}
 
 /* ---------- Tracking del embudo ---------- */
 function trackEvent(evento, productoId) {
@@ -285,7 +412,9 @@ function crearTarjetaProducto(prod) {
 
   const precio = document.createElement('p');
   precio.className = 'producto-precio';
-  precio.textContent = formatearPrecio(prod.precio) || 'Precio pendiente';
+  // Precio del mercado activo (mercados.js): la misma fuente que usan la
+  // ficha, el carrito y el checkout.
+  precio.textContent = precioTexto(prod) || 'Precio pendiente';
 
   const cta = document.createElement('span');
   cta.className = 'producto-cta';
@@ -704,10 +833,10 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
       : 'Esta pieza no lleva grabado';
   }
 
-  const precioTxt = formatearPrecio(prod.precio);
+  const precioTxt = precioTexto(prod);
   const resPrecio = document.getElementById('resumen-precio');
   const resNota = document.getElementById('resumen-precio-nota');
-  if (resPrecio) resPrecio.textContent = precioTxt || '— · — €';
+  if (resPrecio) resPrecio.textContent = precioTxt || '—';
   if (resNota) resNota.hidden = !!precioTxt;
 
   // Si la pieza todavía no tiene precio, "Añadir al carrito" no puede
@@ -749,10 +878,14 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
       ficha.appendChild(ul);
     }
 
-    if (prod.oferta) {
+    // Ahorro del kit: piezas sueltas menos precio propio del kit, en la
+    // moneda del mercado activo. Solo se enseña si sale positivo.
+    const ahorro = (prod.piezas && prod.piezas.length) ? ahorroKit(prod, prod.piezas) : null;
+    const reclamo = ahorro ? 'Ahorras ' + ahorro.texto + ' frente a comprar las dos piezas por separado' : prod.oferta;
+    if (reclamo) {
       const oferta = document.createElement('p');
       oferta.className = 'ficha-oferta';
-      oferta.textContent = prod.oferta;
+      oferta.textContent = reclamo;
       ficha.appendChild(oferta);
     }
 
@@ -1030,7 +1163,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 
   const p1 = document.createElement('p');
   p1.className = 'popup-texto';
-  p1.textContent = 'Solo existen 100 pedacitos. No porque queramos que corras, sino porque cada pieza está hecha a mano, una por una, y eso no se puede apurar ni multiplicar';
+  p1.textContent = 'Solo existen 100 pedacitos. No porque queramos que corras, sino porque cada pieza se graba una por una, con un acabado de calidad, y eso no se puede apurar ni multiplicar';
 
   const p2 = document.createElement('p');
   p2.className = 'popup-texto';
@@ -1309,7 +1442,16 @@ if (ctaReservar) {
     if (!prod) { e.preventDefault(); return; } // producto no resuelto: no navega con el carrito a medias
 
     e.preventDefault();
-    añadirAlCarrito({ producto: prod.id, personalizacion: getGrabado() });
+    const grabadoActual = getGrabado();
+    const precioActual = typeof precioDe === 'function' ? precioDe(prod) : null;
+    añadirAlCarrito(normalizarItemCarrito({
+      producto: prod.id,
+      cantidad: 1,
+      personalizacion: grabadoActual,
+      mercado: precioActual ? precioActual.mercado : null,
+      moneda: precioActual ? precioActual.moneda : null,
+      precio: precioActual ? precioActual.importe : null,
+    }));
 
     ctaReservar.classList.remove('is-error');
     ctaReservar.classList.add('is-loading');
@@ -2041,8 +2183,11 @@ if (reservaForm) {
       const prod = PRODUCTOS.find(p => p.id === item.producto);
       if (!prod) return; // el catálogo cambió desde que se añadió: se ignora sin romper el resto
 
-      if (prod.precio === null || prod.precio === undefined) huboPiezaSinPrecio = true;
-      else total += prod.precio;
+      // El precio se relee del mercado ACTIVO, no del que se guardó al
+      // añadir: si se cambió de país, el carrito se recalcula solo.
+      const precioItem = precioDe(prod);
+      if (!precioItem) huboPiezaSinPrecio = true;
+      else total += precioItem.importe;
 
       const tarjeta = document.createElement('div');
       tarjeta.className = 'carrito-item';
@@ -2067,7 +2212,7 @@ if (reservaForm) {
 
       const precio = document.createElement('p');
       precio.className = 'carrito-item-precio';
-      precio.textContent = formatearPrecio(prod.precio) || 'Precio pendiente de confirmar';
+      precio.textContent = precioItem ? formatearImporte(precioItem.importe, precioItem.moneda) : 'Precio pendiente de confirmar';
       tarjeta.appendChild(precio);
 
       const quitar = document.createElement('button');
@@ -2090,7 +2235,7 @@ if (reservaForm) {
       totalEl = document.createElement('div');
       totalEl.className = 'carrito-total';
       totalEl.innerHTML = '<span>Total</span><strong></strong>';
-      totalEl.querySelector('strong').textContent = formatearPrecio(total) || '—';
+      totalEl.querySelector('strong').textContent = formatearImporte(total, getMoneda()) || '—';
       carritoLista.insertAdjacentElement('afterend', totalEl);
     }
 
@@ -2182,7 +2327,7 @@ if (reservaForm) {
       showReservaError('Tu carrito está vacío. Añade alguna pieza antes de comprar');
       return;
     }
-    if (items.some(({ prod }) => prod.precio === null || prod.precio === undefined)) {
+    if (items.some(({ prod }) => !precioDe(prod))) {
       showReservaError('Alguna pieza de tu carrito todavía no tiene precio, no se puede comprar');
       return;
     }
@@ -2234,12 +2379,20 @@ if (reservaForm) {
       try { sessionStorage.setItem(RESERVA_PENDIENTE_KEY, JSON.stringify(datos)); } catch (_) {}
     };
 
-    const payloads = items.map(({ item, prod }) => ({
-      ...datosComunes,
-      personalizacion: item.personalizacion,
-      producto: prod.id,
-      precio_pagado: prod.precio,
-    }));
+    // Mercado y moneda viajan con el pedido: el servidor vuelve a
+    // calcular el precio con ellos (crear-sesion-pago), así que lo que se
+    // manda desde aquí es informativo, nunca la fuente del cobro.
+    const payloads = items.map(({ item, prod }) => {
+      const precio = precioDe(prod);
+      return {
+        ...datosComunes,
+        personalizacion: item.personalizacion,
+        producto: prod.id,
+        mercado: precio.mercado,
+        moneda: precio.moneda,
+        precio_pagado: precio.importe,
+      };
+    });
 
     reservaSubmitBtn.disabled = true;
     reservaSubmitBtn.textContent = items.length > 1 ? 'Guardando tu pedido...' : 'Guardando...';
