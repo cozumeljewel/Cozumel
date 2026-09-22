@@ -1,0 +1,71 @@
+<!--
+  FIRMA DE CORREO · Eduardo Troncoso · Cozumel Jewelry
+
+  Cómo ponerla en Gmail:
+    1. Abre este archivo en el navegador (doble clic).
+    2. Selecciona la firma entera con el ratón y cópiala (Ctrl+C).
+    3. Gmail → rueda dentada → "Ver toda la configuración" → pestaña
+       "General" → "Firma" → Crear nueva → pega (Ctrl+V).
+    4. Abajo del todo, "Guardar cambios".
+
+  En Outlook: Archivo → Opciones → Correo → Firmas → Nueva → pegar.
+
+  Por qué está hecha con tablas y estilos escritos a mano: los gestores
+  de correo borran las hojas de estilo y no entienden flexbox. Con tablas
+  y "style" en cada celda se ve igual en Gmail, Outlook y el móvil.
+
+  El logo va como imagen alojada en la web (img/firma-logo.png, fondo
+  transparente), no incrustada: así no viaja como adjunto en cada correo.
+  OJO: hasta que esa imagen esté publicada en cozumeljewelry.es, en la
+  firma se verá un hueco. Si algún día cambia el dominio, hay que
+  actualizar esa URL.
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Firma · Eduardo Troncoso</title>
+<style>body{font-family:system-ui,sans-serif;background:#F2F8F8;padding:40px;}
+.marco{background:#fff;padding:28px;max-width:640px;border:1px solid #D8E8EA;}
+.nota{max-width:640px;margin:0 auto 18px;font-size:13px;color:#4A6B6E;line-height:1.6;}
+</style></head>
+<body>
+<p class="nota">Selecciona desde aquí abajo hasta el final del bloque blanco, copia y pega en la firma de tu correo.</p>
+<div class="marco">
+
+<!-- ================= FIRMA: copiar desde aquí ================= -->
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:Helvetica,Arial,sans-serif; color:#12333A;">
+  <tr>
+    <!-- Emblema -->
+    <td style="padding-right:18px; vertical-align:top;">
+      <img src="https://cozumeljewelry.es/img/firma-logo.png" width="120" alt="Cozumel Jewelry"
+           style="display:block; width:120px; height:auto; border:0;">
+    </td>
+    <!-- Filete dorado de separación -->
+    <td style="border-left:2px solid #C6A664; padding-left:18px; vertical-align:top;">
+
+      <div style="font-family:Georgia,'Times New Roman',serif; font-size:17px; font-weight:bold; color:#14454A; line-height:1.3;">
+        Eduardo Troncoso
+      </div>
+      <div style="font-family:Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:#A8873F; padding-top:3px;">
+        Founder
+      </div>
+      <div style="font-family:Helvetica,Arial,sans-serif; font-size:12.5px; letter-spacing:1.2px; text-transform:uppercase; color:#4A6B6E; padding-top:9px;">
+        Cozumel Jewelry
+      </div>
+
+      <div style="padding-top:12px; font-family:Helvetica,Arial,sans-serif; font-size:13px; line-height:1.7; color:#12333A;">
+        <a href="mailto:cozumeljewel@gmail.com" style="color:#12333A; text-decoration:none;">cozumeljewel@gmail.com</a><br>
+        <a href="https://cozumeljewelry.es" style="color:#2E6D70; text-decoration:none;">cozumeljewelry.es</a>
+      </div>
+
+      <div style="padding-top:12px; font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:13px; color:#4A6B6E;">
+        Un pedacito de lo que regalamos.
+      </div>
+
+    </td>
+  </tr>
+</table>
+<!-- ================= FIRMA: copiar hasta aquí ================= -->
+
+</div>
+</body>
+</html>
