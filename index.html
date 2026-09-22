@@ -216,29 +216,40 @@
     <p class="stories-cierre">Historias reales, momentos pequeños y piezas que terminan formando parte de alguien</p>
     -->
 
+    <!-- Seis historias, cada una con su propio pase de fotos: van
+         cambiando solas con un fundido largo (script.js, "pase de
+         Stories"). El HTML solo declara la primera foto de cada una y
+         las siguientes en "data-fotos"; el script crea la segunda capa
+         para el fundido. Así, sin JS, se sigue viendo una foto fija. -->
     <div class="stories-galeria">
-      <div class="stories-foto reveal con-foto">
-        <div class="stories-foto-capa"><img src="img/stories-adri.jpg" alt="Adri con una pieza de Cozumel Jewelry puesta" loading="lazy"></div>
+      <div class="stories-foto reveal con-foto" data-pase
+           data-fotos="img/stories-adri-2.jpg|img/stories-adri-3.jpg|img/stories-adri-4.jpg">
+        <div class="stories-foto-capa"><img src="img/stories-adri-1.jpg" alt="Adri con una pieza de Cozumel Jewelry puesta" loading="lazy"></div>
         <span class="stories-foto-nota">Adri con una pieza puesta</span>
       </div>
-      <div class="stories-foto reveal con-foto">
-        <div class="stories-foto-capa"><img src="img/stories-regalo.jpg" alt="Un regalo de Cozumel Jewelry recién abierto" loading="lazy"></div>
+      <div class="stories-foto reveal con-foto" data-pase
+           data-fotos="img/stories-regalo-2.jpg|img/stories-regalo-3.jpg">
+        <div class="stories-foto-capa"><img src="img/stories-regalo-1.jpg" alt="Un regalo de Cozumel Jewelry recién abierto" loading="lazy"></div>
         <span class="stories-foto-nota">Un regalo, recién abierto</span>
       </div>
-      <div class="stories-foto reveal con-foto">
-        <div class="stories-foto-capa"><img src="img/stories-cotidiano.jpg" alt="Un momento cotidiano con una pieza de Cozumel Jewelry" loading="lazy"></div>
+      <div class="stories-foto reveal con-foto" data-pase
+           data-fotos="img/stories-cotidiano-2.jpg|img/stories-cotidiano-3.jpg|img/stories-cotidiano-4.jpg">
+        <div class="stories-foto-capa"><img src="img/stories-cotidiano-1.jpg" alt="Un momento cotidiano con una pieza de Cozumel Jewelry" loading="lazy"></div>
         <span class="stories-foto-nota">Un momento cotidiano</span>
       </div>
-      <div class="stories-foto reveal con-foto">
-        <div class="stories-foto-capa"><img src="img/stories-amigas.jpg" alt="Dos amigas con una pieza de Cozumel Jewelry" loading="lazy"></div>
+      <div class="stories-foto reveal con-foto" data-pase
+           data-fotos="img/stories-amigas-2.jpg">
+        <div class="stories-foto-capa"><img src="img/stories-amigas-1.jpg" alt="Dos amigas con una pieza de Cozumel Jewelry" loading="lazy"></div>
         <span class="stories-foto-nota">Dos amigas</span>
       </div>
-      <div class="stories-foto reveal con-foto">
-        <div class="stories-foto-capa"><img src="img/stories-madre-hija.jpg" alt="Madre e hija con una pieza de Cozumel Jewelry" loading="lazy"></div>
+      <div class="stories-foto reveal con-foto" data-pase
+           data-fotos="img/stories-madre-hija-2.jpg">
+        <div class="stories-foto-capa"><img src="img/stories-madre-hija-1.jpg" alt="Madre e hija con una pieza de Cozumel Jewelry" loading="lazy"></div>
         <span class="stories-foto-nota">Madre e hija</span>
       </div>
-      <div class="stories-foto reveal con-foto">
-        <div class="stories-foto-capa"><img src="img/stories-pareja.jpg" alt="Una pareja con una pieza de Cozumel Jewelry" loading="lazy"></div>
+      <div class="stories-foto reveal con-foto" data-pase
+           data-fotos="img/stories-pareja-2.jpg|img/stories-pareja-3.jpg">
+        <div class="stories-foto-capa"><img src="img/stories-pareja-1.jpg" alt="Una pareja con una pieza de Cozumel Jewelry" loading="lazy"></div>
         <span class="stories-foto-nota">Una pareja</span>
       </div>
     </div>

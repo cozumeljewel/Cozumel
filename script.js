@@ -158,6 +158,96 @@ function actualizarBadgeCarrito() {
 actualizarBadgeCarrito();
 
 /* =========================================================
+   PASE DE FOTOS DE COZUMEL STORIES (index.html)
+   Cada historia va cambiando de foto sola, con un fundido largo. Mismo
+   mecanismo que el de "Arma tu kit": dos capas superpuestas: la de abajo
+   carga la siguiente foto y se funde encima de la de arriba.
+
+   Detalles pensados a propósito:
+     · Los seis pases arrancan DESFASADOS entre sí. Si cambiaran todos a
+       la vez, la sección entera parpadearía y se notaría el truco.
+     · Se para cuando la pestaña no está a la vista (no gasta datos ni
+       batería) y cuando el sistema pide menos movimiento.
+     · Si el navegador no ejecuta el JS, se queda la primera foto fija:
+       el HTML ya la trae puesta.
+   ========================================================= */
+(function () {
+  const PASE_MS = 3000;          // cuánto se queda cada foto
+  const DESFASE_MS = 900;        // separación entre una historia y la siguiente
+  const historias = document.querySelectorAll('.stories-foto[data-pase]');
+  if (!historias.length) return;
+
+  const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  historias.forEach((caja, indice) => {
+    const capaA = caja.querySelector('.stories-foto-capa');
+    if (!capaA) return;
+
+    const imgA = capaA.querySelector('img');
+    const siguientes = (caja.dataset.fotos || '').split('|').map(f => f.trim()).filter(Boolean);
+    if (!imgA || !siguientes.length) return;
+
+    // Todas las fotos de esta historia, empezando por la que ya se ve.
+    const fotos = [{ src: imgA.getAttribute('src'), alt: imgA.getAttribute('alt') }]
+      .concat(siguientes.map(src => ({ src, alt: imgA.getAttribute('alt') })));
+
+    // Segunda capa, idéntica a la primera pero transparente: es la que
+    // entra en cada cambio.
+    const capaB = capaA.cloneNode(true);
+    const imgB = capaB.querySelector('img');
+    imgB.removeAttribute('src');
+    imgB.alt = '';
+    capaB.setAttribute('aria-hidden', 'true');
+    capaA.classList.add('visible');
+    capaB.classList.remove('visible');
+    capaA.parentNode.insertBefore(capaB, capaA.nextSibling);
+    caja.classList.add('pase-listo');
+
+    let visible = capaA;
+    let indiceFoto = 0;
+    let temporizador = null;
+
+    const mostrar = (foto) => {
+      const entra = visible === capaA ? capaB : capaA;
+      const imgEntra = entra.querySelector('img');
+      // Se descarta un cambio anterior que siguiera esperando su foto:
+      // si no, al resolverse los dos se apagarían entre sí.
+      capaA.querySelector('img').onload = null;
+      capaB.querySelector('img').onload = null;
+      imgEntra.src = foto.src;
+      imgEntra.alt = foto.alt || '';
+
+      const cambiar = () => {
+        entra.classList.add('visible');
+        const sale = entra === capaA ? capaB : capaA;
+        sale.classList.remove('visible');
+        sale.setAttribute('aria-hidden', 'true');
+        sale.querySelector('img').alt = '';
+        entra.removeAttribute('aria-hidden');
+        visible = entra;
+      };
+      if (imgEntra.complete && imgEntra.naturalWidth) cambiar();
+      else imgEntra.onload = cambiar;
+    };
+
+    const arrancar = () => {
+      clearInterval(temporizador);
+      temporizador = null;
+      if (sinMovimiento.matches || fotos.length < 2) return;
+      temporizador = setInterval(() => {
+        if (document.hidden) return;
+        indiceFoto = (indiceFoto + 1) % fotos.length;
+        mostrar(fotos[indiceFoto]);
+      }, PASE_MS);
+    };
+
+    // El desfase hace que no cambien todas a la vez.
+    setTimeout(arrancar, indice * DESFASE_MS);
+    sinMovimiento.addEventListener('change', arrancar);
+  });
+})();
+
+/* =========================================================
    SELECTOR DE PAÍS / MONEDA
    Va en el header (junto al carrito) y en el menú móvil. Se inyecta por
    JS, igual que la insignia del carrito, para no tener que tocar las 12
@@ -1608,7 +1698,7 @@ if (ctaReservar) {
       { src: 'img/arma-tu-kit-oro-2.jpg', alt: 'Caja de regalo abierta con un collar de flor y un brazalete dorados, grabado con una fecha' },
       { src: 'img/arma-tu-kit-plata-2.jpg', alt: 'Caja de regalo abierta con un collar de flor y un brazalete plateados' },
     ];
-    const PASE_MS = 3000; // cada 3 s, con el fundido de 1,2 s de style.css
+    const PASE_MS = 3000; // cada 3 s, con el fundido largo de style.css
     let indiceFoto = 0, capaVisible = capaA, temporizadorFoto = null;
     const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
 

@@ -1009,7 +1009,9 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 .stories-cta{margin-top:40px;}
 
 @media (prefers-reduced-motion:no-preference){
-  .stories-foto-capa{transition:transform .6s ease;}
+  /* El zoom del hover NO puede pisar el fundido del pase: se declaran
+     las dos transiciones juntas. */
+  .stories-foto-capa{transition:transform .6s ease, opacity 2.6s cubic-bezier(.45,0,.35,1);}
   .stories-foto:hover .stories-foto-capa{transform:scale(1.03);}
 }
 
@@ -2754,7 +2756,10 @@ footer{
 .arma-kit-foto img{width:100%; height:100%; object-fit:cover; display:block;}
 /* Las dos capas del pase, una encima de otra; solo cambia la opacidad,
    así el fundido no mueve ni redibuja el resto de la sección. */
-.arma-kit-capa{position:absolute; inset:0; opacity:0; transition:opacity 1.2s cubic-bezier(.4,0,.2,1);}
+/* El fundido va a 2,6 s con una curva muy suave (ease-in-out): con 3 s
+   por foto, las dos imágenes se cruzan casi todo el rato y el cambio
+   deja de notarse como un corte. */
+.arma-kit-capa{position:absolute; inset:0; opacity:0; transition:opacity 2.6s cubic-bezier(.45,0,.35,1);}
 .arma-kit-capa.visible{opacity:1;}
 @media (prefers-reduced-motion:reduce){.arma-kit-capa{transition:none;}}
 .arma-kit-texto{margin:40px auto 0; max-width:44ch; text-align:center;}
@@ -2807,6 +2812,20 @@ footer{
 .mercado-pendiente .carrito-item-precio,
 .mercado-pendiente .carrito-total strong,
 .mercado-pendiente .ficha-oferta{visibility:hidden;}
+
+/* ---------- PASE DE FOTOS DE COZUMEL STORIES ----------
+   Las dos capas van superpuestas y solo cambia la opacidad: el fundido
+   no mueve nada de la página. Sin JS solo existe una capa, visible. */
+.stories-foto .stories-foto-capa{transition:opacity 2.6s cubic-bezier(.45,0,.35,1);}
+/* "pase-listo" la pone script.js al montar el pase: así, si el JS no
+   corre, la única capa que hay se sigue viendo a opacidad normal. Con el
+   pase montado manda la clase "visible": apagada por defecto, encendida
+   la que toca. */
+.stories-foto.pase-listo .stories-foto-capa{opacity:0;}
+.stories-foto.pase-listo .stories-foto-capa.visible{opacity:1;}
+@media (prefers-reduced-motion:reduce){
+  .stories-foto .stories-foto-capa{transition:none;}
+}
 
 /* ---------- SELECTOR DE PAÍS / MONEDA ----------
    Discreto, a la izquierda del carrito: es una utilidad, no un reclamo.
