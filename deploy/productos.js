@@ -32,8 +32,8 @@
      tipo:           'pulsera' | 'colgante'  en qué hueco de "Arma tu kit" entra
      fotos:          UNA GALERÍA POR ACABADO (lo recomendado ahora):
                        fotos: {
-                         oro:   ['img/collar-esencia-oro-1.jpg', ...],
-                         plata: ['img/collar-esencia-plata-1.jpg', ...],
+                         oro:   ['img/pieza-oro-1.jpg', ...],
+                         plata: ['img/pieza-plata-1.jpg', ...],
                        }
                      Al elegir "Bañado en oro" o "Plateado" en la ficha,
                      la galería cambia sola a las fotos de ese acabado.
@@ -128,15 +128,9 @@ const PRODUCTOS = [
     // Portada: la foto nueva (22/09), la del espejo con el grabado a la vista.
     fotoPortada: ['img/mi-cielo-oro-5.jpg', 'img/mi-cielo-plata-5.jpg'],
     fotos: {
-      oro: [
-        'img/mi-cielo-oro-5.jpg',
-        // Foto apaisada con la pulsera pegada al borde izquierdo: el
-        // recorte centrado por defecto la dejaba casi fuera. "pos"
-        // desplaza el encuadre hacia la izquierda para que se vea entera.
-        { src: 'img/mi-cielo-oro-1.jpg', pos: '9% center' },
-        'img/mi-cielo-oro-2.jpg', 'img/mi-cielo-oro-3.jpg', 'img/mi-cielo-oro-4.jpg',
-      ],
-      plata: ['img/mi-cielo-plata-5.jpg', 'img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg', 'img/mi-cielo-plata-3.jpg', 'img/mi-cielo-plata-4.jpg'],
+      // Solo la foto nueva (22/09): las anteriores se retiraron.
+      oro: ['img/mi-cielo-oro-5.jpg'],
+      plata: ['img/mi-cielo-plata-5.jpg'],
     },
   },
   {
@@ -169,16 +163,8 @@ const PRODUCTOS = [
     // dentro.
     fotoPortada: ['img/brazalete-oro-5.jpg', 'img/brazalete-plata-5.jpg'],
     fotos: {
-      oro: [
-        'img/brazalete-oro-5.jpg',
-        'img/brazalete-oro-1.jpg', 'img/brazalete-oro-2.jpg',
-        // Foto de cuerpo entero con el brazalete abajo del todo: el
-        // recorte centrado por defecto lo dejaba casi fuera. "pos" baja
-        // el encuadre para que se vea completo.
-        { src: 'img/brazalete-oro-3.jpg', pos: 'center 78%' },
-        'img/brazalete-oro-4.jpg',
-      ],
-      plata: ['img/brazalete-plata-5.jpg', 'img/brazalete-plata-1.jpg', 'img/brazalete-plata-2.jpg', 'img/brazalete-plata-3.jpg', 'img/brazalete-plata-4.jpg'],
+      oro: ['img/brazalete-oro-5.jpg'],
+      plata: ['img/brazalete-plata-5.jpg'],
     },
   },
   {
@@ -215,10 +201,10 @@ const PRODUCTOS = [
     // FOTOS PROVISIONALES. Portada con 4 fotos (no 2 como en las
     // pulseras): la 4 y la 5 de cada acabado, que también cierran la
     // galería de dentro.
-    fotoPortada: ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-plata-6.jpg', 'img/collar-esencia-oro-4.jpg', 'img/collar-esencia-plata-4.jpg'],
+    fotoPortada: ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-plata-6.jpg'],
     fotos: {
-      oro: ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg', 'img/collar-esencia-oro-3.jpg', 'img/collar-esencia-oro-4.jpg', 'img/collar-esencia-oro-5.jpg'],
-      plata: ['img/collar-esencia-plata-6.jpg', 'img/collar-esencia-plata-1.jpg', 'img/collar-esencia-plata-2.jpg', 'img/collar-esencia-plata-3.jpg', 'img/collar-esencia-plata-4.jpg', 'img/collar-esencia-plata-5.jpg'],
+      oro: ['img/collar-esencia-oro-6.jpg'],
+      plata: ['img/collar-esencia-plata-6.jpg'],
     },
   },
   {
@@ -304,20 +290,18 @@ const PRODUCTOS = [
     // Consentida) y sigue con las de las dos piezas que lo
     // forman: de cada una, su foto de portada (la 4, y la 5 del collar) y
     // dos de la pieza puesta (1 y 2). Ocho en total.
-    fotoPortada: ['img/kit-pedacito-2.jpg', 'img/collar-esencia-oro-4.jpg', 'img/dos-almas-oro-4.jpg'],
+    fotoPortada: ['img/kit-pedacito-2.jpg', 'img/collar-esencia-oro-6.jpg', 'img/dos-almas-oro-4.jpg'],
     fotos: {
       oro: [
         'img/kit-pedacito-2.jpg',
-        'img/collar-esencia-oro-4.jpg', 'img/collar-esencia-oro-5.jpg',
-        'img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg',
+        'img/collar-esencia-oro-6.jpg',
         'img/dos-almas-oro-4.jpg',
         'img/dos-almas-oro-1.jpg', 'img/dos-almas-oro-2.jpg',
       ],
       // Sin la foto de las cajas: la que hay es en dorado, y en la
       // galería de plata cantaría.
       plata: [
-        'img/collar-esencia-plata-4.jpg', 'img/collar-esencia-plata-5.jpg',
-        'img/collar-esencia-plata-1.jpg', 'img/collar-esencia-plata-2.jpg',
+        'img/collar-esencia-plata-6.jpg',
         'img/dos-almas-plata-4.jpg',
         'img/dos-almas-plata-1.jpg', 'img/dos-almas-plata-2.jpg',
       ],
@@ -362,21 +346,19 @@ const PRODUCTOS = [
     // 2). Cierra con la del regalo a la espalda, que es de marca y no de
     // una pieza concreta: aquí cabe porque este kit tiene una foto menos
     // (el Collar Esencia del otro aporta también su número 5).
-    fotoPortada: ['img/kit-consentida-1.jpg', 'img/collar-destino-oro-4.jpg', 'img/mi-cielo-oro-4.jpg'],
+    fotoPortada: ['img/kit-consentida-1.jpg', 'img/collar-destino-oro-4.jpg', 'img/mi-cielo-oro-5.jpg'],
     fotos: {
       oro: [
         'img/kit-consentida-1.jpg',
         'img/collar-destino-oro-4.jpg',
         'img/collar-destino-oro-1.jpg', 'img/collar-destino-oro-2.jpg',
-        'img/mi-cielo-oro-4.jpg',
-        'img/mi-cielo-oro-1.jpg', 'img/mi-cielo-oro-2.jpg',
+        'img/mi-cielo-oro-5.jpg',
         'img/kit-regalo-1.jpg',
       ],
       plata: [
         'img/collar-destino-plata-4.jpg',
         'img/collar-destino-plata-1.jpg', 'img/collar-destino-plata-2.jpg',
-        'img/mi-cielo-plata-4.jpg',
-        'img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg',
+        'img/mi-cielo-plata-5.jpg',
       ],
     },
   },
