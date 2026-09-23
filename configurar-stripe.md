@@ -82,7 +82,7 @@ el webhook en el panel de Stripe.
 1. En el dashboard de Stripe, ve a **Desarrolladores → Webhooks → Añadir
    endpoint**.
 2. URL del endpoint:
-   `https://ddcrkglgdbasbxanbjkc.supabase.co/functions/v1/webhook-stripe`
+   `https://qesyjtqxbouodgldvbtq.supabase.co/functions/v1/webhook-stripe`
 3. Eventos a escuchar: marca `checkout.session.completed` y
    `checkout.session.expired`.
 4. Guarda. Stripe te muestra un **Signing secret** (empieza por `whsec_`).
@@ -126,6 +126,21 @@ Todo lo anterior funciona en modo de prueba. Para cobrar de verdad:
    supabase secrets set STRIPE_SECRET_KEY=sk_live_xxxxxxxxxxxx
    supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxx
    ```
+
+## 7 bis. Monedas (desde los precios internacionales)
+
+La web cobra en la moneda del país del cliente: MXN, USD, EUR, COP, CLP,
+PEN o ARS. Stripe solo acepta cobrar en las monedas que tenga habilitadas
+la cuenta según el país donde esté dada de alta.
+
+Antes de abrir, comprueba en **Stripe → Configuración → Monedas** cuáles
+admite la tuya. Si alguna no está, hay dos salidas: quitar ese mercado
+del selector (`MERCADOS` en `mercados.js` y en
+`supabase/functions/_shared/precios.ts`) o abrir cuenta en ese país.
+
+Si un cliente intenta pagar en una moneda que Stripe no admite, el pago
+falla al crear la sesión: la pieza se queda en `pendiente_pago` y no se
+cobra nada.
 
 ## 8. Cómo saber si ya está listo
 
