@@ -678,28 +678,20 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 .hero{
   position:relative; overflow:hidden; box-sizing:border-box;
   display:flex; flex-direction:column;
-  /* Móvil: la foto va ENTERA a lo ancho de la pantalla, sin ampliarla
-     (1122 px de ancho: nítida incluso en pantallas de alta densidad). El
-     alto es el de la foto (1402/1122 = 125vw) más una franja arriba para
-     el logo, así no le tapa la cara. */
-  min-height:calc(125vw + 96px);
+  /* Pantalla completa también en móvil (decisión del cliente): la foto
+     vertical lo llena todo y lo de debajo se ve al hacer scroll. "svh" es
+     el alto sin la barra del navegador; el vh queda de respaldo. */
+  min-height:100vh; min-height:100svh;
 }
 /* Degradado de respaldo por si la foto no carga. */
 .hero-media{
   position:absolute; inset:0; z-index:0;
   background:linear-gradient(160deg, #C9E6E4 0%, var(--surf) 28%, var(--sea) 62%, var(--deep) 100%);
 }
-/* La misma foto desenfocada llena la franja del logo, para que no haya
-   un corte liso entre la franja y la foto nítida. */
-.hero-media::before{
-  content:""; position:absolute; inset:-60px; pointer-events:none;
-  /* El número del nombre no es decorativo: al cambiar de foto se cambia
-     también, para que ningún móvil se quede con la vieja en caché. */
-  background:url('img/hero-adriana-1.jpg') center top/cover no-repeat;
-  filter:blur(24px) brightness(.9);
-}
-/* La foto nítida, pegada abajo y a todo el ancho, con dos sombras suaves
-   (arriba y abajo) para que el logo y el botón se lean. */
+/* La foto vertical a "cover", con dos sombras suaves (arriba y abajo)
+   para que el logo y el botón se lean. El número del nombre no es
+   decorativo: al cambiar de foto se cambia también, para que ningún
+   móvil se quede con la vieja en caché. */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   background-image:
@@ -707,13 +699,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
       rgba(20,40,52,.42) 0%, rgba(20,40,52,.14) 26%, rgba(20,40,52,0) 42%,
       rgba(20,40,52,0) 70%, rgba(20,40,52,.30) 100%),
     url('img/hero-adriana-1.jpg');
-  background-size:auto, 100% auto;
-  background-position:center, center bottom;
+  background-size:auto, cover;
+  /* 30%: ella está a la izquierda de la foto; así queda centrada. */
+  background-position:center, 30% top;
   background-repeat:no-repeat;
-  /* El borde de arriba de la foto nítida se funde con la franja
-     desenfocada en vez de cortar en seco. */
-  -webkit-mask-image:linear-gradient(to bottom, transparent 70px, #000 150px);
-  mask-image:linear-gradient(to bottom, transparent 70px, #000 150px);
 }
 .hero-copy{
   position:relative; z-index:2; flex:1; width:100%;
@@ -2260,8 +2249,6 @@ footer{
   /* Escritorio: a pantalla completa con la foto HORIZONTAL (1672x941),
      que llena el hueco apaisado sin recortarse apenas. Sin franja
      desenfocada: aquí no hace falta. */
-  .hero{min-height:100vh; min-height:100svh;}
-  .hero-media::before{content:none;}
   .hero-media::after{
     background-image:
       linear-gradient(to bottom,
@@ -2270,7 +2257,6 @@ footer{
       url('img/hero-adriana-horizontal-1.jpg');
     background-size:auto, cover;
     background-position:center, 70% center;
-    -webkit-mask-image:none; mask-image:none;
   }
   .hero-copy{padding:calc(var(--header-h) - 6px) 40px 56px;}
   .hero-logo img{width:320px;}
