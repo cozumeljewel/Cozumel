@@ -128,9 +128,16 @@ const PRODUCTOS = [
     // Portada: la foto nueva (22/09), la del espejo con el grabado a la vista.
     fotoPortada: ['img/mi-cielo-oro-5.jpg', 'img/mi-cielo-plata-5.jpg'],
     fotos: {
-      // Solo la foto nueva (22/09): las anteriores se retiraron.
-      oro: ['img/mi-cielo-oro-5.jpg'],
-      plata: ['img/mi-cielo-plata-5.jpg'],
+      // La foto nueva (22/09) primero y detrás las de Adriana con la
+      // pieza puesta. Las del espejo antiguas (la 4) siguen fuera.
+      oro: [
+        'img/mi-cielo-oro-5.jpg',
+        // Foto apaisada con la pulsera pegada al borde izquierdo: "pos"
+        // desplaza el encuadre para que se vea entera.
+        { src: 'img/mi-cielo-oro-1.jpg', pos: '9% center' },
+        'img/mi-cielo-oro-2.jpg', 'img/mi-cielo-oro-3.jpg',
+      ],
+      plata: ['img/mi-cielo-plata-5.jpg', 'img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg', 'img/mi-cielo-plata-3.jpg'],
     },
   },
   {
@@ -163,8 +170,15 @@ const PRODUCTOS = [
     // dentro.
     fotoPortada: ['img/brazalete-oro-5.jpg', 'img/brazalete-plata-5.jpg'],
     fotos: {
-      oro: ['img/brazalete-oro-5.jpg'],
-      plata: ['img/brazalete-plata-5.jpg'],
+      // La foto nueva primero y detrás las de Adriana con la pieza puesta.
+      oro: [
+        'img/brazalete-oro-5.jpg',
+        'img/brazalete-oro-1.jpg', 'img/brazalete-oro-2.jpg',
+        // Cuerpo entero con el brazalete abajo: "pos" baja el encuadre
+        // para que se vea completo.
+        { src: 'img/brazalete-oro-3.jpg', pos: 'center 78%' },
+      ],
+      plata: ['img/brazalete-plata-5.jpg', 'img/brazalete-plata-1.jpg', 'img/brazalete-plata-2.jpg', 'img/brazalete-plata-3.jpg'],
     },
   },
   {
@@ -203,8 +217,9 @@ const PRODUCTOS = [
     // galería de dentro.
     fotoPortada: ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-plata-6.jpg'],
     fotos: {
-      oro: ['img/collar-esencia-oro-6.jpg'],
-      plata: ['img/collar-esencia-plata-6.jpg'],
+      // La foto nueva primero y detrás las de Adriana con la pieza puesta.
+      oro: ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg', 'img/collar-esencia-oro-3.jpg'],
+      plata: ['img/collar-esencia-plata-6.jpg', 'img/collar-esencia-plata-1.jpg', 'img/collar-esencia-plata-2.jpg', 'img/collar-esencia-plata-3.jpg'],
     },
   },
   {
@@ -295,6 +310,7 @@ const PRODUCTOS = [
       oro: [
         'img/kit-pedacito-2.jpg',
         'img/collar-esencia-oro-6.jpg',
+        'img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg',
         'img/dos-almas-oro-4.jpg',
         'img/dos-almas-oro-1.jpg', 'img/dos-almas-oro-2.jpg',
       ],
@@ -302,6 +318,7 @@ const PRODUCTOS = [
       // galería de plata cantaría.
       plata: [
         'img/collar-esencia-plata-6.jpg',
+        'img/collar-esencia-plata-1.jpg', 'img/collar-esencia-plata-2.jpg',
         'img/dos-almas-plata-4.jpg',
         'img/dos-almas-plata-1.jpg', 'img/dos-almas-plata-2.jpg',
       ],
@@ -353,12 +370,14 @@ const PRODUCTOS = [
         'img/collar-destino-oro-4.jpg',
         'img/collar-destino-oro-1.jpg', 'img/collar-destino-oro-2.jpg',
         'img/mi-cielo-oro-5.jpg',
+        { src: 'img/mi-cielo-oro-1.jpg', pos: '9% center' }, 'img/mi-cielo-oro-2.jpg',
         'img/kit-regalo-1.jpg',
       ],
       plata: [
         'img/collar-destino-plata-4.jpg',
         'img/collar-destino-plata-1.jpg', 'img/collar-destino-plata-2.jpg',
         'img/mi-cielo-plata-5.jpg',
+        'img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg',
       ],
     },
   },
