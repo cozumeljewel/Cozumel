@@ -124,65 +124,43 @@
   </div>
 
   <!-- ===== HERO / INICIO =====
-       Cozumel es la marca (fija, no cambia); "Un pedacito de ti" es el
-       concepto de la EDICIÓN 01, no el claim permanente de la marca. Para
-       lanzar una Edición 02 solo hay que editar estos dos valores, sin
-       tocar nada más de la sección:
-         editionTitle       -> el <h1>
-         editionDescription -> .hero-sub
-       El bloque .hero-marca (Cozumel + su claim) no forma parte de la
-       edición: se queda igual pase lo que pase con las ediciones. -->
+       Rediseño del 2026-09-23 (referencia del cliente): solo la foto de
+       Adriana a pantalla completa, el logo grande arriba y el botón de la
+       colección abajo. Titular, subtítulo, firma y "Conoce Cozumel" se
+       quitaron a propósito: eran ruido visual sobre la foto. Mientras se
+       está arriba del todo, la cabecera esconde su logo pequeño para no
+       repetirlo junto a este (ver .hero-en-vista en style.css). -->
   <section class="hero">
     <div class="hero-media" role="img" aria-label="Adriana llevando piezas de Cozumel Jewelry"></div>
-    <!-- Dos bloques, uno arriba y otro abajo, para no tapar a Adriana:
-         el titular va sobre su cabeza (cielo) y todo lo demás al pie. El
-         hueco del medio lo reparte el space-between de .hero-copy. -->
-    <!-- Un solo HTML para dos heros distintos: MÓVIL lleva el diseño
-         nuevo (titular a la izquierda, filete, botón ancho e indicador de
-         scroll) y ESCRITORIO se queda como estaba antes (todo centrado,
-         con la firma de marca y sin indicador). Lo que sobra en cada
-         caso se oculta desde el CSS, no se duplica el marcado.
-
-         Los hijos van planos (sin los dos div de antes) justamente para
-         poder recolocarlos por separado en cada tamaño. El titular queda
-         arriba y todo lo demás se empuja al pie con margin-top:auto en
-         .hero-sub, que es como ya se comportaba. -->
     <div class="hero-copy">
-      <!-- Solo el filete sobre el titular: la etiqueta "PEDACITO" que
-           llevaba la referencia se quitó a petición del cliente, para no
-           repetir la palabra justo encima del propio titular. -->
-      <span class="hero-filete reveal-hero" aria-hidden="true"></span>
+      <h1 class="hero-logo reveal-hero">
+        <svg class="hero-logo-emblema" viewBox="-15 -15 130 140" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round">
+            <line x1="84" y1="52" x2="95.9" y2="52"/>
+            <line x1="79.4" y1="72" x2="89.7" y2="79"/>
+            <line x1="67" y1="86.6" x2="72.95" y2="98.8"/>
+            <line x1="50" y1="92" x2="50" y2="106"/>
+            <line x1="33" y1="86.6" x2="27.05" y2="98.8"/>
+            <line x1="20.6" y1="72" x2="10.25" y2="79"/>
+            <line x1="16" y1="52" x2="4.1" y2="52"/>
+            <line x1="20.6" y1="32" x2="10.25" y2="25"/>
+            <line x1="33" y1="17.4" x2="27.05" y2="5.2"/>
+            <line x1="50" y1="12" x2="50" y2="-2"/>
+            <line x1="67" y1="17.4" x2="72.95" y2="5.2"/>
+            <line x1="79.4" y1="32" x2="89.7" y2="25"/>
+          </g>
+          <ellipse cx="50" cy="52" rx="34" ry="40" fill="none" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M18,52 C30,36 70,36 82,52 C70,66 30,66 18,52 Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+          <circle cx="50" cy="52" r="7" fill="currentColor"/>
+        </svg>
+        <span class="hero-logo-nombre">Cozumel</span>
+        <span class="hero-logo-sub">Jewelry</span>
+      </h1>
 
-      <!-- "de ti" va en <em> y como bloque (sin <br>): misma familia
-           serif en cursiva, con su propio tamaño e interlineado, para que
-           se lea como continuación natural del titular y no como un
-           segundo logotipo. -->
-      <h1 class="reveal-hero">Un Pedacito<em>de ti</em></h1>
-
-      <!-- Va al pie, no pegado al titular: ahí arriba le cruzaba la cara
-           a Adriana. Abajo cae sobre la falda, zona oscura y despejada. -->
-      <!-- Dos versiones del mismo texto: en móvil va en tres niveles (así
-           lo pidió el cliente), en escritorio sigue la frase de una línea
-           de siempre. La que no toca se oculta con display:none, que
-           también la saca del lector de pantalla: nunca se leen las dos. -->
-      <p class="hero-sub reveal-hero">
-        <span class="hero-sub-movil">Joyas Personalizadas<br>Para regalar algo<br>Que Importa</span>
-        <span class="hero-sub-escritorio">Joyas personalizadas para regalar algo que importa.</span>
-      </p>
-
-      <div class="hero-ctas reveal-hero">
-        <a class="hero-cta" href="productos.html">
-          <span>Descubrir la colección</span>
-          <span class="hero-cta-flecha" aria-hidden="true">→</span>
-        </a>
-        <a class="hero-cta-secundaria" href="historia.html">Conoce Cozumel</a>
-      </div>
-
-      <!-- Acento manuscrito al pie de la foto (referencia del cliente). Va
-           en la cursiva de la casa (Playfair italic), no en una tercera
-           fuente de mano: el sistema tipográfico del sitio es una serif y
-           una sans, y romperlo aquí obligaría a romperlo en todas. -->
-      <p class="hero-firma reveal-hero">Más que joyas,<br>recuerdos</p>
+      <a class="hero-cta reveal-hero" href="productos.html">
+        <span>Descubrir la colección</span>
+        <span class="hero-cta-flecha" aria-hidden="true">→</span>
+      </a>
     </div>
   </section>
 

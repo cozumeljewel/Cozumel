@@ -436,6 +436,9 @@ body[data-page="inicio"] .site-header{
      corporativo saturado) y más suave que antes, para que la cabecera se
      lea como parte de la imagen y no como una barra puesta encima. */
   background:linear-gradient(to bottom, rgba(34,58,76,.34), transparent);
+  /* border-box: si no, el degradado se repite dentro del borde
+     transparente de 1px y pinta una raya oscura sobre la foto. */
+  background-origin:border-box;
   border-bottom-color:transparent; box-shadow:none;
 }
 body[data-page="inicio"] .site-header .logo-name,
@@ -472,9 +475,16 @@ body[data-page="inicio"] .site-header.scrolled .header-carrito{
   color:var(--deep);
 }
 body[data-page="inicio"] .site-header.scrolled .nav a{color:var(--ink-soft);}
-@supports (backdrop-filter: blur(1px)){
-  body[data-page="inicio"] .site-header:not(.scrolled){backdrop-filter:blur(6px);}
+/* Arriba del todo el logo grande del hero hace de logo: la cabecera se
+   queda solo con el emblema (la elipse) a la izquierda, sin repetir
+   COZUMEL / JEWELRY, y el texto vuelve al bajar. */
+body[data-page="inicio"] .site-header:not(.scrolled) .logo-word{
+  opacity:0; visibility:hidden;
 }
+body[data-page="inicio"] .site-header .logo-word{transition:opacity .3s ease, visibility .3s;}
+/* El emblema, en el mismo blanco cálido que los iconos mientras flota
+   sobre la foto: en dorado se perdía contra los árboles. */
+body[data-page="inicio"] .site-header:not(.scrolled) .logo-mark{color:var(--hero-blanco);}
 /* El hero, solo en inicio, empieza pegado del todo arriba: el header
    flota encima (fixed), no le hace falta hueco propio. */
 body[data-page="inicio"] .hero{margin-top:0 !important;}
@@ -661,253 +671,100 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   .menu-movil-nav a, .menu-movil-nav-toggle, .menu-movil-social{opacity:1; transform:none;}
 }
 
-/* ---------- 1. HERO ---------- */
 /* ---------- 1. HERO ----------
-   Rediseño a pantalla casi completa (2026-08-29): la foto pasa a ser el
-   fondo a sangre completa (cover), con un velo oscuro para que el texto en
-   blanco/dorado se lea encima, y el titular/CTA flotan sobre ella. Antes el
-   hero era una caja con la foto "contain" (entera, sin recortar) seguida de
-   un bloque de texto sobre fondo claro debajo: ese patrón sigue vivo en
-   otras piezas del sitio (galería de producto), aquí se sustituye a
-   propósito por uno editorial de marca premium. */
+   Rediseño del 2026-09-23 (referencia del cliente): foto a pantalla
+   completa con Adriana en el centro, el logo grande arriba y un único
+   botón abajo. Nada más encima de la foto. */
 .hero{
   position:relative; overflow:hidden; box-sizing:border-box;
   display:flex; flex-direction:column;
-  /* A pantalla completa. "svh" es el alto de pantalla SIN contar la barra
-     del navegador cuando está desplegada: con "vh" a secas, en móvil el
-     indicador de "seguir explorando" quedaba cortado por debajo del
-     borde hasta que hacías scroll. El vh de antes queda de respaldo para
-     navegadores viejos que no entienden svh. */
-  /* Móvil: el hero deja de ser pantalla completa y pasa a seguir la
-     proporción de la foto (referencia del cliente). A pantalla completa
-     había que recortar la foto tantísimo a lo ancho que ella se comía
-     el hueco del texto; con esta altura entra la escena entera (mar a la
-     izquierda, ella a la derecha) y las letras caben en su sitio. De
-     paso asoma la sección siguiente, que invita a seguir bajando.
-     El techo en svh evita que en móviles muy estrechos se pase de alto. */
-  min-height:min(126vw, 82svh);
-  /* El texto no puede subir por encima de esta línea: la cabecera flota
-     fija encima del hero, así que sin este suelo el titular se le metía
-     debajo en viewports bajos (~600px, frecuente en Android en
-     horizontal o con la barra de direcciones desplegada). */
-  padding-top:calc(var(--header-h) + 16px);
+  /* Pantalla completa: "svh" es el alto sin la barra del navegador
+     desplegada; el vh de antes queda de respaldo. */
+  min-height:100vh; min-height:100svh;
 }
 .hero-media{
   position:absolute; inset:0; z-index:0;
   background-image:
-    /* El número del nombre no es decorativo: el móvil se quedaba con la
-       foto vieja en caché porque el archivo se llamaba igual. Al
-       cambiar de foto, cambia también el número del nombre. */
+    /* El número del nombre no es decorativo: al cambiar de foto se
+       cambia también, para que ningún móvil se quede con la vieja en
+       caché. Si falla, se ve el degradado marino de respaldo. */
     url('img/hero-pc-3.jpg'),
-    radial-gradient(circle at 32% 22%, rgba(255,255,255,.5), transparent 55%),
     linear-gradient(160deg, #C9E6E4 0%, var(--surf) 28%, var(--sea) 62%, var(--deep) 100%);
-  /* "cover" a propósito: la foto llena el hero de borde a borde, en
-     grande. Si el archivo todavía no existe, la imagen falla en silencio
-     y se ve el degradado marino de siempre — nunca un hueco roto. */
-  /* Misma foto que en escritorio, pero es apaisada y el hueco del móvil
-     es vertical: a "cover" se ve el alto entero y solo el 45% del ancho,
-     así que el encuadre horizontal decide qué entra. */
-  background-size:cover, auto, auto;
-  /* 52%: la desplaza hacia la izquierda todo lo que permite el hueco,
-     así entra hasta por debajo de las rodillas en vez de cortarse por
-     el muslo. Es el tope: con más, el titular (190px a 375 de ancho) ya
-     no cabe en la franja que queda libre a su izquierda. */
-  background-position:52% center, center, center;
+  /* Algo más grande que el hueco y anclada arriba: así Adriana baja y
+     el logo le queda por encima de la cabeza, sin taparla. Lo que se
+     recorta es el suelo, que ya tapa el botón. 65% en horizontal la deja
+     centrada en pantalla (en la foto está a la derecha del centro). */
+  background-size:auto 128%, auto;
+  background-position:65% top, center;
   background-repeat:no-repeat;
 }
-/* Velo CLARO sobre la columna del texto, el mismo recurso que en
-   escritorio. La franja izquierda de esta foto es banco de madera y seto
-   a contraluz, un fondo con mucha textura, y ni reduciendo el velo a la
-   mitad ni a medio camino se seguía leyendo bien. De vuelta al alcance
-   original (72% del ancho): es el que de verdad sostiene el texto. */
+/* Solo dos sombras suaves, arriba y abajo, para que el logo y el botón
+   se lean sobre el cielo claro. El centro, donde está ella, queda limpio. */
 .hero-media::after{
   content:""; position:absolute; inset:0; pointer-events:none;
-  background:linear-gradient(to right,
-    rgba(250,247,241,.88) 0%,
-    rgba(250,247,241,.70) 32%,
-    rgba(250,247,241,.34) 52%,
-    rgba(250,247,241,0) 72%);
+  background:linear-gradient(to bottom,
+    rgba(20,40,52,.42) 0%,
+    rgba(20,40,52,.14) 26%,
+    rgba(20,40,52,0) 42%,
+    rgba(20,40,52,0) 70%,
+    rgba(20,40,52,.30) 100%);
 }
-/* Bloque de texto alineado a la izquierda, no centrado: el titular y su
-   subtítulo arrancan en el margen y forman una columna editorial. El
-   bloque de abajo (botón + "seguir explorando") se empuja al pie con
-   margin-top:auto, así el centro de la foto queda despejado. */
 .hero-copy{
   position:relative; z-index:2; flex:1; width:100%;
-  display:flex; flex-direction:column;
-  /* Suelo corto: el hero ya no es de pantalla completa, así que el
-     bloque de texto ocupa casi todo el alto y solo necesita respirar
-     un poco por abajo. */
-  padding:0 26px 24px;
-  /* Móvil: columna editorial alineada a la izquierda (el diseño que pidió
-     el cliente). En escritorio se vuelve a centrar, más abajo. */
-  text-align:left;
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:space-between; text-align:center;
+  /* El logo sube hasta la altura de los iconos de la cabecera (que
+     esconde el suyo aquí) para quedar por encima de la cabeza de ella. */
+  padding:calc(var(--header-h) - 10px) 24px 44px;
 }
 
-/* Titular: serif en peso normal (400), no en negrita — a este tamaño la
-   Playfair fina se lee editorial y deja de parecer un cartel. La sombra
-   es casi imperceptible a propósito: la legibilidad la da el velo suave
-   del cielo, no un contorno oscuro alrededor de la letra. */
-.hero-copy h1{
-  margin-top:10px; text-align:left;
-  /* Bastante más pequeño que antes (78px) a propósito: el titular tiene
-     que caber en la franja del mar, a la izquierda, sin llegar a su
-     cara — medido a 375px, "Un Pedacito" termina justo antes del pelo. */
-  font-size:clamp(32px,9.1vw,46px);
-  font-family:var(--font-serif);
-  /* 700, no 400: en escritorio el titular cae sobre un panel marfil liso
-     y el peso normal se lee editorial; aquí cae sobre foto (valla,
-     hojas), un fondo con mucha textura, y la letra fina se le mezclaba.
-     Escritorio recupera 400 más abajo. */
-  font-weight:700;
-  line-height:.98; letter-spacing:-.02em;
-  /* Tinta oscura, no blanco: la foto nueva es clara justo donde cae el
-     texto. El contraste lo da el color y el peso, no un velo sobre la
-     foto ni una sombra. */
-  color:var(--deep);
-  text-shadow:none;
+/* Logo grande: el mismo del header, en blanco cálido y a tamaño de
+   portada. Emblema, COZUMEL y JEWELRY apilados y centrados. */
+.hero-logo{
+  display:flex; flex-direction:column; align-items:center;
+  margin:0; color:var(--hero-blanco);
+  text-shadow:0 1px 14px rgba(10,30,40,.35);
 }
-/* Misma familia en cursiva y algo más pequeño: continuación del titular,
-   no una segunda marca. En bloque para poder darle su propio
-   interlineado sin arrastrar el de la línea de arriba. */
-.hero-copy h1 em{
-  display:block;
-  font-style:italic; font-weight:400; font-size:.94em; line-height:.95;
-  /* Dorado con cuerpo: sobre el cielo claro el champagne (--hero-arena)
-     desaparecía; este es el oro pensado para fondo claro. */
-  color:var(--gold-deep);
-  text-shadow:none;
+.hero-logo-emblema{
+  width:50px; height:50px; display:block; margin-bottom:8px;
+  filter:drop-shadow(0 1px 8px rgba(10,30,40,.35));
 }
-/* Filete corto sobre el titular, lo primero del bloque. */
-.hero-filete{
-  display:block; width:44px; height:1px; margin:4px 0 0;
-  background:var(--gold-deep); opacity:.85;
+.hero-logo-nombre{
+  font-family:var(--font-serif); font-weight:700;
+  font-size:clamp(40px, 12vw, 88px); line-height:1;
+  letter-spacing:.07em; text-transform:uppercase;
+  /* El espaciado de letras deja aire a la derecha de la última: se
+     compensa para que quede centrado de verdad. */
+  margin-right:-.07em;
 }
-/* En móvil va pegado al titular, bajo el filete (así lo pidió el
-   cliente). En escritorio se empuja al pie con margin-top:auto.
-   Sin sombra: cae sobre cielo y hierba, zonas tranquilas donde el
-   contraste de la propia foto ya basta. */
-.hero-sub{
-  /* 300px es el techo, pero nunca más del 56% del ancho: a 375px un
-     bloque de 300px se metía de lleno en la cara. Así mantiene siempre
-     las dos líneas y se queda en la franja tranquila de la foto. */
-  /* Pegada al titular otra vez, como en la referencia: etiqueta,
-     titular, descripción y botón forman un solo bloque compacto arriba
-     a la izquierda, y el hueco libre queda abajo para la firma. */
-  margin:18px 0 0; max-width:min(300px, 60vw);
-  /* Peso 600: la descripción cae sobre la franja MÁS pálida de la foto
-     (el cielo del horizonte, casi blanco). Se midió que ningún
-     oscurecimiento del cielo llega a leerse cómodo sin oscurecerle
-     también la cara — el texto termina justo donde empieza su frente, a
-     la misma altura. Engordar la propia letra es la única vía que no
-     tiene ese conflicto: sin sombras, sin velo y sin tocar la foto.
-     Comprobado en 375, 390 y 430px: sigue en 2 líneas y el borde
-     derecho (217px) cae sobre el pelo, no sobre la piel. */
-  /* Peso 500 y la tinta más oscura de la paleta: las dos últimas líneas
-     caen sobre el mar, que es un azul medio, y con el gris-verde normal
-     a peso 400 se quedaban blandas. Ni sombra ni velo: contraste por
-     color y peso, como el resto del hero. */
-  font-size:16px; line-height:1.45; font-weight:500;
-  color:var(--abyss); text-shadow:none;
+.hero-logo-sub{
+  margin-top:9px; margin-right:-.5em;
+  font-family:var(--font-sans); font-weight:500;
+  font-size:clamp(12px, 3.4vw, 17px); letter-spacing:.5em; text-transform:uppercase;
 }
-/* Móvil: tres niveles. Escritorio: la frase de una línea (ver el bloque
-   de min-width:900px). */
-/* Los tres niveles se destacan con la propia letra, sin sombras: 18px
-   (antes 16) y blanco pleno en vez del blanco cálido, que sobre el cielo
-   pálido del horizonte se perdía. Solo afecta a esta versión móvil. */
-.hero-sub-movil{display:block; font-size:17.5px; font-weight:600; line-height:1.5; color:var(--abyss);}
-.hero-sub-escritorio{display:none;}
 
-/* Firma de marca: no aparece en el diseno de movil (ver el mockup del
-   cliente), pero sigue en escritorio, donde separa el nombre de la
-   edicion del claim permanente de la marca. */
-.hero-marca{display:none;}
-.hero-marca-nombre{
-  display:block; font-family:var(--font-sans); font-size:11px; font-weight:600;
-  letter-spacing:.28em; text-transform:uppercase; color:rgba(242,248,248,.7);
-}
-.hero-marca-claim{
-  display:block; margin-top:6px; font-family:var(--font-serif); font-style:italic;
-  font-size:14.5px; color:rgba(242,248,248,.75); font-weight:400;}
-
-/* El botón deja de ser una franja de 86vw: ahora vive dentro de la
-   columna de texto, alineado con el titular, como en la referencia.
-   "margin-top:auto" lo baja al pie junto con la frase en cursiva: con un
-   margen fijo, al cambiar el ancho de pantalla el bloque de texto y la
-   foto crecían a ritmos distintos y el botón terminaba cruzándole la
-   cara a Adri. Anclado abajo, el hueco que sobra se lo queda el aire de
-   arriba y el botón siempre cae por debajo de ella. */
-.hero-ctas{display:flex; flex-direction:column; align-items:flex-start; margin-top:auto;}
-/* Botón de fondo lleno (antes borde fino sobre la foto): sobre una foto
-   clara el contorno se perdía, y relleno se lee de lejos y da el peso
-   que le falta al bloque. */
+/* Botón dorado lleno, abajo y centrado. */
 .hero-cta{
-  display:inline-flex; align-items:center; justify-content:space-between; gap:18px;
-  min-height:54px; padding:0 22px; border-radius:2px;
+  display:inline-flex; align-items:center; justify-content:center; gap:18px;
+  min-height:56px; padding:0 30px; border-radius:2px;
+  width:min(100%, 340px); box-sizing:border-box;
   border:1px solid var(--gold-deep);
   background:var(--gold-deep);
   color:var(--foam); text-decoration:none;
   font-family:var(--font-sans); font-size:13.5px; font-weight:600;
-  letter-spacing:.14em; text-transform:uppercase;
+  letter-spacing:.16em; text-transform:uppercase;
   transition:background .25s, color .25s, border-color .25s;
 }
 .hero-cta:hover{background:var(--deep); border-color:var(--deep); color:var(--foam);}
 .hero-cta-flecha{flex:none; font-size:16px; line-height:1;}
-/* CTA secundaria: solo texto subrayado, sin caja — la principal sigue
-   siendo la única llamada con peso visual. Lleva a la identidad de marca
-   (Quiénes somos), no a venta. */
-.hero-cta-secundaria{
-  align-self:flex-start; margin-top:16px;
-  font-family:var(--font-sans); font-size:14px; font-weight:500; letter-spacing:.01em;
-  color:var(--ink);
-  text-decoration:underline; text-underline-offset:6px;
-  text-decoration-thickness:1px; text-decoration-color:rgba(18,51,58,.4);
-  transition:text-decoration-color .2s;
-}
-.hero-cta-secundaria:hover{text-decoration-color:var(--ink);}
-
-/* Firma manuscrita al pie de la foto: cursiva de la casa (Playfair
-   italic), no una tercera fuente. "margin-top:auto" la pega al suelo del
-   hero, que es donde la pone la referencia, y así el hueco libre del
-   medio queda para la foto. En tinta, no en blanco: desde que la foto
-   del móvil es la apaisada, esta frase cae sobre el velo marfil de la
-   columna de texto, donde el blanco desaparecería. */
-.hero-firma{
-  /* En móvil va justo debajo del botón (el que se lleva el hueco libre
-     es él, ver .hero-ctas); en escritorio vuelve a "auto" para quedarse
-     pegada al suelo del hero. */
-  margin:26px 0 0; max-width:16ch;
-  /* Peso 500, que es el que de verdad se descarga de Playfair en cursiva
-     (el import trae 1,500), y más cuerpo que antes: sobre la roca al sol
-     el blanco fino a 22px se deshacía. Tamaño y peso en vez de sombra. */
-  font-family:var(--font-serif); font-style:italic; font-weight:500;
-  font-size:27px; line-height:1.18; color:var(--deep);
-}
-/* La secundaria ("Conoce Cozumel") sale del hero en móvil: en la
-   referencia no existe, y con el hero ya a media pantalla chocaba con la
-   frase en cursiva del pie. Sigue accesible desde el menú (Nuestra
-   historia) y vuelve a aparecer en escritorio, donde sí hay sitio. */
-.hero-cta-secundaria{display:none;}
 
 @keyframes heroMediaFade{ from{opacity:0;} to{opacity:1;} }
-/* Sin "scale" y con la mitad de recorrido que antes: se nota que el
-   bloque entra, no que hace una animación. */
 @keyframes heroRise{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
-/* La entrada escalonada (fondo → titular → filete → subtítulo → CTA →
-   indicador) vive SOLO aquí, no como regla base con un "apagado" aparte:
-   ".hero-copy h1" tiene más especificidad que una clase suelta como
-   ".reveal-hero", así que un override posterior con esa clase perdería y
-   la animación se colaría igual con el movimiento reducido activado. Dentro
-   de "no-preference" ese problema no puede pasar — la propiedad no existe
-   en absoluto si el usuario pide menos movimiento. */
+/* Entrada escalonada solo si no se pide menos movimiento. */
 @media (prefers-reduced-motion:no-preference){
   .hero-media{animation:heroMediaFade 1.4s ease-out both;}
-  .hero-filete{animation:heroRise .8s ease-out .2s both;}
-  .hero-copy h1{animation:heroRise .8s ease-out .32s both;}
-  .hero-sub{animation:heroRise .8s ease-out .46s both;}
-  .hero-marca{animation:heroRise .8s ease-out .6s both;}
-  .hero-ctas{animation:heroRise .8s ease-out .66s both;}
-  .hero-firma{animation:heroRise .8s ease-out .82s both;}
+  .hero-logo{animation:heroRise .9s ease-out .25s both;}
+  .hero-cta{animation:heroRise .8s ease-out .6s both;}
 }
 
 /* ---------- COZUMEL STORIES ----------
@@ -2408,97 +2265,17 @@ footer{
     margin-top:56px;
   }
 
-  /* 1. HERO: a pantalla casi completa también en escritorio, mismo
-     hero de fondo a sangre completa que en móvil, solo cambia el tamaño
-     del texto y el aire lateral. */
-  /* ===== HERO EN ESCRITORIO =====
-     Mismo lenguaje que el móvil (columna de texto a la izquierda sobre
-     el mar, ella a la derecha), solo que con más aire y tipos mayores.
-     Antes eran dos heros distintos: el de móvil a la izquierda y el de
-     escritorio centrado con velo oscuro y texto en blanco. Con la foto
-     nueva, clara y con ella descentrada, un texto centrado le caía justo
-     encima de la cara. */
-  .hero{margin-top:56px; min-height:86vh; align-items:center;}
-  .hero-copy{
-    width:100%; max-width:1240px; margin:0 auto;
-    padding:0 70px 40px; text-align:left;
-    align-items:flex-start;
-    /* En escritorio el bloque ya no se reparte de punta a punta del hero
-       (eso es cosa del móvil, donde la foto es mucho más alta que ancha):
-       aquí se agrupa entero y se centra en el alto disponible, así no
-       queda un hueco vacío entre el botón y la firma de abajo. */
-    justify-content:center;
-  }
-  .hero-copy h1{
-    margin-top:12px; text-align:left;
-    font-size:clamp(54px,5vw,72px); line-height:1.0; letter-spacing:-.02em;
-    /* El peso 700 de móvil es para pelear con una foto de fondo; aquí el
-       titular cae sobre el panel marfil liso y vuelve al 400 editorial. */
-    font-weight:400;
-  }
-  .hero-copy h1 em{font-size:.92em;}
-  .hero-filete{width:52px; margin-top:12px;}
-  /* La frase larga de escritorio, en la misma columna del titular. */
-  .hero-sub{margin:20px 0 0; font-size:18px; font-weight:400; max-width:30ch; text-align:left;}
-  .hero-sub-movil{display:none;}
-  .hero-sub-escritorio{display:inline;}
-  /* La firma de marca se queda fuera también en escritorio: con la
-     etiqueta de arriba y la frase en cursiva del pie, un tercer bloque
-     de marca en el mismo hueco era ruido. */
-  .hero-marca{display:none;}
-  .hero-ctas{margin-top:28px; margin-inline:0; align-items:flex-start; gap:14px;}
-  .hero-cta{min-height:56px; padding:0 30px; font-size:14px; letter-spacing:.12em;}
-  /* De vuelta a tinta: en escritorio el texto ya no cae sobre la foto
-     sino sobre el marfil del panel. */
-  .hero-cta-secundaria{
-    display:inline-block; margin-top:18px; font-size:15px;
-    color:var(--ink); text-decoration-color:rgba(18,51,58,.4);
-  }
-  .hero-cta-secundaria:hover{text-decoration-color:var(--ink);}
-  /* Ya no "margin-top:auto": con el grupo centrado (ver .hero-copy) eso
-     la mandaba al borde inferior del hero, lejos del resto y abriendo el
-     hueco vacío que sobraba en medio. Ahora es parte del mismo grupo,
-     separada solo por un margen fijo. */
-  .hero-firma{
-    margin:44px 0 0; font-size:32px; max-width:18ch;
-    text-align:left; color:var(--deep);
-  }
-
-  /* La foto en escritorio va ENTERA, no recortada. El hueco es ancho y
-     bajo y la foto es vertical: a "cover" solo cabía una franja de un
-     tercio de su alto, y Adri salía cortada por el pecho se encuadrara
-     donde se encuadrara. Aquí se ajusta por altura y se ancla a la
-     derecha (se la ve de la cabeza a los pies), y lo que queda a la
-     izquierda lo rellena una copia ampliada y difuminada de la misma
-     foto: la columna de texto cae sobre ella, que es lisa y clara.
-     La foto nítida vive en ::after y la difuminada en ::before, en ese
-     orden: el fondo de .hero-media (los degradados de respaldo) queda
-     debajo de las dos. */
-  /* En escritorio la foto es OTRA, horizontal (hero-pc-3), porque la
-     vertical del móvil obligaba a recortarla hasta dejarla irreconocible
-     en un hueco ancho y bajo. Esta entra a sangre completa con "cover" y
-     casi sin recorte: Adri queda a la derecha y la izquierda —puesta de
-     sol, palmeras, banco— es el hueco del texto. */
-  .hero-media{
-    background-image:url('img/hero-pc-3.jpg');
-    background-size:cover;
-    background-position:center;
-  }
-  .hero-media::before{content:none;}
-  /* Velo CLARO, no oscuro: la mitad izquierda es luz de atardecer sobre
-     hoja y madera, y ahí la tinta oscura se quedaba en 2,0-2,9:1 (hace
-     falta 4,5:1). En vez de oscurecer la foto —que es justo lo que no
-     se quiere— se le suma marfil, que sube el fondo a ~0,85 y lleva el
-     texto a 4,7:1 sin apagar la foto. Se apaga del todo antes de llegar
-     a ella. */
-  .hero-media::after{
-    background-image:linear-gradient(to right,
-      rgba(250,247,241,.84) 0%,
-      rgba(250,247,241,.66) 24%,
-      rgba(250,247,241,.30) 42%,
-      rgba(250,247,241,0) 58%);
-  }
-  .hero-copy{background:none;}
+  /* 1. HERO en escritorio: el mismo diseño, con el logo más grande. La
+     foto va a sangre y anclada a la derecha, lo que acerca a Adriana al
+     centro de la pantalla. */
+  /* Igual que en móvil: algo mayor que el hueco y anclada arriba, para
+     que Adriana baje y el logo le quede por encima de la cabeza. Anclada
+     a la derecha, ella cae casi en el centro de la pantalla. */
+  .hero-media{background-size:auto 132%, auto; background-position:100% top, center;}
+  .hero-copy{padding:calc(var(--header-h) - 6px) 40px 56px;}
+  .hero-logo-emblema{width:56px; height:56px; margin-bottom:10px;}
+  .hero-logo-nombre{font-size:64px;}
+  .hero-logo-sub{font-size:15px;}
 
   /* COZUMEL STORIES: mosaico editorial en vez de columna. Una foto grande
      y vertical a la izquierda, dos apaisadas apiladas a la derecha, y una
