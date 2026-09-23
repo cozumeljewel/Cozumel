@@ -718,29 +718,12 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   padding:calc(var(--header-h) - 10px) 24px 44px;
 }
 
-/* Logo grande: el mismo del header, en blanco cálido y a tamaño de
-   portada. Emblema, COZUMEL y JEWELRY apilados y centrados. */
-.hero-logo{
-  display:flex; flex-direction:column; align-items:center;
-  margin:0; color:var(--hero-blanco);
-  text-shadow:0 1px 14px rgba(10,30,40,.35);
-}
-.hero-logo-emblema{
-  width:50px; height:50px; display:block; margin-bottom:8px;
-  filter:drop-shadow(0 1px 8px rgba(10,30,40,.35));
-}
-.hero-logo-nombre{
-  font-family:var(--font-serif); font-weight:700;
-  font-size:clamp(40px, 12vw, 88px); line-height:1;
-  letter-spacing:.07em; text-transform:uppercase;
-  /* El espaciado de letras deja aire a la derecha de la última: se
-     compensa para que quede centrado de verdad. */
-  margin-right:-.07em;
-}
-.hero-logo-sub{
-  margin-top:9px; margin-right:-.5em;
-  font-family:var(--font-sans); font-weight:500;
-  font-size:clamp(12px, 3.4vw, 17px); letter-spacing:.5em; text-transform:uppercase;
+/* Logo grande: el oficial en blanco, a tamaño de portada. Una sombra
+   muy suave lo separa de las hojas sin que se note como contorno. */
+.hero-logo{margin:0; line-height:0;}
+.hero-logo img{
+  display:block; width:min(54vw, 205px); height:auto;
+  filter:drop-shadow(0 1px 10px rgba(10,30,40,.35));
 }
 
 /* Botón dorado lleno, abajo y centrado. */
@@ -2271,11 +2254,9 @@ footer{
   /* Igual que en móvil: algo mayor que el hueco y anclada arriba, para
      que Adriana baje y el logo le quede por encima de la cabeza. Anclada
      a la derecha, ella cae casi en el centro de la pantalla. */
-  .hero-media{background-size:auto 132%, auto; background-position:100% top, center;}
+  .hero-media{background-size:auto 145%, auto; background-position:100% top, center;}
   .hero-copy{padding:calc(var(--header-h) - 6px) 40px 56px;}
-  .hero-logo-emblema{width:56px; height:56px; margin-bottom:10px;}
-  .hero-logo-nombre{font-size:64px;}
-  .hero-logo-sub{font-size:15px;}
+  .hero-logo img{width:200px;}
 
   /* COZUMEL STORIES: mosaico editorial en vez de columna. Una foto grande
      y vertical a la izquierda, dos apaisadas apiladas a la derecha, y una
