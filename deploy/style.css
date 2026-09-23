@@ -2567,6 +2567,12 @@ footer{
   .arma-kit-foto{max-width:none; margin:0; position:sticky; top:calc(var(--header-h) + 28px);}
   .arma-kit-texto{margin:0 auto;}
   .arma-kit-intro{font-size:17px;}
+  /* La entrada de la colección (foto + frase + botón) va en UNA columna
+     también en escritorio: con la frase sola a la derecha quedaba un
+     hueco enorme. La foto, centrada y sin "sticky"; debajo, el texto. */
+  .arma-kit--entrada{display:block; padding-bottom:96px;}
+  .arma-kit--entrada .arma-kit-foto{max-width:460px; margin:0 auto; position:relative; top:auto;}
+  .arma-kit--entrada .arma-kit-texto{margin:36px auto 0;}
 }
 
 @media (min-width:900px) and (max-height:720px){
