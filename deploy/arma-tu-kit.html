@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La colección · Cozumel Jewelry</title>
-<meta name="description" content="Cinco piezas, edición de lanzamiento. Unidades limitadas">
+<title>Arma tu kit · Cozumel Jewelry</title>
+<meta name="description" content="Elige una pulsera y un colgante y grábalos a tu gusto: tu propio kit de regalo">
 <meta name="theme-color" content="#14454A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cozumel">
 <meta property="og:locale" content="es_ES">
-<meta property="og:title" content="La colección · Cozumel Jewelry">
-<meta property="og:description" content="Cinco piezas, edición de lanzamiento. Unidades limitadas">
+<meta property="og:title" content="Arma tu kit · Cozumel Jewelry">
+<meta property="og:description" content="Elige una pulsera y un colgante y grábalos a tu gusto: tu propio kit de regalo">
 <meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="La colección · Cozumel Jewelry">
-<meta name="twitter:description" content="Cinco piezas, edición de lanzamiento. Unidades limitadas">
+<meta name="twitter:title" content="Arma tu kit · Cozumel Jewelry">
+<meta name="twitter:description" content="Elige una pulsera y un colgante y grábalos a tu gusto: tu propio kit de regalo">
 <meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
 <script src="mercados.js" defer></script>
 <script src="productos.js" defer></script>
 </head>
-<body data-page="productos">
+<body data-page="arma-kit">
 
 <div class="page">
 
@@ -114,36 +114,6 @@
     </div>
   </div>
 
-  <section class="coleccion">
-    <h2 class="reveal">La colección</h2>
-    <!-- Nombre de la edición + qué significa. Al lanzar la Edición 02
-         solo cambian estas dos líneas: el resto de la página no depende
-         del concepto de la colección. -->
-    <p class="coleccion-edicion reveal">Un Pedacito <em>de ti</em></p>
-    <!-- CINCO, no siete: en la colección hay 5 piezas únicas; los dos
-         kits no son piezas nuevas, son combinaciones de esas cinco. -->
-    <p class="coleccion-intro reveal">Cinco piezas personalizables</p>
-
-    <!-- Las tarjetas las genera script.js a partir de productos.js —
-         se editan ahí, no aquí. Dos rejillas: piezas principales y kits,
-         con un separador editorial entre las dos. -->
-    <div class="producto-grid" id="producto-grid"></div>
-
-    <!-- Transición piezas → kits: SOLO la banda champagne, sin texto
-         explicativo. Sustituye al interludio ("Un nombre. Una fecha. Una
-         palabra." / "Cada pieza se graba una a una, con un acabado de alta
-         precisión.") y al título "Los kits"; ninguno de los dos se usaba
-         en otra página. Se guardan aquí por si vuelven a otra sección:
-    <p class="coleccion-lineas">Un nombre. Una fecha. Una palabra.</p>
-    <p class="coleccion-cierre">Cada pieza se graba una a una, con un acabado de alta precisión.</p>
-    -->
-    <div class="kits-banda reveal">
-      <h2 class="kits-banda-titulo">Nuestros kits</h2>
-    </div>
-
-    <div class="producto-grid" id="producto-grid-kits"></div>
-  </section>
-
   <!-- ===== ARMA TU KIT =====
        Kit libre: no es un producto aparte. Se eligen piezas sueltas de la
        rejilla de arriba, cada una con su propia personalización, y van
@@ -159,17 +129,60 @@
     <h2 class="kits-banda-titulo">Arma tu kit</h2>
   </div>
 
-  <!-- El selector del kit libre vive en su propia página
-       (arma-tu-kit.html). Aquí solo queda la entrada: la foto, una frase y
-       el botón que lleva allí. -->
   <section class="arma-kit" id="arma-tu-kit" aria-label="Arma tu kit">
     <figure class="arma-kit-foto reveal">
+      <!-- Pase automático: todas las fotos del kit, una detrás de otra,
+           con un fundido y sin depender de lo que se elija abajo. Las dos
+           capas se turnan: una se ve y la otra carga la siguiente. -->
       <img src="img/arma-tu-kit-oro-1.jpg" alt="Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo" id="arma-kit-foto-img" class="arma-kit-capa visible">
       <img src="" alt="" aria-hidden="true" class="arma-kit-capa" id="arma-kit-foto-img-b">
     </figure>
-    <div class="arma-kit-texto arma-kit-entrada reveal">
-      <p class="arma-kit-entrada-texto">Una pulsera y un colgante, elegidos y grabados por ti.</p>
-      <a class="btn btn-primary arma-kit-btn" href="arma-tu-kit.html">Crear mi kit →</a>
+    <div class="arma-kit-texto">
+      <!-- Selector del kit libre: 1 pulsera + 1 colgante. Las opciones las
+           pinta script.js desde productos.js (campo "tipo"). Al continuar
+           se personaliza primero la pulsera y luego el colgante, cada una
+           en su ficha de siempre; las dos acaban en el mismo carrito. -->
+      <div class="kit-selector reveal" id="kit-selector">
+        <!-- Cabecera de cada fila: título + material. El material cambia
+             las fotos de la fila y viaja a la ficha ya elegido. -->
+        <div class="kit-paso-cabecera">
+          <p class="kit-paso-titulo" id="kit-titulo-pulsera">1 · Elige tu pulsera</p>
+          <div class="kit-material" data-tipo="pulsera" role="radiogroup" aria-label="Material de la pulsera"></div>
+        </div>
+        <div class="kit-opciones" id="kit-opciones-pulsera" role="radiogroup" aria-labelledby="kit-titulo-pulsera"></div>
+
+        <div class="kit-paso-cabecera">
+          <p class="kit-paso-titulo" id="kit-titulo-colgante">2 · Elige tu colgante</p>
+          <div class="kit-material" data-tipo="colgante" role="radiogroup" aria-label="Material del colgante"></div>
+        </div>
+        <div class="kit-opciones" id="kit-opciones-colgante" role="radiogroup" aria-labelledby="kit-titulo-colgante"></div>
+
+        <!-- Lo elegido, en grande: una foto por pieza, con su material.
+             Las rellena script.js. -->
+        <div class="kit-resumen" id="kit-resumen">
+          <figure class="kit-resumen-pieza" data-hueco="pulsera">
+            <span class="kit-resumen-foto"></span>
+            <figcaption class="kit-resumen-pie"><span class="kit-resumen-rol">Tu pulsera</span><span class="kit-resumen-nombre">Sin elegir</span></figcaption>
+          </figure>
+          <figure class="kit-resumen-pieza" data-hueco="colgante">
+            <span class="kit-resumen-foto"></span>
+            <figcaption class="kit-resumen-pie"><span class="kit-resumen-rol">Tu colgante</span><span class="kit-resumen-nombre">Sin elegir</span></figcaption>
+          </figure>
+        </div>
+
+        <a class="btn btn-primary arma-kit-btn is-disabled" id="kit-continuar" href="#kit-selector" aria-disabled="true">Personalizar mi kit →</a>
+        <p class="kit-ayuda" id="kit-ayuda" aria-live="polite">Elige una pulsera y un colgante</p>
+      </div>
+
+      <!-- El texto va DEBAJO del selector: primero se elige, luego se lee. -->
+      <p class="arma-kit-intro reveal">No todos los pedacitos son iguales, y no todas las historias se cuentan con las mismas piezas. Aquí eliges tú: combina lo que quieras, para quien tú quieras, como tú lo sientas.</p>
+      <p class="arma-kit-intro reveal">Un collar para tu mamá y una pulsera para ti. Dos piezas para tu mejor amiga. El set que tenga sentido para tu historia, no para la nuestra.</p>
+      <ul class="arma-kit-lista reveal">
+        <li>Elige las piezas que quieras combinar de toda la colección</li>
+        <li>Cada una se personaliza por separado — su nombre, su fecha, su mensaje</li>
+        <li>Envío en caja especial de regalo</li>
+      </ul>
+      <p class="arma-kit-cierre reveal">Porque no hay una sola forma de regalar un pedacito de ti.</p>
     </div>
   </section>
 

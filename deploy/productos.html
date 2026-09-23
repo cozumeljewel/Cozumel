@@ -159,60 +159,17 @@
     <h2 class="kits-banda-titulo">Arma tu kit</h2>
   </div>
 
+  <!-- El selector del kit libre vive en su propia página
+       (arma-tu-kit.html). Aquí solo queda la entrada: la foto, una frase y
+       el botón que lleva allí. -->
   <section class="arma-kit" id="arma-tu-kit" aria-label="Arma tu kit">
     <figure class="arma-kit-foto reveal">
-      <!-- Pase automático: todas las fotos del kit, una detrás de otra,
-           con un fundido y sin depender de lo que se elija abajo. Las dos
-           capas se turnan: una se ve y la otra carga la siguiente. -->
       <img src="img/arma-tu-kit-oro-1.jpg" alt="Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo" id="arma-kit-foto-img" class="arma-kit-capa visible">
       <img src="" alt="" aria-hidden="true" class="arma-kit-capa" id="arma-kit-foto-img-b">
     </figure>
-    <div class="arma-kit-texto">
-      <!-- Selector del kit libre: 1 pulsera + 1 colgante. Las opciones las
-           pinta script.js desde productos.js (campo "tipo"). Al continuar
-           se personaliza primero la pulsera y luego el colgante, cada una
-           en su ficha de siempre; las dos acaban en el mismo carrito. -->
-      <div class="kit-selector reveal" id="kit-selector">
-        <!-- Cabecera de cada fila: título + material. El material cambia
-             las fotos de la fila y viaja a la ficha ya elegido. -->
-        <div class="kit-paso-cabecera">
-          <p class="kit-paso-titulo" id="kit-titulo-pulsera">1 · Elige tu pulsera</p>
-          <div class="kit-material" data-tipo="pulsera" role="radiogroup" aria-label="Material de la pulsera"></div>
-        </div>
-        <div class="kit-opciones" id="kit-opciones-pulsera" role="radiogroup" aria-labelledby="kit-titulo-pulsera"></div>
-
-        <div class="kit-paso-cabecera">
-          <p class="kit-paso-titulo" id="kit-titulo-colgante">2 · Elige tu colgante</p>
-          <div class="kit-material" data-tipo="colgante" role="radiogroup" aria-label="Material del colgante"></div>
-        </div>
-        <div class="kit-opciones" id="kit-opciones-colgante" role="radiogroup" aria-labelledby="kit-titulo-colgante"></div>
-
-        <!-- Lo elegido, en grande: una foto por pieza, con su material.
-             Las rellena script.js. -->
-        <div class="kit-resumen" id="kit-resumen">
-          <figure class="kit-resumen-pieza" data-hueco="pulsera">
-            <span class="kit-resumen-foto"></span>
-            <figcaption class="kit-resumen-pie"><span class="kit-resumen-rol">Tu pulsera</span><span class="kit-resumen-nombre">Sin elegir</span></figcaption>
-          </figure>
-          <figure class="kit-resumen-pieza" data-hueco="colgante">
-            <span class="kit-resumen-foto"></span>
-            <figcaption class="kit-resumen-pie"><span class="kit-resumen-rol">Tu colgante</span><span class="kit-resumen-nombre">Sin elegir</span></figcaption>
-          </figure>
-        </div>
-
-        <a class="btn btn-primary arma-kit-btn is-disabled" id="kit-continuar" href="#kit-selector" aria-disabled="true">Personalizar mi kit →</a>
-        <p class="kit-ayuda" id="kit-ayuda" aria-live="polite">Elige una pulsera y un colgante</p>
-      </div>
-
-      <!-- El texto va DEBAJO del selector: primero se elige, luego se lee. -->
-      <p class="arma-kit-intro reveal">No todos los pedacitos son iguales, y no todas las historias se cuentan con las mismas piezas. Aquí eliges tú: combina lo que quieras, para quien tú quieras, como tú lo sientas.</p>
-      <p class="arma-kit-intro reveal">Un collar para tu mamá y una pulsera para ti. Dos piezas para tu mejor amiga. El set que tenga sentido para tu historia, no para la nuestra.</p>
-      <ul class="arma-kit-lista reveal">
-        <li>Elige las piezas que quieras combinar de toda la colección</li>
-        <li>Cada una se personaliza por separado — su nombre, su fecha, su mensaje</li>
-        <li>Envío en caja especial de regalo</li>
-      </ul>
-      <p class="arma-kit-cierre reveal">Porque no hay una sola forma de regalar un pedacito de ti.</p>
+    <div class="arma-kit-texto arma-kit-entrada reveal">
+      <p class="arma-kit-entrada-texto">Una pulsera y un colgante, elegidos y grabados por ti.</p>
+      <a class="btn btn-primary arma-kit-btn" href="arma-tu-kit.html">Crear mi kit →</a>
     </div>
   </section>
 

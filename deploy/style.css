@@ -2630,6 +2630,14 @@ footer{
    dos colgantes queda centrada. Elegida = borde
    dorado y nombre en tinta profunda. */
 .kit-selector{margin:0 auto; max-width:420px;}
+/* Entrada al kit libre en la colección: frase corta y el botón que lleva
+   a arma-tu-kit.html, donde está el selector. */
+.arma-kit-entrada{margin:0 auto; max-width:420px; text-align:center;}
+.arma-kit-entrada .arma-kit-btn{margin-top:0;}
+.arma-kit-entrada-texto{
+  font-family:var(--font-serif); font-style:italic; font-size:19px;
+  line-height:1.4; color:var(--deep); margin:0 0 20px;
+}
 .kit-paso-titulo{
   margin:24px 0 12px; font-family:var(--font-sans); font-size:12px; font-weight:600;
   letter-spacing:.16em; text-transform:uppercase; color:#7A5F2A; text-align:center;

@@ -1686,7 +1686,7 @@ if (ctaReservar) {
    propio: cada pieza se personaliza en su ficha de siempre y entra en el
    carrito como pieza suelta, así que el pedido, el precio y el SKU se
    resuelven exactamente igual que al comprarlas por separado.
-     Selector (productos.html) → personalizar.html?p=PULSERA&kit=COLGANTE
+     Selector (arma-tu-kit.html) → personalizar.html?p=PULSERA&kit=COLGANTE
      Paso 1: el CTA añade la pulsera y lleva a ?p=COLGANTE&kitpaso=2
      Paso 2: el CTA añade el colgante y va al carrito, como siempre.
    ========================================================= */
@@ -1694,7 +1694,7 @@ if (ctaReservar) {
   if (typeof PRODUCTOS === 'undefined') return;
   const piezas = tipo => PRODUCTOS.filter(p => p.tipo === tipo);
 
-  /* ---- Selector, en productos.html ---- */
+  /* ---- Selector, en arma-tu-kit.html ---- */
   const selector = document.getElementById('kit-selector');
   if (selector) {
     const elegido = { pulsera: null, colgante: null };
