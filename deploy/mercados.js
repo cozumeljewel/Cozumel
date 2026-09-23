@@ -7,12 +7,14 @@
 
    Cómo funciona, en corto:
      1. El precio maestro de cada pieza está en productos.js, en
-        "precios: { MX: 449 }". Es el precio de la pieza SIN envío.
+        "precios: { MX: 549 }". Es el precio FINAL en México, con el
+        envío ya dentro: se enseña tal cual.
      2. Si el producto tiene precio manual para un país (p.ej.
         "US: 24.99"), se usa ese tal cual (tiene que incluir el envío).
-     3. Si no lo tiene, se convierte desde MXN con la tasa de TASAS, se
-        suma el envío de ENVIO_USD y se redondea con la regla comercial
-        de esa moneda (.99, ,90, .990...).
+     3. Si no lo tiene: al precio de México se le quita el envío de
+        México, se convierte con la tasa de TASAS, se suma el envío de
+        ese país (ENVIO_USD) y se redondea con la regla comercial de esa
+        moneda (.99, ,90, .990...).
      4. El resultado se calcula UNA vez y se guarda en caché, no en cada
         pintado.
 
@@ -107,8 +109,8 @@ const REDONDEO = {
   PEN: v => { const n = Math.ceil(v); const r = n % 10; return n + (r === 9 ? 0 : (9 - r + (r > 9 ? 10 : 0))); },
   // 24.999 · 39.999... (inflación alta: se remata en 999)
   ARS: v => Math.ceil(v / 1000) * 1000 - 1,
-  // $569 · $669... (México no se convierte, pero sí suma el envío)
-  MXN: v => { const n = Math.ceil(v); const r = n % 10; return n + (r === 9 ? 0 : 9 - r); },
+  // México no se convierte nunca; si llegara aquí, se deja igual.
+  MXN: v => v,
 };
 
 /* Monedas sin decimales: ni se enseñan ni se cobran con céntimos. */
@@ -278,16 +280,20 @@ function precioDe(prod, codigoMercado) {
   const precios = prod.precios || {};
   let importe = null;
 
-  // precios.MX es el precio base sin envío, no un precio manual de México.
+  // precios.MX es el precio maestro (final en México), no un precio manual.
   const manual = mercado !== 'MX' && typeof precios[mercado] === 'number';
 
   if (manual) {
     // Precio manual para este país: manda sobre cualquier conversión.
     importe = precios[mercado];
+  } else if (mercado === 'MX' && typeof precios.MX === 'number') {
+    // México: el precio maestro tal cual, ya lleva su envío.
+    importe = precios.MX;
   } else if (typeof precios.MX === 'number') {
-    // Conversión desde el precio maestro de México + envío del país +
-    // redondeo comercial.
-    const convertido = precios.MX * (TASAS[moneda] ?? 1) + envioEnMoneda(mercado, moneda);
+    // Resto: precio de México sin su envío, convertido, más el envío de
+    // este país, con redondeo comercial.
+    const sinEnvio = precios.MX - envioEnMoneda('MX', 'MXN');
+    const convertido = sinEnvio * (TASAS[moneda] ?? 1) + envioEnMoneda(mercado, moneda);
     const redondear = REDONDEO[moneda] || (v => v);
     importe = redondear(convertido);
   }

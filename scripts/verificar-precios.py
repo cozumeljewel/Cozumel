@@ -55,9 +55,6 @@ def redondear(v, moneda):
         n = math.ceil(v); r = n % 10
         return n + (0 if r == 9 else 9 - r)
     if moneda == 'ARS': return math.ceil(v / 1000) * 1000 - 1
-    if moneda == 'MXN':
-        n = math.ceil(v); r = n % 10
-        return n + (0 if r == 9 else 9 - r)
     return v
 
 # Los mercados vivos se leen de mercados.js, para que esta comprobación
@@ -70,9 +67,12 @@ def precio(pid, mercado, base, tasas):
     manual = precios_cliente.get(pid, {}).get(mercado)
     if manual is not None and mercado != 'MX':
         v = manual
+    elif moneda == 'MXN':
+        v = base[pid]
     else:
-        envio = envio_servidor.get(mercado, 0) * tasas[moneda] / tasas['USD']
-        v = redondear(base[pid] * tasas[moneda] + envio, moneda)
+        envio = lambda mk, mon: envio_servidor.get(mk, 0) * tasas[mon] / tasas['USD']
+        sin_envio = base[pid] - envio('MX', 'MXN')
+        v = redondear(sin_envio * tasas[moneda] + envio(mercado, moneda), moneda)
     return round(v) if moneda in SIN_DECIMALES else round(v, 2)
 
 def main():

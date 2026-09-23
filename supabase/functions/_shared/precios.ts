@@ -12,13 +12,13 @@
 // que dar exactamente el mismo número, o el cliente vería un precio y
 // Stripe cobraría otro. scripts/verificar-precios.py compara las dos.
 
-// ---- Precio maestro en pesos mexicanos (fuente de todo) ----
+// ---- Precio maestro: precio FINAL en México, envío incluido ----
 export const PRECIOS_MXN: Record<string, number | null> = {
-  collar_esencial: 549,       // Colgante placa grabable
-  pulsera_vinculo: 549,       // Pulsera Dos Almas
-  pulsera_nombre: 449,        // Pulsera grabable
-  brazalete_mensaje: 499,     // Brazalete grabable
-  collar_flor_natal: 599,     // Colgante de los meses
+  collar_esencial: 649,       // Colgante placa grabable
+  pulsera_vinculo: 649,       // Pulsera Dos Almas
+  pulsera_nombre: 549,        // Pulsera grabable
+  brazalete_mensaje: 599,     // Brazalete grabable
+  collar_flor_natal: 699,     // Colgante de los meses
   kit_pedacito_nosotros: 949, // Kit de 2 piezas (precio propio, no la suma)
   kit_mi_consentida: 949,
   kit_personalizado: 949,      // Kit a tu gusto: mismo precio que los cerrados
@@ -81,11 +81,7 @@ const REDONDEO: Record<string, (v: number) => number> = {
     return n + (r === 9 ? 0 : 9 - r);
   },
   ARS: (v) => Math.ceil(v / 1000) * 1000 - 1,
-  MXN: (v) => {
-    const n = Math.ceil(v);
-    const r = n % 10;
-    return n + (r === 9 ? 0 : 9 - r);
-  },
+  MXN: (v) => v,
 };
 
 // Monedas que Stripe cobra sin decimales (y que tampoco se enseñan con
@@ -99,7 +95,8 @@ export function mercadoValido(mercado: string | null | undefined): string {
 }
 
 /** Precio de una pieza en un mercado: manual si lo hay, si no conversión
- *  desde MXN + envío del país + redondeo comercial. Devuelve null si la pieza no tiene
+ *  desde México (sin su envío) + envío del país + redondeo comercial.
+ *  Devuelve null si la pieza no tiene
  *  precio maestro. */
 export function precioDe(
   producto: string,
@@ -116,7 +113,12 @@ export function precioDe(
   const base = PRECIOS_MXN[producto];
   if (base === null || base === undefined) return null;
 
-  const convertido = base * (TASAS[moneda] ?? 1) + envioEnMoneda(m, moneda);
+  // México: el precio maestro tal cual, ya lleva su envío.
+  if (moneda === "MXN") return { importe: base, moneda, mercado: m };
+
+  // Resto: precio de México sin su envío, convertido, más el de este país.
+  const sinEnvio = base - envioEnMoneda("MX", "MXN");
+  const convertido = sinEnvio * (TASAS[moneda] ?? 1) + envioEnMoneda(m, moneda);
   const redondear = REDONDEO[moneda] ?? ((v: number) => v);
   return { importe: redondearSalida(redondear(convertido), moneda), moneda, mercado: m };
 }

@@ -8,7 +8,7 @@
    política de seguridad en Supabase (ver supabase-migracion-v2.sql),
    o la base de datos rechazará las reservas de ese producto.
 
-   precios: { MX: 449 }        precio maestro en pesos mexicanos. Los demás
+   precios: { MX: 449 }        precio FINAL en México (envío incluido). Los demás
                                mercados se calculan desde este (mercados.js).
    precios: { MX: 449, US: 24.99 }  precio manual para un país concreto: si
                                está, manda sobre la conversión. Se pueden
@@ -81,7 +81,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 549 },
+    precios: { MX: 649 },
     sku: { oro:'YS14924D0W0', plata:'YS14924A0W0' },
     forma: 'circulos',
     campos: [],
@@ -115,7 +115,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 449 },
+    precios: { MX: 549 },
     // El sufijo -KZ ya lleva incluida la tarifa de grabado
     sku: { oro:'YS15777D0W0-KZ', plata:'YS15777A0W0-KZ' },
     forma: 'placa',
@@ -152,7 +152,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 499 },
+    precios: { MX: 599 },
     // El sufijo -KZ ya lleva incluida la tarifa de grabado
     sku: { oro:'FZ28329D0W0-KZ', plata:'FZ28329A0W0-KZ' },
     forma: 'brazalete',
@@ -186,7 +186,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 549 },
+    precios: { MX: 649 },
     // SKU proveedor (Yiwu Lantiao). El grabado va como linea aparte: 'diaoke'
     sku: { oro:'CDNN067-2', plata:'CDNN067-1', grabado:'diaoke' },
     forma: 'placa',
@@ -226,7 +226,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 599 },
+    precios: { MX: 699 },
     // W1-W12 = mes de la piedra natal (enero..diciembre)
     sku: { oro:'XX49472D0W{mes}', plata:'XX49472A0W{mes}' },
     forma: 'flor',
