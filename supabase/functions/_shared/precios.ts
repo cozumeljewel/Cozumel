@@ -31,14 +31,15 @@ export const PRECIOS_MANUALES: Record<string, Record<string, number>> = {
   // collar_esencial: { US: 29.99, ES: 27.90 },
 };
 
+// Colombia (COP) y Argentina (ARS) fuera: la cuenta de Stripe no admite
+// cobrar en esas monedas (comprobado el 2026-09-23). Quien entre desde
+// allí paga en dólares. Mismo criterio que en mercados.js.
 export const MERCADOS: Record<string, { moneda: string }> = {
   MX: { moneda: "MXN" },
   US: { moneda: "USD" },
   ES: { moneda: "EUR" },
-  CO: { moneda: "COP" },
   CL: { moneda: "CLP" },
   PE: { moneda: "PEN" },
-  AR: { moneda: "ARS" },
 };
 
 export const MERCADO_FALLBACK = "US";

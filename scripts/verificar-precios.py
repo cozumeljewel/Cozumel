@@ -50,7 +50,10 @@ def redondear(v, moneda):
     if moneda == 'ARS': return math.ceil(v / 1000) * 1000 - 1
     return v
 
-MONEDAS = {'MX': 'MXN', 'US': 'USD', 'ES': 'EUR', 'CO': 'COP', 'CL': 'CLP', 'PE': 'PEN', 'AR': 'ARS'}
+# Los mercados vivos se leen de mercados.js, para que esta comprobación
+# no se quede atrás si se añade o se quita un país (Colombia y Argentina
+# se retiraron al no admitir Stripe sus monedas).
+MONEDAS = dict(re.findall(r"^\s*([A-Z]{2}): \{ pais:.*?moneda: '([A-Z]{3})'", mercados_js, re.M))
 
 def precio(pid, mercado, base, tasas):
     moneda = MONEDAS[mercado]

@@ -28,10 +28,15 @@ const MERCADOS = {
   MX: { pais: 'México',          moneda: 'MXN', locale: 'es-MX', simbolo: '$',  maestro: true },
   US: { pais: 'Estados Unidos',  moneda: 'USD', locale: 'en-US', simbolo: '$'  },
   ES: { pais: 'España',          moneda: 'EUR', locale: 'es-ES', simbolo: '€'  },
-  CO: { pais: 'Colombia',        moneda: 'COP', locale: 'es-CO', simbolo: '$'  },
   CL: { pais: 'Chile',           moneda: 'CLP', locale: 'es-CL', simbolo: '$'  },
   PE: { pais: 'Perú',            moneda: 'PEN', locale: 'es-PE', simbolo: 'S/' },
-  AR: { pais: 'Argentina',       moneda: 'ARS', locale: 'es-AR', simbolo: '$'  },
+  /* Colombia (COP) y Argentina (ARS) están fuera a propósito: la cuenta
+     de Stripe NO admite cobrar en esas monedas (comprobado el 2026-09-23
+     intentando crear la sesión de pago). Quien entre desde allí verá
+     dólares, que sí se cobran. Si algún día Stripe los habilita, se
+     vuelven a añadir aquí, en PAIS_A_MERCADO, en TASAS y en el
+     precios.ts del servidor: el redondeo de sus monedas sigue escrito
+     más abajo. */
 };
 
 const MERCADO_POR_DEFECTO = 'MX';   // mercado maestro
@@ -40,7 +45,8 @@ const MERCADO_FALLBACK = 'US';      // país conocido pero sin mercado propio
 /* Países → mercado. La eurozona entera va al mercado ES (euros). */
 const EUROZONA = ['ES','DE','FR','IT','PT','NL','BE','AT','IE','FI','GR','SK','SI','LT','LV','EE','LU','MT','CY','HR'];
 const PAIS_A_MERCADO = Object.fromEntries([
-  ['MX','MX'], ['US','US'], ['CO','CO'], ['CL','CL'], ['PE','PE'], ['AR','AR'],
+  ['MX','MX'], ['US','US'], ['CL','CL'], ['PE','PE'],
+  // Colombia y Argentina no están: caen en el fallback (dólares).
   ...EUROZONA.map(p => [p, 'ES']),
 ]);
 
@@ -138,6 +144,14 @@ function getMercado() {
   const geo = leerLocal(CLAVE_GEO);
   if (geo && esMercadoValido(geo.mercado) && (Date.now() - geo.fecha) < GEO_VALIDEZ_MS) {
     mercadoActual = geo.mercado;
+    return mercadoActual;
+  }
+
+  // Guardado pero ya no válido (p.ej. Colombia, retirada al no admitirla
+  // Stripe): dólares, no el mercado maestro — a un colombiano enseñarle
+  // pesos mexicanos sería peor.
+  if (manual || (geo && geo.mercado)) {
+    mercadoActual = MERCADO_FALLBACK;
     return mercadoActual;
   }
 

@@ -438,6 +438,12 @@ calcula solo.
   desde MXN, redondeo comercial por moneda, mercado activo y el precio ya
   formateado. Todo lo que pinta precio (tarjetas, ficha, kit, carrito) va
   por ahí; no hay ningún precio suelto en el resto del código.
+- **Mercados vivos: MX, US, ES, CL y PE.** Colombia y Argentina se
+  retiraron el 2026-09-23: la cuenta de Stripe no admite cobrar en COP ni
+  en ARS (se comprobó intentando crear la sesión de pago desde la web).
+  Quien entre desde esos países ve dólares. Para volver a activarlos hay
+  que añadirlos en `mercados.js` (MERCADOS, PAIS_A_MERCADO, TASAS) y en
+  `supabase/functions/_shared/precios.ts`, y desplegar la función.
 - **Detección de país:** función de borde de Netlify en `/api/geo`
   (`netlify/edge-functions/geo.js`), que lee el país de la IP. Se
   pregunta UNA vez y se guarda 30 días; no hay llamada por página. Si
