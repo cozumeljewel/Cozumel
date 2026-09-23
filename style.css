@@ -2683,6 +2683,9 @@ footer{
   display:block; aspect-ratio:1; border-radius:3px;
   background:#E9E5DF center/cover no-repeat;
   border:1px dashed rgba(20,69,74,.22);
+  /* Fundido entre las fotos del pase (los navegadores que no saben
+     fundir un fondo simplemente la cambian). */
+  transition:background-image .9s ease;
 }
 .kit-resumen-pieza.esta-elegida .kit-resumen-foto{border:1px solid rgba(20,69,74,.14);}
 .kit-resumen-pie{display:block; margin-top:8px; text-align:center;}

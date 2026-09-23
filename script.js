@@ -1729,7 +1729,7 @@ if (ctaReservar) {
       { src: 'img/arma-tu-kit-oro-2.jpg', alt: 'Caja de regalo abierta con un collar de flor y un brazalete dorados, grabado con una fecha' },
       { src: 'img/arma-tu-kit-plata-2.jpg', alt: 'Caja de regalo abierta con un collar de flor y un brazalete plateados' },
     ];
-    const PASE_MS = 3000; // cada 3 s, con el fundido largo de style.css
+    const PASE_MS = 4000; // cada 4 s (como Cozumel Stories), con el fundido largo de style.css
     let indiceFoto = 0, capaVisible = capaA, temporizadorFoto = null;
     const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -1852,6 +1852,24 @@ if (ctaReservar) {
       fig.appendChild(caja);
     };
 
+    /* Pase de fotos de las piezas elegidas: cada 4 s pasa a la siguiente
+       de su galería, las dos a la vez. Mismas reglas que el pase de
+       arriba: quieto si la pestaña no se ve o se pide menos movimiento. */
+    const fotosResumen = { pulsera: null, colgante: null };
+    const ponerFotoResumen = (caja, f) => {
+      caja.style.backgroundImage = f ? `url('${f.src}')` : '';
+      caja.style.backgroundPosition = (f && f.pos) || '';
+    };
+    setInterval(() => {
+      if (document.hidden || sinMovimiento.matches) return;
+      document.querySelectorAll('.kit-resumen-pieza').forEach(fig => {
+        const estado = fotosResumen[fig.dataset.hueco];
+        if (!elegido[fig.dataset.hueco] || !estado || estado.lista.length < 2) return;
+        estado.indice = (estado.indice + 1) % estado.lista.length;
+        ponerFotoResumen(fig.querySelector('.kit-resumen-foto'), estado.lista[estado.indice]);
+      });
+    }, PASE_MS);
+
     const pintarResumen = () => {
       document.querySelectorAll('.kit-resumen-pieza').forEach(fig => {
         const hueco = fig.dataset.hueco;
@@ -1861,12 +1879,26 @@ if (ctaReservar) {
         fig.classList.toggle('esta-elegida', !!prod);
         if (!prod) {
           foto.style.backgroundImage = '';
+          delete fig.dataset.clave;
+          fotosResumen[hueco] = null;
           nombre.textContent = 'Sin elegir';
           pintarCamposPieza(fig, null, hueco);
           return;
         }
-        const src = fotosDe(prod, material[hueco]).map(f => normFoto(f).src)[0] || fotoDe(prod, material[hueco]);
-        foto.style.backgroundImage = src ? `url('${src}')` : '';
+        // Todas las fotos de la pieza en ese acabado: el pase de abajo las
+        // va rotando. Solo se reinicia si cambia la pieza o el acabado,
+        // no cada vez que se repinta el resumen.
+        const clave = prod.id + '|' + material[hueco];
+        if (fig.dataset.clave !== clave) {
+          const lista = fotosDe(prod, material[hueco]).map(normFoto);
+          if (!lista.length) {
+            const unica = fotoDe(prod, material[hueco]);
+            if (unica) lista.push({ src: unica });
+          }
+          fotosResumen[hueco] = { lista, indice: 0 };
+          fig.dataset.clave = clave;
+          ponerFotoResumen(foto, lista[0]);
+        }
         nombre.textContent = prod.nombre + ' · ' + (material[hueco] === 'plata' ? 'plata' : 'oro');
         pintarCamposPieza(fig, prod, hueco);
       });
