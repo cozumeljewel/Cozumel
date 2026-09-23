@@ -1,5 +1,6 @@
-// Recibe los avisos de Stripe cuando una sesión de Checkout se completa o
-// expira. Nunca la llama el navegador: solo Stripe, con una firma que se
+// Recibe los avisos de Stripe cuando una sesión de Checkout se completa,
+// expira o, en los pagos que tardan en confirmarse (PayPal), cuando el
+// pago termina de confirmarse o de fallar. Nunca la llama el navegador: solo Stripe, con una firma que se
 // verifica antes de tocar nada. Si la firma no verifica, se rechaza sin
 // más, para que nadie pueda simular un aviso de pago falso.
 //
@@ -42,35 +43,39 @@ Deno.serve(async (req) => {
     return new Response("Firma inválida", { status: 400 });
   }
 
-  if (evento.type === "checkout.session.completed" && (evento.data.object as Stripe.Checkout.Session).payment_status === "paid") {
-    const session = evento.data.object as Stripe.Checkout.Session;
+  // Pago confirmado. Llega por dos caminos:
+  //  · checkout.session.completed con payment_status "paid": la tarjeta,
+  //    que se sabe al instante.
+  //  · checkout.session.async_payment_succeeded: métodos que tardan en
+  //    confirmarse (PayPal, a veces). En ese caso el "completed" llegó
+  //    antes con payment_status "unpaid" y aquí no se hizo nada; este
+  //    segundo aviso es el que de verdad dice que el dinero ha entrado.
+  //    Sin él, el pedido se quedaría en "pendiente de pago" para siempre.
+  const sesion = evento.data.object as Stripe.Checkout.Session;
+  const pagado =
+    (evento.type === "checkout.session.completed" && sesion.payment_status === "paid") ||
+    evento.type === "checkout.session.async_payment_succeeded";
+
+  // Sin pagar: la sesión caducó, o el pago en proceso terminó fallando.
+  const fallido =
+    evento.type === "checkout.session.expired" ||
+    evento.type === "checkout.session.async_payment_failed";
+
+  if (pagado || fallido) {
     // Un pedido con varias piezas es varias filas que comparten este mismo
     // stripe_session_id (ver crear-sesion-pago): este UPDATE con .eq() ya
-    // marca TODAS las que coincidan, no solo una — no hace falta ningún
-    // cambio aquí para el carrito. El disparador de la migración v10 se
-    // ejecuta una vez por fila (un email por pieza), no una vez por pedido.
+    // marca TODAS las que coincidan, no solo una.
     const { data, error } = await sb
       .from("reservas")
-      .update({ estado: "pagado" })
-      .eq("stripe_session_id", session.id)
+      .update({ estado: pagado ? "pagado" : "pago_fallido" })
+      .eq("stripe_session_id", sesion.id)
       .select("id");
 
     if (error || !data || data.length === 0) {
-      console.error("No se pudo marcar como pagado:", error ?? "0 filas afectadas");
-      return new Response("Error al actualizar", { status: 500 });
-    }
-  }
-
-  if (evento.type === "checkout.session.expired") {
-    const session = evento.data.object as Stripe.Checkout.Session;
-    const { data, error } = await sb
-      .from("reservas")
-      .update({ estado: "pago_fallido" })
-      .eq("stripe_session_id", session.id)
-      .select("id");
-
-    if (error || !data || data.length === 0) {
-      console.error("No se pudo marcar como fallido:", error ?? "0 filas afectadas");
+      console.error(
+        pagado ? "No se pudo marcar como pagado:" : "No se pudo marcar como fallido:",
+        error ?? "0 filas afectadas",
+      );
       return new Response("Error al actualizar", { status: 500 });
     }
   }

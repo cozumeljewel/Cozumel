@@ -83,8 +83,11 @@ el webhook en el panel de Stripe.
    endpoint**.
 2. URL del endpoint:
    `https://qesyjtqxbouodgldvbtq.supabase.co/functions/v1/webhook-stripe`
-3. Eventos a escuchar: marca `checkout.session.completed` y
-   `checkout.session.expired`.
+3. Eventos a escuchar: marca `checkout.session.completed`,
+   `checkout.session.expired`, `checkout.session.async_payment_succeeded`
+   y `checkout.session.async_payment_failed`. Los dos últimos son para los
+   pagos que tardan en confirmarse (PayPal): sin ellos, un pedido pagado
+   así se quedaría como pendiente.
 4. Guarda. Stripe te muestra un **Signing secret** (empieza por `whsec_`).
    Cópialo y guárdalo como secreto de la función:
    ```bash
