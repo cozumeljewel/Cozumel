@@ -115,7 +115,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 549 },
+    precios: { MX: 549, ES: 32.90 },
     // El sufijo -KZ ya lleva incluida la tarifa de grabado
     sku: { oro:'YS15777D0W0-KZ', plata:'YS15777A0W0-KZ' },
     forma: 'placa',

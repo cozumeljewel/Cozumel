@@ -29,6 +29,7 @@ export const PRECIOS_MXN: Record<string, number | null> = {
 // conversión. Mismo criterio que "precios: { US: 24.99 }" en productos.js.
 export const PRECIOS_MANUALES: Record<string, Record<string, number>> = {
   // collar_esencial: { US: 29.99, ES: 27.90 },
+  pulsera_nombre: { ES: 32.90 },
 };
 
 // Colombia (COP) y Argentina (ARS) fuera: la cuenta de Stripe no admite

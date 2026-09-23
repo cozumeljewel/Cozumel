@@ -44,6 +44,12 @@ envio_cliente = {k: float(v) for k, v in re.findall(
 envio_servidor = {k: float(v) for k, v in re.findall(
     patron_envio, precios_ts.split('export const ENVIO_USD')[1].split('};')[0])}
 
+# Precios manuales del servidor: { producto: { mercado: precio } }
+manuales_servidor = {}
+bloque_manuales = precios_ts.split('PRECIOS_MANUALES')[1].split('\n};')[0]
+for pid, cuerpo in re.findall(r'^\s*([a-z_]+):\s*\{([^}]*)\},', bloque_manuales, re.M):
+    manuales_servidor[pid] = {k: float(v) for k, v in re.findall(r'([A-Z]{2}):\s*([\d.]+)', cuerpo)}
+
 # Mercados con el mismo precio que México (sin diferencia de envío).
 como_mexico_cliente = re.findall(r"'([A-Z]{2})'", mercados_js.split('const COMO_MEXICO')[1].split(';')[0])
 como_mexico_servidor = re.findall(r'"([A-Z]{2})"', precios_ts.split('export const COMO_MEXICO')[1].split(';')[0])
@@ -98,6 +104,11 @@ def main():
         if tasas_servidor.get(moneda) != tasa:
             fallos.append(f'tasa {moneda}: navegador {tasa} vs servidor {tasas_servidor.get(moneda)}')
 
+    manuales_cliente = {pid: {m: v for m, v in pr.items() if m != 'MX'}
+                        for pid, pr in precios_cliente.items()}
+    manuales_cliente = {pid: pr for pid, pr in manuales_cliente.items() if pr}
+    if manuales_cliente != manuales_servidor:
+        fallos.append(f'precios manuales: navegador {manuales_cliente} vs servidor {manuales_servidor}')
     if como_mexico_cliente != como_mexico_servidor:
         fallos.append(f'mismo precio que México: navegador {como_mexico_cliente} vs servidor {como_mexico_servidor}')
     if envio_cliente != envio_servidor:
