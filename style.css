@@ -688,14 +688,13 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
     /* El número del nombre no es decorativo: al cambiar de foto se
        cambia también, para que ningún móvil se quede con la vieja en
        caché. Si falla, se ve el degradado marino de respaldo. */
-    url('img/hero-pc-3.jpg'),
+    url('img/hero-adriana-1.jpg'),
     linear-gradient(160deg, #C9E6E4 0%, var(--surf) 28%, var(--sea) 62%, var(--deep) 100%);
-  /* Algo más grande que el hueco y anclada arriba: así Adriana baja y
-     el logo le queda por encima de la cabeza, sin taparla. Lo que se
-     recorta es el suelo, que ya tapa el botón. 65% en horizontal la deja
-     centrada en pantalla (en la foto está a la derecha del centro). */
-  background-size:auto 128%, auto;
-  background-position:65% top, center;
+  /* Foto vertical (hero-adriana-1, 1122x1402): en el móvil entra casi
+     entera a "cover", sin ampliarla de más, que es lo que la emborronaba
+     con la foto apaisada de antes. 30% en horizontal la centra a ella. */
+  background-size:cover, auto;
+  background-position:30% top, center;
   background-repeat:no-repeat;
 }
 /* Solo dos sombras suaves, arriba y abajo, para que el logo y el botón
@@ -713,16 +712,16 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   position:relative; z-index:2; flex:1; width:100%;
   display:flex; flex-direction:column; align-items:center;
   justify-content:space-between; text-align:center;
-  /* El logo sube hasta la altura de los iconos de la cabecera (que
-     esconde el suyo aquí) para quedar por encima de la cabeza de ella. */
-  padding:calc(var(--header-h) - 10px) 24px 44px;
+  /* El logo arranca justo bajo la cabecera: con la foto vertical hay
+     sitio de sobra por encima de la cabeza de ella. */
+  padding:calc(var(--header-h) + 18px) 24px 44px;
 }
 
 /* Logo grande: el oficial en blanco, a tamaño de portada. Una sombra
    muy suave lo separa de las hojas sin que se note como contorno. */
 .hero-logo{margin:0; line-height:0;}
 .hero-logo img{
-  display:block; width:min(54vw, 205px); height:auto;
+  display:block; width:min(72vw, 280px); height:auto;
   filter:drop-shadow(0 1px 10px rgba(10,30,40,.35));
 }
 
@@ -2251,12 +2250,29 @@ footer{
   /* 1. HERO en escritorio: el mismo diseño, con el logo más grande. La
      foto va a sangre y anclada a la derecha, lo que acerca a Adriana al
      centro de la pantalla. */
-  /* Igual que en móvil: algo mayor que el hueco y anclada arriba, para
-     que Adriana baje y el logo le quede por encima de la cabeza. Anclada
-     a la derecha, ella cae casi en el centro de la pantalla. */
-  .hero-media{background-size:auto 145%, auto; background-position:100% top, center;}
+  /* La foto es vertical y la pantalla apaisada: a "cover" solo entraba
+     del pecho para arriba, ampliada y borrosa. Aquí va ENTERA, a la
+     altura del hero y centrada (en ::after, encima de las sombras de
+     siempre), y los lados los rellena la misma foto desenfocada
+     (::before), para que no queden franjas lisas. */
+  .hero-media{background-image:none;}
+  .hero-media::before{
+    content:""; position:absolute; inset:-60px; pointer-events:none;
+    background:url('img/hero-adriana-1.jpg') center/cover no-repeat;
+    filter:blur(30px) brightness(.88);
+  }
+  .hero-media::after{
+    background-image:
+      linear-gradient(to bottom,
+        rgba(20,40,52,.42) 0%, rgba(20,40,52,.14) 26%, rgba(20,40,52,0) 42%,
+        rgba(20,40,52,0) 70%, rgba(20,40,52,.30) 100%),
+      url('img/hero-adriana-1.jpg');
+    background-size:auto, auto 100%;
+    background-position:center, center top;
+    background-repeat:no-repeat;
+  }
   .hero-copy{padding:calc(var(--header-h) - 6px) 40px 56px;}
-  .hero-logo img{width:200px;}
+  .hero-logo img{width:320px;}
 
   /* COZUMEL STORIES: mosaico editorial en vez de columna. Una foto grande
      y vertical a la izquierda, dos apaisadas apiladas a la derecha, y una
