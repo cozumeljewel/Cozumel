@@ -65,12 +65,9 @@ export const ENVIO_USD: Record<string, number> = {
   PE: 7.00,
 };
 
-// ---- Subida por IVA encima del precio (igual que IVA de mercados.js):
-// en España el IVA es del 21 % pero el precio sube solo un 12 %; el resto
-// lo asumimos nosotros ----
-export const IVA: Record<string, number> = {
-  ES: 0.12,
-};
+// ---- Mercados con el MISMO precio que México (igual que COMO_MEXICO de
+// mercados.js): el envío de más y el IVA salen de nuestro margen ----
+export const COMO_MEXICO = ["ES"];
 
 function envioEnMoneda(mercado: string, moneda: string): number {
   return (ENVIO_USD[mercado] ?? 0) * (TASAS[moneda] ?? 1) / TASAS.USD;
@@ -124,12 +121,13 @@ export function precioDe(
   if (moneda === "MXN") return { importe: base, moneda, mercado: m };
 
   // Resto: precio de México sin su envío, convertido, más el de este país.
-  const sinEnvio = base - envioEnMoneda("MX", "MXN");
-  const convertido = sinEnvio * (TASAS[moneda] ?? 1) + envioEnMoneda(m, moneda);
+  // Los de COMO_MEXICO, el precio de México convertido sin más.
+  const tasa = TASAS[moneda] ?? 1;
+  const convertido = COMO_MEXICO.includes(m)
+    ? base * tasa
+    : (base - envioEnMoneda("MX", "MXN")) * tasa + envioEnMoneda(m, moneda);
   const redondear = REDONDEO[moneda] ?? ((v: number) => v);
-  let importe = redondear(convertido);
-  if (IVA[m]) importe = redondear(importe * (1 + IVA[m]));
-  return { importe: redondearSalida(importe, moneda), moneda, mercado: m };
+  return { importe: redondearSalida(redondear(convertido), moneda), moneda, mercado: m };
 }
 
 function redondearSalida(valor: number, moneda: string): number {
