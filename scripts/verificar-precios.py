@@ -44,6 +44,12 @@ envio_cliente = {k: float(v) for k, v in re.findall(
 envio_servidor = {k: float(v) for k, v in re.findall(
     patron_envio, precios_ts.split('export const ENVIO_USD')[1].split('};')[0])}
 
+patron_iva = r'([A-Z]{2}):\s*([\d.]+),'
+iva_cliente = {k: float(v) for k, v in re.findall(
+    patron_iva, mercados_js.split('const IVA')[1].split('};')[0])}
+iva_servidor = {k: float(v) for k, v in re.findall(
+    patron_iva, precios_ts.split('export const IVA')[1].split('};')[0])}
+
 # ---------- Redondeo (misma regla que las dos copias) ----------
 SIN_DECIMALES = ['COP', 'CLP', 'ARS']
 def redondear(v, moneda):
@@ -73,6 +79,8 @@ def precio(pid, mercado, base, tasas):
         envio = lambda mk, mon: envio_servidor.get(mk, 0) * tasas[mon] / tasas['USD']
         sin_envio = base[pid] - envio('MX', 'MXN')
         v = redondear(sin_envio * tasas[moneda] + envio(mercado, moneda), moneda)
+        if iva_servidor.get(mercado):
+            v = redondear(v * (1 + iva_servidor[mercado]), moneda)
     return round(v) if moneda in SIN_DECIMALES else round(v, 2)
 
 def main():
@@ -91,6 +99,8 @@ def main():
         if tasas_servidor.get(moneda) != tasa:
             fallos.append(f'tasa {moneda}: navegador {tasa} vs servidor {tasas_servidor.get(moneda)}')
 
+    if iva_cliente != iva_servidor:
+        fallos.append(f'IVA: navegador {iva_cliente} vs servidor {iva_servidor}')
     if envio_cliente != envio_servidor:
         fallos.append(f'envío: navegador {envio_cliente} vs servidor {envio_servidor}')
 

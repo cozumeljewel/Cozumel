@@ -86,6 +86,14 @@ const ENVIO_USD = {
   PE: 7.00,
 };
 
+/* IVA que se suma encima del precio, por mercado. España (y con ella
+   toda la eurozona, que paga en euros) lleva el 21 %: se calcula el
+   precio sin IVA, se redondea, se le suma el IVA y se vuelve a redondear.
+   El precio que se enseña ya lo lleva dentro, como exige la ley. */
+const IVA = {
+  ES: 0.21,
+};
+
 /* Envío de un mercado pasado a su moneda con las mismas tasas fijas. */
 function envioEnMoneda(mercado, moneda) {
   const usd = ENVIO_USD[mercado] || 0;
@@ -296,6 +304,7 @@ function precioDe(prod, codigoMercado) {
     const convertido = sinEnvio * (TASAS[moneda] ?? 1) + envioEnMoneda(mercado, moneda);
     const redondear = REDONDEO[moneda] || (v => v);
     importe = redondear(convertido);
+    if (IVA[mercado]) importe = redondear(importe * (1 + IVA[mercado]));
   }
 
   const resultado = importe === null || importe === undefined ? null : {

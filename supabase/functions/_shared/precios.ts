@@ -65,6 +65,11 @@ export const ENVIO_USD: Record<string, number> = {
   PE: 7.00,
 };
 
+// ---- IVA encima del precio (igual que IVA de mercados.js) ----
+export const IVA: Record<string, number> = {
+  ES: 0.21,
+};
+
 function envioEnMoneda(mercado: string, moneda: string): number {
   return (ENVIO_USD[mercado] ?? 0) * (TASAS[moneda] ?? 1) / TASAS.USD;
 }
@@ -120,7 +125,9 @@ export function precioDe(
   const sinEnvio = base - envioEnMoneda("MX", "MXN");
   const convertido = sinEnvio * (TASAS[moneda] ?? 1) + envioEnMoneda(m, moneda);
   const redondear = REDONDEO[moneda] ?? ((v: number) => v);
-  return { importe: redondearSalida(redondear(convertido), moneda), moneda, mercado: m };
+  let importe = redondear(convertido);
+  if (IVA[m]) importe = redondear(importe * (1 + IVA[m]));
+  return { importe: redondearSalida(importe, moneda), moneda, mercado: m };
 }
 
 function redondearSalida(valor: number, moneda: string): number {
