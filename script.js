@@ -172,7 +172,7 @@ actualizarBadgeCarrito();
        el HTML ya la trae puesta.
    ========================================================= */
 (function () {
-  const PASE_MS = 3000;          // cuánto se queda cada foto
+  const PASE_MS = 4000;          // cuánto se queda cada foto (4 s, pedido del cliente)
   const DESFASE_MS = 900;        // separación entre una historia y la siguiente
   const historias = document.querySelectorAll('.stories-foto[data-pase]');
   if (!historias.length) return;
