@@ -246,6 +246,7 @@ function nombreProducto(id: string): string {
     collar_flor_natal: "Collar Destino",
     kit_pedacito_nosotros: "Kit Pedacito de Nosotros",
     kit_mi_consentida: "Kit Mi Consentida",
+    kit_personalizado: "Kit a tu gusto",
   };
   return nombres[id] ?? id;
 }
