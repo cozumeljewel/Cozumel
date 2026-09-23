@@ -19,9 +19,9 @@ export const PRECIOS_MXN: Record<string, number | null> = {
   pulsera_nombre: 549,        // Pulsera grabable
   brazalete_mensaje: 599,     // Brazalete grabable
   collar_flor_natal: 699,     // Colgante de los meses
-  kit_pedacito_nosotros: 949, // Kit de 2 piezas (precio propio, no la suma)
-  kit_mi_consentida: 949,
-  kit_personalizado: 949,      // Kit a tu gusto: mismo precio que los cerrados
+  kit_pedacito_nosotros: 999, // Kit de 2 piezas (precio propio, no la suma)
+  kit_mi_consentida: 999,
+  kit_personalizado: 999,      // Kit a tu gusto: mismo precio que los cerrados
 };
 
 // ---- Precios manuales por mercado ----
@@ -65,9 +65,11 @@ export const ENVIO_USD: Record<string, number> = {
   PE: 7.00,
 };
 
-// ---- IVA encima del precio (igual que IVA de mercados.js) ----
+// ---- Subida por IVA encima del precio (igual que IVA de mercados.js):
+// en España el IVA es del 21 % pero el precio sube solo un 12 %; el resto
+// lo asumimos nosotros ----
 export const IVA: Record<string, number> = {
-  ES: 0.21,
+  ES: 0.12,
 };
 
 function envioEnMoneda(mercado: string, moneda: string): number {

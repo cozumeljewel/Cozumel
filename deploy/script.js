@@ -573,6 +573,20 @@ function crearTarjetaProducto(prod) {
   // ficha, el carrito y el checkout.
   precio.textContent = precioTexto(prod) || 'Precio pendiente';
 
+  // Kits: el precio de las piezas por separado tachado delante y el
+  // ahorro debajo, para que se vea de un vistazo sin entrar en la ficha.
+  const ahorroTarjeta = (prod.piezas && prod.piezas.length) ? ahorroKit(prod, prod.piezas) : null;
+  if (ahorroTarjeta) {
+    const antes = document.createElement('s');
+    antes.className = 'precio-antes';
+    antes.textContent = ahorroTarjeta.sueltoTexto;
+    precio.prepend(antes, ' ');
+    const etiqueta = document.createElement('span');
+    etiqueta.className = 'precio-ahorro';
+    etiqueta.textContent = 'Ahorras ' + ahorroTarjeta.texto;
+    precio.append(etiqueta);
+  }
+
   const cta = document.createElement('span');
   cta.className = 'producto-cta';
   cta.textContent = prod.campos.length > 0 ? 'Personalizar →' : 'Ver pieza →';
@@ -994,6 +1008,21 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
   const resPrecio = document.getElementById('resumen-precio');
   const resNota = document.getElementById('resumen-precio-nota');
   if (resPrecio) resPrecio.textContent = precioTxt || '—';
+  const resAhorro = document.getElementById('resumen-ahorro');
+  const ahorroResumen = (prod.piezas && prod.piezas.length) ? ahorroKit(prod, prod.piezas) : null;
+  if (resAhorro) {
+    resAhorro.hidden = !ahorroResumen;
+    if (ahorroResumen) {
+      resAhorro.replaceChildren();
+      const antes = document.createElement('s');
+      antes.className = 'precio-antes';
+      antes.textContent = ahorroResumen.sueltoTexto;
+      const etiqueta = document.createElement('span');
+      etiqueta.className = 'precio-ahorro';
+      etiqueta.textContent = 'Ahorras ' + ahorroResumen.texto;
+      resAhorro.append(antes, ' ', etiqueta);
+    }
+  }
   if (resNota) resNota.hidden = !!precioTxt;
 
   // Si la pieza todavía no tiene precio, "Añadir al carrito" no puede
@@ -1038,7 +1067,9 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
     // Ahorro del kit: piezas sueltas menos precio propio del kit, en la
     // moneda del mercado activo. Solo se enseña si sale positivo.
     const ahorro = (prod.piezas && prod.piezas.length) ? ahorroKit(prod, prod.piezas) : null;
-    const reclamo = ahorro ? 'Ahorras ' + ahorro.texto + ' frente a comprar las dos piezas por separado' : prod.oferta;
+    const reclamo = ahorro
+      ? 'Ahorras ' + ahorro.texto + ' (' + ahorro.porcentaje + ' %): por separado, las dos piezas cuestan ' + ahorro.sueltoTexto
+      : prod.oferta;
     if (reclamo) {
       const oferta = document.createElement('p');
       oferta.className = 'ficha-oferta';
@@ -1862,7 +1893,7 @@ if (ctaReservar) {
           : null;
         ayuda.textContent = elegido.pulsera.nombre + ' en ' + txt[material.pulsera]
           + ' + ' + elegido.colgante.nombre + ' en ' + txt[material.colgante]
-          + (ahorro ? ' · ahorras ' + ahorro.texto : '');
+          + (ahorro ? ' · Ahorras ' + ahorro.texto + ' frente a comprarlas por separado (' + ahorro.sueltoTexto + ')' : '');
       } else {
         continuar.setAttribute('aria-disabled', 'true');
         ayuda.textContent = !elegido.pulsera && !elegido.colgante

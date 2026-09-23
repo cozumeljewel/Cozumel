@@ -264,7 +264,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 949 },
+    precios: { MX: 999 },
     // Kit = las dos piezas sueltas, no un SKU propio de EMANCO. Se piden
     // las dos por separado, más "diaoke" si hay grabado. La resolución
     // real (con acabado y grabado ya aplicados) vive en la migración v9
@@ -327,7 +327,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 949 },
+    precios: { MX: 999 },
     // Kit = las dos piezas sueltas; W{mes} se resuelve como en Collar
     // Destino. La resolución real vive en la migración v9 de Supabase.
     sku: { oro:'XX49472D0W{mes} + YS15777D0W0-KZ', plata:'XX49472A0W{mes} + YS15777A0W0-KZ' },
@@ -383,7 +383,7 @@ const PRODUCTOS = [
     oculto: true, // no se pinta en las rejillas de la colección
     resumen: 'Una pulsera y un colgante, a tu elección',
     descripcion: 'Las dos piezas que tú elijas, cada una con su acabado y su grabado, en la misma caja de regalo',
-    precios: { MX: 949 },
+    precios: { MX: 999 },
     forma: 'placa',
     campos: [],
     destacado: false,

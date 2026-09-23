@@ -86,12 +86,14 @@ const ENVIO_USD = {
   PE: 7.00,
 };
 
-/* IVA que se suma encima del precio, por mercado. España (y con ella
-   toda la eurozona, que paga en euros) lleva el 21 %: se calcula el
-   precio sin IVA, se redondea, se le suma el IVA y se vuelve a redondear.
-   El precio que se enseña ya lo lleva dentro, como exige la ley. */
+/* Subida por IVA encima del precio, por mercado. España (y con ella toda
+   la eurozona, que paga en euros) paga el 21 % de IVA, pero el precio
+   solo sube un 12 %: el resto lo asumimos nosotros, a propósito
+   (decisión del 2026-09-23). Se calcula el precio sin IVA, se redondea,
+   se sube y se vuelve a redondear. El precio que se enseña ya lleva el
+   IVA dentro, como exige la ley. */
 const IVA = {
-  ES: 0.21,
+  ES: 0.12,
 };
 
 /* Envío de un mercado pasado a su moneda con las mismas tasas fijas. */
@@ -354,5 +356,13 @@ function ahorroKit(prodKit, idsPiezas, codigoMercado) {
   }
   const ahorro = suelto - kit.importe;
   if (!(ahorro > 0)) return null;
-  return { importe: ahorro, moneda: kit.moneda, texto: formatearImporte(ahorro, kit.moneda) };
+  return {
+    importe: ahorro,
+    moneda: kit.moneda,
+    texto: formatearImporte(ahorro, kit.moneda),
+    // Lo que costarían las piezas por separado, para tacharlo al lado del
+    // precio del kit, y el ahorro en %.
+    sueltoTexto: formatearImporte(suelto, kit.moneda),
+    porcentaje: Math.round(ahorro / suelto * 100),
+  };
 }
