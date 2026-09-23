@@ -324,6 +324,10 @@ function precioDe(prod, codigoMercado) {
 function formatearImporte(importe, moneda) {
   if (importe === null || importe === undefined) return null;
   const mercado = Object.keys(MERCADOS).find(m => MERCADOS[m].moneda === moneda) || getMercado();
+  // México se enseña sin céntimos y con la moneda detrás: "$549 MXN".
+  if (moneda === 'MXN') {
+    return '$' + Math.round(importe).toLocaleString('es-MX') + ' MXN';
+  }
   const decimales = SIN_DECIMALES.includes(moneda) ? 0 : 2;
   try {
     return new Intl.NumberFormat(MERCADOS[mercado].locale, {

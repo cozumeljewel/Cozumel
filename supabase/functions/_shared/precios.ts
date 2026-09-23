@@ -14,22 +14,28 @@
 
 // ---- Precio maestro: precio FINAL en México, envío incluido ----
 export const PRECIOS_MXN: Record<string, number | null> = {
-  collar_esencial: 649,       // Colgante placa grabable
-  pulsera_vinculo: 649,       // Pulsera Dos Almas
-  pulsera_nombre: 549,        // Pulsera grabable
-  brazalete_mensaje: 599,     // Brazalete grabable
-  collar_flor_natal: 699,     // Colgante de los meses
-  kit_pedacito_nosotros: 999, // Kit de 2 piezas (precio propio, no la suma)
-  kit_mi_consentida: 999,
-  kit_personalizado: 999,      // Kit a tu gusto: mismo precio que los cerrados
+  collar_esencial: 549,       // Colgante placa grabable
+  pulsera_vinculo: 549,       // Pulsera Dos Almas
+  pulsera_nombre: 449,        // Pulsera grabable
+  brazalete_mensaje: 499,     // Brazalete grabable
+  collar_flor_natal: 599,     // Colgante de los meses
+  kit_pedacito_nosotros: 949, // Kit de 2 piezas (precio propio, no la suma)
+  kit_mi_consentida: 949,
+  kit_personalizado: 949,      // Kit a tu gusto: mismo precio que los cerrados
 };
 
 // ---- Precios manuales por mercado ----
 // Si un producto tiene precio fijado a mano para un país, manda sobre la
 // conversión. Mismo criterio que "precios: { US: 24.99 }" en productos.js.
 export const PRECIOS_MANUALES: Record<string, Record<string, number>> = {
-  // collar_esencial: { US: 29.99, ES: 27.90 },
-  pulsera_nombre: { ES: 32.90 },
+  pulsera_nombre: { ES: 24.90, US: 29.90, CL: 29990, PE: 99.90 },
+  brazalete_mensaje: { ES: 27.90, US: 32.90, CL: 32990, PE: 109.90 },
+  pulsera_vinculo: { ES: 29.90, US: 34.90, CL: 34990, PE: 119.90 },
+  collar_esencial: { ES: 29.90, US: 34.90, CL: 34990, PE: 119.90 },
+  collar_flor_natal: { ES: 34.90, US: 39.90, CL: 39990, PE: 139.90 },
+  kit_pedacito_nosotros: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
+  kit_mi_consentida: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
+  kit_personalizado: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
 };
 
 // Colombia (COP) y Argentina (ARS) fuera: la cuenta de Stripe no admite

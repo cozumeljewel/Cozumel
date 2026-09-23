@@ -81,7 +81,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 649 },
+    precios: { MX: 549, ES: 29.90, US: 34.90, CL: 34990, PE: 119.90 },
     sku: { oro:'YS14924D0W0', plata:'YS14924A0W0' },
     forma: 'circulos',
     campos: [],
@@ -115,7 +115,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 549, ES: 32.90 },
+    precios: { MX: 449, ES: 24.90, US: 29.90, CL: 29990, PE: 99.90 },
     // El sufijo -KZ ya lleva incluida la tarifa de grabado
     sku: { oro:'YS15777D0W0-KZ', plata:'YS15777A0W0-KZ' },
     forma: 'placa',
@@ -152,7 +152,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 599 },
+    precios: { MX: 499, ES: 27.90, US: 32.90, CL: 32990, PE: 109.90 },
     // El sufijo -KZ ya lleva incluida la tarifa de grabado
     sku: { oro:'FZ28329D0W0-KZ', plata:'FZ28329A0W0-KZ' },
     forma: 'brazalete',
@@ -186,7 +186,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 649 },
+    precios: { MX: 549, ES: 29.90, US: 34.90, CL: 34990, PE: 119.90 },
     // SKU proveedor (Yiwu Lantiao). El grabado va como linea aparte: 'diaoke'
     sku: { oro:'CDNN067-2', plata:'CDNN067-1', grabado:'diaoke' },
     forma: 'placa',
@@ -226,7 +226,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 699 },
+    precios: { MX: 599, ES: 34.90, US: 39.90, CL: 39990, PE: 139.90 },
     // W1-W12 = mes de la piedra natal (enero..diciembre)
     sku: { oro:'XX49472D0W{mes}', plata:'XX49472A0W{mes}' },
     forma: 'flor',
@@ -264,7 +264,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 999 },
+    precios: { MX: 949, ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
     // Kit = las dos piezas sueltas, no un SKU propio de EMANCO. Se piden
     // las dos por separado, más "diaoke" si hay grabado. La resolución
     // real (con acabado y grabado ya aplicados) vive en la migración v9
@@ -327,7 +327,7 @@ const PRODUCTOS = [
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
-    precios: { MX: 999 },
+    precios: { MX: 949, ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
     // Kit = las dos piezas sueltas; W{mes} se resuelve como en Collar
     // Destino. La resolución real vive en la migración v9 de Supabase.
     sku: { oro:'XX49472D0W{mes} + YS15777D0W0-KZ', plata:'XX49472A0W{mes} + YS15777A0W0-KZ' },
@@ -383,7 +383,7 @@ const PRODUCTOS = [
     oculto: true, // no se pinta en las rejillas de la colección
     resumen: 'Una pulsera y un colgante, a tu elección',
     descripcion: 'Las dos piezas que tú elijas, cada una con su acabado y su grabado, en la misma caja de regalo',
-    precios: { MX: 999 },
+    precios: { MX: 949, ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
     forma: 'placa',
     campos: [],
     destacado: false,
