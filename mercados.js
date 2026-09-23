@@ -7,12 +7,12 @@
 
    Cómo funciona, en corto:
      1. El precio maestro de cada pieza está en productos.js, en
-        "precios: { MX: 449 }". México manda: ese número se enseña tal
-        cual, nunca se convierte.
-     2. Para el resto de mercados, si el producto tiene precio manual
-        para ese país (p.ej. "US: 24.99"), se usa ese.
-     3. Si no lo tiene, se convierte desde MXN con la tasa de TASAS y se
-        redondea con la regla comercial de esa moneda (.99, ,90, .900...).
+        "precios: { MX: 449 }". Es el precio de la pieza SIN envío.
+     2. Si el producto tiene precio manual para un país (p.ej.
+        "US: 24.99"), se usa ese tal cual (tiene que incluir el envío).
+     3. Si no lo tiene, se convierte desde MXN con la tasa de TASAS, se
+        suma el envío de ENVIO_USD y se redondea con la regla comercial
+        de esa moneda (.99, ,90, .990...).
      4. El resultado se calcula UNA vez y se guarda en caché, no en cada
         pintado.
 
@@ -67,6 +67,29 @@ const TASAS = {
   ARS: 55,
 };
 
+/* ---------- Envío incluido en el precio ----------
+   Coste por paquete (hasta 100 g, con impuestos DDP) según la cotización
+   del taller, en DÓLARES. Se suma a cada pieza antes del redondeo, así el
+   precio que se enseña ya lleva el envío y la web puede decir "envío
+   incluido" sin mentir. Colombia (7 $) y el resto de países que caen en
+   el fallback pagan el precio de US, que ya lo cubre.
+   Un pedido de varias piezas va en un solo paquete: las piezas de más
+   llevan un envío que no se gasta (margen extra, a propósito, por
+   sencillez). Cotización del 2026-09-23. */
+const ENVIO_USD = {
+  MX: 6.50,
+  US: 8.50,
+  ES: 11.00,  // 6 envío + 3,5 aranceles + 1,5 IVA (UE)
+  CL: 9.50,   // 7 envío + 2,5 impuestos
+  PE: 7.00,
+};
+
+/* Envío de un mercado pasado a su moneda con las mismas tasas fijas. */
+function envioEnMoneda(mercado, moneda) {
+  const usd = ENVIO_USD[mercado] || 0;
+  return usd * (TASAS[moneda] ?? 1) / TASAS.USD;
+}
+
 /* ---------- Redondeo comercial ----------
    Nadie enseña 27,43 €. Cada moneda tiene su forma de rematar el precio.
    Estas funciones reciben el importe ya convertido y lo llevan al precio
@@ -84,8 +107,8 @@ const REDONDEO = {
   PEN: v => { const n = Math.ceil(v); const r = n % 10; return n + (r === 9 ? 0 : (9 - r + (r > 9 ? 10 : 0))); },
   // 24.999 · 39.999... (inflación alta: se remata en 999)
   ARS: v => Math.ceil(v / 1000) * 1000 - 1,
-  // México no se convierte nunca; si llegara aquí, se deja igual.
-  MXN: v => v,
+  // $569 · $669... (México no se convierte, pero sí suma el envío)
+  MXN: v => { const n = Math.ceil(v); const r = n % 10; return n + (r === 9 ? 0 : 9 - r); },
 };
 
 /* Monedas sin decimales: ni se enseñan ni se cobran con céntimos. */
@@ -255,12 +278,16 @@ function precioDe(prod, codigoMercado) {
   const precios = prod.precios || {};
   let importe = null;
 
-  if (typeof precios[mercado] === 'number') {
+  // precios.MX es el precio base sin envío, no un precio manual de México.
+  const manual = mercado !== 'MX' && typeof precios[mercado] === 'number';
+
+  if (manual) {
     // Precio manual para este país: manda sobre cualquier conversión.
     importe = precios[mercado];
   } else if (typeof precios.MX === 'number') {
-    // Conversión desde el precio maestro de México + redondeo comercial.
-    const convertido = precios.MX * (TASAS[moneda] ?? 1);
+    // Conversión desde el precio maestro de México + envío del país +
+    // redondeo comercial.
+    const convertido = precios.MX * (TASAS[moneda] ?? 1) + envioEnMoneda(mercado, moneda);
     const redondear = REDONDEO[moneda] || (v => v);
     importe = redondear(convertido);
   }
@@ -269,7 +296,7 @@ function precioDe(prod, codigoMercado) {
     importe: SIN_DECIMALES.includes(moneda) ? Math.round(importe) : Math.round(importe * 100) / 100,
     moneda,
     mercado,
-    manual: typeof precios[mercado] === 'number',
+    manual,
   };
 
   cachePrecios.set(clave, resultado);

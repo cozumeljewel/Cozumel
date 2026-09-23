@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Compra · Cozumel Jewelry</title>
-<meta name="description" content="Pago seguro con tarjeta, a través de Stripe. Envío incluido">
+<meta name="description" content="Pago seguro con tarjeta, a través de Stripe. Envío e impuestos incluidos">
 <meta name="theme-color" content="#14454A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
 
@@ -13,13 +13,13 @@
 <meta property="og:site_name" content="Cozumel">
 <meta property="og:locale" content="es_ES">
 <meta property="og:title" content="Compra tu joya · Cozumel Jewelry">
-<meta property="og:description" content="Pago seguro con tarjeta, a través de Stripe. Envío incluido">
+<meta property="og:description" content="Pago seguro con tarjeta, a través de Stripe. Envío e impuestos incluidos">
 <meta property="og:image" content="https://cozumeljewelry.es/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Compra tu joya · Cozumel Jewelry">
-<meta name="twitter:description" content="Pago seguro con tarjeta, a través de Stripe. Envío incluido">
+<meta name="twitter:description" content="Pago seguro con tarjeta, a través de Stripe. Envío e impuestos incluidos">
 <meta name="twitter:image" content="https://cozumeljewelry.es/img/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -122,7 +122,7 @@
       <p class="edicion-badge">Edición de lanzamiento · unidades limitadas</p>
       <p class="eyebrow">Último paso</p>
       <h2>Cómpratela</h2>
-      <p class="reserva-sub">Pago seguro con tarjeta, a través de Stripe. Envío incluido</p>
+      <p class="reserva-sub">Pago seguro con tarjeta, a través de Stripe. Envío e impuestos incluidos</p>
 
       <!-- Lista del carrito: script.js la rellena entera (una pieza puede
            ser más de una fila si es un kit con dos acabados). El total y
@@ -186,6 +186,11 @@
         <div class="field">
           <label for="r-direccion">Dirección de envío</label>
           <input id="r-direccion" name="direccion_envio" type="text" required placeholder="Calle, número, ciudad, código postal">
+        </div>
+        <!-- Solo en Chile y Perú: script.js lo enseña y lo hace obligatorio. -->
+        <div class="field" id="campo-documento" hidden>
+          <label for="r-documento" id="r-documento-label">RUT</label>
+          <input id="r-documento" name="documento" type="text" autocomplete="off">
         </div>
 
         <label class="consent">

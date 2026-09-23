@@ -55,6 +55,20 @@ export const TASAS: Record<string, number> = {
   ARS: 55,
 };
 
+// ---- Envío incluido en el precio, en dólares (igual que ENVIO_USD de
+// mercados.js; cotización del taller del 2026-09-23) ----
+export const ENVIO_USD: Record<string, number> = {
+  MX: 6.50,
+  US: 8.50,
+  ES: 11.00,
+  CL: 9.50,
+  PE: 7.00,
+};
+
+function envioEnMoneda(mercado: string, moneda: string): number {
+  return (ENVIO_USD[mercado] ?? 0) * (TASAS[moneda] ?? 1) / TASAS.USD;
+}
+
 // ---- Redondeo comercial, igual que en mercados.js ----
 const REDONDEO: Record<string, (v: number) => number> = {
   USD: (v) => Math.max(Math.ceil(v), 1) - 0.01,
@@ -67,7 +81,11 @@ const REDONDEO: Record<string, (v: number) => number> = {
     return n + (r === 9 ? 0 : 9 - r);
   },
   ARS: (v) => Math.ceil(v / 1000) * 1000 - 1,
-  MXN: (v) => v,
+  MXN: (v) => {
+    const n = Math.ceil(v);
+    const r = n % 10;
+    return n + (r === 9 ? 0 : 9 - r);
+  },
 };
 
 // Monedas que Stripe cobra sin decimales (y que tampoco se enseñan con
@@ -81,7 +99,7 @@ export function mercadoValido(mercado: string | null | undefined): string {
 }
 
 /** Precio de una pieza en un mercado: manual si lo hay, si no conversión
- *  desde MXN + redondeo comercial. Devuelve null si la pieza no tiene
+ *  desde MXN + envío del país + redondeo comercial. Devuelve null si la pieza no tiene
  *  precio maestro. */
 export function precioDe(
   producto: string,
@@ -98,9 +116,7 @@ export function precioDe(
   const base = PRECIOS_MXN[producto];
   if (base === null || base === undefined) return null;
 
-  if (moneda === "MXN") return { importe: base, moneda, mercado: m };
-
-  const convertido = base * (TASAS[moneda] ?? 1);
+  const convertido = base * (TASAS[moneda] ?? 1) + envioEnMoneda(m, moneda);
   const redondear = REDONDEO[moneda] ?? ((v: number) => v);
   return { importe: redondearSalida(redondear(convertido), moneda), moneda, mercado: m };
 }

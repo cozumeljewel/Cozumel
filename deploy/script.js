@@ -2289,7 +2289,30 @@ const PAISES_TELEFONO = [
 /* ---------- Formulario de reserva (comprar.html) ---------- */
 const reservaForm = document.getElementById('reserva-form');
 
+/* Documento de identidad para la aduana: en Chile (RUT) y Perú (DNI o
+   RUC) el transportista no libera el paquete sin él. Solo se pide en esos
+   dos mercados; en el resto el campo ni se ve ni es obligatorio. */
+const DOCUMENTO_ADUANA = {
+  CL: { etiqueta: 'RUT (obligatorio para la aduana de Chile)', ejemplo: '12345678-K' },
+  PE: { etiqueta: 'DNI o RUC (obligatorio para la aduana de Perú)', ejemplo: 'Tu DNI o RUC' },
+};
+
+function sincronizarCampoDocumento() {
+  const campo = document.getElementById('campo-documento');
+  const input = document.getElementById('r-documento');
+  if (!campo || !input) return;
+  const doc = DOCUMENTO_ADUANA[getMercado()];
+  campo.hidden = !doc;
+  input.required = !!doc;
+  if (doc) {
+    document.getElementById('r-documento-label').textContent = doc.etiqueta;
+    input.placeholder = doc.ejemplo;
+  }
+}
+
 if (reservaForm) {
+  sincronizarCampoDocumento();
+  alCambiarMercado(sincronizarCampoDocumento);
   reservaForm.addEventListener('focusin', trackReservaIniciada, { once: true });
 
   // Desplegable de prefijos: no se puede usar un <select> nativo porque
@@ -2610,7 +2633,14 @@ if (reservaForm) {
       email: reservaForm.email.value.trim(),
       whatsapp: `${prefijoSelect.value} ${reservaForm.whatsapp.value.trim()}`.trim(),
       pais: reservaForm.pais.value.trim(),
-      direccion_envio: reservaForm.direccion_envio.value.trim(),
+      // El RUT/DNI va pegado a la dirección: es donde se mira al preparar
+      // el envío, y así no hace falta una columna nueva en la base.
+      direccion_envio: [
+        reservaForm.direccion_envio.value.trim(),
+        DOCUMENTO_ADUANA[getMercado()] && reservaForm.documento.value.trim()
+          ? `${getMercado() === 'CL' ? 'RUT' : 'DNI/RUC'}: ${reservaForm.documento.value.trim()}`
+          : '',
+      ].filter(Boolean).join(' · '),
       fuente: 'adri_story',
       estado: 'pendiente_pago',
       consentimiento: document.getElementById('r-consent').checked,

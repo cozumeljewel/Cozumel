@@ -37,6 +37,13 @@ base_servidor = {k: float(v) for k, v in re.findall(
 tasas_servidor = {k: float(v) for k, v in re.findall(
     r'(\w{3}):\s*([\d.]+),', precios_ts.split('export const TASAS')[1].split('};')[0])}
 
+# Envío incluido en el precio, en dólares, por mercado.
+patron_envio = r'([A-Z]{2}):\s*([\d.]+),'
+envio_cliente = {k: float(v) for k, v in re.findall(
+    patron_envio, mercados_js.split('const ENVIO_USD')[1].split('};')[0])}
+envio_servidor = {k: float(v) for k, v in re.findall(
+    patron_envio, precios_ts.split('export const ENVIO_USD')[1].split('};')[0])}
+
 # ---------- Redondeo (misma regla que las dos copias) ----------
 SIN_DECIMALES = ['COP', 'CLP', 'ARS']
 def redondear(v, moneda):
@@ -48,6 +55,9 @@ def redondear(v, moneda):
         n = math.ceil(v); r = n % 10
         return n + (0 if r == 9 else 9 - r)
     if moneda == 'ARS': return math.ceil(v / 1000) * 1000 - 1
+    if moneda == 'MXN':
+        n = math.ceil(v); r = n % 10
+        return n + (0 if r == 9 else 9 - r)
     return v
 
 # Los mercados vivos se leen de mercados.js, para que esta comprobación
@@ -60,10 +70,9 @@ def precio(pid, mercado, base, tasas):
     manual = precios_cliente.get(pid, {}).get(mercado)
     if manual is not None and mercado != 'MX':
         v = manual
-    elif moneda == 'MXN':
-        v = base[pid]
     else:
-        v = redondear(base[pid] * tasas[moneda], moneda)
+        envio = envio_servidor.get(mercado, 0) * tasas[moneda] / tasas['USD']
+        v = redondear(base[pid] * tasas[moneda] + envio, moneda)
     return round(v) if moneda in SIN_DECIMALES else round(v, 2)
 
 def main():
@@ -81,6 +90,9 @@ def main():
     for moneda, tasa in tasas_cliente.items():
         if tasas_servidor.get(moneda) != tasa:
             fallos.append(f'tasa {moneda}: navegador {tasa} vs servidor {tasas_servidor.get(moneda)}')
+
+    if envio_cliente != envio_servidor:
+        fallos.append(f'envío: navegador {envio_cliente} vs servidor {envio_servidor}')
 
     anchos = 'Pieza'.ljust(28) + ''.join(m.rjust(12) for m in MONEDAS)
     print(anchos)
