@@ -972,6 +972,14 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
   const slug = new URLSearchParams(location.search).get('p');
   const prod = (slug && getProductoPorSlug(slug)) || getProductoElegido() || productoPorDefecto();
 
+  // El kit a tu gusto no tiene ficha: se arma en su propia página. Si se
+  // llega aquí escribiendo la dirección, se manda allí; si no, se podría
+  // pagar un kit sin piezas elegidas (y sin SKU para el proveedor).
+  if (prod.id === 'kit_personalizado') {
+    location.replace('arma-tu-kit.html');
+    throw new Error('Kit a tu gusto: redirigido a arma-tu-kit.html');
+  }
+
   // Si se cambia de pieza, el grabado anterior deja de tener sentido
   const anterior = sessionStorage.getItem('productoId');
   if (anterior && anterior !== prod.id) sessionStorage.removeItem('grabado');
@@ -1856,9 +1864,34 @@ if (ctaReservar) {
        de su galería, las dos a la vez. Mismas reglas que el pase de
        arriba: quieto si la pestaña no se ve o se pide menos movimiento. */
     const fotosResumen = { pulsera: null, colgante: null };
-    const ponerFotoResumen = (caja, f) => {
-      caja.style.backgroundImage = f ? `url('${f.src}')` : '';
-      caja.style.backgroundPosition = (f && f.pos) || '';
+    /* Dos capas por hueco, como en Cozumel Stories y la foto de la caja:
+       la que entra carga la foto nueva y se funde encima (2,6 s, la
+       misma curva, en style.css). Sin fundido la primera vez que se
+       elige la pieza: tiene que aparecer al momento. */
+    const capasResumen = (caja) => {
+      let capas = caja.querySelectorAll('.kit-resumen-capa');
+      if (capas.length < 2) {
+        caja.innerHTML = '<span class="kit-resumen-capa visible"></span><span class="kit-resumen-capa"></span>';
+        capas = caja.querySelectorAll('.kit-resumen-capa');
+      }
+      return capas;
+    };
+    const ponerFotoResumen = (caja, f, conFundido) => {
+      const [a, b] = capasResumen(caja);
+      const visible = a.classList.contains('visible') ? a : b;
+      const pintar = (capa) => {
+        capa.style.backgroundImage = f ? `url('${f.src}')` : '';
+        capa.style.backgroundPosition = (f && f.pos) || '';
+      };
+      if (!conFundido || !f) { pintar(visible); return; }
+      const entra = visible === a ? b : a;
+      const img = new Image();
+      img.onload = () => {
+        pintar(entra);
+        entra.classList.add('visible');
+        visible.classList.remove('visible');
+      };
+      img.src = f.src;
     };
     setInterval(() => {
       if (document.hidden || sinMovimiento.matches) return;
@@ -1866,7 +1899,7 @@ if (ctaReservar) {
         const estado = fotosResumen[fig.dataset.hueco];
         if (!elegido[fig.dataset.hueco] || !estado || estado.lista.length < 2) return;
         estado.indice = (estado.indice + 1) % estado.lista.length;
-        ponerFotoResumen(fig.querySelector('.kit-resumen-foto'), estado.lista[estado.indice]);
+        ponerFotoResumen(fig.querySelector('.kit-resumen-foto'), estado.lista[estado.indice], true);
       });
     }, PASE_MS);
 
@@ -1878,7 +1911,7 @@ if (ctaReservar) {
         const nombre = fig.querySelector('.kit-resumen-nombre');
         fig.classList.toggle('esta-elegida', !!prod);
         if (!prod) {
-          foto.style.backgroundImage = '';
+          ponerFotoResumen(foto, null);
           delete fig.dataset.clave;
           fotosResumen[hueco] = null;
           nombre.textContent = 'Sin elegir';

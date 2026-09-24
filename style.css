@@ -2683,10 +2683,17 @@ footer{
   display:block; aspect-ratio:1; border-radius:3px;
   background:#E9E5DF center/cover no-repeat;
   border:1px dashed rgba(20,69,74,.22);
-  /* Fundido entre las fotos del pase (los navegadores que no saben
-     fundir un fondo simplemente la cambian). */
-  transition:background-image .9s ease;
+  position:relative; overflow:hidden;
 }
+/* Las dos capas del pase de la pieza elegida: mismo fundido que Cozumel
+   Stories y la foto de la caja (2,6 s, misma curva). */
+.kit-resumen-capa{
+  position:absolute; inset:0; opacity:0;
+  background:center/cover no-repeat;
+  transition:opacity 2.6s cubic-bezier(.45,0,.35,1);
+}
+.kit-resumen-capa.visible{opacity:1;}
+@media (prefers-reduced-motion:reduce){ .kit-resumen-capa{transition:none;} }
 .kit-resumen-pieza.esta-elegida .kit-resumen-foto{border:1px solid rgba(20,69,74,.14);}
 .kit-resumen-pie{display:block; margin-top:8px; text-align:center;}
 .kit-resumen-rol{
