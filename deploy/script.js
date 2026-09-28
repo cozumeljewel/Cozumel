@@ -2740,6 +2740,12 @@ if (reservaForm) {
       const items = getCarrito();
       const url = new URL(location.origin + location.pathname);
       if (items.length) url.searchParams.set('carrito', carritoAEnlace(items));
+      // Antes del lanzamiento, quien tiene abierta la vista de la tienda
+      // (?tienda=abrir) la conserva al saltar al navegador; si no, allí le
+      // saldría la cuenta atrás.
+      try {
+        if (localStorage.getItem('cozumel_ver_tienda') === '1') url.searchParams.set('tienda', 'abrir');
+      } catch (_) {}
       return url.toString();
     };
     const esAndroid = /Android/i.test(navigator.userAgent);
