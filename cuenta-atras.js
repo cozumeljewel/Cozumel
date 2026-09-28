@@ -70,11 +70,11 @@
           <div><span data-u="m">00</span><small>min</small></div>
           <div><span data-u="s">00</span><small>seg</small></div>
         </div>
-        <p class="ca-texto"><span>Solo 100 piezas en el lanzamiento.</span> <span>Déjanos tu email y tendrás acceso antes que nadie.</span></p>
+        <p class="ca-texto"><span>Unidades limitadas en el lanzamiento.</span> <span>Déjanos tu email y tendrás acceso antes que nadie.</span></p>
         <!-- Solo el sorteo. El vídeo por completar la colección sigue
              activo (v19), pero se comunicará después, como incentivo de
              recompra: aquí competía con el mensaje principal. -->
-        <p class="ca-extra">✦ Entre las primeras 100 compras sortearemos<br><strong>5 videollamadas privadas con Adri</strong>.</p>
+        <p class="ca-extra">✦ Entre las primeras 100 compras sortearemos <strong>5 videollamadas privadas con Adri</strong> ✦</p>
         <form class="ca-form" novalidate>
           <div class="ca-fila">
             <label class="ca-oculto" for="ca-email">Tu email</label>
