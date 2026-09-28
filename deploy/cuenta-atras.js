@@ -70,16 +70,16 @@
           <div><span data-u="m">00</span><small>min</small></div>
           <div><span data-u="s">00</span><small>seg</small></div>
         </div>
-        <p class="ca-texto">Solo 100 piezas. Deja tu email y te avisamos antes que a nadie para reservar la tuya.</p>
-        <ul class="ca-extras">
-          <li>Entre las 100 primeras compras sorteamos <strong>5 videollamadas con Adri</strong>.</li>
-          <li>Completa las 5 piezas de la colección y Adri te grabará <strong>un vídeo personal</strong>.</li>
-        </ul>
+        <p class="ca-texto"><span>Solo 100 piezas en el lanzamiento.</span> <span>Déjanos tu email y tendrás acceso antes que nadie.</span></p>
+        <!-- Solo el sorteo. El vídeo por completar la colección sigue
+             activo (v19), pero se comunicará después, como incentivo de
+             recompra: aquí competía con el mensaje principal. -->
+        <p class="ca-extra">✦ Entre las primeras 100 compras sortearemos<br><strong>5 videollamadas privadas con Adri</strong>.</p>
         <form class="ca-form" novalidate>
           <div class="ca-fila">
             <label class="ca-oculto" for="ca-email">Tu email</label>
             <input id="ca-email" type="email" name="email" required autocomplete="email" placeholder="Tu email">
-            <button type="submit" class="ca-boton">Reservar</button>
+            <button type="submit" class="ca-boton">Quiero acceso anticipado</button>
           </div>
           <label class="ca-consent">
             <input type="checkbox" name="consent" required>
@@ -157,7 +157,7 @@
         if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
         form.querySelector('.ca-fila').remove();
         form.querySelector('.ca-consent').remove();
-        aviso.textContent = '¡Apuntado! Te escribiremos antes del lanzamiento para que reserves tu pedacito.';
+        aviso.textContent = '¡Listo! Te escribiremos antes del lanzamiento con tu acceso anticipado.';
         aviso.classList.add('ca-ok');
       } catch (err) {
         console.error('Lista de espera:', err);

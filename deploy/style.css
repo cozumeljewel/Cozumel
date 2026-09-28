@@ -2804,7 +2804,7 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
 }
 .ca-reloj{
   display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;
-  margin:28px auto 0; max-width:400px;
+  margin:24px auto 0; max-width:400px;
 }
 .ca-reloj div{
   padding:14px 4px 10px; border:1px solid rgba(246,241,232,.35);
@@ -2818,15 +2818,14 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
   display:block; margin-top:6px; font-size:10.5px; letter-spacing:.18em;
   text-transform:uppercase; opacity:.85;
 }
-.ca-texto{margin:28px auto 0; max-width:36ch; font-size:16px; line-height:1.5;}
-.ca-extras{
-  list-style:none; margin:16px auto 0; padding:0; max-width:38ch;
+.ca-texto{margin:20px auto 0; max-width:40ch; font-size:16px; line-height:1.5;}
+.ca-texto span{display:block; text-wrap:balance;}
+.ca-extra{
+  margin:12px auto 0; max-width:38ch;
   font-size:14.5px; line-height:1.5; color:rgba(246,241,232,.92);
 }
-.ca-extras li + li{margin-top:6px;}
-.ca-extras li::before{content:"✦ "; color:#E8C98B;}
-.ca-extras strong{color:#E8C98B; font-weight:600;}
-.ca-form{margin:20px auto 0; max-width:420px;}
+.ca-extra strong{color:#E8C98B; font-weight:600;}
+.ca-form{margin:18px auto 0; max-width:500px;}
 .ca-fila{display:flex; gap:8px;}
 .ca-fila input{
   flex:1; min-width:0; min-height:52px; padding:0 16px; box-sizing:border-box;
@@ -2843,12 +2842,17 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
 .ca-boton:hover{background:var(--deep); border-color:var(--deep);}
 .ca-boton:disabled{opacity:.6; cursor:wait;}
 .ca-consent{
-  display:flex; gap:10px; align-items:flex-start; margin-top:14px;
+  display:flex; gap:10px; align-items:flex-start; margin-top:12px;
   text-align:left; font-size:13px; line-height:1.45; cursor:pointer;
 }
 .ca-consent input{margin-top:2px; flex:none; width:18px; height:18px; accent-color:var(--gold-deep);}
 .ca-consent a{color:#E8C98B;}
-.ca-aviso{min-height:1.4em; margin:14px 0 0; font-size:14px;}
+.ca-aviso{min-height:1.4em; margin:10px 0 0; font-size:14px;}
 .ca-aviso.ca-error{color:#FFC9B8;}
 .ca-aviso.ca-ok{font-family:var(--font-serif); font-style:italic; font-size:19px; color:#E8C98B;}
+.ca-boton{white-space:nowrap;}
+@media (max-width:520px){
+  .ca-fila{flex-direction:column;}
+  .ca-boton{width:100%;}
+}
 .ca-oculto{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
