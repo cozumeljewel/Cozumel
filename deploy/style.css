@@ -2799,7 +2799,7 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
 }
 .ca-edicion em{font-style:italic; color:#E8C98B;}
 .ca-fecha{
-  margin:10px 0 0; font-size:12.5px; font-weight:600;
+  margin:10px 0 0; font-size:12.5px; font-weight:600; line-height:1.7;
   letter-spacing:.16em; text-transform:uppercase; color:#E8C98B;
 }
 .ca-reloj{
@@ -2819,6 +2819,13 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
   text-transform:uppercase; opacity:.85;
 }
 .ca-texto{margin:28px auto 0; max-width:36ch; font-size:16px; line-height:1.5;}
+.ca-extras{
+  list-style:none; margin:16px auto 0; padding:0; max-width:38ch;
+  font-size:14.5px; line-height:1.5; color:rgba(246,241,232,.92);
+}
+.ca-extras li + li{margin-top:6px;}
+.ca-extras li::before{content:"✦ "; color:#E8C98B;}
+.ca-extras strong{color:#E8C98B; font-weight:600;}
 .ca-form{margin:20px auto 0; max-width:420px;}
 .ca-fila{display:flex; gap:8px;}
 .ca-fila input{

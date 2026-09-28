@@ -39,14 +39,16 @@
     clave: 'sb_publishable_lmFNgpMEy4Axi6dYQ9E1UA_b63xSwJ6',
   };
 
-  // Hora del lanzamiento en la hora local de quien mira, si no es la de
-  // España (p.ej. "13:00 en tu hora" desde México).
+  // Hora del lanzamiento en España y en México (calculada, no escrita a
+  // mano, por si cambia algún horario de verano). Si quien mira está en
+  // otra zona, se añade también su hora.
+  const fmtHora = (tz) => new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(LANZAMIENTO);
+  const horaEspana = (() => { try { return fmtHora('Europe/Madrid'); } catch (_) { return '21:00'; } })();
+  const horaMexico = (() => { try { return fmtHora('America/Mexico_City'); } catch (_) { return '13:00'; } })();
   const horaLocal = (() => {
     try {
-      const zona = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const fmt = (tz) => new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(LANZAMIENTO);
-      const local = fmt(zona);
-      return local === fmt('Europe/Madrid') ? '' : ' (' + local + ' en tu hora)';
+      const local = fmtHora(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      return local === horaEspana || local === horaMexico ? '' : ' · ' + local + ' en tu hora';
     } catch (_) { return ''; }
   })();
 
@@ -61,7 +63,7 @@
       <div class="ca-contenido">
         <h1 class="ca-logo" id="ca-titulo"><img src="img/hero-logo-texto-1.png" alt="Cozumel Jewelry" width="1000" height="312"></h1>
         <p class="ca-edicion">Un Pedacito <em>de ti</em></p>
-        <p class="ca-fecha">2 de octubre · 21:00 en España${horaLocal}</p>
+        <p class="ca-fecha">2 de octubre<br>${horaEspana} en España · ${horaMexico} en México${horaLocal}</p>
         <div class="ca-reloj" aria-live="off">
           <div><span data-u="d">00</span><small>días</small></div>
           <div><span data-u="h">00</span><small>horas</small></div>
@@ -69,6 +71,10 @@
           <div><span data-u="s">00</span><small>seg</small></div>
         </div>
         <p class="ca-texto">Solo 100 piezas. Deja tu email y te avisamos antes que a nadie para reservar la tuya.</p>
+        <ul class="ca-extras">
+          <li>Entre las 100 primeras compras sorteamos <strong>5 videollamadas con Adri</strong>.</li>
+          <li>Completa las 5 piezas de la colección y Adri te grabará <strong>un vídeo personal</strong>.</li>
+        </ul>
         <form class="ca-form" novalidate>
           <div class="ca-fila">
             <label class="ca-oculto" for="ca-email">Tu email</label>
