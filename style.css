@@ -2856,3 +2856,14 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
   .ca-boton{width:100%;}
 }
 .ca-oculto{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+/* ---- Aviso "ábrelo en tu navegador" (Instagram, TikTok...) ---- */
+.login-inapp{text-align:center;}
+.login-inapp-texto{margin:0 auto 16px; max-width:34ch; font-size:15px; line-height:1.5; color:var(--ink);}
+.login-inapp .btn{width:100%; max-width:340px;}
+.login-inapp-copiar{
+  display:block; margin:14px auto 0; padding:6px 10px; border:0; background:none;
+  font-family:var(--font-sans); font-size:14px; font-weight:500; color:var(--deep);
+  text-decoration:underline; text-underline-offset:5px; cursor:pointer;
+}
+.login-inapp-ayuda{margin:12px auto 0; max-width:34ch; font-size:13px; line-height:1.5; color:var(--ink-soft);}

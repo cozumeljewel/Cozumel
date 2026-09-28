@@ -117,6 +117,39 @@ function guardarCarrito(items) {
   actualizarBadgeCarrito();
 }
 
+/* ---------- El carrito, dentro de un enlace ----------
+   El carrito vive en el almacenamiento del navegador. Si alguien lo llena
+   dentro de Instagram y abre la web en Safari o Chrome para pagar, allí
+   llegaría vacío. Por eso el botón "Abrir en el navegador" de comprar.html
+   lleva el carrito en el enlace (?carrito=...), y aquí se recupera. */
+function carritoAEnlace(items) {
+  const bytes = new TextEncoder().encode(JSON.stringify(items));
+  let bin = '';
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+(function recuperarCarritoDelEnlace() {
+  const params = new URLSearchParams(location.search);
+  const codigo = params.get('carrito');
+  if (!codigo) return;
+  try {
+    const b64 = codigo.replace(/-/g, '+').replace(/_/g, '/');
+    const bin = atob(b64 + '==='.slice((b64.length + 3) % 4));
+    const items = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))));
+    if (Array.isArray(items) && items.length && items.every(i => i && typeof i.producto === 'string')) {
+      localStorage.setItem(CARRITO_KEY, JSON.stringify(items));
+    }
+  } catch (err) {
+    console.error('No se pudo recuperar el carrito del enlace:', err);
+  }
+  // Fuera de la barra de direcciones: si se comparte o se recarga, que no
+  // vuelva a pisar el carrito.
+  params.delete('carrito');
+  const resto = params.toString();
+  history.replaceState(null, '', location.pathname + (resto ? '?' + resto : '') + location.hash);
+})();
+
 function añadirAlCarrito(item) {
   const items = getCarrito();
   items.push(item);
@@ -2674,6 +2707,67 @@ if (reservaForm) {
       if (error) {
         console.error(error);
         showReservaError('No se ha podido abrir el login de Google. Inténtalo de nuevo en unos minutos');
+      }
+    });
+  }
+
+  /* ---------- Navegadores dentro de apps (Instagram, TikTok...) ----------
+     Google bloquea su login en ellos, así que ahí no se puede pagar. En su
+     lugar se ofrece abrir esta misma página en el navegador de verdad,
+     con el carrito dentro del enlace. WhatsApp no está en la lista: abre
+     los enlaces en un navegador que Google sí acepta. */
+  const appIntegrada = (() => {
+    const ua = navigator.userAgent || '';
+    if (/Instagram/i.test(ua)) return 'Instagram';
+    if (/FBAN|FBAV|FB_IAB|FBIOS|Messenger/i.test(ua)) return 'Facebook';
+    if (/TikTok|musical_ly|BytedanceWebview|trill_/i.test(ua)) return 'TikTok';
+    if (/Snapchat/i.test(ua)) return 'Snapchat';
+    if (/Twitter/i.test(ua)) return 'X';
+    if (/\bLine\//i.test(ua)) return 'LINE';
+    return null;
+  })();
+  const bloqueInapp = document.getElementById('login-inapp');
+  if (appIntegrada && bloqueInapp && loginGate) {
+    const textoGate = loginGate.querySelector('.login-gate-texto');
+    if (textoGate) textoGate.hidden = true;
+    if (btnLoginGoogle) btnLoginGoogle.hidden = true;
+    bloqueInapp.hidden = false;
+    document.getElementById('login-inapp-texto').textContent =
+      'Estás viendo la web dentro de ' + appIntegrada + ', y desde aquí no se puede pagar. ' +
+      'Ábrela en tu navegador: tu carrito va contigo.';
+
+    const enlace = () => {
+      const items = getCarrito();
+      const url = new URL(location.origin + location.pathname);
+      if (items.length) url.searchParams.set('carrito', carritoAEnlace(items));
+      return url.toString();
+    };
+    const esAndroid = /Android/i.test(navigator.userAgent);
+
+    document.getElementById('btn-abrir-navegador').addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = enlace();
+      if (esAndroid) {
+        // Intent de Android: abre el navegador por defecto del móvil.
+        const sinEsquema = url.replace(/^https?:\/\//, '');
+        location.href = 'intent://' + sinEsquema +
+          '#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=' +
+          encodeURIComponent(url) + ';end';
+      } else {
+        // iPhone: Safari se abre con este esquema (iOS 17 o más). Si la app
+        // no lo deja, quedan "Copiar enlace" y el menú ··· de la propia app.
+        location.href = 'x-safari-' + url;
+      }
+    });
+
+    document.getElementById('btn-copiar-enlace').addEventListener('click', async (e) => {
+      const boton = e.currentTarget;
+      const url = enlace();
+      try {
+        await navigator.clipboard.writeText(url);
+        boton.textContent = 'Enlace copiado: pégalo en Safari o Chrome';
+      } catch (_) {
+        window.prompt('Copia este enlace y pégalo en Safari o Chrome:', url);
       }
     });
   }
