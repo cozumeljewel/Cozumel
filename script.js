@@ -117,39 +117,6 @@ function guardarCarrito(items) {
   actualizarBadgeCarrito();
 }
 
-/* ---------- El carrito, dentro de un enlace ----------
-   El carrito vive en el almacenamiento del navegador. Si alguien lo llena
-   dentro de Instagram y abre la web en Safari o Chrome para pagar, allí
-   llegaría vacío. Por eso el botón "Abrir en el navegador" de comprar.html
-   lleva el carrito en el enlace (?carrito=...), y aquí se recupera. */
-function carritoAEnlace(items) {
-  const bytes = new TextEncoder().encode(JSON.stringify(items));
-  let bin = '';
-  bytes.forEach(b => { bin += String.fromCharCode(b); });
-  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-(function recuperarCarritoDelEnlace() {
-  const params = new URLSearchParams(location.search);
-  const codigo = params.get('carrito');
-  if (!codigo) return;
-  try {
-    const b64 = codigo.replace(/-/g, '+').replace(/_/g, '/');
-    const bin = atob(b64 + '==='.slice((b64.length + 3) % 4));
-    const items = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))));
-    if (Array.isArray(items) && items.length && items.every(i => i && typeof i.producto === 'string')) {
-      localStorage.setItem(CARRITO_KEY, JSON.stringify(items));
-    }
-  } catch (err) {
-    console.error('No se pudo recuperar el carrito del enlace:', err);
-  }
-  // Fuera de la barra de direcciones: si se comparte o se recarga, que no
-  // vuelva a pisar el carrito.
-  params.delete('carrito');
-  const resto = params.toString();
-  history.replaceState(null, '', location.pathname + (resto ? '?' + resto : '') + location.hash);
-})();
-
 function añadirAlCarrito(item) {
   const items = getCarrito();
   items.push(item);
@@ -2550,9 +2517,6 @@ if (reservaForm) {
   const sinPiezaAviso = document.getElementById('sin-pieza');
   const sinPrecioAviso = document.getElementById('sin-precio');
   const carritoLista = document.getElementById('carrito-lista');
-  const loginGate = document.getElementById('login-gate');
-  const btnLoginGoogle = document.getElementById('btn-login-google');
-  const btnLogout = document.getElementById('btn-logout');
 
   if (!SUPA_READY || !sb) {
     reservaConfigWarning.hidden = false;
@@ -2665,129 +2629,32 @@ if (reservaForm) {
   const showReservaError = (msg) => { reservaError.hidden = false; reservaError.textContent = msg; };
   const hideReservaError = () => { reservaError.hidden = true; };
 
-  /* ---- Login con Google ----
-     Guarda la sesión en un cierre (no en window) para que el envío del
-     formulario pueda leer el user_id sin volver a preguntarle a Supabase. */
+  /* ---- Sesión invitada: se compra solo con email, sin cuenta ----
+     Antes había que entrar con Google, pero Google bloquea su login dentro
+     de Instagram y TikTok, que es de donde llega casi todo el tráfico.
+     Ahora el formulario se ve siempre y, al pagar, se abre por dentro una
+     sesión anónima de Supabase: no pide nada a la persona, pero da el
+     user_id con el que las reglas de la base de datos dejan a cada uno
+     tocar solo su pedido. Se guarda en el navegador, así que al volver de
+     Stripe la misma sesión puede comprobar que el pedido quedó pagado. */
   let sesionActual = null;
 
-  const mostrarSegunSesion = (session) => {
-    sesionActual = session || null;
-    const haySesion = !!sesionActual;
-
-    if (loginGate) loginGate.hidden = haySesion;
-    reservaForm.hidden = !haySesion;
-    if (btnLogout) btnLogout.hidden = !haySesion;
-
-    if (haySesion) {
-      const meta = sesionActual.user.user_metadata || {};
-      // Solo precarga si el campo está vacío: si la persona ya escribió
-      // algo (o volvió a la página con datos guardados), no se lo pisa.
-      if (!reservaForm.nombre.value) reservaForm.nombre.value = meta.full_name || meta.name || '';
-      if (!reservaForm.email.value) reservaForm.email.value = sesionActual.user.email || '';
-    }
-  };
+  reservaForm.hidden = false;
 
   if (SUPA_READY && sb) {
-    sb.auth.getSession().then(({ data }) => mostrarSegunSesion(data.session)).catch(() => mostrarSegunSesion(null));
-    sb.auth.onAuthStateChange((_evento, session) => mostrarSegunSesion(session));
-  } else {
-    // Sin Supabase configurado no hay nada que pedir: el aviso de
-    // "Supabase no está conectado todavía" ya cubre este caso.
-    if (loginGate) loginGate.hidden = true;
+    sb.auth.getSession().then(({ data }) => { sesionActual = data.session || null; }).catch(() => {});
+    sb.auth.onAuthStateChange((_evento, session) => { sesionActual = session || null; });
   }
 
-  if (btnLoginGoogle) {
-    btnLoginGoogle.addEventListener('click', async () => {
-      if (!sb) return;
-      hideReservaError();
-      const { error } = await sb.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: window.location.href },
-      });
-      if (error) {
-        console.error(error);
-        showReservaError('No se ha podido abrir el login de Google. Inténtalo de nuevo en unos minutos');
-      }
-    });
-  }
-
-  /* ---------- Navegadores dentro de apps (Instagram, TikTok...) ----------
-     Google bloquea su login en ellos, así que ahí no se puede pagar. En su
-     lugar se ofrece abrir esta misma página en el navegador de verdad,
-     con el carrito dentro del enlace. WhatsApp no está en la lista: abre
-     los enlaces en un navegador que Google sí acepta. */
-  const appIntegrada = (() => {
-    const ua = navigator.userAgent || '';
-    if (/Instagram/i.test(ua)) return 'Instagram';
-    if (/FBAN|FBAV|FB_IAB|FBIOS|Messenger/i.test(ua)) return 'Facebook';
-    if (/TikTok|musical_ly|BytedanceWebview|trill_/i.test(ua)) return 'TikTok';
-    if (/Snapchat/i.test(ua)) return 'Snapchat';
-    if (/Twitter/i.test(ua)) return 'X';
-    if (/\bLine\//i.test(ua)) return 'LINE';
-    return null;
-  })();
-  const bloqueInapp = document.getElementById('login-inapp');
-  if (appIntegrada && bloqueInapp && loginGate) {
-    const textoGate = loginGate.querySelector('.login-gate-texto');
-    if (textoGate) textoGate.hidden = true;
-    if (btnLoginGoogle) btnLoginGoogle.hidden = true;
-    bloqueInapp.hidden = false;
-    document.getElementById('login-inapp-texto').textContent =
-      'Estás viendo la web dentro de ' + appIntegrada + ', y desde aquí no se puede pagar. ' +
-      'Ábrela en tu navegador: tu carrito va contigo.';
-
-    const enlace = () => {
-      const items = getCarrito();
-      const url = new URL(location.origin + location.pathname);
-      if (items.length) url.searchParams.set('carrito', carritoAEnlace(items));
-      // Antes del lanzamiento, quien tiene abierta la vista de la tienda
-      // (?tienda=abrir) la conserva al saltar al navegador; si no, allí le
-      // saldría la cuenta atrás.
-      try {
-        if (localStorage.getItem('cozumel_ver_tienda') === '1') url.searchParams.set('tienda', 'abrir');
-      } catch (_) {}
-      return url.toString();
-    };
-    const esAndroid = /Android/i.test(navigator.userAgent);
-
-    document.getElementById('btn-abrir-navegador').addEventListener('click', (e) => {
-      e.preventDefault();
-      const url = enlace();
-      if (esAndroid) {
-        // Intent de Android: abre el navegador por defecto del móvil.
-        const sinEsquema = url.replace(/^https?:\/\//, '');
-        location.href = 'intent://' + sinEsquema +
-          '#Intent;scheme=https;action=android.intent.action.VIEW;S.browser_fallback_url=' +
-          encodeURIComponent(url) + ';end';
-      } else {
-        // iPhone: Safari se abre con este esquema (iOS 17 o más). Si la app
-        // no lo deja, quedan "Copiar enlace" y el menú ··· de la propia app.
-        location.href = 'x-safari-' + url;
-      }
-    });
-
-    document.getElementById('btn-copiar-enlace').addEventListener('click', async (e) => {
-      const boton = e.currentTarget;
-      const url = enlace();
-      try {
-        await navigator.clipboard.writeText(url);
-        boton.textContent = 'Enlace copiado: pégalo en Safari o Chrome';
-      } catch (_) {
-        window.prompt('Copia este enlace y pégalo en Safari o Chrome:', url);
-      }
-    });
-  }
-
-  if (btnLogout) {
-    btnLogout.addEventListener('click', async () => {
-      if (!sb) return;
-      const { error } = await sb.auth.signOut();
-      if (error) {
-        console.error(error);
-        showReservaError('No se ha podido cerrar la sesión. Inténtalo de nuevo');
-      }
-    });
-  }
+  const asegurarSesion = async () => {
+    if (sesionActual) return sesionActual;
+    const { data: actual } = await sb.auth.getSession();
+    if (actual && actual.session) { sesionActual = actual.session; return sesionActual; }
+    const { data, error } = await sb.auth.signInAnonymously();
+    if (error) throw error;
+    sesionActual = data.session;
+    return sesionActual;
+  };
 
   reservaForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -2813,12 +2680,11 @@ if (reservaForm) {
       showReservaError('Ahora mismo no podemos procesar tu compra. Inténtalo de nuevo en unos minutos');
       return;
     }
-    if (!sesionActual) {
-      // No debería pasar (el formulario está oculto sin sesión), pero
-      // cubre el caso de una sesión que caduca mientras la persona tenía
-      // la pestaña abierta.
-      showReservaError('Tu sesión ha caducado. Vuelve a identificarte con Google');
-      mostrarSegunSesion(null);
+    try {
+      await asegurarSesion();
+    } catch (err) {
+      console.error('No se pudo abrir la sesión invitada:', err);
+      showReservaError('Ahora mismo no podemos procesar tu compra. Inténtalo de nuevo en unos minutos');
       return;
     }
 

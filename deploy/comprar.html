@@ -141,24 +141,7 @@
         Supabase no está conectado todavía: rellena <code>supabase-config.js</code> para activar las reservas
       </p>
 
-      <!-- Tapa el formulario hasta que hay sesión. script.js decide cuál
-           de los dos se ve, comprobando sb.auth.getSession(). -->
-      <div class="login-gate" id="login-gate">
-        <p class="login-gate-texto">Para comprar, primero identifícate</p>
-        <button type="button" class="btn btn-primary" id="btn-login-google">Continuar con Google</button>
-        <!-- Dentro de Instagram, TikTok, Facebook... Google no deja iniciar
-             sesión (error 403 disallowed_useragent). En ese caso script.js
-             esconde el botón de Google y enseña esto: abrir la misma página
-             en el navegador de verdad, con el carrito dentro del enlace. -->
-        <div class="login-inapp" id="login-inapp" hidden>
-          <p class="login-inapp-texto" id="login-inapp-texto">Estás viendo la web dentro de una app. Para pagar con seguridad, ábrela en tu navegador: tu carrito va contigo.</p>
-          <a class="btn btn-primary" id="btn-abrir-navegador" href="#">Abrir en el navegador</a>
-          <button type="button" class="login-inapp-copiar" id="btn-copiar-enlace">Copiar enlace</button>
-          <p class="login-inapp-ayuda">Si no se abre, toca <strong>···</strong> arriba a la derecha y elige <strong>“Abrir en el navegador”</strong>.</p>
-        </div>
-      </div>
-
-      <form id="reserva-form" hidden>
+      <form id="reserva-form">
         <div class="field">
           <label for="r-nombre">Nombre</label>
           <input id="r-nombre" name="nombre" type="text" required placeholder="Tu nombre">
@@ -217,7 +200,6 @@
         </p>
       </form>
       <p class="reserva-error" id="reserva-error" role="status" aria-live="polite" hidden></p>
-      <button type="button" class="link-logout" id="btn-logout" hidden>Cerrar sesión</button>
     </div>
 
     <div class="reserva-done" id="reserva-done" hidden>
