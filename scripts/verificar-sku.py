@@ -37,10 +37,13 @@ def sku_de_pedido(producto, p):
         return ('CDNN067-1' if acabado == 'plata' else 'CDNN067-2') + (' + diaoke' if grabado else '')
     if producto == 'pulsera_vinculo':
         return 'YS14924A0W0' if acabado == 'plata' else 'YS14924D0W0'
+    # "-KZ" (grabado incluido) solo si hay grabado: desde la v23 el grabado
+    # es opcional y sin él se pide la referencia normal.
+    kz = '-KZ' if grabado else ''
     if producto == 'pulsera_nombre':
-        return 'YS15777A0W0-KZ' if acabado == 'plata' else 'YS15777D0W0-KZ'
+        return ('YS15777A0W0' if acabado == 'plata' else 'YS15777D0W0') + kz
     if producto == 'brazalete_mensaje':
-        return 'FZ28329A0W0-KZ' if acabado == 'plata' else 'FZ28329D0W0-KZ'
+        return ('FZ28329A0W0' if acabado == 'plata' else 'FZ28329D0W0') + kz
     if producto == 'collar_flor_natal':
         if mes_num is None: return falta_mes
         return ('XX49472A0W' if acabado == 'plata' else 'XX49472D0W') + str(mes_num)
@@ -51,7 +54,7 @@ def sku_de_pedido(producto, p):
     if producto == 'kit_mi_consentida':
         if mes_num is None: return falta_mes
         return (('XX49472A0W' if pieza1 == 'plata' else 'XX49472D0W') + str(mes_num) + ' + ' +
-                ('YS15777A0W0-KZ' if pieza2 == 'plata' else 'YS15777D0W0-KZ'))
+                ('YS15777A0W0' if pieza2 == 'plata' else 'YS15777D0W0') + kz)
     return 'SIN SKU'
 
 def variantes():
@@ -73,8 +76,10 @@ def variantes():
                        {'acabado__collar_esencial': a1, 'acabado__pulsera_vinculo': a2,
                         **({'nombre':'Ana','fecha':'','mensaje':''} if g else {'nombre':'','fecha':'','mensaje':''})})
             for mes in MESES:
-                yield ('Kit Mi Consentida', 'kit_mi_consentida',
-                       {'acabado__collar_flor_natal': a1, 'acabado__pulsera_nombre': a2, 'mes': mes, 'grabado': 'Siempre'})
+                for g in (False, True):
+                    yield ('Kit Mi Consentida', 'kit_mi_consentida',
+                           {'acabado__collar_flor_natal': a1, 'acabado__pulsera_nombre': a2, 'mes': mes,
+                            'grabado': 'Siempre' if g else ''})
 
 def main():
     excel = pd.read_excel(EXCEL)
@@ -93,6 +98,10 @@ def main():
     # El Excel lista los sub-SKU del collar de dos cadenas, pero EMANCO
     # pide el combinado: se añaden a mano desde la columna ITEM.
     catalogo |= set(str(s).strip() for s in excel['ITEM'].dropna() if str(s).startswith('CDNN'))
+    # El Excel solo lista las piezas grabables con "-KZ", y aclara que "-KZ"
+    # es un sufijo sobre la referencia normal (no un SKU aparte). Sin
+    # grabado se pide la normal: se da por buena.
+    catalogo |= set(s[:-3] for s in list(catalogo) if s.endswith('-KZ'))
 
     filas, fallos = [], []
     for nombre, producto, pers in variantes():

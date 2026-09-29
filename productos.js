@@ -500,11 +500,13 @@ const CARTITA_CIERRE = 'Este es tu pedacito de cielo. Llévalo contigo';
    tipo 'texto' → input de texto normal.
    tipo 'color' → selector de muestras (usa "opciones"). */
 const CAMPOS_META = {
-  nombre:  { tipo: 'texto', label: 'Nombre',  placeholder: 'Ej. Adri',        max: 16, opcional: false },
+  // El grabado nunca es obligatorio (2026-09-29): hay quien quiere la pieza
+  // tal cual. Sin grabado, el SKU se pide sin "-KZ" (ver migración v23).
+  nombre:  { tipo: 'texto', label: 'Nombre',  placeholder: 'Ej. Adri',        max: 16, opcional: true },
   fecha:   { tipo: 'texto', label: 'Fecha',   placeholder: 'Ej. 14.02.2024',  max: 12, opcional: true  },
-  mensaje: { tipo: 'texto', label: 'Mensaje', placeholder: 'Ej. te elijo a ti', max: 28, opcional: false },
+  mensaje: { tipo: 'texto', label: 'Mensaje', placeholder: 'Ej. te elijo a ti', max: 28, opcional: true },
   // Una sola inscripción, pero libre: frase, fecha o coordenadas
-  grabado: { tipo: 'texto', label: 'Grabado', placeholder: 'Una frase, una fecha o unas coordenadas', max: 30, opcional: false },
+  grabado: { tipo: 'texto', label: 'Grabado', placeholder: 'Una frase, una fecha o unas coordenadas', max: 30, opcional: true },
   mes:     { tipo: 'color', label: 'Mes de nacimiento', opciones: MESES_NATAL, opcional: false },
 };
 

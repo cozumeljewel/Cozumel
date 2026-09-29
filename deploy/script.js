@@ -371,13 +371,6 @@ function setGrabado(datos) {
   sessionStorage.setItem('grabado', JSON.stringify(datos));
 }
 
-/* Valores de ejemplo cuando el usuario aún no ha escrito nada */
-const EJEMPLOS = {
-  nombre: 'Adri',
-  mensajeSolo: 'siempre tú',   // piezas donde el mensaje ES el grabado
-  grabado: '20.42 N, 86.92 W', // brazalete: admite frase, fecha o coordenadas
-};
-
 function getMesData(valor) {
   return MESES_NATAL.find(m => m.valor === valor) || MESES_NATAL[0];
 }
@@ -392,20 +385,36 @@ function lineasDePieza(prod, datos) {
   const tiene = c => prod.campos.includes(c);
   const comillas = t => (t ? `“${t}”` : '');
 
+  // Solo lo que la persona ha escrito de verdad: nunca un texto de
+  // ejemplo. El grabado es opcional (2026-09-29), y un ejemplo aquí haría
+  // creer en el carrito que la pieza va grabada.
   if (tiene('mes')) {
     const m = getMesData(v('mes') || MESES_NATAL[0].valor);
-    return [m.mes + ' · ' + m.piedra, '', ''];
+    // El Kit Mi Consentida lleva mes Y grabado: se enseñan los dos.
+    return [m.mes + ' · ' + m.piedra, tiene('grabado') ? v('grabado') : '', ''];
   }
   if (tiene('nombre')) {
-    return [v('nombre') || EJEMPLOS.nombre, v('fecha'), comillas(v('mensaje'))];
+    return [v('nombre'), v('fecha'), comillas(v('mensaje'))];
   }
   if (tiene('grabado')) {
-    return [v('grabado') || EJEMPLOS.grabado, '', ''];
+    return [v('grabado'), '', ''];
   }
   if (tiene('mensaje')) {
-    return [v('mensaje') || EJEMPLOS.mensajeSolo, '', ''];
+    return [v('mensaje'), '', ''];
   }
   return ['', '', ''];
+}
+
+/* ¿La pieza admite texto grabado? (el mes no es un grabado: es la flor
+   y la piedra de la pieza). */
+function admiteGrabado(prod) {
+  return !!prod && prod.campos.some(c => c === 'grabado' || c === 'nombre' || c === 'mensaje' || c === 'fecha');
+}
+
+/* ¿Ha escrito algo para grabar en esta pieza? */
+function llevaGrabado(prod, datos) {
+  return admiteGrabado(prod) &&
+    ['grabado', 'nombre', 'mensaje', 'fecha'].some(c => prod.campos.includes(c) && (datos[c] || '').trim());
 }
 
 /* El kit a tu gusto no tiene campos propios: lleva dos piezas dentro,
@@ -472,12 +481,15 @@ function resumenGrabado(prod, datos) {
   if (esKitLibre(prod)) {
     return piezasDelKitLibre(datos)
       .map(({ prod: pieza, grabado }) => {
-        const texto = lineasDePieza(pieza, grabado).filter(Boolean).join(' · ');
+        let texto = lineasDePieza(pieza, grabado).filter(Boolean).join(' · ');
+        if (admiteGrabado(pieza) && !llevaGrabado(pieza, grabado)) texto = texto ? texto + ' · Sin grabado' : 'Sin grabado';
         return texto ? pieza.nombre + ': ' + texto : pieza.nombre;
       })
       .join('  ·  ');
   }
-  return lineasDePieza(prod, datos).filter(Boolean).join(' · ');
+  let texto = lineasDePieza(prod, datos).filter(Boolean).join(' · ');
+  if (admiteGrabado(prod) && !llevaGrabado(prod, datos)) texto = texto ? texto + ' · Sin grabado' : 'Sin grabado';
+  return texto;
 }
 
 /* Ya no hay previsualización en vivo de la pieza: la página muestra la
@@ -1146,9 +1158,9 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
     const label = document.createElement('label');
     label.setAttribute('for', 'in-' + campo);
     label.textContent = meta.label;
-    // Un campo solo es opcional si la pieza tiene mas campos: si es el
-    // unico grabado posible (ej. el brazalete), deja de serlo.
-    if (meta.opcional && prod.campos.length > 1) {
+    // Los grabados son opcionales (se puede comprar la pieza sin grabar):
+    // se dice en la propia etiqueta para que nadie crea que es obligatorio.
+    if (meta.opcional) {
       const op = document.createElement('span');
       op.textContent = ' (opcional)';
       label.appendChild(op);
