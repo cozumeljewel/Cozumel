@@ -2300,6 +2300,17 @@ footer{
      sticky: la columna baja con la página y todo se alcanza. */
   .producto-col-galeria .producto-galeria{
     max-width:max(420px, calc(100vh - var(--header-h) - 280px)); margin:0 auto;
+    /* Sin marco blanco alrededor de la foto (pedido del cliente, 29/09):
+       la foto va directamente sobre el fondo de la página. */
+    background:none; padding:0;
+  }
+  /* Textos de la ficha en bloque: los dos párrafos (entradilla y
+     descripción larga) justificados y al mismo ancho, en vez de uno
+     centrado y estrecho y otro alineado a la izquierda. */
+  .producto-detalle .producto-desc,
+  .producto-detalle .ficha-parrafo{
+    max-width:none; margin-left:0; margin-right:0;
+    text-align:justify; hyphens:auto; -webkit-hyphens:auto;
   }
 
   .producto-cabecera{padding:0 0 6px; text-align:center;}
