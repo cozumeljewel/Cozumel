@@ -1363,7 +1363,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 
   const p1 = document.createElement('p');
   p1.className = 'popup-texto';
-  p1.textContent = 'Solo existen 100 pedacitos. No porque queramos que corras, sino porque cada pieza se graba una por una, con un acabado de calidad, y eso no se puede apurar ni multiplicar';
+  p1.textContent = 'Los pedacitos de esta edición son limitados. No porque queramos que corras, sino porque cada pieza se graba una por una, con un acabado de calidad, y eso no se puede apurar ni multiplicar';
 
   const p2 = document.createElement('p');
   p2.className = 'popup-texto';
@@ -1371,7 +1371,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 
   const badge = document.createElement('p');
   badge.className = 'popup-badge';
-  badge.textContent = 'Preventa abierta · edición limitada a 100 piezas';
+  badge.textContent = 'Unidades limitadas · Sorteo de 5 videollamadas con Adri';
 
   const cierre = document.createElement('p');
   cierre.className = 'popup-cierre';

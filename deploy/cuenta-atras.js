@@ -116,14 +116,35 @@
     const form = pantalla.querySelector('.ca-form');
     const aviso = pantalla.querySelector('.ca-aviso');
     const boton = pantalla.querySelector('.ca-boton');
-    const mercado = (() => {
+    // Grupo de precios (MX, US, ES...) y país REAL (CO, AR, ES...). El país
+    // lo da la función /api/geo de Netlify; mercados.js lo guarda al
+    // detectarlo. Si aún no ha terminado (primera visita), se pregunta aquí
+    // mismo al enviar, sin esperar más de 3 s: mejor guardar el email sin
+    // país que hacer esperar a la persona.
+    const leerGeo = () => {
+      try { return JSON.parse(localStorage.getItem('cozumel_mercado_geo')) || null; } catch (_) { return null; }
+    };
+    const mercadoGuardado = () => {
       try {
         const manual = JSON.parse(localStorage.getItem('cozumel_mercado_manual'));
         if (manual) return manual;
-        const geo = JSON.parse(localStorage.getItem('cozumel_mercado_geo'));
-        return geo && geo.mercado ? geo.mercado : null;
+      } catch (_) {}
+      const geo = leerGeo();
+      return geo && geo.mercado ? geo.mercado : null;
+    };
+    const paisReal = async () => {
+      const geo = leerGeo();
+      if (geo && typeof geo.pais === 'string') return geo.pais.toUpperCase();
+      try {
+        const control = new AbortController();
+        const corte = setTimeout(() => control.abort(), 3000);
+        const resp = await fetch('/api/geo', { headers: { Accept: 'application/json' }, signal: control.signal });
+        clearTimeout(corte);
+        if (!resp.ok) return null;
+        const datos = await resp.json();
+        return datos && typeof datos.country === 'string' ? datos.country.toUpperCase() : null;
       } catch (_) { return null; }
-    })();
+    };
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -142,6 +163,7 @@
       }
       boton.disabled = true;
       aviso.textContent = 'Guardando…';
+      const pais = await paisReal();
       try {
         const resp = await fetch(SUPABASE.url + '/rest/v1/lista_espera', {
           method: 'POST',
@@ -151,7 +173,15 @@
             'Content-Type': 'application/json',
             Prefer: 'return=minimal',
           },
-          body: JSON.stringify({ email, mercado, consentimiento: true, fuente: 'cuenta_atras' }),
+          body: JSON.stringify({
+            email,
+            pais,
+            // Si el grupo de precios no se sabe aún, se deduce del país con
+            // la misma tabla de mercados.js (cargado ya a estas alturas).
+            mercado: mercadoGuardado() || (pais && typeof mercadoDePais === 'function' ? mercadoDePais(pais) : null),
+            consentimiento: true,
+            fuente: 'cuenta_atras',
+          }),
         });
         // 409 = ya estaba apuntado: para quien se apunta, es lo mismo.
         if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
