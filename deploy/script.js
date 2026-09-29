@@ -1367,7 +1367,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 
   const p2 = document.createElement('p');
   p2.className = 'popup-texto';
-  p2.textContent = 'Cuando se acaben, se acaban. Si hay un pedacito que quieres que sea tuyo, o de alguien a quien quieras dar un pedacito de ti, este es el momento de comprarlo';
+  p2.textContent = 'Si hay un pedacito que quieres que sea tuyo, o de alguien a quien quieras dar un pedacito de ti, este es el momento de comprarlo';
 
   const badge = document.createElement('p');
   badge.className = 'popup-badge';
