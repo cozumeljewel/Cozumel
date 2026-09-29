@@ -330,7 +330,8 @@ section[id]{scroll-margin-top:var(--header-h);}
 }
 .popup-texto{
   margin-top:16px; font-size:14px; line-height:1.6; color:var(--ink);
-  text-align:left;
+  /* Centrado, como el resto del pop-up (pedido del cliente, 29/09). */
+  text-align:center; text-wrap:pretty;
 }
 .popup-badge{
   margin-top:20px; padding:9px 14px; border-radius:20px;

@@ -1371,11 +1371,11 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 
   const badge = document.createElement('p');
   badge.className = 'popup-badge';
-  badge.textContent = 'Unidades limitadas · Sorteo de 5 videollamadas con Adri';
+  badge.textContent = 'Unidades limitadas · Sorteo de 5 videollamadas con Adri en las 100 primeras compras';
 
   const cierre = document.createElement('p');
   cierre.className = 'popup-cierre';
-  cierre.textContent = 'Un pedacito de mí, mientras quede alguno por dar';
+  cierre.textContent = 'Regala un pedacito de ti';
 
   const cta = document.createElement('a');
   cta.className = 'btn btn-primary popup-cta';
