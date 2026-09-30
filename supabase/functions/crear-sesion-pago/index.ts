@@ -191,7 +191,9 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       { status: 400, headers: jsonHeaders },
     );
   }
-  const mercado = mercados[0];
+  // Argentina paga siempre sus propios precios (envío de 14 $, 2026-09-30),
+  // aunque quien compra tenga elegido otro país en el selector de moneda.
+  const mercado = filas.some((f) => (f.pais ?? "").trim() === "Argentina") ? "AR" : mercados[0];
 
   // Precio real de cada pieza, SIEMPRE recalculado aquí a partir del
   // producto y el mercado — nunca del precio que mandó el navegador. Si

@@ -2857,3 +2857,9 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
   .ca-boton{width:100%;}
 }
 .ca-oculto{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+/* Condiciones de envío de un país concreto (hoy, Argentina) */
+.aviso-pais{
+  margin:-4px 0 18px; padding:12px 14px; border-left:3px solid var(--gold-deep);
+  background:var(--shallow); font-size:13.5px; line-height:1.55; color:var(--ink);
+}

@@ -193,6 +193,13 @@
           <label for="r-documento" id="r-documento-label">RUT</label>
           <input id="r-documento" name="documento" type="text" autocomplete="off">
         </div>
+        <!-- Solo al elegir Argentina: sus condiciones de envío (el taller
+             no hace envío con impuestos incluidos allí). -->
+        <p class="aviso-pais" id="aviso-argentina" hidden>
+          <strong>Envíos a Argentina:</strong> el precio incluye el envío, pero no el IVA de importación, que se paga al recibir el paquete.
+          Para que la aduana lo libere tienes que estar dado de alta en el Domicilio Fiscal Electrónico (DFE) de ARCA.
+          Si el paquete no se puede entregar (dirección incorrecta, ausencia…), se pierde y no hay devolución.
+        </p>
 
         <label class="consent">
           <input type="checkbox" id="r-consent" required>

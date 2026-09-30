@@ -32,6 +32,7 @@ const MERCADOS = {
   ES: { pais: 'España',          moneda: 'EUR', locale: 'es-ES', simbolo: '€'  },
   CL: { pais: 'Chile',           moneda: 'CLP', locale: 'es-CL', simbolo: '$'  },
   PE: { pais: 'Perú',            moneda: 'PEN', locale: 'es-PE', simbolo: 'S/' },
+  AR: { pais: 'Argentina',       moneda: 'USD', locale: 'es-AR', simbolo: '$'  },
   /* Colombia (COP) y Argentina (ARS) están fuera a propósito: la cuenta
      de Stripe NO admite cobrar en esas monedas (comprobado el 2026-09-23
      intentando crear la sesión de pago). Quien entre desde allí verá
@@ -47,8 +48,8 @@ const MERCADO_FALLBACK = 'US';      // país conocido pero sin mercado propio
 /* Países → mercado. La eurozona entera va al mercado ES (euros). */
 const EUROZONA = ['ES','DE','FR','IT','PT','NL','BE','AT','IE','FI','GR','SK','SI','LT','LV','EE','LU','MT','CY','HR'];
 const PAIS_A_MERCADO = Object.fromEntries([
-  ['MX','MX'], ['US','US'], ['CL','CL'], ['PE','PE'],
-  // Colombia y Argentina no están: caen en el fallback (dólares).
+  ['MX','MX'], ['US','US'], ['CL','CL'], ['PE','PE'], ['AR','AR'],
+  // Colombia no está: cae en el fallback (dólares).
   ...EUROZONA.map(p => [p, 'ES']),
 ]);
 
@@ -84,6 +85,7 @@ const ENVIO_USD = {
   ES: 11.00,  // 6 envío + 3,5 aranceles + 1,5 IVA (UE)
   CL: 9.50,   // 7 envío + 2,5 impuestos
   PE: 7.00,
+  AR: 14.00,  // sin impuestos: el IVA de importación lo paga el cliente al recibir
 };
 
 /* Mercados con el MISMO precio que México: el de México convertido tal
@@ -176,7 +178,10 @@ function getMercado() {
 
   const geo = leerLocal(CLAVE_GEO);
   if (geo && esMercadoValido(geo.mercado) && (Date.now() - geo.fecha) < GEO_VALIDEZ_MS) {
-    mercadoActual = geo.mercado;
+    // El país manda sobre el mercado guardado con él: un argentino que se
+    // guardó como "US" antes de que Argentina tuviera precio propio pasa
+    // a "AR" sin esperar a que caduque la detección.
+    mercadoActual = geo.pais ? mercadoDePais(geo.pais) : geo.mercado;
     return mercadoActual;
   }
 
@@ -246,9 +251,10 @@ async function resolverMercadoAutomatico() {
 
   const geo = leerLocal(CLAVE_GEO);
   if (geo && esMercadoValido(geo.mercado) && (Date.now() - geo.fecha) < GEO_VALIDEZ_MS) {
-    setMercado(geo.mercado, { automatico: true });
+    const mercadoGeo = geo.pais ? mercadoDePais(geo.pais) : geo.mercado;
+    setMercado(mercadoGeo, { automatico: true });
     marcarMercadoResuelto();
-    return geo.mercado;
+    return mercadoGeo;
   }
 
   // A partir de aquí sí hay que preguntar: se esconden los importes.

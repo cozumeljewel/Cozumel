@@ -2417,6 +2417,7 @@ const reservaForm = document.getElementById('reserva-form');
 const DOCUMENTO_ADUANA = {
   CL: { etiqueta: 'RUT (obligatorio para la aduana de Chile)', ejemplo: '12345678-K' },
   PE: { etiqueta: 'DNI o RUC (obligatorio para la aduana de Perú)', ejemplo: 'Tu DNI o RUC' },
+  AR: { etiqueta: 'CUIT o CUIL, 11 dígitos (obligatorio para la aduana de Argentina)', ejemplo: '20123456789' },
 };
 
 /* ---------- Países de envío (tabla paises_envio, v24) ----------
@@ -2434,7 +2435,7 @@ const PAISES_ENVIO_RESPALDO = [
   ['GR', 'Grecia'], ['HU', 'Hungría'], ['IE', 'Irlanda'], ['IT', 'Italia'],
   ['LV', 'Letonia'], ['LT', 'Lituania'], ['LU', 'Luxemburgo'], ['MT', 'Malta'],
   ['NL', 'Países Bajos'], ['PL', 'Polonia'], ['PT', 'Portugal'], ['CZ', 'República Checa'],
-  ['RO', 'Rumanía'], ['SE', 'Suecia'],
+  ['RO', 'Rumanía'], ['SE', 'Suecia'], ['AR', 'Argentina'],
 ];
 
 // Código (CL, PE...) del país elegido en el desplegable, o null.
@@ -2482,7 +2483,10 @@ function sincronizarCampoDocumento() {
   if (!campo || !input) return;
   // Por el país de ENVÍO elegido (no por la moneda): quien paga en pesos
   // mexicanos puede mandarlo a Chile, y es Chile quien pide el RUT.
-  const doc = DOCUMENTO_ADUANA[paisEnvioElegido()];
+  const codigo = paisEnvioElegido();
+  const doc = DOCUMENTO_ADUANA[codigo];
+  const avisoAr = document.getElementById('aviso-argentina');
+  if (avisoAr) avisoAr.hidden = codigo !== 'AR';
   campo.hidden = !doc;
   input.required = !!doc;
   if (doc) {
@@ -2710,6 +2714,22 @@ if (reservaForm) {
 
   pintarCarrito();
 
+  /* Argentina tiene precios propios (envío de 14 $): al elegirla como país
+     de envío, el carrito pasa a esos precios, que son los que va a cobrar
+     el servidor. Al cambiar a otro país, se vuelve al mercado de antes. */
+  const mercadoInicial = getMercado();
+  const selPaisEnvio = document.getElementById('r-pais');
+  if (selPaisEnvio) {
+    selPaisEnvio.addEventListener('change', () => {
+      const destino = paisEnvioElegido() === 'AR' ? 'AR' : mercadoInicial;
+      if (getMercado() !== destino) {
+        setMercado(destino, { automatico: true });
+        repreciarCarrito();
+        pintarCarrito();
+      }
+    });
+  }
+
   // El aviso se destapa ANTES de escribir el texto: un lector de pantalla
   // no anuncia cambios dentro de una región aria-live que sigue oculta.
   const showReservaError = (msg) => { reservaError.hidden = false; reservaError.textContent = msg; };
@@ -2786,7 +2806,7 @@ if (reservaForm) {
       direccion_envio: [
         reservaForm.direccion_envio.value.trim(),
         DOCUMENTO_ADUANA[paisEnvioElegido()] && reservaForm.documento.value.trim()
-          ? `${paisEnvioElegido() === 'CL' ? 'RUT' : 'DNI/RUC'}: ${reservaForm.documento.value.trim()}`
+          ? `${({ CL: 'RUT', PE: 'DNI/RUC', AR: 'CUIT/CUIL' })[paisEnvioElegido()]}: ${reservaForm.documento.value.trim()}`
           : '',
       ].filter(Boolean).join(' · '),
       fuente: 'adri_story',

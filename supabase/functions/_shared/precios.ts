@@ -28,25 +28,27 @@ export const PRECIOS_MXN: Record<string, number | null> = {
 // Si un producto tiene precio fijado a mano para un país, manda sobre la
 // conversión. Mismo criterio que "precios: { US: 24.99 }" en productos.js.
 export const PRECIOS_MANUALES: Record<string, Record<string, number>> = {
-  pulsera_nombre: { ES: 24.90, US: 29.90, CL: 29990, PE: 99.90 },
-  brazalete_mensaje: { ES: 27.90, US: 32.90, CL: 32990, PE: 109.90 },
-  pulsera_vinculo: { ES: 29.90, US: 34.90, CL: 34990, PE: 119.90 },
-  collar_esencial: { ES: 29.90, US: 34.90, CL: 34990, PE: 119.90 },
-  collar_flor_natal: { ES: 34.90, US: 39.90, CL: 39990, PE: 139.90 },
-  kit_pedacito_nosotros: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
-  kit_mi_consentida: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
-  kit_personalizado: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 },
+  pulsera_nombre: { ES: 24.90, US: 29.90, CL: 29990, PE: 99.90 , AR: 35.90},
+  brazalete_mensaje: { ES: 27.90, US: 32.90, CL: 32990, PE: 109.90 , AR: 38.90},
+  pulsera_vinculo: { ES: 29.90, US: 34.90, CL: 34990, PE: 119.90 , AR: 40.90},
+  collar_esencial: { ES: 29.90, US: 34.90, CL: 34990, PE: 119.90 , AR: 40.90},
+  collar_flor_natal: { ES: 34.90, US: 39.90, CL: 39990, PE: 139.90 , AR: 45.90},
+  kit_pedacito_nosotros: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 , AR: 65.90},
+  kit_mi_consentida: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 , AR: 65.90},
+  kit_personalizado: { ES: 49.90, US: 59.90, CL: 59990, PE: 199.90 , AR: 65.90},
 };
 
-// Colombia (COP) y Argentina (ARS) fuera: la cuenta de Stripe no admite
-// cobrar en esas monedas (comprobado el 2026-09-23). Quien entre desde
-// allí paga en dólares. Mismo criterio que en mercados.js.
+// Colombia (COP) y Argentina (ARS): la cuenta de Stripe no admite cobrar
+// en esas monedas (comprobado el 2026-09-23). Colombia paga los precios de
+// EE. UU.; Argentina (desde el 2026-09-30) tiene precios propios EN
+// DÓLARES, más altos por su envío de 14 $. Mismo criterio que mercados.js.
 export const MERCADOS: Record<string, { moneda: string }> = {
   MX: { moneda: "MXN" },
   US: { moneda: "USD" },
   ES: { moneda: "EUR" },
   CL: { moneda: "CLP" },
   PE: { moneda: "PEN" },
+  AR: { moneda: "USD" },
 };
 
 export const MERCADO_FALLBACK = "US";
@@ -70,6 +72,7 @@ export const ENVIO_USD: Record<string, number> = {
   ES: 11.00,
   CL: 9.50,
   PE: 7.00,
+  AR: 14.00,
 };
 
 // ---- Mercados con el MISMO precio que México (igual que COMO_MEXICO de
