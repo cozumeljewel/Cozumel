@@ -123,7 +123,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
 
   const { data: filas, error: filasError } = await sb
     .from("reservas")
-    .select("id, producto, estado, mercado, moneda")
+    .select("id, producto, estado, mercado, moneda, pais")
     .in("id", idsPedidos);
 
   if (filasError) {
@@ -157,6 +157,28 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       status: 400,
       headers: jsonHeaders,
     });
+  }
+
+  // País de envío: tiene que estar ACTIVO en paises_envio (v24). El
+  // desplegable de la web ya solo enseña esos, pero aquí se comprueba de
+  // verdad: un país pausado desde el panel no puede pagar aunque alguien
+  // manipule la página.
+  const { data: paisesActivos, error: paisesError } = await sb
+    .from("paises_envio")
+    .select("nombre")
+    .eq("activo", true);
+  if (paisesError || !paisesActivos) {
+    return new Response(JSON.stringify({ error: "No se pudo comprobar el país de envío" }), {
+      status: 500,
+      headers: jsonHeaders,
+    });
+  }
+  const nombresActivos = new Set(paisesActivos.map((p) => p.nombre));
+  if (filas.some((f) => !nombresActivos.has((f.pais ?? "").trim()))) {
+    return new Response(
+      JSON.stringify({ error: "Todavía no enviamos a ese país. Elige otro país de envío" }),
+      { status: 400, headers: jsonHeaders },
+    );
   }
 
   // Mercado del pedido. Todas las piezas de una misma compra tienen que

@@ -1169,14 +1169,15 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
   color:var(--ink-soft); margin-bottom:8px;
 }
 .field label span{text-transform:none; letter-spacing:0; opacity:.7;}
-.field input, .field textarea{
+.field input, .field textarea, .field select{
   width:100%; padding:14px 16px; border:1px solid var(--line-3); border-radius:2px;
   background:var(--foam); font-family:var(--font-sans); font-size:16px; color:var(--ink);
   resize:vertical;
 }
+.field select{cursor:pointer;}
 /* 16px y no menos: por debajo, Safari en iPhone hace zoom automático
    al enfocar el campo (y luego no siempre vuelve solo al tamaño normal). */
-.field input:focus, .field textarea:focus{
+.field input:focus, .field textarea:focus, .field select:focus{
   outline:none; border-color:var(--sea); box-shadow:0 0 0 3px rgba(78,154,155,.15);
 }
 

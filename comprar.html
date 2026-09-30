@@ -177,7 +177,12 @@
         </div>
         <div class="field">
           <label for="r-pais">País</label>
-          <input id="r-pais" name="pais" type="text" required placeholder="México, España...">
+          <!-- Solo los países ACTIVOS de la tabla paises_envio (Supabase):
+               script.js rellena el desplegable. Pausar o abrir un país se
+               hace desde el panel de Supabase, sin publicar la web. -->
+          <select id="r-pais" name="pais" required>
+            <option value="" disabled selected>Elige el país de envío</option>
+          </select>
         </div>
         <div class="field">
           <label for="r-direccion">Dirección de envío</label>

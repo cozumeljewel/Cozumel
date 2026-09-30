@@ -2419,11 +2419,70 @@ const DOCUMENTO_ADUANA = {
   PE: { etiqueta: 'DNI o RUC (obligatorio para la aduana de Perú)', ejemplo: 'Tu DNI o RUC' },
 };
 
+/* ---------- Países de envío (tabla paises_envio, v24) ----------
+   El desplegable "País" solo ofrece los países ACTIVOS en Supabase: se
+   pausan o se abren desde el panel, sin publicar la web. Si la consulta
+   falla, se usa esta lista de respaldo (la de hoy); aun así el servidor de
+   cobro vuelve a comprobarlo contra la tabla. */
+const PAISES_ENVIO_RESPALDO = [
+  ['MX', 'México'], ['ES', 'España'], ['US', 'Estados Unidos'], ['CO', 'Colombia'],
+  ['CL', 'Chile'], ['PE', 'Perú'], ['CR', 'Costa Rica'], ['EC', 'Ecuador'],
+  ['SV', 'El Salvador'], ['GT', 'Guatemala'],
+  ['DE', 'Alemania'], ['AT', 'Austria'], ['BE', 'Bélgica'], ['BG', 'Bulgaria'],
+  ['CY', 'Chipre'], ['HR', 'Croacia'], ['DK', 'Dinamarca'], ['SK', 'Eslovaquia'],
+  ['SI', 'Eslovenia'], ['EE', 'Estonia'], ['FI', 'Finlandia'], ['FR', 'Francia'],
+  ['GR', 'Grecia'], ['HU', 'Hungría'], ['IE', 'Irlanda'], ['IT', 'Italia'],
+  ['LV', 'Letonia'], ['LT', 'Lituania'], ['LU', 'Luxemburgo'], ['MT', 'Malta'],
+  ['NL', 'Países Bajos'], ['PL', 'Polonia'], ['PT', 'Portugal'], ['CZ', 'República Checa'],
+  ['RO', 'Rumanía'], ['SE', 'Suecia'],
+];
+
+// Código (CL, PE...) del país elegido en el desplegable, o null.
+function paisEnvioElegido() {
+  const sel = document.getElementById('r-pais');
+  const op = sel && sel.selectedOptions && sel.selectedOptions[0];
+  return op && op.dataset.codigo ? op.dataset.codigo : null;
+}
+
+async function cargarPaisesEnvio() {
+  const sel = document.getElementById('r-pais');
+  if (!sel) return;
+  let lista = null;
+  try {
+    if (typeof sb !== 'undefined' && sb) {
+      const { data, error } = await sb.from('paises_envio')
+        .select('codigo, nombre, orden').eq('activo', true)
+        .order('orden').order('nombre');
+      if (!error && data && data.length) lista = data.map(p => [p.codigo, p.nombre]);
+    }
+  } catch (_) { /* sin red: respaldo */ }
+  if (!lista) lista = PAISES_ENVIO_RESPALDO;
+
+  // Preseleccionado: el país de quien compra, si se le envía.
+  let propio = null;
+  try {
+    const geo = JSON.parse(localStorage.getItem('cozumel_mercado_geo'));
+    propio = geo && typeof geo.pais === 'string' ? geo.pais.toUpperCase() : null;
+  } catch (_) {}
+
+  lista.forEach(([codigo, nombre]) => {
+    const op = document.createElement('option');
+    op.value = nombre;
+    op.textContent = nombre;
+    op.dataset.codigo = codigo;
+    if (codigo === propio) op.selected = true;
+    sel.appendChild(op);
+  });
+  sincronizarCampoDocumento();
+}
+
 function sincronizarCampoDocumento() {
   const campo = document.getElementById('campo-documento');
   const input = document.getElementById('r-documento');
   if (!campo || !input) return;
-  const doc = DOCUMENTO_ADUANA[getMercado()];
+  // Por el país de ENVÍO elegido (no por la moneda): quien paga en pesos
+  // mexicanos puede mandarlo a Chile, y es Chile quien pide el RUT.
+  const doc = DOCUMENTO_ADUANA[paisEnvioElegido()];
   campo.hidden = !doc;
   input.required = !!doc;
   if (doc) {
@@ -2433,8 +2492,9 @@ function sincronizarCampoDocumento() {
 }
 
 if (reservaForm) {
-  sincronizarCampoDocumento();
-  alCambiarMercado(sincronizarCampoDocumento);
+  cargarPaisesEnvio();
+  const selPais = document.getElementById('r-pais');
+  if (selPais) selPais.addEventListener('change', sincronizarCampoDocumento);
   reservaForm.addEventListener('focusin', trackReservaIniciada, { once: true });
 
   // Desplegable de prefijos: no se puede usar un <select> nativo porque
@@ -2725,8 +2785,8 @@ if (reservaForm) {
       // el envío, y así no hace falta una columna nueva en la base.
       direccion_envio: [
         reservaForm.direccion_envio.value.trim(),
-        DOCUMENTO_ADUANA[getMercado()] && reservaForm.documento.value.trim()
-          ? `${getMercado() === 'CL' ? 'RUT' : 'DNI/RUC'}: ${reservaForm.documento.value.trim()}`
+        DOCUMENTO_ADUANA[paisEnvioElegido()] && reservaForm.documento.value.trim()
+          ? `${paisEnvioElegido() === 'CL' ? 'RUT' : 'DNI/RUC'}: ${reservaForm.documento.value.trim()}`
           : '',
       ].filter(Boolean).join(' · '),
       fuente: 'adri_story',
