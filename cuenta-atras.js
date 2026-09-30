@@ -100,6 +100,8 @@
         // Ya es la hora: fuera la pantalla, se ve la web.
         document.documentElement.classList.remove('prelanzamiento');
         pantalla.remove();
+        // Lo que esperaba a la tienda (p.ej. las fotos de Stories) arranca ya.
+        window.dispatchEvent(new Event('cozumel:lanzamiento'));
         clearInterval(reloj);
         return;
       }

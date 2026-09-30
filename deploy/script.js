@@ -179,6 +179,20 @@ actualizarBadgeCarrito();
 
   const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  /* Mientras está la cuenta atrás (cuenta-atras.js) la sección no se ve:
+     sus fotos no se descargan ni rotan. En el HTML van en data-src para
+     que el navegador no las pida solo (gastaban ~1,5 MB por visita, más
+     el pase, en tráfico de Netlify). Se activan al abrirse la tienda. */
+  const enCuentaAtras = () => document.documentElement.classList.contains('prelanzamiento');
+  const activarFotos = () => {
+    document.querySelectorAll('.stories-foto-capa img[data-src]').forEach(img => {
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
+    });
+  };
+  if (enCuentaAtras()) window.addEventListener('cozumel:lanzamiento', activarFotos, { once: true });
+  else activarFotos();
+
   historias.forEach((caja, indice) => {
     const capaA = caja.querySelector('.stories-foto-capa');
     if (!capaA) return;
@@ -188,7 +202,7 @@ actualizarBadgeCarrito();
     if (!imgA || !siguientes.length) return;
 
     // Todas las fotos de esta historia, empezando por la que ya se ve.
-    const fotos = [{ src: imgA.getAttribute('src'), alt: imgA.getAttribute('alt') }]
+    const fotos = [{ src: imgA.getAttribute('src') || imgA.dataset.src, alt: imgA.getAttribute('alt') }]
       .concat(siguientes.map(src => ({ src, alt: imgA.getAttribute('alt') })));
 
     // Segunda capa, idéntica a la primera pero transparente: es la que
@@ -235,7 +249,7 @@ actualizarBadgeCarrito();
       temporizador = null;
       if (sinMovimiento.matches || fotos.length < 2) return;
       temporizador = setInterval(() => {
-        if (document.hidden) return;
+        if (document.hidden || enCuentaAtras()) return;
         indiceFoto = (indiceFoto + 1) % fotos.length;
         mostrar(fotos[indiceFoto]);
       }, PASE_MS);
