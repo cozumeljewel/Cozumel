@@ -622,7 +622,13 @@ function crearTarjetaProducto(prod) {
   cta.className = 'producto-cta';
   cta.textContent = prod.campos.length > 0 ? 'Personalizar →' : 'Ver pieza →';
 
-  body.append(h3, precio, cta);
+  // 01/10: destacar el baño de oro (el acabado por defecto y el de las
+  // fotos; en la ficha se puede elegir plateado).
+  const acabado = document.createElement('p');
+  acabado.className = 'producto-acabado';
+  acabado.textContent = 'Bañado en oro';
+
+  body.append(h3, acabado, precio, cta);
   card.append(media, body);
   return card;
 }
@@ -1401,23 +1407,33 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   const titulo = document.createElement('h2');
   titulo.className = 'popup-titulo';
   titulo.id = 'popup-titulo';
-  titulo.textContent = 'Un Pedacito de Mí';
+  titulo.textContent = 'Un Pedacito de Ti';
 
-  // 01/10: texto corto, para leerse de un vistazo.
+  // 01/10: texto corto, para leerse de un vistazo (texto del cliente).
   const p1 = document.createElement('p');
   p1.className = 'popup-texto';
   p1.textContent = 'De Adri para ti';
 
+  const edicion = document.createElement('p');
+  edicion.className = 'popup-edicion';
+  edicion.textContent = 'Primer lanzamiento · unidades limitadas';
+
   const badge = document.createElement('p');
   badge.className = 'popup-badge';
-  badge.textContent = 'Sorteo de 5 videollamadas con Adri en las 100 primeras compras';
+  badge.textContent = 'Las primeras 100 compras participan en el sorteo de 5 videollamadas privadas con Adri.';
+
+  // Ya estamos en la colección: el botón solo cierra el pop-up (un enlace
+  // a productos.html recargaría la página y el pop-up volvería a salir).
+  const cta = document.createElement('button');
+  cta.type = 'button';
+  cta.className = 'btn btn-primary popup-cta';
+  cta.textContent = 'Descubrir la colección';
 
   const cierre = document.createElement('p');
   cierre.className = 'popup-cierre';
-  cierre.textContent = 'Regala un pedacito de ti';
+  cierre.textContent = 'Regala un pedacito de ti.';
 
-
-  caja.append(cerrar, olas, eyebrow, titulo, p1, badge, cierre);
+  caja.append(cerrar, olas, eyebrow, titulo, p1, edicion, badge, cta, cierre);
   capa.appendChild(caja);
 
   const antesDelPopup = document.activeElement;
@@ -1432,6 +1448,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   function porTecla(e) { if (e.key === 'Escape') ocultar(); }
 
   cerrar.addEventListener('click', ocultar);
+  cta.addEventListener('click', ocultar);
   capa.addEventListener('click', e => { if (e.target === capa) ocultar(); });
   document.addEventListener('keydown', porTecla);
 

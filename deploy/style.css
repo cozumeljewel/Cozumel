@@ -342,6 +342,10 @@ section[id]{scroll-margin-top:var(--header-h);}
   margin-top:18px; font-family:var(--font-serif); font-style:italic;
   font-size:15.5px; color:var(--sea-dark); font-weight:400;}
 .popup-cta{margin-top:22px; width:100%;}
+.popup-edicion{
+  margin-top:14px; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-soft); font-weight:500;
+}
 
 @media (min-width:900px){
   .popup-caja{max-width:470px; padding:46px 42px 38px;}
@@ -1115,6 +1119,10 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 }
 /* Jost, no Playfair: es texto de apoyo, mismo par tipográfico que las
    bajadas del resto del sitio. */
+.producto-acabado{
+  margin-top:4px; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:#7A5F2A; font-weight:500;
+}
 .producto-precio{
   margin-top:8px; font-size:15px; color:var(--ink-soft);
 }
@@ -2903,3 +2911,12 @@ body[data-page="inicio"] .site-header.scrolled .selector-idioma{color:var(--deep
   color:#7A5F2A; text-wrap:balance;
 }
 .coleccion-sorteo strong{font-weight:600;}
+
+/* 01/10: los titulares y rótulos de Nuestra historia, en la serif fina del
+   resto de la web (Playfair 400), no en Lora negrita: se veían más
+   gruesos que el hero. La prosa sigue en Lora normal. */
+body[data-page="historia"] .historia-hero h1,
+body[data-page="historia"] .qs-capitulo-texto h2,
+body[data-page="historia"] .eyebrow{
+  font-family:var(--font-serif); font-weight:400;
+}
