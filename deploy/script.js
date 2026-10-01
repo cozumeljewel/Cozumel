@@ -273,6 +273,8 @@ actualizarBadgeCarrito();
    quede ni un precio viejo en pantalla, y no se pierde nada porque el
    carrito y el grabado viven en localStorage/sessionStorage.
    ========================================================= */
+const PAGINAS_CON_PRECIO = ['productos', 'personalizar', 'arma-kit', 'comprar'];
+
 function pintarSelectorMercado() {
   if (typeof MERCADOS === 'undefined') return;
 
@@ -306,7 +308,10 @@ function pintarSelectorMercado() {
     return caja;
   };
 
-  const acciones = document.querySelector('.header-acciones');
+  // En la cabecera, la moneda solo sale donde hay precios; en las demás
+  // páginas ese hueco es para el idioma (idioma.js). En el menú móvil
+  // sigue estando siempre.
+  const acciones = PAGINAS_CON_PRECIO.includes(document.body.dataset.page) && document.querySelector('.header-acciones');
   if (acciones && !acciones.querySelector('.mercado-selector')) {
     acciones.insertBefore(crear(), acciones.firstChild);
   }

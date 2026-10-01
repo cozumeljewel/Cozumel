@@ -41,29 +41,16 @@
     clave: 'sb_publishable_lmFNgpMEy4Axi6dYQ9E1UA_b63xSwJ6',
   };
 
-  // Hora del lanzamiento en España y en México (calculada, no escrita a
-  // mano, por si cambia algún horario de verano). Si quien mira está en
-  // otra zona, se añade también su hora.
+  // Solo se enseña la hora de México (decisión del 01/10), calculada con
+  // Intl, no escrita a mano.
   // En inglés (idioma.js ya ha puesto <html lang="en">) las fechas van en
   // inglés; los textos fijos los traduce idioma.js con su diccionario.
   const EN = document.documentElement.lang === 'en';
   const LOC = EN ? 'en-US' : 'es-ES';
   const fmtHora = (tz) => new Intl.DateTimeFormat(LOC, { hour: EN ? 'numeric' : '2-digit', minute: '2-digit', timeZone: tz }).format(LANZAMIENTO);
   const fmtDia = (tz) => new Intl.DateTimeFormat(LOC, { day: 'numeric', month: 'long', timeZone: tz }).format(LANZAMIENTO);
-  // Hora con su día solo si el día no es el del lanzamiento en México.
-  const conDia = (tz) => {
-    const dia = fmtDia(tz);
-    return dia === diaMexico ? fmtHora(tz) : fmtHora(tz) + (EN ? ', ' : ' del ') + dia;
-  };
   const diaMexico = (() => { try { return fmtDia('America/Mexico_City'); } catch (_) { return EN ? 'October 2' : '2 de octubre'; } })();
   const horaMexico = (() => { try { return fmtHora('America/Mexico_City'); } catch (_) { return EN ? '9:00 PM' : '21:00'; } })();
-  const horaEspana = (() => { try { return conDia('Europe/Madrid'); } catch (_) { return EN ? '5:00 AM, October 3' : '05:00 del 3 de octubre'; } })();
-  const horaLocal = (() => {
-    try {
-      const local = conDia(Intl.DateTimeFormat().resolvedOptions().timeZone);
-      return local === horaEspana || local === horaMexico ? '' : ' · ' + local + (EN ? ' your time' : ' en tu hora');
-    } catch (_) { return ''; }
-  })();
 
   const montar = () => {
     const pantalla = document.createElement('div');
@@ -76,7 +63,7 @@
       <div class="ca-contenido">
         <h1 class="ca-logo" id="ca-titulo"><img src="img/hero-logo-texto-1.png" alt="Cozumel Jewelry" width="1000" height="312"></h1>
         <p class="ca-edicion">Un Pedacito <em>de ti</em></p>
-        <p class="ca-fecha" data-no-traducir>${diaMexico}<br><span>${horaMexico} ${EN ? 'in Mexico' : 'en México'}</span> · <span>${horaEspana} ${EN ? 'in Spain' : 'en España'}</span>${horaLocal ? ' · <span>' + horaLocal.slice(3) + '</span>' : ''}</p>
+        <p class="ca-fecha" data-no-traducir>${diaMexico}<br><span>${horaMexico} ${EN ? 'Mexico time' : 'hora de México'}</span></p>
         <div class="ca-reloj" aria-live="off">
           <div><span data-u="d">00</span><small>días</small></div>
           <div><span data-u="h">00</span><small>horas</small></div>

@@ -6,8 +6,9 @@
 
    · Va en <head>, sin defer, ANTES de cuenta-atras.js: deja puesto
      <html lang="en"> para que la cuenta atrás escriba fechas en inglés.
-   · Elegir idioma: el selector "ES · EN" de la cabecera (y de la cuenta
-     atrás), o ?lang=en / ?lang=es. Se recuerda en este navegador.
+   · Elegir idioma: el selector "ES · EN" de la cabecera (no en las
+     páginas con precios, donde va la moneda) y de la cuenta atrás, o
+     ?lang=en / ?lang=es. Se recuerda en este navegador.
    · Por defecto, español.
    · Cómo traduce: cada texto de la página (y cada atributo alt,
      placeholder, aria-label, title) se busca tal cual en el diccionario.
@@ -70,7 +71,12 @@
   };
   api.selector = selector;
 
+  // En la cabecera, el idioma ocupa el hueco de la moneda salvo en las
+  // páginas con precios (colección, ficha, kit, compra): ahí va la moneda
+  // (script.js, PAGINAS_CON_PRECIO) y el idioma no sale.
+  const CON_PRECIO = ['productos', 'personalizar', 'arma-kit', 'comprar'];
   const ponerSelector = () => {
+    if (CON_PRECIO.includes(document.body.dataset.page)) return;
     const acciones = document.querySelector('.header-acciones');
     if (acciones && !acciones.querySelector('.selector-idioma')) {
       acciones.insertBefore(selector('selector-cabecera'), acciones.firstChild);
