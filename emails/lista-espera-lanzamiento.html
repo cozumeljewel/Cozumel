@@ -3,20 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<style>
+  /* Modo oscuro: este correo es SOLO claro.
+     · Apple Mail / Outlook Mac e iOS: respetan color-scheme "light only".
+     · Outlook.com y app de Outlook: data-ogsc / data-ogsb fuerzan los colores.
+     · App de Gmail y otros que invierten a la fuerza: se dejan invertir
+       ENTEROS (fondo y texto a la vez), que se lee bien. Probado el 01/10:
+       forzar el fondo claro dejaba el texto blanco sobre blanco. */
+  :root { color-scheme: light only; supported-color-schemes: light only; }
+  [data-ogsb] .f-beige { background-color:#EFE9DF !important; }
+  [data-ogsb] .f-blanco { background-color:#FFFFFF !important; }
+  [data-ogsb] .f-logo { background-color:#F2F8F8 !important; }
+  [data-ogsb] .f-crema { background-color:#F8F3E9 !important; }
+  [data-ogsb] .f-oro { background-color:#B08A45 !important; }
+  [data-ogsc] .t-verde { color:#14454A !important; }
+  [data-ogsc] .t-texto { color:#2B3B3C !important; }
+  [data-ogsc] .t-oro { color:#B08A45 !important; }
+  [data-ogsc] .t-ocre { color:#7A5F2A !important; }
+  [data-ogsc] .t-gris { color:#7A8586 !important; }
+  [data-ogsc] .t-blanco { color:#FFFFFF !important; }
+</style>
 <title>Un Pedacito de ti ya está aquí</title>
 </head>
-<body style="margin:0; padding:0; background:#EFE9DF;">
+<body class="body" style="margin:0; padding:0; background:#EFE9DF;">
 <!-- Texto de vista previa (lo que se lee en la bandeja de entrada) -->
 <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">Joyas para regalar a tu mamá, a tu hija o a quien más quieres.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EFE9DF;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="f-beige" style="background:#EFE9DF;">
 <tr><td align="center" style="padding:28px 12px;">
 
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px; background:#FFFFFF; border-radius:4px; overflow:hidden;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="f-blanco" style="max-width:560px; background:#FFFFFF; border-radius:4px; overflow:hidden;">
 
     <!-- Logo -->
-    <tr><td align="center" style="background:#F2F8F8; padding:8px 0 4px; border-bottom:2px solid #C6A664;">
+    <tr><td align="center" class="f-logo" style="background:#F2F8F8; padding:8px 0 4px; border-bottom:2px solid #C6A664;">
       <a href="https://cozumeljewelry.es/" style="text-decoration:none;">
         <img src="https://cozumeljewelry.es/img/email-logo.png" width="320" alt="Cozumel Jewelry" style="display:block; width:320px; max-width:80%; height:auto; border:0;">
       </a>
@@ -24,12 +45,12 @@
 
     <!-- Cuerpo -->
     <tr><td style="padding:40px 36px 8px; font-family:Georgia, 'Times New Roman', serif; color:#14454A; text-align:center;">
-      <p style="margin:0 0 6px; font-family:Helvetica, Arial, sans-serif; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#B08A45;">Primera colección</p>
-      <h1 style="margin:0; font-weight:normal; font-size:34px; line-height:1.2; color:#14454A;">Ya está aquí.</h1>
+      <p style="margin:0 0 6px; font-family:Helvetica, Arial, sans-serif; font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#B08A45;" class="t-oro">Primera colección</p>
+      <h1 style="margin:0; font-weight:normal; font-size:34px; line-height:1.2; color:#14454A;" class="t-verde">Ya está aquí.</h1>
     </td></tr>
 
     <tr><td style="padding:20px 40px 0; font-family:Helvetica, Arial, sans-serif; font-size:16px; line-height:1.65; color:#2B3B3C; text-align:center;">
-      <p style="margin:0 0 20px;"><strong style="color:#14454A;">Un Pedacito de ti</strong> ya está disponible: joyas para regalar a tu mamá, a tu hija, a tu hermana o a quien más quieres, grabadas con lo que solo ustedes entienden.</p>
+      <p style="margin:0 0 20px; color:#2B3B3C;" class="t-texto"><strong style="color:#14454A;" class="t-verde">Un Pedacito de ti</strong> ya está disponible: joyas para regalar a tu mamá, a tu hija, a tu hermana o a quien más quieres, grabadas con lo que solo ustedes entienden.</p>
     </td></tr>
 
     <!-- Frase destacada -->
@@ -46,8 +67,8 @@
     <!-- Botón grande -->
     <tr><td align="center" style="padding:0 32px;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:440px;">
-        <tr><td align="center" bgcolor="#B08A45" style="border-radius:3px;">
-          <a href="https://cozumeljewelry.es/productos?utm_source=resend&amp;utm_medium=email&amp;utm_campaign=lanzamiento_pedacito&amp;utm_content=cta_principal" style="display:block; padding:20px 24px; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:#FFFFFF; text-decoration:none;">Descubrir la colección</a>
+        <tr><td align="center" bgcolor="#B08A45" class="f-oro" style="border-radius:3px; background:#B08A45;">
+          <a href="https://cozumeljewelry.es/productos?utm_source=resend&amp;utm_medium=email&amp;utm_campaign=lanzamiento_pedacito&amp;utm_content=cta_principal" style="display:block; padding:20px 24px; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:#FFFFFF; text-decoration:none;" class="t-blanco">Descubrir la colección</a>
         </td></tr>
       </table>
     </td></tr>
@@ -56,7 +77,7 @@
     <!-- Sorteo -->
     <tr><td align="center" style="padding:28px 40px 0;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr><td style="background:#F8F3E9; border:1px solid #C6A664; border-radius:4px; padding:16px 18px; font-family:Helvetica, Arial, sans-serif; font-size:15px; line-height:1.55; color:#7A5F2A; text-align:center;">
+        <tr><td class="f-crema" style="background:#F8F3E9; border:1px solid #C6A664; border-radius:4px; padding:16px 18px; font-family:Helvetica, Arial, sans-serif; font-size:15px; line-height:1.55; color:#7A5F2A; text-align:center;">
           Entre las <strong>100 primeras compras</strong> sortearemos <strong>5 videollamadas conmigo</strong>.
         </td></tr>
       </table>
@@ -64,16 +85,16 @@
 
     <!-- Firma -->
     <tr><td style="padding:30px 40px 36px; font-family:Georgia, 'Times New Roman', serif; text-align:center; color:#14454A;">
-      <p style="margin:0 0 14px; font-size:17px; font-style:italic;">Gracias por estar desde el principio.</p>
-      <p style="margin:0; font-size:20px;">Adri 🤍</p>
-      <p style="margin:4px 0 0; font-family:Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:4px; color:#B08A45;">COZUMEL</p>
+      <p style="margin:0 0 14px; font-size:17px; font-style:italic; color:#14454A;" class="t-verde">Gracias por estar desde el principio.</p>
+      <p style="margin:0; font-size:20px; color:#14454A;" class="t-verde">Adri 🤍</p>
+      <p style="margin:4px 0 0; font-family:Helvetica, Arial, sans-serif; font-size:11px; letter-spacing:4px; color:#B08A45;" class="t-oro">COZUMEL</p>
     </td></tr>
 
   </table>
 
   <!-- Pie -->
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
-    <tr><td style="padding:18px 20px 0; font-family:Helvetica, Arial, sans-serif; font-size:12px; line-height:1.5; color:#7A8586; text-align:center;">
+    <tr><td style="padding:18px 20px 0; font-family:Helvetica, Arial, sans-serif; font-size:12px; line-height:1.5; color:#7A8586; text-align:center;" class="t-gris">
       ¿No ves el botón? Entra en <a href="https://cozumeljewelry.es/productos?utm_source=resend&amp;utm_medium=email&amp;utm_campaign=lanzamiento_pedacito&amp;utm_content=cta_final" style="color:#7A5F2A;">cozumeljewelry.es</a><br>
       Recibes este correo porque te apuntaste a la lista de espera de Cozumel Jewelry. Solo lo usamos para avisarte del lanzamiento.
     </td></tr>
