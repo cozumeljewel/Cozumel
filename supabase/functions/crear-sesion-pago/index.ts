@@ -12,6 +12,18 @@
 // una sola no es del usuario que llama, o ya no está pendiente de pago, o
 // es un producto desconocido, se rechaza el pedido ENTERO — no se cobra
 // una parte sí y otra no.
+//
+// Seguridad del enlace fila ↔ pago (2026-10-01, migración v26): el webhook
+// marca como pagadas TODAS las filas con el stripe_session_id del pago.
+// Antes ese campo lo escribía el propio navegador (esta función usaba su
+// sesión), así que alguien con conocimientos podía copiar el id de un pago
+// suyo barato a otras filas, o cambiar el producto de una fila ya enviada a
+// Stripe, y que se marcasen como pagadas sin pagarlas. Ahora:
+//   · el navegador ya no puede poner ni cambiar stripe_session_id ni
+//     pagado_en, ni tocar una fila que ya se mandó a Stripe (políticas v26);
+//   · el UPDATE final lo hace esta función con la clave de servicio, y solo
+//     si la fila sigue siendo del usuario, pendiente, sin pago enlazado y
+//     con el mismo producto y país que se acaban de validar y cobrar.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@17";
@@ -19,10 +31,14 @@ import { PRODUCTOS_VALIDOS, precioDe, mercadoValido, importeStripe } from "../_s
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const SITE_URL = "https://cozumeljewelry.es";
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });
+// Solo para enlazar las filas con el pago (ver arriba). Las lecturas y
+// comprobaciones de "es tuyo" siguen yendo con la sesión del usuario.
+const sbServicio = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
 // La web y esta función viven en dominios distintos (cozumeljewelry.es y
 // supabase.co), así que el navegador exige CORS: manda primero una
@@ -123,7 +139,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
 
   const { data: filas, error: filasError } = await sb
     .from("reservas")
-    .select("id, producto, estado, mercado, moneda, pais")
+    .select("id, producto, estado, mercado, moneda, pais, stripe_session_id")
     .in("id", idsPedidos);
 
   if (filasError) {
@@ -147,6 +163,17 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   if (filaNoPendiente) {
     return new Response(
       JSON.stringify({ error: "Alguna pieza de este pedido ya no está pendiente de pago" }),
+      { status: 409, headers: jsonHeaders },
+    );
+  }
+
+  // Una fila ya enlazada con otro pago no se vuelve a enlazar: la web, al
+  // reintentar, crea filas nuevas (no puede reutilizar estas). Se rechaza
+  // ANTES de crear la sesión de Stripe para no dejar pagos huérfanos.
+  const filaYaEnPago = filas.find((f) => f.stripe_session_id);
+  if (filaYaEnPago) {
+    return new Response(
+      JSON.stringify({ error: "Este pedido ya se envió al pago. Vuelve a intentarlo desde el carrito" }),
       { status: 409, headers: jsonHeaders },
     );
   }
@@ -201,6 +228,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   const lineas = filas.map((f) => ({
     id: f.id,
     producto: f.producto,
+    pais: f.pais,
     precio: precioDe(f.producto, mercado),
   }));
 
@@ -236,8 +264,14 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // que no vale un único UPDATE con un precio compartido: se actualiza una
   // a una, cada una con el suyo. Mismo número de filas que de piezas
   // (2-3 piezas en un pedido normal), así que el coste real es mínimo.
+  //
+  // Con la clave de servicio (el navegador ya no puede escribir este
+  // campo), pero solo si la fila sigue exactamente como se validó: del
+  // mismo usuario, pendiente, sin pago enlazado y con el mismo producto y
+  // país. Si alguien la cambió mientras se creaba la sesión, no casa, no se
+  // enlaza y no se devuelve el enlace de pago.
   for (const l of lineas) {
-    const { error: updateError } = await sb
+    const { data: enlazadas, error: updateError } = await sbServicio
       .from("reservas")
       .update({
         stripe_session_id: session.id,
@@ -245,9 +279,16 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
         mercado: l.precio!.mercado,
         moneda: l.precio!.moneda,
       })
-      .eq("id", l.id);
+      .eq("id", l.id)
+      .eq("user_id", userData.user.id)
+      .eq("estado", "pendiente_pago")
+      .is("stripe_session_id", null)
+      .eq("producto", l.producto)
+      .eq("pais", l.pais)
+      .select("id");
 
-    if (updateError) {
+    if (updateError || !enlazadas || enlazadas.length !== 1) {
+      console.error("No se pudo enlazar la fila con el pago:", l.id, updateError ?? "0 filas");
       return new Response(
         JSON.stringify({ error: "No se pudo preparar el pago" }),
         { status: 500, headers: jsonHeaders },
