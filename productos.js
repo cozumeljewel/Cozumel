@@ -70,7 +70,7 @@ const PRODUCTOS = [
     resumen: 'Dos círculos, uno para cada una',
     descripcion: 'Dos círculos enlazados que no se sueltan ni se confunden el uno con el otro. Es la pieza que eliges cuando lo que quieres decir no necesita explicarse, porque ya se nota',
     parrafos: [
-      'No lleva grabado y no le hace falta. Un aro sujeta al otro sin apretarlo, que es más o menos lo que hacen dos personas cuando la cosa va bien. Ella lo va a entender en cuanto la vea, sin que tengas que decir nada',
+      'No lleva grabado y no le hace falta. Un aro sujeta al otro sin apretarlo, como una madre y una hija, dos hermanas o dos amigas de toda la vida. Ella lo va a entender en cuanto la vea, sin que tengas que decir nada',
     ],
     caracteristicas: [
       'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
@@ -102,16 +102,16 @@ const PRODUCTOS = [
     nombre: 'Pulsera Mi Cielo',
     tipo: 'pulsera', // para "Arma tu kit": 1 pulsera + 1 colgante
     resumen: 'Un cielo que solo tú conoces',
-    descripcion: 'Una placa pequeña en la muñeca para guardar el sitio exacto donde pasó: unas coordenadas, la fecha de aquella noche, la frase que se les quedó de un viaje',
+    descripcion: 'Una placa pequeña en la muñeca para guardar el sitio exacto donde pasó: unas coordenadas, una fecha que importa, la frase que se les quedó de un viaje',
     parrafos: [
-      'Lo bueno de grabar un lugar es que solo funciona para ustedes dos. Cualquiera que la vea leerá unos números sueltos; ella va a ver la playa, el bar, la calle a las cuatro de la mañana. Un código privado que se lleva puesto',
+      'Lo bueno de grabar un lugar es que solo funciona para ustedes. Cualquiera que la vea leerá unos números sueltos; ella va a ver la casa donde creció, la playa de cada verano, el sitio donde todo empezó. Un código privado que se lleva puesto',
     ],
     caracteristicas: [
       'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Cadena fina con placa, cierre ajustable',
       'Grabado de alta calidad: frase, fecha o coordenadas',
     ],
-    cierre: 'Un sitio que solo ustedes dos saben leer',
+    cierre: 'Un sitio que solo ustedes saben leer',
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
@@ -187,7 +187,7 @@ const PRODUCTOS = [
     nombre: 'Collar Esencia',
     tipo: 'colgante', // para "Arma tu kit": 1 pulsera + 1 colgante
     resumen: 'Doble cadena con placa grabable',
-    descripcion: 'Dos cadenas que caen juntas: una fina, casi invisible, y otra con una placa esperando lo que tengas que decirle. Su nombre. La fecha en que todo empezó. Esas tres palabras que nunca dices en voz alta',
+    descripcion: 'Dos cadenas que caen juntas: una fina, casi invisible, y otra con una placa esperando lo que tengas que decirle. Su nombre. El día en que nació. Eso que nunca le dices en voz alta',
     parrafos: [
       'Hay cosas que no salen bien dichas en voz alta, pero caben enteras en unas letras grabadas. Ella lo va a llevar puesto un martes cualquiera, sin ocasión, y lo va a tocar sin darse cuenta mientras piensa en otra cosa. Ahí es donde vive un buen regalo: en los días normales',
     ],
@@ -267,7 +267,7 @@ const PRODUCTOS = [
     resumen: 'Collar Esencia + Pulsera Dos Almas',
     descripcion: 'El Collar Esencia y la Pulsera Dos Almas juntos, que es como mejor funcionan: uno guarda lo que le escribes, la otra dice lo que no hace falta escribir',
     parrafos: [
-      'Es el regalo de las fechas que importan: un aniversario, un cumpleaños redondo, el día que decidiste dejar de improvisar. Llega en una sola caja y se abre una sola vez, así que conviene que sea el día bueno',
+      'Es el regalo de las fechas que importan: un cumpleaños, el Día de las Madres, una graduación, ese día que merece algo más que flores. Llega en una sola caja y se abre una sola vez, así que conviene que sea el día bueno',
       'Ella se queda con las dos piezas, o te quedas tú con una. Eso ya lo deciden ustedes. Lo que no cambia es que las dos salen del mismo sitio y cuentan la misma historia',
     ],
     caracteristicas: [
@@ -347,7 +347,7 @@ const PRODUCTOS = [
     resumen: 'Collar Destino + Pulsera Mi Cielo',
     descripcion: 'Hay una mujer que te lo dio todo sin pedir nada a cambio, o una que llegó y te cambió el rumbo. No importa si es tu mamá, tu hermana, tu novia o esa amiga que ya es familia: hay alguien que merece llevar puesto un pedacito de lo que sientes, aunque nunca se lo hayas dicho en voz alta',
     parrafos: [
-      'Collar Destino, con su piedra y su flor, elegidas por el mes en que llegó al mundo, porque ella también tiene su propio cielo. Pulsera Mi Cielo, grabada con lo que quieras decirle: una fecha, un lugar, una frase que solo ustedes dos entienden',
+      'Collar Destino, con su piedra y su flor, elegidas por el mes en que llegó al mundo, porque ella también tiene su propio cielo. Pulsera Mi Cielo, grabada con lo que quieras decirle: una fecha, un lugar, una frase que solo ustedes entienden',
     ],
     caracteristicas: [
       'Collar Destino: piedra y flor según el mes de nacimiento',
@@ -531,7 +531,7 @@ const CAMPOS_META = {
   // tal cual. Sin grabado, el SKU se pide sin "-KZ" (ver migración v23).
   nombre:  { tipo: 'texto', label: 'Nombre',  placeholder: 'Ej. Adri',        max: 16, opcional: true },
   fecha:   { tipo: 'texto', label: 'Fecha',   placeholder: 'Ej. 14.02.2024',  max: 12, opcional: true  },
-  mensaje: { tipo: 'texto', label: 'Mensaje', placeholder: 'Ej. te elijo a ti', max: 28, opcional: true },
+  mensaje: { tipo: 'texto', label: 'Mensaje', placeholder: 'Ej. siempre contigo', max: 28, opcional: true },
   // Una sola inscripción, pero libre: frase, fecha o coordenadas
   grabado: { tipo: 'texto', label: 'Grabado', placeholder: 'Una frase, una fecha o unas coordenadas', max: 30, opcional: true },
   mes:     { tipo: 'color', label: 'Mes de nacimiento', opciones: MESES_NATAL, opcional: false },

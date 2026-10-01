@@ -413,8 +413,8 @@ en: E.g. Adri
 es: Ej. 14.02.2024
 en: E.g. 14.02.2024
 
-es: Ej. te elijo a ti
-en: E.g. I choose you
+es: Ej. siempre contigo
+en: E.g. always with you
 
 es: Mes de nacimiento
 en: Birth month
@@ -525,11 +525,11 @@ en: Made to<br>be given
 es: Un cielo que solo tú conoces
 en: A sky only you know
 
-es: Una placa pequeña en la muñeca para guardar el sitio exacto donde pasó: unas coordenadas, la fecha de aquella noche, la frase que se les quedó de un viaje
-en: A small plate on the wrist to keep the exact place where it happened: some coordinates, the date of that night, the phrase that stuck with you from a trip
+es: Una placa pequeña en la muñeca para guardar el sitio exacto donde pasó: unas coordenadas, una fecha que importa, la frase que se les quedó de un viaje
+en: A small plate on the wrist to keep the exact place where it happened: some coordinates, a date that matters, the phrase that stuck with you from a trip
 
-es: Lo bueno de grabar un lugar es que solo funciona para ustedes dos. Cualquiera que la vea leerá unos números sueltos; ella va a ver la playa, el bar, la calle a las cuatro de la mañana. Un código privado que se lleva puesto
-en: The beauty of engraving a place is that it only works for the two of you. Anyone else will just see a few numbers; she'll see the beach, the bar, the street at four in the morning. A private code you can wear
+es: Lo bueno de grabar un lugar es que solo funciona para ustedes. Cualquiera que la vea leerá unos números sueltos; ella va a ver la casa donde creció, la playa de cada verano, el sitio donde todo empezó. Un código privado que se lleva puesto
+en: The beauty of engraving a place is that it only works for the two of you. Anyone else will just see a few numbers; she'll see the house she grew up in, the beach of every summer, the place where it all began. A private code you can wear
 
 es: Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata
 en: High-quality stainless steel, in a gold (gold-plated) or silver finish
@@ -540,8 +540,8 @@ en: Fine chain with plate, adjustable clasp
 es: Grabado de alta calidad: frase, fecha o coordenadas
 en: High-quality engraving: phrase, date or coordinates
 
-es: Un sitio que solo ustedes dos saben leer
-en: A place only the two of you can read
+es: Un sitio que solo ustedes saben leer
+en: A place only you two can read
 
 # ---------- Pulsera Dos Almas ----------
 es: Dos círculos, uno para cada una
@@ -550,8 +550,8 @@ en: Two circles, one for each of you
 es: Dos círculos enlazados que no se sueltan ni se confunden el uno con el otro. Es la pieza que eliges cuando lo que quieres decir no necesita explicarse, porque ya se nota
 en: Two linked circles that never let go and never blur into one another. It's the piece you choose when what you want to say doesn't need explaining, because it already shows
 
-es: No lleva grabado y no le hace falta. Un aro sujeta al otro sin apretarlo, que es más o menos lo que hacen dos personas cuando la cosa va bien. Ella lo va a entender en cuanto la vea, sin que tengas que decir nada
-en: It has no engraving and doesn't need one. One ring holds the other without squeezing it, which is more or less what two people do when things are going well. She'll understand the moment she sees it, without you having to say a word
+es: No lleva grabado y no le hace falta. Un aro sujeta al otro sin apretarlo, como una madre y una hija, dos hermanas o dos amigas de toda la vida. Ella lo va a entender en cuanto la vea, sin que tengas que decir nada
+en: It has no engraving and doesn't need one. One ring holds the other without squeezing it, like a mother and daughter, two sisters or two lifelong friends. She'll understand the moment she sees it, without you having to say a word
 
 es: Cadena fina, cierre ajustable
 en: Fine chain, adjustable clasp
@@ -582,8 +582,8 @@ en: Seen from afar, remembered up close
 es: Doble cadena con placa grabable
 en: Double chain with engravable plate
 
-es: Dos cadenas que caen juntas: una fina, casi invisible, y otra con una placa esperando lo que tengas que decirle. Su nombre. La fecha en que todo empezó. Esas tres palabras que nunca dices en voz alta
-en: Two chains that fall together: one fine, almost invisible, and another with a plate waiting for what you have to tell her. Her name. The date it all began. Those three words you never say out loud
+es: Dos cadenas que caen juntas: una fina, casi invisible, y otra con una placa esperando lo que tengas que decirle. Su nombre. El día en que nació. Eso que nunca le dices en voz alta
+en: Two chains that fall together: one fine, almost invisible, and another with a plate waiting for what you have to tell her. Her name. The day she was born. That thing you never tell her out loud
 
 es: Hay cosas que no salen bien dichas en voz alta, pero caben enteras en unas letras grabadas. Ella lo va a llevar puesto un martes cualquiera, sin ocasión, y lo va a tocar sin darse cuenta mientras piensa en otra cosa. Ahí es donde vive un buen regalo: en los días normales
 en: Some things don't come out right when said out loud, but they fit perfectly in a few engraved letters. She'll wear it on any old Tuesday, for no occasion, and touch it without noticing while she thinks about something else. That's where a good gift lives: in ordinary days
@@ -804,8 +804,8 @@ en: You were born to light up wherever you are, the kind who makes December feel
 es: El Collar Esencia y la Pulsera Dos Almas juntos, que es como mejor funcionan: uno guarda lo que le escribes, la otra dice lo que no hace falta escribir
 en: The Esencia Necklace and the Dos Almas Bracelet together, which is how they work best: one keeps what you write to her, the other says what doesn't need writing
 
-es: Es el regalo de las fechas que importan: un aniversario, un cumpleaños redondo, el día que decidiste dejar de improvisar. Llega en una sola caja y se abre una sola vez, así que conviene que sea el día bueno
-en: It's the gift for the dates that matter: an anniversary, a milestone birthday, the day you decided to stop improvising. It arrives in a single box and gets opened only once, so make it the right day
+es: Es el regalo de las fechas que importan: un cumpleaños, el Día de las Madres, una graduación, ese día que merece algo más que flores. Llega en una sola caja y se abre una sola vez, así que conviene que sea el día bueno
+en: It's the gift for the dates that matter: a birthday, Mother's Day, a graduation, that day that deserves more than flowers. It arrives in a single box and gets opened only once, so make it the right day
 
 es: Ella se queda con las dos piezas, o te quedas tú con una. Eso ya lo deciden ustedes. Lo que no cambia es que las dos salen del mismo sitio y cuentan la misma historia
 en: She keeps both pieces, or you keep one. That's up to the two of you. What doesn't change is that both come from the same place and tell the same story
@@ -823,7 +823,7 @@ en: Because love is something you wear too
 es: Hay una mujer que te lo dio todo sin pedir nada a cambio, o una que llegó y te cambió el rumbo. No importa si es tu mamá, tu hermana, tu novia o esa amiga que ya es familia: hay alguien que merece llevar puesto un pedacito de lo que sientes, aunque nunca se lo hayas dicho en voz alta
 en: There's a woman who gave you everything without asking for anything in return, or one who showed up and changed your course. It doesn't matter if she's your mom, your sister, your girlfriend or that friend who's already family: someone deserves to wear a little piece of what you feel, even if you've never said it out loud
 
-es: Collar Destino, con su piedra y su flor, elegidas por el mes en que llegó al mundo, porque ella también tiene su propio cielo. Pulsera Mi Cielo, grabada con lo que quieras decirle: una fecha, un lugar, una frase que solo ustedes dos entienden
+es: Collar Destino, con su piedra y su flor, elegidas por el mes en que llegó al mundo, porque ella también tiene su propio cielo. Pulsera Mi Cielo, grabada con lo que quieras decirle: una fecha, un lugar, una frase que solo ustedes entienden
 en: The Destino Necklace, with her stone and flower, chosen by the month she came into the world, because she has her own sky too. The Mi Cielo Bracelet, engraved with whatever you want to tell her: a date, a place, a phrase only the two of you understand
 
 es: Collar Destino: piedra y flor según el mes de nacimiento
