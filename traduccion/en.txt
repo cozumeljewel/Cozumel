@@ -1,0 +1,1598 @@
+# =========================================================
+# COZUMEL · TRADUCCIÓN AL INGLÉS
+# Cada entrada son dos líneas: "es:" (el texto tal cual sale en la web)
+# y "en:" (cómo se verá en inglés). Para cambiar una traducción, edita
+# solo la línea "en:". Después: python scripts/generar-idioma.py
+# Lo que no esté aquí se queda en español.
+# Las líneas que empiezan por # son comentarios.
+# Algunas entradas llevan HTML (<strong>, <a href=...>, <em>): mantenlo
+# igual en la línea "en:".
+# =========================================================
+
+# ---------- Cabecera, menú y pie (todas las páginas) ----------
+es: Inicio
+en: Home
+
+es: Principal
+en: Main
+
+es: Colección
+en: Collection
+
+es: Personaliza
+en: Personalize
+
+es: Personaliza tu joya
+en: Personalize your jewelry
+
+es: Nuestra historia
+en: Our story
+
+es: País y moneda
+en: Country and currency
+
+es: Comprar
+en: Shop
+
+es: Abrir menú
+en: Open menu
+
+es: Menú
+en: Menu
+
+es: Cerrar menú
+en: Close menu
+
+es: Contacto
+en: Contact
+
+es: Un pedacito de lo que regalamos.
+en: A little piece of what we give.
+
+es: Un pedacito de lo que regalamos
+en: A little piece of what we give
+
+es: Enlaces del pie de página
+en: Footer links
+
+es: Aviso legal
+en: Legal notice
+
+es: Privacidad
+en: Privacy
+
+es: Términos y condiciones
+en: Terms and conditions
+
+es: Volver arriba
+en: Back to top
+
+es: Cerrar
+en: Close
+
+# ---------- Nombres de las piezas ----------
+# Los nombres propios (Mi Cielo, Dos Almas...) se mantienen en español.
+es: Pulsera Dos Almas
+en: Dos Almas Bracelet
+
+es: Pulsera Mi Cielo
+en: Mi Cielo Bracelet
+
+es: Brazalete Eterno
+en: Eterno Cuff
+
+es: Collar Esencia
+en: Esencia Necklace
+
+es: Collar Destino
+en: Destino Necklace
+
+es: Kit Pedacito de Nosotros
+en: Pedacito de Nosotros Kit
+
+es: Kit Mi Consentida
+en: Mi Consentida Kit
+
+es: Kit a tu gusto
+en: Build-your-own kit
+
+es: Collar Esencia + Pulsera Dos Almas
+en: Esencia Necklace + Dos Almas Bracelet
+
+es: Collar Destino + Pulsera Mi Cielo
+en: Destino Necklace + Mi Cielo Bracelet
+
+# ---------- Cuenta atrás ----------
+es: Un Pedacito <em>de ti</em>
+en: A Little Piece <em>of You</em>
+
+es: días
+en: days
+
+es: horas
+en: hours
+
+es: min
+en: min
+
+es: seg
+en: sec
+
+es: Unidades limitadas en el lanzamiento.
+en: Limited units at launch.
+
+es: Déjanos tu email y tendrás acceso antes que nadie.
+en: Leave your email and get access before anyone else.
+
+es: ✦ Entre las primeras 100 compras sortearemos <strong>5 videollamadas privadas con Adri</strong> ✦
+en: ✦ Among the first 100 orders we'll give away <strong>5 private video calls with Adri</strong> ✦
+
+es: Tu email
+en: Your email
+
+es: Quiero acceso anticipado
+en: I want early access
+
+es: Acepto que Cozumel guarde mi email para avisarme del lanzamiento. <a href="privacidad.html">Privacidad</a>
+en: I agree that Cozumel may keep my email to let me know about the launch. <a href="privacidad.html">Privacy</a>
+
+es: Escribe un email válido
+en: Enter a valid email
+
+es: Marca la casilla para poder avisarte
+en: Tick the box so we can let you know
+
+es: Guardando…
+en: Saving…
+
+es: ¡Listo! Te escribiremos antes del lanzamiento con tu acceso anticipado.
+en: You're in! We'll write to you before the launch with your early access.
+
+es: No se ha podido guardar. Inténtalo de nuevo en un momento
+en: We couldn't save it. Please try again in a moment
+
+# ---------- Inicio ----------
+es: Cozumel Jewelry · Regala un pedacito de ti
+en: Cozumel Jewelry · Give a little piece of you
+
+es: Joyas para regalar algo más que un accesorio: una memoria, un momento, una historia
+en: Jewelry to give more than an accessory: a memory, a moment, a story
+
+es: Adriana llevando piezas de Cozumel Jewelry
+en: Adriana wearing Cozumel Jewelry pieces
+
+es: Descubrir la colección
+en: Discover the collection
+
+es: Nuestras piezas, <em>en la vida real</em>
+en: Our pieces, <em>in real life</em>
+
+es: Porque una joya empieza a contar su historia cuando deja el estudio.
+en: Because a piece of jewelry starts telling its story when it leaves the studio.
+
+es: Adri con una pieza de Cozumel Jewelry puesta
+en: Adri wearing a Cozumel Jewelry piece
+
+es: Adri con una pieza puesta
+en: Adri wearing a piece
+
+es: Un regalo de Cozumel Jewelry recién abierto
+en: A Cozumel Jewelry gift, just opened
+
+es: Un regalo, recién abierto
+en: A gift, just opened
+
+es: Un momento cotidiano con una pieza de Cozumel Jewelry
+en: An everyday moment with a Cozumel Jewelry piece
+
+es: Un momento cotidiano
+en: An everyday moment
+
+es: Dos amigas con una pieza de Cozumel Jewelry
+en: Two friends with a Cozumel Jewelry piece
+
+es: Dos amigas
+en: Two friends
+
+es: Madre e hija con una pieza de Cozumel Jewelry
+en: Mother and daughter with a Cozumel Jewelry piece
+
+es: Madre e hija
+en: Mother and daughter
+
+es: Una pareja con una pieza de Cozumel Jewelry
+en: A couple with a Cozumel Jewelry piece
+
+es: Una pareja
+en: A couple
+
+es: Descubre la colección →
+en: Discover the collection →
+
+# ---------- Ventana emergente (pop-up) ----------
+es: Primera colección
+en: First collection
+
+es: Un Pedacito de Mí
+en: A Little Piece of Me
+
+es: Los pedacitos de esta edición son limitados. No porque queramos que corras, sino porque cada pieza se graba una por una, con un acabado de calidad, y eso no se puede apurar ni multiplicar
+en: The pieces in this edition are limited. Not because we want you to rush, but because each one is engraved one by one, with a quality finish, and that can't be hurried or multiplied
+
+es: Si hay un pedacito que quieres que sea tuyo, o de alguien a quien quieras dar un pedacito de ti, este es el momento de comprarlo
+en: If there's a piece you want to be yours, or for someone you want to give a little piece of you to, now is the time to get it
+
+es: Unidades limitadas · Sorteo de 5 videollamadas con Adri en las 100 primeras compras
+en: Limited units · 5 video calls with Adri raffled among the first 100 orders
+
+es: Regala un pedacito de ti
+en: Give a little piece of you
+
+es: Descubrir ahora
+en: Discover now
+
+es: ¿Hablamos?
+en: Let's talk?
+
+es: Si tu pregunta no aparece en el FAQ, escríbenos directamente y te contestamos personalmente
+en: If your question isn't in the FAQ, write to us directly and we'll answer you personally
+
+es: Ir al formulario de contacto →
+en: Go to the contact form →
+
+# ---------- La colección ----------
+es: La colección · Cozumel Jewelry
+en: The collection · Cozumel Jewelry
+
+es: Cinco piezas, edición de lanzamiento. Unidades limitadas
+en: Five pieces, launch edition. Limited units
+
+es: La colección
+en: The collection
+
+es: Cinco piezas personalizables
+en: Five personalizable pieces
+
+es: Ver producto →
+en: View product →
+
+es: Ver pieza →
+en: View piece →
+
+es: Personalizar →
+en: Personalize →
+
+es: Nuestros kits
+en: Our kits
+
+es: Arma tu kit
+en: Build your kit
+
+es: Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo
+en: Open Cozumel gift box with a gold necklace and bracelet, next to the card and the box with a bow
+
+es: Una pulsera y un colgante, elegidos y grabados por ti.
+en: A bracelet and a pendant, chosen and engraved by you.
+
+es: Crear mi kit →
+en: Create my kit →
+
+es: Precio pendiente
+en: Price to be confirmed
+
+es: imagen pendiente
+en: image coming soon
+
+# ---------- Ficha de producto (personalizar) ----------
+es: Personalizar · Cozumel Jewelry
+en: Personalize · Cozumel Jewelry
+
+es: Edición de lanzamiento · unidades limitadas
+en: Launch edition · limited units
+
+es: Acabado
+en: Finish
+
+es: Bañado en oro
+en: Gold-plated
+
+es: Plateado
+en: Silver-tone
+
+es: Oro
+en: Gold
+
+es: oro
+en: gold
+
+es: plata
+en: silver
+
+es: Grabado (opcional)
+en: Engraving (optional)
+
+es: Plata
+en: Silver
+
+es: <span class="acabado-dot acabado-dot--oro" aria-hidden="true"></span>Bañado en oro
+en: <span class="acabado-dot acabado-dot--oro" aria-hidden="true"></span>Gold-plated
+
+es: <span class="acabado-dot acabado-dot--plata" aria-hidden="true"></span>Plateado
+en: <span class="acabado-dot acabado-dot--plata" aria-hidden="true"></span>Silver-tone
+
+es: <span class="acabado-dot acabado-dot--oro" aria-hidden="true"></span>Oro
+en: <span class="acabado-dot acabado-dot--oro" aria-hidden="true"></span>Gold
+
+es: <span class="acabado-dot acabado-dot--plata" aria-hidden="true"></span>Plata
+en: <span class="acabado-dot acabado-dot--plata" aria-hidden="true"></span>Silver
+
+es: Acabado del collar
+en: Necklace finish
+
+es: Acabado de la pulsera
+en: Bracelet finish
+
+es: Precio
+en: Price
+
+es: pendiente de confirmar
+en: to be confirmed
+
+es: Precio pendiente de confirmar
+en: Price to be confirmed
+
+es: Envío incluido
+en: Shipping included
+
+es: Foto ampliada
+en: Enlarged photo
+
+es: Ver las otras piezas
+en: See the other pieces
+
+es: Tu joya, tus palabras
+en: Your jewelry, your words
+
+es: Elige tu grabado
+en: Choose your engraving
+
+es: Grabado
+en: Engraving
+
+es: Grabado<span> (opcional)</span>
+en: Engraving<span> (optional)</span>
+
+es: (opcional)
+en: (optional)
+
+es: Sin grabado
+en: No engraving
+
+es: Esta pieza no lleva grabado
+en: This piece has no engraving
+
+es: Una frase, una fecha o unas coordenadas
+en: A phrase, a date or some coordinates
+
+es: Nombre
+en: Name
+
+es: Fecha
+en: Date
+
+es: Mensaje
+en: Message
+
+es: Ej. Adri
+en: E.g. Adri
+
+es: Ej. 14.02.2024
+en: E.g. 14.02.2024
+
+es: Ej. te elijo a ti
+en: E.g. I choose you
+
+es: Mes de nacimiento
+en: Birth month
+
+es: La cartita que va en la caja
+en: The little card that goes in the box
+
+es: Grabado de alta calidad, pieza a pieza
+en: High-quality engraving, piece by piece
+
+es: Cada pieza se personaliza con un grabado de máxima precisión y calidad, realizado para conseguir un acabado elegante, definido y duradero. Un detalle único pensado para conservar ese significado especial durante mucho tiempo.
+en: Each piece is personalized with a high-precision, high-quality engraving, made for an elegant, crisp and lasting finish. A unique detail designed to keep that special meaning for a long time.
+
+es: Materiales
+en: Materials
+
+es: <strong>Acero inoxidable con baño de oro:</strong> acero inoxidable de alta calidad con un delicado baño de oro, seleccionado para conseguir un acabado elegante y sofisticado.
+en: <strong>Gold-plated stainless steel:</strong> high-quality stainless steel with a delicate gold plating, chosen for an elegant, sophisticated finish.
+
+es: <strong>Acero inoxidable:</strong> acero inoxidable de alta calidad, resistente y duradero, con un acabado limpio y atemporal.
+en: <strong>Stainless steel:</strong> high-quality stainless steel, strong and durable, with a clean, timeless finish.
+
+es: Envío incluido en el precio, con los impuestos de importación: no pagas nada más al recibirlo.
+en: Shipping is included in the price, along with import taxes: you pay nothing more when it arrives.
+
+es: Preparamos cada pieza con especial cuidado para que llegue lista para regalar o para convertirse en un recuerdo personal.
+en: We prepare each piece with special care so it arrives ready to give, or to become a personal keepsake.
+
+es: Cuidados
+en: Care
+
+es: Piezas bañadas en oro
+en: Gold-plated pieces
+
+es: Para conservar el brillo y el acabado dorado de tu joya durante más tiempo:
+en: To keep your jewelry's shine and gold finish for longer:
+
+es: Evita el contacto directo con perfumes, cremas, aceites y otros cosméticos.
+en: Avoid direct contact with perfumes, creams, oils and other cosmetics.
+
+es: No la expongas durante largos periodos al agua, al cloro o al agua de mar.
+en: Don't expose it to water, chlorine or seawater for long periods.
+
+es: Quítatela antes de ducharte, bañarte o practicar deporte.
+en: Take it off before showering, swimming or exercising.
+
+es: Guárdala en un lugar seco y, preferiblemente, dentro de su estuche cuando no la estés utilizando.
+en: Store it in a dry place, ideally in its case, when you're not wearing it.
+
+es: Para limpiarla, utiliza suavemente un paño suave y seco. Evita productos abrasivos o químicos.
+en: To clean it, gently use a soft, dry cloth. Avoid abrasive or chemical products.
+
+es: El baño de oro es un acabado delicado que puede presentar desgaste natural con el uso y el paso del tiempo.
+en: Gold plating is a delicate finish that may show natural wear with use and over time.
+
+es: Piezas de acero inoxidable
+en: Stainless steel pieces
+
+es: El acero inoxidable es un material resistente y pensado para el uso diario. Para mantener su aspecto original durante más tiempo:
+en: Stainless steel is a durable material made for everyday wear. To keep it looking like new for longer:
+
+es: Evita el contacto prolongado con perfumes, cremas y productos químicos.
+en: Avoid prolonged contact with perfumes, creams and chemicals.
+
+es: Después de exponer la pieza al agua, sécala cuidadosamente con un paño suave.
+en: After the piece gets wet, dry it carefully with a soft cloth.
+
+es: Evita el contacto con cloro y productos de limpieza.
+en: Avoid contact with chlorine and cleaning products.
+
+es: Guárdala en un lugar seco cuando no la utilices.
+en: Store it in a dry place when you're not wearing it.
+
+es: Para recuperar su brillo, límpiala suavemente con un paño de microfibra.
+en: To bring back its shine, gently clean it with a microfiber cloth.
+
+es: Con estos sencillos cuidados podrás mantener tu joya limpia, brillante y bonita durante mucho más tiempo.
+en: With these simple steps your jewelry will stay clean, shiny and beautiful for much longer.
+
+es: Ya solo falta regalarlo
+en: All that's left is to give it
+
+es: Regálale un pedacito de ti
+en: Give them a little piece of you
+
+es: Añadir al carrito
+en: Add to cart
+
+es: Añadiendo a tu carrito…
+en: Adding to your cart…
+
+es: Añadida
+en: Added
+
+es: No se pudo continuar, pulsa de nuevo
+en: Something went wrong, please tap again
+
+es: Grabado de<br>alta calidad
+en: High-quality<br>engraving
+
+es: Pieza<br>única
+en: One-of-a-kind<br>piece
+
+es: Creado para<br>regalar
+en: Made to<br>be given
+
+# ---------- Pulsera Mi Cielo ----------
+es: Un cielo que solo tú conoces
+en: A sky only you know
+
+es: Una placa pequeña en la muñeca para guardar el sitio exacto donde pasó: unas coordenadas, la fecha de aquella noche, la frase que se les quedó de un viaje
+en: A small plate on the wrist to keep the exact place where it happened: some coordinates, the date of that night, the phrase that stuck with you from a trip
+
+es: Lo bueno de grabar un lugar es que solo funciona para ustedes dos. Cualquiera que la vea leerá unos números sueltos; ella va a ver la playa, el bar, la calle a las cuatro de la mañana. Un código privado que se lleva puesto
+en: The beauty of engraving a place is that it only works for the two of you. Anyone else will just see a few numbers; she'll see the beach, the bar, the street at four in the morning. A private code you can wear
+
+es: Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata
+en: High-quality stainless steel, in a gold (gold-plated) or silver finish
+
+es: Cadena fina con placa, cierre ajustable
+en: Fine chain with plate, adjustable clasp
+
+es: Grabado de alta calidad: frase, fecha o coordenadas
+en: High-quality engraving: phrase, date or coordinates
+
+es: Un sitio que solo ustedes dos saben leer
+en: A place only the two of you can read
+
+# ---------- Pulsera Dos Almas ----------
+es: Dos círculos, uno para cada una
+en: Two circles, one for each of you
+
+es: Dos círculos enlazados que no se sueltan ni se confunden el uno con el otro. Es la pieza que eliges cuando lo que quieres decir no necesita explicarse, porque ya se nota
+en: Two linked circles that never let go and never blur into one another. It's the piece you choose when what you want to say doesn't need explaining, because it already shows
+
+es: No lleva grabado y no le hace falta. Un aro sujeta al otro sin apretarlo, que es más o menos lo que hacen dos personas cuando la cosa va bien. Ella lo va a entender en cuanto la vea, sin que tengas que decir nada
+en: It has no engraving and doesn't need one. One ring holds the other without squeezing it, which is more or less what two people do when things are going well. She'll understand the moment she sees it, without you having to say a word
+
+es: Cadena fina, cierre ajustable
+en: Fine chain, adjustable clasp
+
+es: Dos círculos entrelazados como símbolo de unión
+en: Two interlocking circles as a symbol of union
+
+es: Lo que no se dice, pero se lleva puesto
+en: What goes unsaid, but is worn
+
+# ---------- Brazalete Eterno ----------
+es: Un lugar, una fecha, unas palabras
+en: A place, a date, a few words
+
+es: Un brazalete rígido, ancho y limpio, del tipo que se pone una vez y ya no se quita. Grabado con lo que tú decidas: una fecha, un nombre, una frase corta que no necesite contexto
+en: A rigid, wide, clean cuff, the kind you put on once and never take off. Engraved with whatever you choose: a date, a name, a short phrase that needs no context
+
+es: Es la pieza más rotunda de la colección: se ve desde lejos y se nota al abrazar. Si buscas un regalo que no pase desapercibido, que le pregunten por él y ella tenga algo que contar, es este
+en: It's the boldest piece in the collection: you see it from afar and feel it in a hug. If you're looking for a gift that won't go unnoticed, one people ask her about so she has a story to tell, this is it
+
+es: Cuff ajustable, diseño minimalista
+en: Adjustable cuff, minimalist design
+
+es: Se ve desde lejos y se recuerda de cerca
+en: Seen from afar, remembered up close
+
+# ---------- Collar Esencia ----------
+es: Doble cadena con placa grabable
+en: Double chain with engravable plate
+
+es: Dos cadenas que caen juntas: una fina, casi invisible, y otra con una placa esperando lo que tengas que decirle. Su nombre. La fecha en que todo empezó. Esas tres palabras que nunca dices en voz alta
+en: Two chains that fall together: one fine, almost invisible, and another with a plate waiting for what you have to tell her. Her name. The date it all began. Those three words you never say out loud
+
+es: Hay cosas que no salen bien dichas en voz alta, pero caben enteras en unas letras grabadas. Ella lo va a llevar puesto un martes cualquiera, sin ocasión, y lo va a tocar sin darse cuenta mientras piensa en otra cosa. Ahí es donde vive un buen regalo: en los días normales
+en: Some things don't come out right when said out loud, but they fit perfectly in a few engraved letters. She'll wear it on any old Tuesday, for no occasion, and touch it without noticing while she thinks about something else. That's where a good gift lives: in ordinary days
+
+es: Doble cadena: fina + placa grabable
+en: Double chain: fine + engravable plate
+
+es: Grabado de alta calidad, personalizable con lo que quieras: un nombre, una fecha o una frase
+en: High-quality engraving, personalized with whatever you want: a name, a date or a phrase
+
+es: Para que lleve puesto un pedacito de ti
+en: So she can wear a little piece of you
+
+# ---------- Collar Destino ----------
+es: Su mes, su piedra
+en: Her month, her stone
+
+es: Cada mes tiene su piedra y su flor. Eliges el de ella y el collar deja de ser un collar cualquiera: es el suyo, con el color exacto del mes en que nació
+en: Every month has its stone and its flower. You choose hers, and the necklace stops being just any necklace: it's hers, in the exact color of the month she was born
+
+es: Es el regalo fácil de acertar y difícil de olvidar: no hace falta saber su talla, ni su estilo, ni qué joyas tiene ya. Solo su cumpleaños. Y si te lo sabes, ya llevas media conversación ganada
+en: It's the gift that's easy to get right and hard to forget: you don't need to know her size, her style or what jewelry she already has. Just her birthday. And if you know that, you're already halfway there
+
+es: Cadena fina tipo eslabón, largo ajustable
+en: Fine link chain, adjustable length
+
+es: Piedra y flor según el mes de nacimiento
+en: Stone and flower based on birth month
+
+es: Su mes, su piedra, su collar
+en: Her month, her stone, her necklace
+
+es: Este es tu pedacito de cielo. Llévalo contigo
+en: This is your little piece of sky. Take it with you
+
+# Meses (botones) y meses completos
+es: Ene
+en: Jan
+
+es: Feb
+en: Feb
+
+es: Mar
+en: Mar
+
+es: Abr
+en: Apr
+
+es: May
+en: May
+
+es: Jun
+en: Jun
+
+es: Jul
+en: Jul
+
+es: Ago
+en: Aug
+
+es: Sep
+en: Sep
+
+es: Oct
+en: Oct
+
+es: Nov
+en: Nov
+
+es: Dic
+en: Dec
+
+es: Enero
+en: January
+
+es: Febrero
+en: February
+
+es: Marzo
+en: March
+
+es: Abril
+en: April
+
+es: Mayo
+en: May
+
+es: Junio
+en: June
+
+es: Julio
+en: July
+
+es: Agosto
+en: August
+
+es: Septiembre
+en: September
+
+es: Octubre
+en: October
+
+es: Noviembre
+en: November
+
+es: Diciembre
+en: December
+
+es: Color granate
+en: Garnet color
+
+es: Color amatista
+en: Amethyst color
+
+es: Color aguamarina
+en: Aquamarine color
+
+es: Color diamante
+en: Diamond color
+
+es: Color esmeralda
+en: Emerald color
+
+es: Color perla
+en: Pearl color
+
+es: Color rubí
+en: Ruby color
+
+es: Color peridoto
+en: Peridot color
+
+es: Color zafiro
+en: Sapphire color
+
+es: Color ópalo
+en: Opal color
+
+es: Color topacio
+en: Topaz color
+
+es: Color turquesa
+en: Turquoise color
+
+es: Enero · Clavel y color granate
+en: January · Carnation and garnet color
+
+es: Febrero · Violeta y color amatista
+en: February · Violet and amethyst color
+
+es: Marzo · Narciso y color aguamarina
+en: March · Daffodil and aquamarine color
+
+es: Abril · Margarita y color diamante
+en: April · Daisy and diamond color
+
+es: Mayo · Espino y color esmeralda
+en: May · Hawthorn and emerald color
+
+es: Junio · Rosa y color perla
+en: June · Rose and pearl color
+
+es: Julio · Espuela de caballero y color rubí
+en: July · Larkspur and ruby color
+
+es: Agosto · Amapola y color peridoto
+en: August · Poppy and peridot color
+
+es: Septiembre · Aster y color zafiro
+en: September · Aster and sapphire color
+
+es: Octubre · Caléndula y color ópalo
+en: October · Marigold and opal color
+
+es: Noviembre · Crisantemo y color topacio
+en: November · Chrysanthemum and topaz color
+
+es: Diciembre · Nochebuena y color turquesa
+en: December · Poinsettia and turquoise color
+
+es: Naciste en el mes que empieza todo de nuevo, cuando el año todavía no sabe lo que va a ser y tú ya vas caminando con paso firme. El clavel florece aunque haga frío, aunque nadie lo esté mirando. El granate lleva tu color: profundo, callado, ardiendo por dentro
+en: You were born in the month when everything starts over, when the year doesn't yet know what it will be and you're already walking with a steady step. The carnation blooms even in the cold, even when no one is watching. The garnet carries your color: deep, quiet, burning inside
+
+es: Naciste entre el frío que se va y la primavera que todavía no llega, con la cabeza un poco en las nubes y el corazón puesto en quien lo merece. La violeta crece escondida, casi tímida, pero su color no se olvida jamás. La amatista es igual de discreta e igual de imposible de ignorar
+en: You were born between the cold that's leaving and the spring that hasn't arrived, with your head a little in the clouds and your heart set on whoever deserves it. The violet grows hidden, almost shy, but its color is never forgotten. The amethyst is just as discreet and just as impossible to ignore
+
+es: Naciste cuando el invierno todavía dudaba si irse, y tú llegaste sin miedo, de las primeras en atreverte. El narciso se atreve a florecer antes que las demás flores. El aguamarina tiene el color exacto de lo que ves cuando cierras los ojos y piensas en el mar
+en: You were born when winter was still unsure about leaving, and you arrived fearless, one of the first to dare. The daffodil dares to bloom before all the other flowers. The aquamarine has the exact color of what you see when you close your eyes and think of the sea
+
+es: Naciste con las ganas de empezar de nuevo cada vez que hace falta, sin miedo a caerte porque sabes que te vas a levantar. La margarita parece simple, pero crece en cualquier lado y siempre encuentra el sol. El diamante es lo más duro que hay, y aun así, lo que más brilla
+en: You were born ready to start over whenever you need to, unafraid of falling because you know you'll get back up. The daisy looks simple, but it grows anywhere and always finds the sun. The diamond is the hardest thing there is, and still, the one that shines the most
+
+es: Naciste con raíces profundas y un cariño que no se anda con medias tintas, de las que protegen a quien aman con uñas y dientes si hace falta. El espino tiene espinas, sí, pero cuando florece lo hace entero, sin guardarse nada. La esmeralda es el verde más intenso que existe, como tu forma de querer
+en: You were born with deep roots and a love that doesn't do things halfway, the kind who protects the people she loves tooth and nail if needed. The hawthorn has thorns, yes, but when it blooms it does so completely, holding nothing back. The emerald is the most intense green there is, like the way you love
+
+es: Naciste siendo dos cosas a la vez: curiosa e imposible de aburrir, dulce y con carácter. La rosa es la flor que todo el mundo reconoce, pero que nunca deja de sorprender. La perla se forma despacio, en silencio, hasta convertirse en algo que no tiene precio
+en: You were born two things at once: curious and impossible to bore, sweet and strong-willed. The rose is the flower everyone recognizes, yet it never stops surprising. The pearl forms slowly, in silence, until it becomes something priceless
+
+es: Naciste sintiendo todo el doble, aunque por fuera parezcas tranquila. La espuela de caballero crece alta y esbelta, imposible de no ver. El rubí es el rojo más intenso que existe, como lo que sientes cuando de verdad quieres a alguien
+en: You were born feeling everything twice as much, even if you look calm on the outside. The larkspur grows tall and slender, impossible to miss. The ruby is the most intense red there is, like what you feel when you truly love someone
+
+es: Naciste con luz propia, de las que entran a un lugar y todo cambia un poco. La amapola se abre entera al sol, sin guardarse nada. El peridoto tiene ese verde que solo se encuentra en las cosas que de verdad valen la pena
+en: You were born with your own light, the kind who walks into a room and changes it a little. The poppy opens fully to the sun, holding nothing back. The peridot has that green you only find in things truly worth it
+
+es: Naciste queriendo en los detalles pequeños, esos que nadie más nota pero que lo dicen todo. Aster significa estrella, y así quieres tú: en silencio, iluminando todo lo que tocas sin hacer ruido. El zafiro tiene ese azul profundo de las noches donde de verdad se ven las estrellas
+en: You were born loving in the small details, the ones nobody else notices but that say everything. Aster means star, and that's how you love: quietly, lighting up everything you touch without a sound. The sapphire has that deep blue of the nights when you can really see the stars
+
+es: Naciste buscando el equilibrio, la armonía, la belleza en las cosas simples. La caléndula se abre con el sol y se cierra con la noche, fiel a su propio ritmo. El ópalo cambia de color según la luz, como tú, que sabes adaptarte sin dejar de ser tú
+en: You were born seeking balance, harmony, beauty in simple things. The marigold opens with the sun and closes with the night, true to its own rhythm. The opal changes color with the light, like you, who know how to adapt without ever stopping being you
+
+es: Naciste sintiendo todo profundo, sin medias tintas, de las que aman con una intensidad que a veces asusta a los demás pero que a ti te sale natural. El crisantemo florece cuando casi todo lo demás ya se marchitó: una lealtad que resiste al tiempo. El topacio guarda ese calor dorado que tú también llevas por dentro
+en: You were born feeling everything deeply, never halfway, the kind who loves with an intensity that sometimes scares others but comes naturally to you. The chrysanthemum blooms when almost everything else has withered: a loyalty that stands the test of time. The topaz holds that golden warmth you carry inside too
+
+es: Naciste para iluminar cualquier lugar donde estés, de las que hacen que diciembre se sienta especial aunque haga frío afuera. La nochebuena florece en pleno invierno, justo cuando menos se espera. La turquesa tiene ese color de mar que tú también llevas contigo, vayas donde vayas
+en: You were born to light up wherever you are, the kind who makes December feel special even when it's cold outside. The poinsettia blooms in the middle of winter, just when you least expect it. The turquoise has that color of the sea that you carry with you too, wherever you go
+
+# ---------- Kit Pedacito de Nosotros ----------
+es: El Collar Esencia y la Pulsera Dos Almas juntos, que es como mejor funcionan: uno guarda lo que le escribes, la otra dice lo que no hace falta escribir
+en: The Esencia Necklace and the Dos Almas Bracelet together, which is how they work best: one keeps what you write to her, the other says what doesn't need writing
+
+es: Es el regalo de las fechas que importan: un aniversario, un cumpleaños redondo, el día que decidiste dejar de improvisar. Llega en una sola caja y se abre una sola vez, así que conviene que sea el día bueno
+en: It's the gift for the dates that matter: an anniversary, a milestone birthday, the day you decided to stop improvising. It arrives in a single box and gets opened only once, so make it the right day
+
+es: Ella se queda con las dos piezas, o te quedas tú con una. Eso ya lo deciden ustedes. Lo que no cambia es que las dos salen del mismo sitio y cuentan la misma historia
+en: She keeps both pieces, or you keep one. That's up to the two of you. What doesn't change is that both come from the same place and tell the same story
+
+es: Collar Esencia: doble cadena con placa grabable
+en: Esencia Necklace: double chain with engravable plate
+
+es: Pulsera Dos Almas: dos círculos entrelazados, símbolo de unión
+en: Dos Almas Bracelet: two interlocking circles, a symbol of union
+
+es: Porque el amor también se lleva puesto
+en: Because love is something you wear too
+
+# ---------- Kit Mi Consentida ----------
+es: Hay una mujer que te lo dio todo sin pedir nada a cambio, o una que llegó y te cambió el rumbo. No importa si es tu mamá, tu hermana, tu novia o esa amiga que ya es familia: hay alguien que merece llevar puesto un pedacito de lo que sientes, aunque nunca se lo hayas dicho en voz alta
+en: There's a woman who gave you everything without asking for anything in return, or one who showed up and changed your course. It doesn't matter if she's your mom, your sister, your girlfriend or that friend who's already family: someone deserves to wear a little piece of what you feel, even if you've never said it out loud
+
+es: Collar Destino, con su piedra y su flor, elegidas por el mes en que llegó al mundo, porque ella también tiene su propio cielo. Pulsera Mi Cielo, grabada con lo que quieras decirle: una fecha, un lugar, una frase que solo ustedes dos entienden
+en: The Destino Necklace, with her stone and flower, chosen by the month she came into the world, because she has her own sky too. The Mi Cielo Bracelet, engraved with whatever you want to tell her: a date, a place, a phrase only the two of you understand
+
+es: Collar Destino: piedra y flor según el mes de nacimiento
+en: Destino Necklace: stone and flower based on birth month
+
+es: Pulsera Mi Cielo: placa grabable con fecha, lugar o frase
+en: Mi Cielo Bracelet: engravable plate with a date, place or phrase
+
+# ---------- Arma tu kit ----------
+es: Arma tu kit · Cozumel Jewelry
+en: Build your kit · Cozumel Jewelry
+
+es: 1 · Elige tu pulsera
+en: 1 · Choose your bracelet
+
+es: Material de la pulsera
+en: Bracelet material
+
+es: 2 · Elige tu colgante
+en: 2 · Choose your pendant
+
+es: Material del colgante
+en: Pendant material
+
+es: Tu pulsera
+en: Your bracelet
+
+es: Sin elegir
+en: Not chosen
+
+es: Sin pieza elegida
+en: No piece chosen
+
+es: Tu colgante
+en: Your pendant
+
+es: Elige una pulsera y un colgante
+en: Choose a bracelet and a pendant
+
+es: Ahora elige tu colgante
+en: Now choose your pendant
+
+es: Ahora elige tu pulsera
+en: Now choose your bracelet
+
+es: Escribe el grabado de tu pulsera
+en: Write the engraving for your bracelet
+
+es: Escribe el grabado de tu colgante
+en: Write the engraving for your pendant
+
+es: No todos los pedacitos son iguales, y no todas las historias se cuentan con las mismas piezas. Aquí eliges tú: combina lo que quieras, para quien tú quieras, como tú lo sientas.
+en: Not every little piece is the same, and not every story is told with the same pieces. Here, you choose: combine whatever you want, for whoever you want, however you feel it.
+
+es: Un collar para tu mamá y una pulsera para ti. Dos piezas para tu mejor amiga. El set que tenga sentido para tu historia, no para la nuestra.
+en: A necklace for your mom and a bracelet for you. Two pieces for your best friend. The set that makes sense for your story, not ours.
+
+es: Elige las piezas que quieras combinar de toda la colección
+en: Choose the pieces you want to combine from the whole collection
+
+es: Cada una se personaliza por separado — su nombre, su fecha, su mensaje
+en: Each one is personalized separately — her name, her date, her message
+
+es: Envío en caja especial de regalo
+en: Shipped in a special gift box
+
+es: Porque no hay una sola forma de regalar un pedacito de ti.
+en: Because there's more than one way to give a little piece of you.
+
+es: Una pulsera y un colgante, a tu elección
+en: A bracelet and a pendant, your choice
+
+es: Las dos piezas que tú elijas, cada una con su acabado y su grabado, en la misma caja de regalo
+en: The two pieces you choose, each with its own finish and engraving, in the same gift box
+
+es: Caja de regalo abierta con un collar de placa y un brazalete plateados, grabados
+en: Open gift box with an engraved silver-tone plate necklace and cuff
+
+es: Caja de regalo abierta con un collar de flor y un brazalete dorados, grabado con una fecha
+en: Open gift box with a gold flower necklace and cuff, engraved with a date
+
+es: Caja de regalo abierta con un collar de flor y un brazalete plateados
+en: Open gift box with a silver-tone flower necklace and cuff
+
+# ---------- Compra (carrito y pago) ----------
+es: Compra · Cozumel Jewelry
+en: Checkout · Cozumel Jewelry
+
+es: Último paso
+en: Last step
+
+es: Cómpratela
+en: Make it yours
+
+es: Pago seguro con tarjeta, a través de Stripe. Envío e impuestos incluidos
+en: Secure card payment through Stripe. Shipping and taxes included
+
+es: + Añadir otra pieza
+en: + Add another piece
+
+es: Todavía no has añadido ninguna pieza. Entra en <a href="productos.html">la colección</a> y elige la tuya
+en: You haven't added any pieces yet. Visit <a href="productos.html">the collection</a> and choose yours
+
+es: Tu nombre
+en: Your first name
+
+es: Apellidos
+en: Last name
+
+es: Tus apellidos
+en: Your last name
+
+es: tucorreo@email.com
+en: youremail@email.com
+
+es: Tu número
+en: Your number
+
+es: País
+en: Country
+
+es: Países
+en: Countries
+
+es: Elige el país de envío
+en: Choose the shipping country
+
+es: Dirección de envío
+en: Shipping address
+
+es: Calle, número, ciudad, código postal
+en: Street, number, city, ZIP/postal code
+
+es: RUT (obligatorio para la aduana de Chile)
+en: RUT (required by Chilean customs)
+
+es: DNI o RUC (obligatorio para la aduana de Perú)
+en: DNI or RUC (required by Peruvian customs)
+
+es: Tu DNI o RUC
+en: Your DNI or RUC
+
+es: CUIT o CUIL, 11 dígitos (obligatorio para la aduana de Argentina)
+en: CUIT or CUIL, 11 digits (required by Argentine customs)
+
+es: <strong>Envíos a Argentina:</strong> el precio incluye el envío, pero no el IVA de importación, que se paga al recibir el paquete. Para que la aduana lo libere tienes que estar dado de alta en el Domicilio Fiscal Electrónico (DFE) de ARCA. Si el paquete no se puede entregar (dirección incorrecta, ausencia…), se pierde y no hay devolución.
+en: <strong>Shipping to Argentina:</strong> the price includes shipping, but not import VAT, which is paid when the package arrives. For customs to release it, you must be registered with ARCA's Electronic Tax Address (Domicilio Fiscal Electrónico, DFE). If the package can't be delivered (wrong address, nobody home…), it is lost and there is no refund.
+
+es: Acepto que guarden estos datos para contactarme sobre esta reserva
+en: I agree that you may keep this information to contact me about this order
+
+es: Pagar y comprar
+en: Pay and buy
+
+es: Total
+en: Total
+
+es: Listo
+en: Done
+
+es: Hemos recibido tu pago de la edición de lanzamiento
+en: We've received your payment for the launch edition
+
+es: Te avisaremos por email en cuanto se envíe
+en: We'll email you as soon as it ships
+
+es: Confirmando tu pago
+en: Confirming your payment
+
+es: Esto tarda solo unos segundos
+en: This only takes a few seconds
+
+es: Pago cancelado
+en: Payment canceled
+
+es: No te hemos cobrado nada. Puedes intentarlo de nuevo cuando quieras
+en: You haven't been charged. You can try again whenever you like
+
+es: Volver a intentarlo
+en: Try again
+
+es: Tu carrito está vacío. Añade alguna pieza antes de comprar
+en: Your cart is empty. Add a piece before checking out
+
+es: Alguna pieza de tu carrito todavía no tiene precio, no se puede comprar
+en: A piece in your cart doesn't have a price yet, so it can't be purchased
+
+es: Ahora mismo no podemos procesar tu compra. Inténtalo de nuevo en unos minutos
+en: We can't process your order right now. Please try again in a few minutes
+
+es: Guardando tu pedido...
+en: Saving your order...
+
+es: No se pudo guardar tu pedido. Inténtalo de nuevo
+en: We couldn't save your order. Please try again
+
+es: Conectando con Stripe...
+en: Connecting to Stripe...
+
+es: No se pudo conectar con el pago. Inténtalo de nuevo
+en: We couldn't connect to the payment page. Please try again
+
+es: Tu pago está confirmándose, tarda más de lo normal. Revisa tu email en unos minutos
+en: Your payment is still being confirmed and it's taking longer than usual. Check your email in a few minutes
+
+# ---------- Nuestra historia ----------
+es: Quiénes somos · Cozumel Jewelry
+en: About us · Cozumel Jewelry
+
+es: Quiénes somos
+en: About us
+
+es: Hay cosas que queremos llevar con nosotros
+en: Some things we want to carry with us
+
+es: No es una joya más. Es lo que no quieres soltar.
+en: It's not just another piece of jewelry. It's what you don't want to let go of.
+
+es: Adri dibujando diseños de joyas en un cuaderno frente al mar, junto al cartel de Cozumel
+en: Adri sketching jewelry designs in a notebook by the sea, next to the Cozumel sign
+
+es: Un nombre. Una fecha. Un lugar. O simplemente alguien.
+en: A name. A date. A place. Or simply someone.
+
+es: Escribimos eso en cada pieza — con un grabado de calidad, para que no se pierda.
+en: We write that on every piece — with a quality engraving, so it's never lost.
+
+es: Manos sosteniendo un collar de flor de Cozumel sobre la mesa de trabajo, con perlas y bocetos
+en: Hands holding a Cozumel flower necklace over the worktable, with pearls and sketches
+
+es: No todo se puede decir en voz alta
+en: Not everything can be said out loud
+
+es: Por eso lo grabamos. Un <strong>pedacito</strong> de ti, en algo que se lleva puesto todos los días.
+en: That's why we engrave it. A little <strong>piece</strong> of you, in something worn every day.
+
+es: Cuaderno con los bocetos del collar de flor junto a la pieza terminada en dorado
+en: Notebook with sketches of the flower necklace next to the finished gold piece
+
+es: Más que una joya
+en: More than jewelry
+
+es: Tú eliges qué contar
+en: You choose what to tell
+
+es: Tu nombre. Tu fecha. Tu mensaje. Personalizada con un grabado de calidad, solo para quien se la des.
+en: Your name. Your date. Your message. Personalized with a quality engraving, just for the person you give it to.
+
+es: No es una joya más. Es un pedacito de ti.
+en: It's not just another piece of jewelry. It's a little piece of you.
+
+es: Elige tu pieza →
+en: Choose your piece →
+
+# ---------- Contacto ----------
+es: Contacto · Cozumel Jewelry
+en: Contact · Cozumel Jewelry
+
+es: Si tienes una duda, quieres un grabado especial o simplemente quieres saber cuándo abrimos, escríbenos
+en: If you have a question, want a special engraving or just want to know when we open, write to us
+
+es: No rellenes este campo
+en: Don't fill in this field
+
+es: Enviar mensaje
+en: Send message
+
+es: Te contestamos al email que nos dejes
+en: We'll reply to the email you give us
+
+es: Respuesta
+en: Reply
+
+es: Te contestamos personalmente
+en: We answer you personally
+
+es: Escribe tu nombre
+en: Enter your name
+
+es: Escribe tu mensaje
+en: Write your message
+
+es: No se puede enviar ahora mismo. Escríbenos a cozumeljewel@gmail.com
+en: It can't be sent right now. Write to us at cozumeljewel@gmail.com
+
+es: Mensaje enviado. Te contestamos en cuanto lo leamos
+en: Message sent. We'll reply as soon as we read it
+
+es: No se pudo enviar. Inténtalo de nuevo o escríbenos a cozumeljewel@gmail.com
+en: It couldn't be sent. Try again or write to us at cozumeljewel@gmail.com
+
+es: Enviando…
+en: Sending…
+
+# ---------- 404 ----------
+es: Página no encontrada · Cozumel Jewelry
+en: Page not found · Cozumel Jewelry
+
+es: Esta página no existe
+en: This page doesn't exist
+
+es: El enlace que has seguido no lleva a ningún sitio
+en: The link you followed doesn't lead anywhere
+
+es: Volver al inicio
+en: Back to home
+
+# ---------- Preguntas frecuentes ----------
+es: Preguntas frecuentes · Cozumel Jewelry
+en: FAQ · Cozumel Jewelry
+
+es: Ayuda
+en: Help
+
+es: Preguntas frecuentes
+en: Frequently asked questions
+
+es: Pedidos
+en: Orders
+
+es: ¿Cómo puedo realizar un pedido?
+en: How do I place an order?
+
+es: Puedes realizar tu pedido directamente desde nuestra tienda online. Elige la joya que más te guste, selecciona las opciones disponibles y, si quieres personalizarla, añade tu grabado antes de completar la compra.
+en: You can order directly from our online store. Choose the piece you like best, select the available options and, if you want to personalize it, add your engraving before completing your purchase.
+
+es: ¿Puedo modificar o cancelar mi pedido?
+en: Can I change or cancel my order?
+
+es: Si necesitas modificar o cancelar un pedido, ponte en contacto con nosotros lo antes posible. Intentaremos ayudarte siempre que el pedido todavía no haya entrado en proceso de preparación o personalización.
+en: If you need to change or cancel an order, contact us as soon as possible. We'll do our best to help as long as the order hasn't yet gone into preparation or personalization.
+
+es: ¿Recibiré una confirmación de mi pedido?
+en: Will I get an order confirmation?
+
+es: Sí. Una vez completada la compra recibirás un email de confirmación con la información de tu pedido.
+en: Yes. Once your purchase is complete, you'll receive a confirmation email with your order details.
+
+es: Personalización
+en: Personalization
+
+es: ¿Puedo personalizar mi joya?
+en: Can I personalize my jewelry?
+
+es: Sí. Algunas de nuestras piezas pueden personalizarse con nombres, fechas o mensajes especiales. Las opciones de personalización disponibles aparecen indicadas en cada producto.
+en: Yes. Some of our pieces can be personalized with names, dates or special messages. The available personalization options are shown on each product.
+
+es: ¿Qué puedo grabar?
+en: What can I engrave?
+
+es: Puedes utilizar un nombre, una fecha, iniciales o un mensaje especial, siempre dentro de los límites de caracteres indicados para cada pieza.
+en: You can use a name, a date, initials or a special message, within the character limits shown for each piece.
+
+es: ¿Cómo debo escribir el texto del grabado?
+en: How should I write the engraving text?
+
+es: Te recomendamos revisar cuidadosamente el texto antes de finalizar el pedido. La joya se personalizará siguiendo exactamente la información que hayas proporcionado.
+en: We recommend checking your text carefully before completing your order. The piece will be personalized exactly as you've written it.
+
+es: ¿Puedo utilizar caracteres especiales o símbolos?
+en: Can I use special characters or symbols?
+
+es: Dependerá del tipo de personalización disponible en cada pieza. Si tienes una petición especial, escríbenos antes de realizar el pedido y te confirmaremos si es posible.
+en: It depends on the type of personalization available for each piece. If you have a special request, write to us before ordering and we'll confirm whether it's possible.
+
+es: ¿Puedo cambiar el grabado después de realizar el pedido?
+en: Can I change the engraving after ordering?
+
+es: Las piezas personalizadas entran en proceso de preparación específicamente para cada pedido. Por ello, si necesitas modificar el grabado, contacta con nosotros cuanto antes.
+en: Personalized pieces go into preparation specifically for each order. So if you need to change the engraving, contact us as soon as possible.
+
+es: Envíos
+en: Shipping
+
+es: ¿A dónde realizáis envíos?
+en: Where do you ship?
+
+es: A México, Estados Unidos, España y el resto de la Unión Europea, Chile, Perú, Colombia, Ecuador, Guatemala, El Salvador, Costa Rica y Argentina. Al hacer el pedido verás la lista de países disponibles. El envío, los impuestos y los aranceles ya están incluidos en el precio, salvo en Argentina, donde el IVA de importación se paga al recibir el paquete.
+en: To Mexico, the United States, Spain and the rest of the European Union, Chile, Peru, Colombia, Ecuador, Guatemala, El Salvador, Costa Rica and Argentina. When you order, you'll see the list of available countries. Shipping, taxes and duties are already included in the price, except in Argentina, where import VAT is paid when the package arrives.
+
+es: ¿Cuánto tarda en llegar mi pedido?
+en: How long will my order take to arrive?
+
+es: Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21. Para Ecuador, Guatemala, El Salvador, Costa Rica y Argentina te confirmaremos el plazo por email después de tu pedido.
+en: From the moment it leaves the workshop, in business days: United States, 6 to 12; Spain and the European Union, 6 to 10; Mexico, 8 to 12; Peru, 15 to 23; Chile and Colombia, 19 to 21. For Ecuador, Guatemala, El Salvador, Costa Rica and Argentina, we'll confirm the delivery time by email after you order.
+
+es: Las piezas personalizadas pueden necesitar un tiempo adicional de preparación antes de salir.
+en: Personalized pieces may need some extra preparation time before they ship.
+
+es: ¿Cómo puedo saber dónde está mi pedido?
+en: How can I track my order?
+
+es: Cuando tu pedido sea enviado, recibirás la información de seguimiento disponible para que puedas consultar su estado.
+en: When your order ships, you'll receive the available tracking information so you can check its status.
+
+es: ¿Qué ocurre si no estoy en casa cuando llega el pedido?
+en: What happens if I'm not home when my order arrives?
+
+es: El transportista podrá realizar un nuevo intento de entrega o indicarte cómo recoger el paquete, dependiendo del servicio utilizado y del destino.
+en: The carrier may try to deliver again or tell you how to pick up the package, depending on the service and the destination.
+
+es: ¿Qué hago si mi pedido llega dañado?
+en: What if my order arrives damaged?
+
+es: Si recibes un paquete aparentemente dañado, ponte en contacto con nosotros lo antes posible y envíanos fotografías del paquete y del producto para que podamos ayudarte a resolverlo.
+en: If you receive a package that looks damaged, contact us as soon as possible and send us photos of the package and the product so we can help you sort it out.
+
+es: Productos y materiales
+en: Products and materials
+
+es: ¿De qué materiales están hechas las joyas?
+en: What materials is the jewelry made of?
+
+es: Cada producto puede tener unas características y materiales diferentes. Puedes consultar la información específica de cada pieza en su página de producto.
+en: Each product may have different features and materials. You'll find the specific information for each piece on its product page.
+
+es: ¿Las joyas son resistentes al agua?
+en: Is the jewelry water-resistant?
+
+es: La resistencia al agua depende del material y del acabado de cada pieza. Consulta siempre las recomendaciones específicas de cada producto.
+en: Water resistance depends on each piece's material and finish. Always check the specific recommendations for each product.
+
+es: Como norma general, recomendamos evitar el contacto prolongado con agua, perfumes, cremas y productos químicos para conservar mejor la joya.
+en: As a general rule, we recommend avoiding prolonged contact with water, perfumes, creams and chemicals to keep your jewelry in better condition.
+
+es: ¿Cómo debo cuidar mi joya?
+en: How should I care for my jewelry?
+
+es: Para mantener tu joya en las mejores condiciones:
+en: To keep your jewelry in the best condition:
+
+es: Evita el contacto con perfumes, cremas y productos químicos.
+en: Avoid contact with perfumes, creams and chemicals.
+
+es: Quítatela antes de ducharte, bañarte o hacer deporte.
+en: Take it off before showering, swimming or exercising.
+
+es: Guárdala en un lugar seco cuando no la estés utilizando.
+en: Store it in a dry place when you're not wearing it.
+
+es: Evita golpes y roces innecesarios.
+en: Avoid unnecessary knocks and rubbing.
+
+es: Límpiala suavemente cuando sea necesario.
+en: Clean it gently when needed.
+
+es: Un buen cuidado ayudará a mantener su aspecto durante más tiempo.
+en: Good care will help it keep its look for longer.
+
+es: Regalos
+en: Gifts
+
+es: ¿Puedo enviar una joya directamente a otra persona?
+en: Can I send a piece directly to someone else?
+
+es: Sí. Puedes indicar una dirección de entrega diferente a la tuya durante el proceso de compra, siempre que el sistema de compra lo permita.
+en: Yes. You can enter a delivery address different from yours during checkout, as long as the checkout allows it.
+
+es: ¿Puedo añadir un mensaje para la persona que recibe el regalo?
+en: Can I add a message for the person receiving the gift?
+
+es: Si esta opción está disponible durante el proceso de compra, podrás añadir tu mensaje personalizado.
+en: If this option is available during checkout, you'll be able to add your personal message.
+
+es: ¿Qué pasa si completo la colección?
+en: What happens if I complete the collection?
+
+es: Si compras las cinco piezas de la colección, sueltas o dentro de un kit y aunque sea en varios pedidos, Adri te grabará un vídeo personal. Te lo enviaremos por email. Además, las 100 primeras compras entran en el sorteo de 5 videollamadas con Adri. <a href="terminos.html#lanzamiento">Ver condiciones</a>.
+en: If you buy all five pieces in the collection, individually or in a kit, even across several orders, Adri will record a personal video for you. We'll send it to you by email. Plus, the first 100 orders enter the raffle for 5 video calls with Adri. <a href="terminos.html#lanzamiento">See conditions</a>.
+
+es: ¿Las joyas vienen preparadas para regalar?
+en: Does the jewelry come ready to give as a gift?
+
+es: Nuestros pedidos están preparados con especial cuidado para que la experiencia de recibir una joya Cozumel sea especial.
+en: Our orders are prepared with special care so that receiving a Cozumel piece feels special.
+
+es: Consulta la información del producto o del proceso de compra para conocer las opciones de packaging disponibles.
+en: Check the product or checkout information to see the available packaging options.
+
+es: Devoluciones
+en: Returns
+
+es: ¿Puedo devolver mi pedido?
+en: Can I return my order?
+
+es: Cada pieza se fabrica y se graba a medida para ti, así que no funcionamos como una tienda de stock: no aceptamos devoluciones por cambio de opinión.
+en: Each piece is made and engraved to order for you, so we don't work like a store with stock: we don't accept returns for a change of mind.
+
+es: Aun así, queremos que quedes contento. Si algo no te convence (el tamaño, el acabado…), escríbenos dentro de los 15 días siguientes a la entrega y buscamos una solución contigo, caso por caso. No te vamos a pedir que nos envíes la pieza de vuelta.
+en: Even so, we want you to be happy. If something doesn't feel right (the size, the finish…), write to us within 15 days of delivery and we'll find a solution with you, case by case. We won't ask you to send the piece back.
+
+es: Puedes consultar el detalle en nuestros <a href="terminos.html">términos y condiciones</a>.
+en: You can read the details in our <a href="terminos.html">terms and conditions</a>.
+
+es: ¿Puedo devolver una joya personalizada?
+en: Can I return a personalized piece?
+
+es: Al llevar tu grabado, una pieza personalizada no se puede volver a vender ni reutilizar, así que no admite devolución por cambio de opinión.
+en: Because it carries your engraving, a personalized piece can't be resold or reused, so it can't be returned for a change of mind.
+
+es: Si hay un problema real con la pieza, sí: escríbenos y lo resolvemos. Y si prefieres cancelar antes de que empiece la fabricación, puedes hacerlo sin coste.
+en: If there's a real problem with the piece, yes: write to us and we'll fix it. And if you'd rather cancel before production starts, you can do so at no cost.
+
+es: ¿Qué hago si recibo un producto incorrecto o defectuoso?
+en: What if I receive the wrong or a defective product?
+
+es: Si la pieza llega con un defecto de fabricación o dañada, escríbenos dentro de los 15 días siguientes a recibirla, indicando tu número de pedido y adjuntando fotos. Conserva el embalaje original.
+en: If the piece arrives with a manufacturing defect or damaged, write to us within 15 days of receiving it, with your order number and photos attached. Keep the original packaging.
+
+es: En ese caso te reembolsamos el importe.
+en: In that case we'll refund the amount.
+
+es: ¿Cómo puedo contactar con Cozumel?
+en: How can I contact Cozumel?
+
+es: Puedes contactar con nosotros a través de los canales de contacto disponibles en nuestra web. Estaremos encantados de ayudarte con cualquier duda sobre productos, personalización, pedidos o envíos.
+en: You can reach us through the contact channels on our website. We'll be happy to help with any question about products, personalization, orders or shipping.
+
+es: Tengo una duda que no aparece aquí, ¿qué hago?
+en: My question isn't here, what should I do?
+
+es: Escríbenos. Si tu pregunta no aparece en este FAQ, estaremos encantados de ayudarte directamente.
+en: Write to us. If your question isn't in this FAQ, we'll be happy to help you directly.
+
+es: Ir a contacto
+en: Go to contact
+
+es: Contactar
+en: Contact us
+
+# ---------- Cookies ----------
+es: Cookies · Cozumel Jewelry
+en: Cookies · Cozumel Jewelry
+
+es: Política de cookies
+en: Cookie policy
+
+es: Última actualización: 29 de agosto de 2026
+en: Last updated: August 29, 2026
+
+es: Qué usamos
+en: What we use
+
+es: Cozumel Jewelry usa únicamente almacenamiento técnico, necesario para que el sitio funcione — nada de publicidad ni de analítica de terceros:
+en: Cozumel Jewelry only uses technical storage needed for the site to work — no advertising and no third-party analytics:
+
+es: <strong>Un identificador de sesión anónimo</strong>, guardado en tu navegador (no es una cookie, es almacenamiento local), para medir de forma interna qué páginas se visitan antes de una reserva.
+en: <strong>An anonymous session identifier</strong>, saved in your browser (it's not a cookie, it's local storage), to measure internally which pages are visited before an order.
+
+es: <strong>Una sesión anónima de Supabase</strong>, guardada en tu navegador (almacenamiento local) al hacer un pedido. No es una cuenta ni guarda datos personales: solo sirve para que tu pedido sea tuyo y comprobar que se ha pagado.
+en: <strong>An anonymous Supabase session</strong>, saved in your browser (local storage) when you place an order. It isn't an account and stores no personal data: it only makes sure your order is yours and checks that it's been paid.
+
+es: Cuando pagas, sales de nuestro sitio hacia la página de pago de Stripe (un dominio distinto), que gestiona sus propias cookies bajo su propia política. Cozumel Jewelry no tiene acceso a esas cookies ni a tus datos de tarjeta.
+en: When you pay, you leave our site for Stripe's payment page (a different domain), which manages its own cookies under its own policy. Cozumel Jewelry has no access to those cookies or to your card details.
+
+es: Por qué no hay un banner de aceptar cookies
+en: Why there's no cookie consent banner
+
+es: La normativa española solo exige pedir tu consentimiento para cookies no esenciales (publicitarias o de analítica). Como las únicas que usamos son estrictamente necesarias para que el sitio y el inicio de sesión funcionen, no hace falta ese aviso.
+en: Spanish law only requires asking for your consent for non-essential cookies (advertising or analytics). Since the only ones we use are strictly necessary for the site and sign-in to work, that notice isn't needed.
+
+es: Cómo gestionar las cookies
+en: How to manage cookies
+
+es: Puedes borrar o bloquear las cookies desde la configuración de tu navegador en cualquier momento. Ten en cuenta que si bloqueas el almacenamiento de tu navegador, no vas a poder completar una compra.
+en: You can delete or block cookies in your browser settings at any time. Keep in mind that if you block your browser's storage, you won't be able to complete a purchase.
+
+es: Más información
+en: More information
+
+es: Para saber qué datos recogemos y para qué los usamos, consulta nuestra <a href="privacidad.html">política de privacidad</a>.
+en: To find out what data we collect and what we use it for, see our <a href="privacidad.html">privacy policy</a>.
+
+# ---------- Aviso legal ----------
+es: Aviso legal · Cozumel Jewelry
+en: Legal notice · Cozumel Jewelry
+
+es: Titular del sitio
+en: Site owner
+
+es: <strong>Eduardo Troncoso Domínguez</strong>, autónomo<br> NIF: 45140951R<br> Domicilio: Calle Manuel Pereira, nº 2, 32003 Ourense, Galicia, España<br> Correo electrónico: <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a><br> Teléfono: +34 604 09 48 68
+en: <strong>Eduardo Troncoso Domínguez</strong>, self-employed<br> Tax ID (NIF): 45140951R<br> Address: Calle Manuel Pereira, nº 2, 32003 Ourense, Galicia, Spain<br> Email: <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a><br> Phone: +34 604 09 48 68
+
+es: Cozumel Jewelry es el nombre comercial bajo el que Eduardo Troncoso Domínguez opera esta tienda online de joyería personalizada.
+en: Cozumel Jewelry is the trade name under which Eduardo Troncoso Domínguez runs this online store for personalized jewelry.
+
+es: Objeto
+en: Purpose
+
+es: Este sitio web permite conocer, personalizar y comprar las piezas de joyería de Cozumel Jewelry. El acceso y uso del sitio atribuye la condición de usuario y supone la aceptación de este aviso legal y de las condiciones de compra descritas en los <a href="terminos.html">Términos y condiciones</a>.
+en: This website lets you discover, personalize and buy Cozumel Jewelry pieces. Accessing and using the site makes you a user and means you accept this legal notice and the purchase conditions described in the <a href="terminos.html">Terms and conditions</a>.
+
+es: Propiedad intelectual
+en: Intellectual property
+
+es: Los textos, imágenes, logotipo y diseño de este sitio son propiedad de Eduardo Troncoso Domínguez o se usan con la autorización correspondiente. No está permitida su reproducción total o parcial sin permiso previo.
+en: The texts, images, logo and design of this site belong to Eduardo Troncoso Domínguez or are used with the corresponding authorization. Reproducing them in whole or in part without prior permission is not allowed.
+
+es: Enlaces a terceros
+en: Third-party links
+
+es: El proceso de pago se realiza a través de Stripe, un servicio de terceros con sus propias condiciones y políticas de privacidad, ajenas a Cozumel Jewelry.
+en: Payment is processed through Stripe, a third-party service with its own terms and privacy policies, independent of Cozumel Jewelry.
+
+es: Para cualquier consulta relacionada con este aviso legal, puedes escribir a <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>.
+en: For any question about this legal notice, you can write to <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>.
+
+# ---------- Privacidad ----------
+es: Privacidad · Cozumel Jewelry
+en: Privacy · Cozumel Jewelry
+
+es: Política de privacidad
+en: Privacy policy
+
+es: Responsable del tratamiento
+en: Data controller
+
+es: <strong>Eduardo Troncoso Domínguez</strong>, autónomo · NIF 45140951R<br> Calle Manuel Pereira, nº 2, 32003 Ourense, Galicia, España<br> <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a> · +34 604 09 48 68
+en: <strong>Eduardo Troncoso Domínguez</strong>, self-employed · Tax ID (NIF) 45140951R<br> Calle Manuel Pereira, nº 2, 32003 Ourense, Galicia, Spain<br> <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a> · +34 604 09 48 68
+
+es: Como responsable, Cozumel Jewelry cumple con el Reglamento General de Protección de Datos (RGPD) y la normativa española aplicable.
+en: As data controller, Cozumel Jewelry complies with the General Data Protection Regulation (GDPR) and applicable Spanish law.
+
+es: Qué datos recogemos
+en: What data we collect
+
+es: Nombre, apellidos y dirección de envío, al hacer un pedido.
+en: First name, last name and shipping address, when you place an order.
+
+es: Correo electrónico y, si lo dejas, número de WhatsApp, para contactarte sobre tu pedido.
+en: Email and, if you provide it, WhatsApp number, to contact you about your order.
+
+es: El texto de personalización que eliges para el grabado.
+en: The personalization text you choose for the engraving.
+
+es: Los datos de pago los introducís directamente en Stripe: Cozumel Jewelry no los ve ni los almacena.
+en: You enter your payment details directly with Stripe: Cozumel Jewelry never sees or stores them.
+
+es: Tu correo electrónico, si te apuntas a la lista de espera del lanzamiento.
+en: Your email, if you join the launch waiting list.
+
+es: Para qué los usamos
+en: What we use it for
+
+es: Gestionar, fabricar y enviar tu pedido.
+en: To manage, make and ship your order.
+
+es: Comunicarnos contigo sobre el estado de tu pedido.
+en: To keep you updated on the status of your order.
+
+es: Mantener, mientras compras, una sesión anónima en tu navegador: no es una cuenta ni pide contraseña, solo sirve para que tu pedido sea tuyo.
+en: To keep an anonymous session in your browser while you shop: it isn't an account and doesn't ask for a password; it just makes sure your order is yours.
+
+es: Si te apuntas a la lista de espera, avisarte del lanzamiento para que puedas reservar tu pieza. Solo para eso: no te enviaremos publicidad por este motivo.
+en: If you join the waiting list, to let you know about the launch so you can reserve your piece. Only for that: we won't send you advertising because of it.
+
+es: Cumplir obligaciones legales, fiscales y contables.
+en: To meet legal, tax and accounting obligations.
+
+es: Con quién compartimos tus datos
+en: Who we share your data with
+
+es: <strong>EMANCO</strong> (nuestro fabricante, en China): recibe tu nombre, dirección de envío y el texto de personalización, lo necesario para fabricar y enviarte la pieza.
+en: <strong>EMANCO</strong> (our manufacturer, in China): receives your name, shipping address and personalization text, which is what's needed to make and ship your piece.
+
+es: <strong>Stripe</strong>: procesa el pago. Cozumel Jewelry no almacena datos de tarjetas.
+en: <strong>Stripe</strong>: processes the payment. Cozumel Jewelry doesn't store card details.
+
+es: <strong>Supabase</strong>: aloja la base de datos donde se guardan los pedidos.
+en: <strong>Supabase</strong>: hosts the database where orders are stored.
+
+es: No usamos herramientas de analítica de terceros (como Google Analytics o Meta Pixel) ni vendemos tus datos a nadie.
+en: We don't use third-party analytics tools (such as Google Analytics or Meta Pixel) and we don't sell your data to anyone.
+
+es: Cuánto tiempo los guardamos
+en: How long we keep it
+
+es: Mientras dure la relación derivada de tu pedido y, después, durante los plazos legales de conservación fiscal y contable que exige la normativa española (hasta 6 años según el Código de Comercio). El correo de la lista de espera se borra en cuanto pasa el lanzamiento, salvo que hagas un pedido.
+en: For as long as the relationship arising from your order lasts and, after that, for the legal tax and accounting retention periods required by Spanish law (up to 6 years under the Commercial Code). Waiting-list emails are deleted once the launch is over, unless you place an order.
+
+es: Tus derechos
+en: Your rights
+
+es: Puedes acceder, rectificar, suprimir, oponerte o pedir la limitación o portabilidad de tus datos escribiendo a <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>. Si no quedas satisfecho con la respuesta, puedes reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener">Agencia Española de Protección de Datos (AEPD)</a>.
+en: You can access, correct, delete, object to, or request restriction or portability of your data by writing to <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>. If you're not satisfied with the answer, you can file a complaint with the <a href="https://www.aepd.es" target="_blank" rel="noopener">Spanish Data Protection Agency (AEPD)</a>.
+
+es: Consulta el detalle en nuestra <a href="cookies.html">política de cookies</a>.
+en: See the details in our <a href="cookies.html">cookie policy</a>.
+
+# ---------- Términos y condiciones ----------
+es: Términos y condiciones · Cozumel Jewelry
+en: Terms and conditions · Cozumel Jewelry
+
+es: Quién vende
+en: Who sells
+
+es: Qué vendemos
+en: What we sell
+
+es: Piezas de joyería personalizada con grabado de alta calidad, bajo el nombre comercial Cozumel Jewelry. Los precios se indican en cada ficha de producto en euros; mientras aparezca como "precio pendiente", esa pieza todavía no está a la venta.
+en: Personalized jewelry pieces with high-quality engraving, under the trade name Cozumel Jewelry. Prices are shown in euros on each product page; while a piece shows "price to be confirmed", it isn't on sale yet.
+
+es: Cómo comprar
+en: How to buy
+
+es: Eliges la pieza, la personalizas con tu grabado y completas el pago con tarjeta a través de Stripe. Al pagar aceptas estos términos.
+en: You choose the piece, personalize it with your engraving and complete the card payment through Stripe. By paying, you accept these terms.
+
+es: Envío
+en: Shipping
+
+es: Las piezas se fabrican y se envían directamente desde nuestro taller de fabricación; no pasan por nuestras manos antes de llegarte. Enviamos a México, Estados Unidos, España y el resto de la Unión Europea, Chile, Perú, Colombia, Ecuador, Guatemala, El Salvador, Costa Rica y Argentina. Los países disponibles en cada momento son los que aparecen al hacer el pedido.
+en: Pieces are made and shipped directly from our workshop; they don't pass through our hands before reaching you. We ship to Mexico, the United States, Spain and the rest of the European Union, Chile, Peru, Colombia, Ecuador, Guatemala, El Salvador, Costa Rica and Argentina. The countries available at any time are the ones shown when you order.
+
+es: Plazo estimado de entrega desde que el pedido sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21. Para Ecuador, Guatemala, El Salvador, Costa Rica y Argentina, te confirmaremos el plazo por email después de tu pedido.
+en: Estimated delivery time from when the order leaves the workshop, in business days: United States, 6 to 12; Spain and the European Union, 6 to 10; Mexico, 8 to 12; Peru, 15 to 23; Chile and Colombia, 19 to 21. For Ecuador, Guatemala, El Salvador, Costa Rica and Argentina, we'll confirm the delivery time by email after you order.
+
+es: El envío está incluido en el precio, y también los impuestos y aranceles de importación: no tendrás que pagar nada más al recibir tu pedido.
+en: Shipping is included in the price, and so are import taxes and duties: you won't have to pay anything more when your order arrives.
+
+es: En Chile es obligatorio indicar tu RUT; en Perú, tu DNI o RUC, y en Argentina, tu CUIT o CUIL. Sin ellos la aduana no libera el paquete.
+en: In Chile you must provide your RUT; in Peru, your DNI or RUC; and in Argentina, your CUIT or CUIL. Without them, customs won't release the package.
+
+es: <strong>Envíos a Argentina.</strong> El precio incluye el envío, pero no el IVA de importación, que se paga al recibir el paquete. Para que la aduana lo libere hay que estar dado de alta en el Domicilio Fiscal Electrónico (DFE) de ARCA. Si el paquete no se puede entregar por una dirección incorrecta, por ausencia o por cualquier otro motivo ajeno a Cozumel Jewelry, se considera abandonado y no hay devolución ni reembolso.
+en: <strong>Shipping to Argentina.</strong> The price includes shipping, but not import VAT, which is paid when the package arrives. For customs to release it, you must be registered with ARCA's Electronic Tax Address (Domicilio Fiscal Electrónico, DFE). If the package can't be delivered because of a wrong address, because nobody is home or for any other reason beyond Cozumel Jewelry's control, it is considered abandoned and there is no return or refund.
+
+es: Pago
+en: Payment
+
+es: El pago se procesa de forma segura a través de Stripe. Cozumel Jewelry no almacena los datos de tu tarjeta.
+en: Payment is processed securely through Stripe. Cozumel Jewelry doesn't store your card details.
+
+es: Cancelaciones
+en: Cancellations
+
+es: Puedes cancelar tu pedido sin coste <strong>antes de que empiece la fabricación de tu pieza</strong>. Una vez iniciada la fabricación (al llevar tu grabado personalizado), ya no es posible cancelarlo. Para cancelar, escríbenos cuanto antes a <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>.
+en: You can cancel your order at no cost <strong>before production of your piece begins</strong>. Once production has started (since it carries your personalized engraving), it can no longer be canceled. To cancel, write to us as soon as possible at <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>.
+
+es: Como cada pieza se fabrica y se graba a medida para ti, no aceptamos devoluciones porque "no te convenció" del mismo modo que un producto de stock. Aun así, queremos que quedes contento con tu compra:
+en: Since each piece is made and engraved to order for you, we don't accept "it wasn't for me" returns the way a stock product would. Even so, we want you to be happy with your purchase:
+
+es: <strong>Si algo no te convence</strong> (el tamaño, el acabado, etc.), escríbenos dentro de los <strong>15 días</strong> siguientes a la entrega a <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>. Buscamos una solución caso por caso — no hay una respuesta única predefinida, y no vamos a pedirte que envíes la pieza de vuelta.
+en: <strong>If something doesn't feel right</strong> (the size, the finish, etc.), write to us within <strong>15 days</strong> of delivery at <a href="mailto:cozumeljewel@gmail.com">cozumeljewel@gmail.com</a>. We'll find a solution case by case — there's no single predefined answer, and we won't ask you to send the piece back.
+
+es: <strong>Si la pieza llega con un defecto de fabricación</strong> o dañada, tienes hasta <strong>15 días desde que la recibes</strong> para avisarnos, con fotos como prueba y conservando el embalaje original. En ese caso, te reembolsamos el importe.
+en: <strong>If the piece arrives with a manufacturing defect</strong> or damaged, you have up to <strong>15 days from receiving it</strong> to let us know, with photos as proof and keeping the original packaging. In that case, we'll refund the amount.
+
+es: Escríbenos siempre indicando tu número de pedido.
+en: Always include your order number when you write to us.
+
+es: Ventajas del lanzamiento
+en: Launch perks
+
+es: <strong>Vídeo de Adri por completar la colección.</strong> Quien compre las cinco piezas de la colección <em>Un Pedacito de ti</em> (Pulsera Dos Almas, Pulsera Mi Cielo, Brazalete Eterno, Collar Esencia y Collar Destino) recibe un vídeo personal grabado por Adriana. Cuentan las piezas compradas sueltas o dentro de un kit, en uno o en varios pedidos, siempre con el mismo email. El vídeo se envía por email en los días siguientes a completar la colección. Si se devuelve alguna pieza, la colección deja de contar como completa.
+en: <strong>A video from Adri for completing the collection.</strong> Anyone who buys all five pieces in the <em>Un Pedacito de ti</em> collection (Dos Almas Bracelet, Mi Cielo Bracelet, Eterno Cuff, Esencia Necklace and Destino Necklace) gets a personal video recorded by Adriana. Pieces bought individually or in a kit count, in one or several orders, as long as they use the same email. The video is sent by email in the days after the collection is completed. If any piece is returned, the collection no longer counts as complete.
+
+es: <strong>Sorteo de 5 videollamadas con Adri.</strong> Participan las 100 primeras compras pagadas desde el lanzamiento (2 de octubre de 2026, a las 21:00 hora de México; 3 de octubre a las 05:00 hora de España). Cada compra es una participación, tenga las piezas que tenga. Cozumel Jewelry elegirá 5 ganadores entre esas 100 compras y les avisará por el email con el que compraron; el día y la hora de cada videollamada se acuerdan con cada ganador. El premio es personal e intransferible y no se puede cambiar por dinero. Una compra cancelada o devuelta deja de participar. Para participar hay que ser mayor de edad.
+en: <strong>Raffle of 5 video calls with Adri.</strong> The first 100 paid orders from launch (October 2, 2026, at 9:00 PM Mexico time; October 3 at 5:00 AM Spain time) take part. Each order is one entry, however many pieces it has. Cozumel Jewelry will choose 5 winners among those 100 orders and notify them at the email they used to buy; the day and time of each video call are arranged with each winner. The prize is personal, non-transferable and can't be exchanged for cash. A canceled or returned order no longer takes part. You must be of legal age to take part.
+
+es: Ley aplicable
+en: Governing law
+
+es: Estos términos se rigen por la legislación española. Si eres consumidor y hay algún desacuerdo, tienes derecho a acudir a los tribunales de tu domicilio.
+en: These terms are governed by Spanish law. If you're a consumer and there's a disagreement, you have the right to go to the courts where you live.
+
+es: Cambios en estos términos
+en: Changes to these terms
+
+es: Podemos actualizar este documento si cambian nuestras condiciones de venta; la fecha de "última actualización" arriba refleja la versión vigente.
+en: We may update this document if our terms of sale change; the "last updated" date above reflects the current version.
+
+# ---------- Países que el navegador no reconoce por su nombre ----------
+# (el resto de países se traducen solos)
+es: Arabia Saudita
+en: Saudi Arabia
+
+es: Congo (Brazzaville)
+en: Congo (Brazzaville)
+
+es: Congo (Kinshasa)
+en: Congo (Kinshasa)
+
+es: Costa de Marfil
+en: Côte d'Ivoire
+
+es: Islas Malvinas
+en: Falkland Islands
+
+es: Malí
+en: Mali
+
+es: República Checa
+en: Czech Republic
+
+es: Timor Oriental
+en: Timor-Leste

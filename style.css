@@ -2864,3 +2864,31 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
   margin:-4px 0 18px; padding:12px 14px; border-left:3px solid var(--gold-deep);
   background:var(--shallow); font-size:13.5px; line-height:1.55; color:var(--ink);
 }
+
+/* =========================================================
+   SELECTOR DE IDIOMA (idioma.js lo añade a la cabecera y a la cuenta
+   atrás). En inglés la página se tapa hasta estar traducida.
+   ========================================================= */
+html.traduciendo body{visibility:hidden;}
+.selector-idioma{
+  display:flex; align-items:center; gap:2px;
+  font-family:var(--font-sans); font-size:12.5px; font-weight:500; letter-spacing:.08em;
+  color:var(--deep);
+}
+.selector-idioma button{
+  min-width:30px; min-height:44px; padding:0 4px; margin:0;
+  border:0; background:none; cursor:pointer;
+  font:inherit; letter-spacing:inherit; color:inherit; opacity:.55;
+  transition:opacity .2s;
+}
+.selector-idioma button:hover{opacity:.9;}
+.selector-idioma button.activo{opacity:1; font-weight:600; cursor:default; text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--gold-deep);}
+.selector-idioma-sep{opacity:.45;}
+body[data-page="inicio"] .site-header .selector-idioma{color:var(--hero-blanco);}
+body[data-page="inicio"] .site-header.scrolled .selector-idioma{color:var(--deep);}
+.header-acciones .selector-idioma{margin-right:-6px;}
+/* En la cuenta atrás, arriba a la derecha */
+#cuenta-atras .selector-idioma{
+  position:absolute; top:max(8px, env(safe-area-inset-top)); right:14px; z-index:2;
+  color:var(--hero-blanco);
+}
