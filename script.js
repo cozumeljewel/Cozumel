@@ -749,7 +749,12 @@ function pintarGaleria(prod, acabado) {
   pista.textContent = '';
   if (puntos) puntos.textContent = '';
 
-  const fotos = fotosDe(prod, acabado || getGrabado().acabado || 'oro');
+  // Kits: dos fotos de cada pieza, cada una en el acabado elegido para
+  // ella (productos.js, fotosPiezas). Lo demás: la galería del acabado.
+  const fotos = prod.fotosPiezas
+    ? Object.entries(prod.fotosPiezas).flatMap(([campo, porAcabado]) =>
+        porAcabado[getGrabado()[campo] || 'oro'] || porAcabado.oro || [])
+    : fotosDe(prod, acabado || getGrabado().acabado || 'oro');
 
   if (!fotos.length) {
     const vacia = document.createElement('div');
@@ -1300,7 +1305,11 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
           // principal del kit, o la única pieza si no es un kit): cuando
           // cada pieza tenga sus fotos en oro y en plata, esto se enseña
           // solo. Ver comentario en fotosDe() de más arriba.
-          if (i === 0) pintarGaleria(prod, estadoAcabado.value);
+          // En los kits con fotosPiezas, cualquier grupo cambia sus fotos
+          // (pintarGaleria lee el acabado de cada pieza de getGrabado(),
+          // que sincronizar() acaba de guardar).
+          if (prod.fotosPiezas) pintarGaleria(prod);
+          else if (i === 0) pintarGaleria(prod, estadoAcabado.value);
         });
       });
 
@@ -1358,7 +1367,9 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   // Vuelve al comportamiento original (2026-08-29, pedido del cliente):
   // una vez cerrado, no vuelve a salir. Antes salía en cada entrada
   // (MOSTRAR_SIEMPRE = true), para una promoción puntual ya terminada.
-  const MOSTRAR_SIEMPRE = false;
+  // 01/10: vuelve a salir SIEMPRE, cada vez que se entra en la colección
+  // (pedido del cliente para el lanzamiento).
+  const MOSTRAR_SIEMPRE = true;
 
   let cerrado = false;
   try { cerrado = localStorage.getItem(YA_CERRADO) === '1'; } catch (e) { /* modo privado */ }
@@ -1392,28 +1403,21 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   titulo.id = 'popup-titulo';
   titulo.textContent = 'Un Pedacito de Mí';
 
+  // 01/10: texto corto, para leerse de un vistazo.
   const p1 = document.createElement('p');
   p1.className = 'popup-texto';
-  p1.textContent = 'Los pedacitos de esta edición son limitados. No porque queramos que corras, sino porque cada pieza se graba una por una, con un acabado de calidad, y eso no se puede apurar ni multiplicar';
-
-  const p2 = document.createElement('p');
-  p2.className = 'popup-texto';
-  p2.textContent = 'Si hay un pedacito que quieres que sea tuyo, o de alguien a quien quieras dar un pedacito de ti, este es el momento de comprarlo';
+  p1.textContent = 'De Adri para ti';
 
   const badge = document.createElement('p');
   badge.className = 'popup-badge';
-  badge.textContent = 'Unidades limitadas · Sorteo de 5 videollamadas con Adri en las 100 primeras compras';
+  badge.textContent = 'Sorteo de 5 videollamadas con Adri en las 100 primeras compras';
 
   const cierre = document.createElement('p');
   cierre.className = 'popup-cierre';
   cierre.textContent = 'Regala un pedacito de ti';
 
-  const cta = document.createElement('a');
-  cta.className = 'btn btn-primary popup-cta';
-  cta.href = 'productos.html';
-  cta.textContent = 'Descubrir ahora';
 
-  caja.append(cerrar, olas, eyebrow, titulo, p1, p2, badge, cierre, cta);
+  caja.append(cerrar, olas, eyebrow, titulo, p1, badge, cierre);
   capa.appendChild(caja);
 
   const antesDelPopup = document.activeElement;
@@ -1428,7 +1432,6 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   function porTecla(e) { if (e.key === 'Escape') ocultar(); }
 
   cerrar.addEventListener('click', ocultar);
-  cta.addEventListener('click', ocultar);           // al ir a la colección, ya no reaparece
   capa.addEventListener('click', e => { if (e.target === capa) ocultar(); });
   document.addEventListener('keydown', porTecla);
 
@@ -2145,9 +2148,13 @@ if (ctaReservar) {
 
   let yaHizoScroll = false;
   let ctaOriginalVisible = true;
+  // Mientras los botones de acabado (oro / plata) estén en pantalla, la
+  // barra no sale: en el móvil tapaba el del segundo grupo de los kits
+  // ("Acabado de la pulsera") y no se podía pulsar (01/10).
+  let acabadoVisible = false;
 
   const actualizar = () => {
-    const debeMostrarse = yaHizoScroll && !ctaOriginalVisible;
+    const debeMostrarse = yaHizoScroll && !ctaOriginalVisible && !acabadoVisible;
     if (debeMostrarse === sticky.classList.contains('visible')) return;
     if (debeMostrarse) {
       const titulo = document.getElementById('producto-titulo');
@@ -2163,6 +2170,14 @@ if (ctaReservar) {
     ctaOriginalVisible = entradas[0].isIntersecting;
     actualizar();
   }).observe(ctaOriginal);
+
+  const acabados = document.getElementById('acabado-contenedor');
+  if (acabados) {
+    new IntersectionObserver((entradas) => {
+      acabadoVisible = entradas[0].isIntersecting;
+      actualizar();
+    }).observe(acabados);
+  }
 
   window.addEventListener('scroll', () => {
     yaHizoScroll = true;

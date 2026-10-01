@@ -2892,3 +2892,14 @@ body[data-page="inicio"] .site-header.scrolled .selector-idioma{color:var(--deep
   position:absolute; top:max(8px, env(safe-area-inset-top)); right:14px; z-index:2;
   color:var(--hero-blanco);
 }
+
+/* Banner fijo del sorteo en la colección (productos.html) */
+.coleccion-sorteo{
+  display:block; width:fit-content; max-width:100%; box-sizing:border-box;
+  margin:18px auto 0; padding:11px 22px;
+  border:1px solid var(--gold-deep); border-radius:24px;
+  background:rgba(198,166,100,.10);
+  font-size:13px; letter-spacing:.04em; line-height:1.45; text-align:center;
+  color:#7A5F2A; text-wrap:balance;
+}
+.coleccion-sorteo strong{font-weight:600;}

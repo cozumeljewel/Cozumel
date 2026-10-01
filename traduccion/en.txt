@@ -231,6 +231,12 @@ en: Give a little piece of you
 es: Descubrir ahora
 en: Discover now
 
+es: De Adri para ti
+en: From Adri, for you
+
+es: Sorteo de 5 videollamadas con Adri en las 100 primeras compras
+en: 5 video calls with Adri raffled among the first 100 orders
+
 es: ¿Hablamos?
 en: Let's talk?
 
@@ -261,6 +267,9 @@ en: View piece →
 
 es: Personalizar →
 en: Personalize →
+
+es: ✦ Sorteo de <strong>5 videollamadas con Adri</strong> en las 100 primeras compras ✦
+en: ✦ <strong>5 video calls with Adri</strong> raffled among the first 100 orders ✦
 
 es: Nuestros kits
 en: Our kits

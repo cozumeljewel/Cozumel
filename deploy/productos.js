@@ -306,6 +306,21 @@ const PRODUCTOS = [
     // forman: de cada una, su foto de portada (la 4, y la 5 del collar) y
     // dos de la pieza puesta (1 y 2). Ocho en total.
     fotoPortada: ['img/kit-pedacito-2.jpg', 'img/collar-esencia-oro-6.jpg', 'img/dos-almas-oro-4.jpg'],
+    // Galería de la ficha (01/10): dos fotos del collar y dos de la
+    // pulsera, cada pareja en el acabado elegido para ESA pieza (el collar
+    // puede ir en oro y la pulsera en plata). Las claves son los "campo"
+    // de acabados, en el orden en que se enseñan. "fotos" queda solo de
+    // respaldo.
+    fotosPiezas: {
+      acabado__collar_esencial: {
+        oro: ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-oro-1.jpg'],
+        plata: ['img/collar-esencia-plata-6.jpg', 'img/collar-esencia-plata-1.jpg'],
+      },
+      acabado__pulsera_vinculo: {
+        oro: ['img/dos-almas-oro-4.jpg', 'img/dos-almas-oro-1.jpg'],
+        plata: ['img/dos-almas-plata-4.jpg', 'img/dos-almas-plata-1.jpg'],
+      },
+    },
     fotos: {
       oro: [
         'img/kit-pedacito-2.jpg',
@@ -364,6 +379,18 @@ const PRODUCTOS = [
     // una pieza concreta: aquí cabe porque este kit tiene una foto menos
     // (el Collar Esencia del otro aporta también su número 5).
     fotoPortada: ['img/kit-consentida-1.jpg', 'img/collar-destino-oro-4.jpg', 'img/mi-cielo-oro-5.jpg'],
+    // Igual que el otro kit: dos del collar y dos de la pulsera, cada una
+    // en su acabado.
+    fotosPiezas: {
+      acabado__collar_flor_natal: {
+        oro: ['img/collar-destino-oro-4.jpg', 'img/collar-destino-oro-1.jpg'],
+        plata: ['img/collar-destino-plata-4.jpg', 'img/collar-destino-plata-1.jpg'],
+      },
+      acabado__pulsera_nombre: {
+        oro: ['img/mi-cielo-oro-5.jpg', { src: 'img/mi-cielo-oro-1.jpg', pos: '9% center' }],
+        plata: ['img/mi-cielo-plata-5.jpg', 'img/mi-cielo-plata-1.jpg'],
+      },
+    },
     fotos: {
       oro: [
         'img/kit-consentida-1.jpg',
