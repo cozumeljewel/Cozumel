@@ -2821,6 +2821,7 @@ html.prelanzamiento body > *:not(#cuenta-atras){display:none !important;}
 }
 .ca-texto{margin:20px auto 0; max-width:40ch; font-size:16px; line-height:1.5;}
 .ca-texto span{display:block; text-wrap:balance;}
+.ca-fecha span{white-space:nowrap;}
 .ca-extra{
   margin:12px auto 0; max-width:38ch;
   font-size:14.5px; line-height:1.5; color:rgba(246,241,232,.92);

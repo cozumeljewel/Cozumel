@@ -1,6 +1,7 @@
 /* =========================================================
    COZUMEL · CUENTA ATRÁS DEL LANZAMIENTO
-   Hasta el 2 de octubre de 2026 a las 21:00 (hora de España) la web
+   Hasta el 2 de octubre de 2026 a las 21:00 (hora de México; 05:00 del
+   3/10 en España) la web
    entera queda tapada por esta pantalla: la foto de Adriana atenuada de
    fondo, el nombre, la cuenta atrás y un formulario para dejar el email y
    reservar una de las unidades limitadas. Nada más.
@@ -17,8 +18,9 @@
      desde la web. Se exporta desde el Table Editor.
    ========================================================= */
 (function () {
-  // 21:00 en España el 2 de octubre = horario de verano (UTC+2).
-  const LANZAMIENTO = new Date('2026-10-02T21:00:00+02:00').getTime();
+  // 21:00 en México (Ciudad de México, UTC-6 todo el año) el 2 de octubre
+  // = 05:00 del 3 de octubre en España (horario de verano, UTC+2).
+  const LANZAMIENTO = new Date('2026-10-02T21:00:00-06:00').getTime();
   const CLAVE_VER = 'cozumel_ver_tienda';
 
   const params = new URLSearchParams(location.search);
@@ -43,11 +45,18 @@
   // mano, por si cambia algún horario de verano). Si quien mira está en
   // otra zona, se añade también su hora.
   const fmtHora = (tz) => new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(LANZAMIENTO);
-  const horaEspana = (() => { try { return fmtHora('Europe/Madrid'); } catch (_) { return '21:00'; } })();
-  const horaMexico = (() => { try { return fmtHora('America/Mexico_City'); } catch (_) { return '13:00'; } })();
+  const fmtDia = (tz) => new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long', timeZone: tz }).format(LANZAMIENTO);
+  // Hora con su día solo si el día no es el del lanzamiento en México.
+  const conDia = (tz) => {
+    const dia = fmtDia(tz);
+    return dia === diaMexico ? fmtHora(tz) : fmtHora(tz) + ' del ' + dia;
+  };
+  const diaMexico = (() => { try { return fmtDia('America/Mexico_City'); } catch (_) { return '2 de octubre'; } })();
+  const horaMexico = (() => { try { return fmtHora('America/Mexico_City'); } catch (_) { return '21:00'; } })();
+  const horaEspana = (() => { try { return conDia('Europe/Madrid'); } catch (_) { return '05:00 del 3 de octubre'; } })();
   const horaLocal = (() => {
     try {
-      const local = fmtHora(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      const local = conDia(Intl.DateTimeFormat().resolvedOptions().timeZone);
       return local === horaEspana || local === horaMexico ? '' : ' · ' + local + ' en tu hora';
     } catch (_) { return ''; }
   })();
@@ -63,7 +72,7 @@
       <div class="ca-contenido">
         <h1 class="ca-logo" id="ca-titulo"><img src="img/hero-logo-texto-1.png" alt="Cozumel Jewelry" width="1000" height="312"></h1>
         <p class="ca-edicion">Un Pedacito <em>de ti</em></p>
-        <p class="ca-fecha">2 de octubre<br>${horaEspana} en España · ${horaMexico} en México${horaLocal}</p>
+        <p class="ca-fecha">${diaMexico}<br><span>${horaMexico} en México</span> · <span>${horaEspana} en España</span>${horaLocal ? ' · <span>' + horaLocal.slice(3) + '</span>' : ''}</p>
         <div class="ca-reloj" aria-live="off">
           <div><span data-u="d">00</span><small>días</small></div>
           <div><span data-u="h">00</span><small>horas</small></div>
