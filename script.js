@@ -1370,16 +1370,13 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   const YA_CERRADO = 'popupPreventaCerrado';
   if (CURRENT_PAGE !== 'productos') return;
 
-  // Vuelve al comportamiento original (2026-08-29, pedido del cliente):
-  // una vez cerrado, no vuelve a salir. Antes salía en cada entrada
-  // (MOSTRAR_SIEMPRE = true), para una promoción puntual ya terminada.
-  // 01/10: vuelve a salir SIEMPRE, cada vez que se entra en la colección
-  // (pedido del cliente para el lanzamiento).
-  const MOSTRAR_SIEMPRE = true;
-
+  // 01/10: una vez por SESIÓN. Sale al entrar en la colección; si se ve
+  // una vez, no vuelve a salir al ir al carrito y volver. Al cerrar el
+  // navegador o la pestaña (nueva sesión) vuelve a salir.
   let cerrado = false;
-  try { cerrado = localStorage.getItem(YA_CERRADO) === '1'; } catch (e) { /* modo privado */ }
-  if (cerrado && !MOSTRAR_SIEMPRE) return;
+  try { cerrado = sessionStorage.getItem(YA_CERRADO) === '1'; } catch (e) { /* modo privado */ }
+  if (cerrado) return;
+  try { sessionStorage.setItem(YA_CERRADO, '1'); } catch (e) { /* modo privado */ }
 
   const capa = document.createElement('div');
   capa.className = 'popup-capa';
@@ -1439,7 +1436,6 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   const antesDelPopup = document.activeElement;
 
   function ocultar() {
-    try { localStorage.setItem(YA_CERRADO, '1'); } catch (e) { /* modo privado */ }
     capa.remove();
     document.body.style.overflow = '';
     document.removeEventListener('keydown', porTecla);
