@@ -99,7 +99,12 @@
   const SALTAR = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'SVG', 'TEXTAREA', 'CODE']);
   const EN_LINEA = new Set(['A', 'STRONG', 'EM', 'B', 'I', 'BR', 'SPAN', 'SMALL', 'SUP', 'SUB', 'U']);
   const ATRIBUTOS = ['alt', 'placeholder', 'aria-label', 'title'];
-  const norm = (s) => s.replace(/ /g, ' ').replace(/\s+/g, ' ').trim();
+  // Netlify publica los enlaces "bonitos": en la web real href="terminos.html"
+  // llega como href="/terminos" (y "/" para el inicio). Se igualan las dos
+  // formas para que los párrafos con enlace se encuentren en el diccionario.
+  const norm = (s) => s.replace(/ /g, ' ').replace(/\s+/g, ' ').trim()
+    .replace(/href="\/"/g, 'href="index.html"')
+    .replace(/href="\/([\w-]+)(#[^"]*)?"/g, (m, pag, ancla) => `href="${pag}.html${ancla || ''}"`);
 
   let textos = null;
   let patrones = [];

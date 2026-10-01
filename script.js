@@ -2530,6 +2530,15 @@ function sincronizarCampoDocumento() {
     document.getElementById('r-documento-label').textContent = doc.etiqueta;
     input.placeholder = doc.ejemplo;
   }
+  // CUIT/CUIL: 11 dígitos, con o sin guiones (01/10). Con uno mal escrito
+  // la aduana no libera el paquete y en Argentina no hay devolución.
+  if (codigo === 'AR') {
+    input.pattern = '[^0-9]*([0-9][^0-9]*){11}';
+    input.title = 'El CUIT o CUIL tiene 11 dígitos';
+  } else {
+    input.removeAttribute('pattern');
+    input.removeAttribute('title');
+  }
 }
 
 if (reservaForm) {

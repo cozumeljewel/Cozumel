@@ -28,7 +28,9 @@
    PAIS_A_MERCADO, cae en US (dólares), como acordado. */
 const MERCADOS = {
   MX: { pais: 'México',          moneda: 'MXN', locale: 'es-MX', simbolo: '$',  maestro: true },
-  US: { pais: 'Estados Unidos',  moneda: 'USD', locale: 'en-US', simbolo: '$'  },
+  // "EE. UU." y no "Estados Unidos": en la cabecera del móvil no cabía
+  // (se leía "Estados Unido", sin la moneda). 01/10.
+  US: { pais: 'EE. UU.',         moneda: 'USD', locale: 'en-US', simbolo: '$'  },
   ES: { pais: 'España',          moneda: 'EUR', locale: 'es-ES', simbolo: '€'  },
   CL: { pais: 'Chile',           moneda: 'CLP', locale: 'es-CL', simbolo: '$'  },
   PE: { pais: 'Perú',            moneda: 'PEN', locale: 'es-PE', simbolo: 'S/' },

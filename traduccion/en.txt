@@ -1620,3 +1620,19 @@ en: Czech Republic
 
 es: Timor Oriental
 en: Timor-Leste
+
+# ---------- Auditoría del 01/10 ----------
+# Línea del carrito de los kits: "Collar: Bañado en oro · Pulsera: Plateado"
+es: Collar
+en: Necklace
+
+es: Pulsera
+en: Bracelet
+
+# Aviso si el CUIT/CUIL no tiene 11 dígitos (Argentina)
+es: El CUIT o CUIL tiene 11 dígitos
+en: The CUIT or CUIL has 11 digits
+
+# Selector de moneda (mercado de EE. UU.)
+es: EE. UU.
+en: USA

@@ -2638,8 +2638,12 @@ footer{
 .menu-movil-nav .mercado-selector{margin-top:18px;}
 .menu-movil-nav .mercado-select{font-size:14px; padding-left:0;}
 @media (max-width:420px){
-  .mercado-select{max-width:96px; font-size:11.5px;}
+  /* Sin tope fijo de 96 px (01/10): cortaba "México · MXN" y
+     "Argentina · USD". El select mide lo que su opción más larga. */
+  .mercado-select{max-width:120px; font-size:11.5px;}
 }
+/* En el menú móvil hay sitio de sobra: nunca se recorta. */
+.menu-movil-nav .mercado-select{max-width:none;}
 
 /* ---------- ARMA TU KIT · selector (productos.html) ----------
    Dos filas de opciones (pulseras y colgantes), cada tarjeta a un tercio
@@ -2919,4 +2923,19 @@ body[data-page="historia"] .historia-hero h1,
 body[data-page="historia"] .qs-capitulo-texto h2,
 body[data-page="historia"] .eyebrow{
   font-family:var(--font-serif); font-weight:400;
+}
+
+/* Móviles muy estrechos (320-374 px, p. ej. iPhone SE de 1.ª gen.): con el
+   selector de moneda en la cabecera, el botón del menú se salía 25 px de
+   la pantalla. Solo se aprietan los márgenes; nada cambia de tamaño. */
+@media (max-width:374px){
+  .header-inner{padding-left:14px; padding-right:14px;}
+  .header-acciones{gap:8px;}
+  .logo{gap:6px;}
+  .header-acciones .mercado-select{font-size:10.5px; padding-right:14px; letter-spacing:.02em;}
+}
+/* Por debajo de 340 px, en las páginas con moneda en la cabecera, no cabe
+   el nombre junto a la moneda: queda el emblema. */
+@media (max-width:339px){
+  body:is([data-page="productos"], [data-page="personalizar"], [data-page="arma-kit"], [data-page="comprar"]) .logo-word{display:none;}
 }

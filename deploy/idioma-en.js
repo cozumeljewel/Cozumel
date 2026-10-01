@@ -528,7 +528,11 @@ COZUMEL_EN_CARGADO({
  "Islas Malvinas": "Falkland Islands",
  "Malí": "Mali",
  "República Checa": "Czech Republic",
- "Timor Oriental": "Timor-Leste"
+ "Timor Oriental": "Timor-Leste",
+ "Collar": "Necklace",
+ "Pulsera": "Bracelet",
+ "El CUIT o CUIL tiene 11 dígitos": "The CUIT or CUIL has 11 digits",
+ "EE. UU.": "USA"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
