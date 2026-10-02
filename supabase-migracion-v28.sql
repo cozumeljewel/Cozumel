@@ -327,6 +327,7 @@ begin
         '<td align="center" style="background:#F8F3E9; border:1px solid #C6A664; border-radius:4px; padding:18px 20px;">' ||
         '<div style="font-family:Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#B08A45; padding-bottom:8px;">Solo para quienes ya tienen su pedacito</div>' ||
         '<div style="font-family:Georgia,''Times New Roman'',serif; font-size:17px; line-height:1.5; color:#7A5F2A;">Hazte con las <strong>5 piezas de la colección</strong> y Adri te enviará un <strong>regalo sorpresa</strong></div>' ||
+        '<div style="font-family:Helvetica,Arial,sans-serif; font-size:12.5px; color:#7A8586; padding-top:8px;">Valen en un solo pedido o sumando varios</div>' ||
         '</td></tr></table>' ||
         '</td></tr>' ||
 
