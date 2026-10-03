@@ -274,6 +274,12 @@ en: The collection
 es: Cinco piezas personalizables
 en: Five personalizable pieces
 
+es: Cinco piezas personalizables para regalar a quien más quieres
+en: Five personalizable pieces to gift to the ones you love most
+
+es: Joyas grabadas para regalar<br>a quien más quieres
+en: Engraved jewelry to gift<br>to the ones you love most
+
 es: Ver producto →
 en: View product →
 

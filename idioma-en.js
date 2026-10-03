@@ -87,6 +87,8 @@ COZUMEL_EN_CARGADO({
  "Cinco piezas, edición de lanzamiento. Unidades limitadas": "Five pieces, launch edition. Limited units",
  "La colección": "The collection",
  "Cinco piezas personalizables": "Five personalizable pieces",
+ "Cinco piezas personalizables para regalar a quien más quieres": "Five personalizable pieces to gift to the ones you love most",
+ "Joyas grabadas para regalar<br>a quien más quieres": "Engraved jewelry to gift<br>to the ones you love most",
  "Ver producto →": "View product →",
  "Ver pieza →": "View piece →",
  "Personalizar →": "Personalize →",

@@ -742,6 +742,13 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 }
 .hero-cta:hover{background:var(--deep); border-color:var(--deep); color:var(--foam);}
 .hero-cta-flecha{flex:none; font-size:16px; line-height:1;}
+/* Línea de "para regalar" justo encima del botón. */
+.hero-abajo{display:flex; flex-direction:column; align-items:center; gap:18px; width:100%;}
+.hero-claim{
+  margin:0; font-family:var(--font-serif); font-style:italic; font-weight:400;
+  font-size:21px; line-height:1.35; color:var(--foam);
+  text-shadow:0 1px 3px rgba(10,30,40,.55), 0 2px 18px rgba(10,30,40,.6);
+}
 
 @keyframes heroMediaFade{ from{opacity:0;} to{opacity:1;} }
 @keyframes heroRise{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
@@ -749,6 +756,7 @@ body[data-page="inicio"] .site-header:not(.scrolled) .header-carrito-badge{
 @media (prefers-reduced-motion:no-preference){
   .hero-media{animation:heroMediaFade 1.4s ease-out both;}
   .hero-logo{animation:heroRise .9s ease-out .25s both;}
+  .hero-claim{animation:heroRise .8s ease-out .45s both;}
   .hero-cta{animation:heroRise .8s ease-out .6s both;}
 }
 
