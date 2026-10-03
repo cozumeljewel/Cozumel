@@ -93,6 +93,7 @@ COZUMEL_EN_CARGADO({
  "Ver pieza →": "View piece →",
  "Personalizar →": "Personalize →",
  "✦ Sorteo de <strong>5 videollamadas con Adri</strong> en las 100 primeras compras ✦": "✦ <strong>5 video calls with Adri</strong> raffled among the first 100 orders ✦",
+ "✦ Tu compra entra en el <strong>sorteo de 5 videollamadas con Adri</strong>. Solo para las 100 primeras compras: aún estás a tiempo ✦": "✦ Your order enters the <strong>raffle for 5 video calls with Adri</strong>. Only for the first 100 orders: there is still time ✦",
  "Nuestros kits": "Our kits",
  "Arma tu kit": "Build your kit",
  "Caja de regalo de Cozumel abierta con un collar y una pulsera dorados, junto a la tarjeta y la caja con lazo": "Open Cozumel gift box with a gold necklace and bracelet, next to the card and the box with a bow",

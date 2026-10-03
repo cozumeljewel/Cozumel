@@ -2932,6 +2932,7 @@ body[data-page="inicio"] .site-header.scrolled .selector-idioma{color:var(--deep
   color:#7A5F2A; text-wrap:balance;
 }
 .coleccion-sorteo strong{font-weight:600;}
+.compra-sorteo{margin:22px auto 6px; font-size:14px;}
 
 /* 01/10: los titulares y rótulos de Nuestra historia, en la serif fina del
    resto de la web (Playfair 400), no en Lora negrita: se veían más
