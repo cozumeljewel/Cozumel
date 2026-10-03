@@ -363,6 +363,19 @@ if (CURRENT_PAGE === 'inicio' && sessionStorage.getItem('viewTracked') !== '1') 
   trackEvent('view', null);
 }
 
+// Pasos intermedios (03/10): llegada a la colección y a la ficha de una
+// pieza. Sin ellos no se sabía si la gente se iba en la portada, en la
+// colección o al ver la pieza. Una vez por sesión (la colección) o una vez
+// por pieza (las fichas), como el resto del embudo.
+if (CURRENT_PAGE === 'productos' && sessionStorage.getItem('coleccionTracked') !== '1') {
+  sessionStorage.setItem('coleccionTracked', '1');
+  trackEvent('coleccion_vista', null);
+}
+if (CURRENT_PAGE === 'arma-kit' && sessionStorage.getItem('pv:kit_personalizado') !== '1') {
+  sessionStorage.setItem('pv:kit_personalizado', '1');
+  trackEvent('producto_visto', 'kit_personalizado');
+}
+
 // Los pasos siguientes se cuentan una vez por producto, no una vez por sesión:
 // si alguien mira dos piezas, queremos verlo en los dos embudos.
 function trackOncePorProducto(prefijo, evento) {
@@ -1026,6 +1039,7 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
   const anterior = sessionStorage.getItem('productoId');
   if (anterior && anterior !== prod.id) sessionStorage.removeItem('grabado');
   setProductoElegido(prod);
+  trackOncePorProducto('pv', 'producto_visto');
 
   // Cabecera y descripción del producto
   const esPersonalizable = prod.campos.length > 0;
