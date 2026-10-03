@@ -151,16 +151,6 @@
         <h2 id="producto-titulo">Cargando…</h2>
       </section>
 
-      <!-- ===== 2. PRECIO ===== -->
-      <div class="price-placeholder">
-        <span>Precio</span>
-        <strong id="resumen-precio">— · — €</strong>
-        <p class="resumen-ahorro" id="resumen-ahorro" hidden></p>
-        <span class="olas price-olas" aria-hidden="true"></span>
-        <em id="resumen-precio-nota">pendiente de confirmar</em>
-        <p class="compra-envio">Envío incluido</p>
-      </div>
-
       <!-- ===== 4. DESCRIPCIÓN ===== -->
       <section class="producto-detalle">
         <p class="producto-desc" id="producto-desc"></p>
@@ -243,6 +233,17 @@
       <!-- ===== 6. COMPRA: CTA ===== -->
       <section class="final-cta">
         <h2>Ya solo falta regalarlo</h2>
+        <!-- Precio al final, con la pieza ya personalizada (03/10): antes
+             iba arriba, bajo el nombre. Sigue visible antes de añadir al
+             carrito, como exige la ley. -->
+        <div class="price-placeholder">
+          <span>Precio</span>
+          <strong id="resumen-precio">— · — €</strong>
+          <p class="resumen-ahorro" id="resumen-ahorro" hidden></p>
+          <span class="olas price-olas" aria-hidden="true"></span>
+          <em id="resumen-precio-nota">pendiente de confirmar</em>
+          <p class="compra-envio">Envío incluido</p>
+        </div>
         <a class="btn btn-primary btn-lg" href="comprar.html" id="cta-reservar">
           <span class="cta-spinner" aria-hidden="true"></span>
           <span class="cta-texto">Regálale un pedacito de ti</span>

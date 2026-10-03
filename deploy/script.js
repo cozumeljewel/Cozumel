@@ -641,7 +641,9 @@ function crearTarjetaProducto(prod) {
   acabado.className = 'producto-acabado';
   acabado.textContent = 'Bañado en oro';
 
-  body.append(h3, acabado, precio, cta);
+  // Sin precio en la colección (03/10): se ve al final de la ficha, con la
+  // pieza ya personalizada.
+  body.append(h3, acabado, cta);
   card.append(media, body);
   return card;
 }
@@ -2187,7 +2189,7 @@ if (ctaReservar) {
       const titulo = document.getElementById('producto-titulo');
       const precio = document.getElementById('resumen-precio');
       if (nombreEl) nombreEl.textContent = titulo ? titulo.textContent : '';
-      if (precioEl) precioEl.textContent = precio ? precio.textContent : '';
+      if (precioEl) precioEl.textContent = '';  // el precio, solo al final (03/10)
     }
     sticky.classList.toggle('visible', debeMostrarse);
     sticky.setAttribute('aria-hidden', String(!debeMostrarse));

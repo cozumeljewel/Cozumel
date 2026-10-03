@@ -1700,6 +1700,13 @@ body[data-page="historia"] .historia::before{content:none;}
   color:var(--sea-dark); font-weight:500;
 }
 .final-cta .price-placeholder{margin:0 auto 30px;}
+/* Sobre el fondo oscuro de la sección final (desde el 03/10 el precio va
+   aquí): colores claros, si no el verde del precio no se leía. */
+.final-cta .price-placeholder > span{color:rgba(255,255,255,.7);}
+.final-cta .price-placeholder strong{color:#fff;}
+.final-cta .price-placeholder .compra-envio{color:var(--gold);}
+.final-cta .price-placeholder .resumen-ahorro{color:rgba(255,255,255,.85);}
+.final-cta .price-placeholder .price-olas{opacity:.8;}
 
 /* ---------- BANDA DE GRABADO ---------- */
 .grabado-banda{
