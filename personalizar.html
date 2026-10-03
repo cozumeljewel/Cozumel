@@ -233,10 +233,11 @@
       <!-- ===== 6. COMPRA: CTA ===== -->
       <section class="final-cta">
         <h2>Ya solo falta regalarlo</h2>
-        <!-- Precio al final, con la pieza ya personalizada (03/10): antes
-             iba arriba, bajo el nombre. Sigue visible antes de añadir al
-             carrito, como exige la ley. -->
-        <div class="price-placeholder">
+        <!-- Precio oculto en la ficha (03/10, decisión de negocio): se ve
+             por primera vez en comprar.html, en el carrito con el total,
+             justo encima del formulario de datos. Se deja el bloque (oculto)
+             porque script.js lo rellena y lo usa para saber si hay precio. -->
+        <div class="price-placeholder" hidden>
           <span>Precio</span>
           <strong id="resumen-precio">— · — €</strong>
           <p class="resumen-ahorro" id="resumen-ahorro" hidden></p>

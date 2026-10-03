@@ -1134,7 +1134,8 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
     // moneda del mercado activo. Solo se enseña si sale positivo.
     const ahorro = (prod.piezas && prod.piezas.length) ? ahorroKit(prod, prod.piezas) : null;
     const reclamo = ahorro
-      ? 'Ahorras ' + ahorro.texto + ' (' + ahorro.porcentaje + ' %): por separado, las dos piezas cuestan ' + ahorro.sueltoTexto
+      // Solo el porcentaje (03/10): los importes se ven en comprar.html.
+      ? 'Ahorras un ' + ahorro.porcentaje + ' % frente a comprar las dos piezas por separado'
       : prod.oferta;
     if (reclamo) {
       const oferta = document.createElement('p');
@@ -2012,7 +2013,8 @@ if (ctaReservar) {
       const listo = elegido.pulsera && elegido.colgante;
       continuar.classList.toggle('is-disabled', !listo);
       const precioKit = productoKit ? precioTexto(productoKit) : null;
-      continuar.textContent = listo && precioKit ? 'Ir a pagar · ' + precioKit : 'Arma tu kit';
+      // Sin precio en el botón (03/10): se ve en comprar.html.
+      continuar.textContent = listo && precioKit ? 'Ir a pagar' : 'Arma tu kit';
       if (listo) {
         continuar.removeAttribute('aria-disabled');
         const txt = { oro: 'oro', plata: 'plata' };
@@ -2021,7 +2023,7 @@ if (ctaReservar) {
           : null;
         ayuda.textContent = elegido.pulsera.nombre + ' en ' + txt[material.pulsera]
           + ' + ' + elegido.colgante.nombre + ' en ' + txt[material.colgante]
-          + (ahorro ? ' · Ahorras ' + ahorro.texto + ' frente a comprarlas por separado (' + ahorro.sueltoTexto + ')' : '');
+          ;  // sin importes aquí (03/10): el precio se ve en comprar.html
       } else {
         continuar.setAttribute('aria-disabled', 'true');
         ayuda.textContent = !elegido.pulsera && !elegido.colgante
