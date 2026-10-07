@@ -699,6 +699,14 @@ const FOTOS_TARJETA_V2 = {
 (function () {
   const rejilla = document.getElementById('v2-grid');
   if (!rejilla || typeof PRODUCTOS === 'undefined') return;
+
+  // Colección activa (MEN por defecto). Todavía no hay piezas de hombre,
+  // así que las dos enseñan lo mismo; cuando existan, filtrar aquí por
+  // prod.coleccion.
+  const coleccion = new URLSearchParams(location.search).get('c') === 'woman' ? 'woman' : 'men';
+  document.querySelectorAll('.v2-colecciones a').forEach(a => {
+    if (a.dataset.coleccion === coleccion) a.setAttribute('aria-current', 'page');
+  });
   PRODUCTOS.forEach(prod => {
     const esKitLibre = prod.id === 'kit_personalizado';
     if (prod.oculto && !esKitLibre) return;
@@ -1745,7 +1753,8 @@ if (navToggle && menuMovil) {
 /* ---------- Marcar el enlace de la página activa ---------- */
 const currentFile = location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav a, .footer-nav a, .menu-movil-nav a').forEach(a => {
-  if (a.getAttribute('href') === currentFile) a.setAttribute('aria-current', 'page');
+  // Sin el ?c=... (SHOP lleva a productos.html?c=men)
+  if ((a.getAttribute('href') || '').split('?')[0] === currentFile) a.setAttribute('aria-current', 'page');
 });
 
 

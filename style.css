@@ -3246,3 +3246,14 @@ body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
   body.v2 .qs-capitulo-texto{padding:10vh 8vw; max-width:none;}
   body.v2 .qs-capitulo--invertido{grid-template-columns:1fr 1fr;}
 }
+
+/* Shop: colecciones MEN / WOMAN arriba a la izquierda */
+.v2-colecciones{display:flex; gap:28px; margin:0 0 24px;}
+.v2-colecciones a{
+  font-family:var(--font-sans); font-size:12px; font-weight:500; letter-spacing:.2em;
+  text-transform:uppercase; text-decoration:none; color:#8A8783; padding-bottom:6px;
+  border-bottom:1px solid transparent; transition:color .25s, border-color .25s;
+}
+.v2-colecciones a:hover{color:var(--v2-carbon);}
+.v2-colecciones a[aria-current="page"]{color:var(--v2-carbon); border-bottom-color:var(--v2-carbon);}
+@media (min-width:900px){ .v2-colecciones{margin-bottom:40px; gap:36px;} }

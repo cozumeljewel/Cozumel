@@ -45,7 +45,7 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="nav" id="nav" aria-label="Principal">
-        <a href="productos.html">Shop</a>
+        <a href="productos.html?c=men">Shop</a>
         <a href="historia.html">Cozumel</a>
         <a href="faq.html">FAQ</a>
       </nav>
@@ -72,7 +72,7 @@
         <button class="menu-movil-cerrar" id="menu-movil-cerrar" type="button" aria-label="Cerrar menú">×</button>
       </div>
       <nav class="menu-movil-nav" aria-label="Principal">
-        <a href="productos.html">Shop</a>
+        <a href="productos.html?c=men">Shop</a>
         <a href="historia.html">Cozumel</a>
         <a href="faq.html">FAQ</a>
       </nav>
@@ -84,6 +84,12 @@
        Lo de abajo (colección antigua, kits, Arma tu kit) sigue en el HTML
        pero no se enseña con body.v2. -->
   <section class="v2-shop" aria-label="Shop">
+    <!-- Colecciones: MEN (por defecto) y WOMAN. De momento las dos enseñan
+         las mismas piezas: la de hombre aún no existe. ?c=men | ?c=woman -->
+    <nav class="v2-colecciones" aria-label="Colecciones">
+      <a href="productos.html?c=men" data-coleccion="men">Men</a>
+      <a href="productos.html?c=woman" data-coleccion="woman">Woman</a>
+    </nav>
     <div class="v2-grid" id="v2-grid"></div>
   </section>
 
