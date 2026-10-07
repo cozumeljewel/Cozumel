@@ -648,6 +648,30 @@ function crearTarjetaProducto(prod) {
   return card;
 }
 
+/* ---------- Portada nueva: productos en scroll horizontal (10/2026) ----------
+   Foto, nombre y precio del mercado activo. Cada tarjeta lleva a su ficha. */
+(function () {
+  const pista = document.getElementById('v2-drop');
+  if (!pista || typeof PRODUCTOS === 'undefined') return;
+  PRODUCTOS.filter(prod => !prod.oculto).forEach(prod => {
+    const a = document.createElement('a');
+    a.className = 'v2-drop-item';
+    a.href = 'personalizar.html?p=' + encodeURIComponent(prod.slug);
+    const foto = normFoto(fotosDe(prod, 'oro')[0] || '');
+    const img = document.createElement('img');
+    img.src = foto.src; img.alt = prod.nombre; img.loading = 'lazy';
+    if (foto.pos) img.style.objectPosition = foto.pos;
+    const nombre = document.createElement('span');
+    nombre.className = 'v2-drop-nombre';
+    nombre.textContent = prod.nombre;
+    const precio = document.createElement('span');
+    precio.className = 'v2-drop-precio';
+    precio.textContent = precioTexto(prod) || '';
+    a.append(img, nombre, precio);
+    pista.appendChild(a);
+  });
+})();
+
 const grid = document.getElementById('producto-grid');
 const gridKits = document.getElementById('producto-grid-kits');
 if (grid && typeof PRODUCTOS !== 'undefined') {
