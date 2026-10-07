@@ -92,8 +92,8 @@ const PRODUCTOS = [
     // error).
     fotoPortada: ['img/dos-almas-oro-4.jpg', 'img/dos-almas-plata-4.jpg'],
     fotos: {
-      oro: ['img/dos-almas-oro-1.jpg', 'img/dos-almas-oro-2.jpg', 'img/dos-almas-oro-3.jpg', 'img/dos-almas-oro-4.jpg'],
-      plata: ['img/dos-almas-plata-1.jpg', 'img/dos-almas-plata-2.jpg', 'img/dos-almas-plata-3.jpg', 'img/dos-almas-plata-4.jpg'],
+      oro: ['img/dos-almas-estudio-oro.png', 'img/dos-almas-oro-1.jpg', 'img/dos-almas-oro-2.jpg', 'img/dos-almas-oro-3.jpg', 'img/dos-almas-oro-4.jpg'],
+      plata: ['img/dos-almas-estudio-plata.png', 'img/dos-almas-plata-1.jpg', 'img/dos-almas-plata-2.jpg', 'img/dos-almas-plata-3.jpg', 'img/dos-almas-plata-4.jpg'],
     },
   },
   {
@@ -130,14 +130,14 @@ const PRODUCTOS = [
     fotos: {
       // La foto nueva (22/09) primero y detrás las de Adriana con la
       // pieza puesta. Las del espejo antiguas (la 4) siguen fuera.
-      oro: [
+      oro: ['img/mi-cielo-estudio-oro.png', 
         'img/mi-cielo-oro-5.jpg',
         // Foto apaisada con la pulsera pegada al borde izquierdo: "pos"
         // desplaza el encuadre para que se vea entera.
         { src: 'img/mi-cielo-oro-1.jpg', pos: '9% center' },
         'img/mi-cielo-oro-2.jpg', 'img/mi-cielo-oro-3.jpg',
       ],
-      plata: ['img/mi-cielo-plata-5.jpg', 'img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg', 'img/mi-cielo-plata-3.jpg'],
+      plata: ['img/mi-cielo-estudio-plata.png', 'img/mi-cielo-plata-5.jpg', 'img/mi-cielo-plata-1.jpg', 'img/mi-cielo-plata-2.jpg', 'img/mi-cielo-plata-3.jpg'],
     },
   },
   {
@@ -171,14 +171,14 @@ const PRODUCTOS = [
     fotoPortada: ['img/brazalete-oro-5.jpg', 'img/brazalete-plata-5.jpg'],
     fotos: {
       // La foto nueva primero y detrás las de Adriana con la pieza puesta.
-      oro: [
+      oro: ['img/brazalete-estudio-oro.png', 
         'img/brazalete-oro-5.jpg',
         'img/brazalete-oro-1.jpg', 'img/brazalete-oro-2.jpg',
         // Cuerpo entero con el brazalete abajo: "pos" baja el encuadre
         // para que se vea completo.
         { src: 'img/brazalete-oro-3.jpg', pos: 'center 78%' },
       ],
-      plata: ['img/brazalete-plata-5.jpg', 'img/brazalete-plata-1.jpg', 'img/brazalete-plata-2.jpg', 'img/brazalete-plata-3.jpg'],
+      plata: ['img/brazalete-estudio-plata.png', 'img/brazalete-plata-5.jpg', 'img/brazalete-plata-1.jpg', 'img/brazalete-plata-2.jpg', 'img/brazalete-plata-3.jpg'],
     },
   },
   {
@@ -218,8 +218,8 @@ const PRODUCTOS = [
     fotoPortada: ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-plata-6.jpg'],
     fotos: {
       // La foto nueva primero y detrás las de Adriana con la pieza puesta.
-      oro: ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg', 'img/collar-esencia-oro-3.jpg'],
-      plata: ['img/collar-esencia-plata-6.jpg', 'img/collar-esencia-plata-1.jpg', 'img/collar-esencia-plata-2.jpg', 'img/collar-esencia-plata-3.jpg'],
+      oro: ['img/collar-esencia-estudio-oro.png', 'img/collar-esencia-estudio-cadena-oro.png', 'img/collar-esencia-oro-6.jpg', 'img/collar-esencia-oro-1.jpg', 'img/collar-esencia-oro-2.jpg', 'img/collar-esencia-oro-3.jpg'],
+      plata: ['img/collar-esencia-estudio-plata.png', 'img/collar-esencia-estudio-cadena-plata.png', 'img/collar-esencia-plata-6.jpg', 'img/collar-esencia-plata-1.jpg', 'img/collar-esencia-plata-2.jpg', 'img/collar-esencia-plata-3.jpg'],
     },
   },
   {
@@ -253,8 +253,8 @@ const PRODUCTOS = [
     // antigua, que apuntaba a un archivo ya borrado.
     fotoPortada: ['img/collar-destino-oro-4.jpg', 'img/collar-destino-plata-4.jpg'],
     fotos: {
-      oro: ['img/collar-destino-oro-1.jpg', 'img/collar-destino-oro-2.jpg', 'img/collar-destino-oro-3.jpg', 'img/collar-destino-oro-4.jpg'],
-      plata: ['img/collar-destino-plata-1.jpg', 'img/collar-destino-plata-2.jpg', 'img/collar-destino-plata-3.jpg', 'img/collar-destino-plata-4.jpg'],
+      oro: ['img/collar-destino-estudio-oro.png', 'img/collar-destino-oro-1.jpg', 'img/collar-destino-oro-2.jpg', 'img/collar-destino-oro-3.jpg', 'img/collar-destino-oro-4.jpg'],
+      plata: ['img/collar-destino-estudio-plata.png', 'img/collar-destino-plata-1.jpg', 'img/collar-destino-plata-2.jpg', 'img/collar-destino-plata-3.jpg', 'img/collar-destino-plata-4.jpg'],
     },
   },
   {
