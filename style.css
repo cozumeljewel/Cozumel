@@ -3215,3 +3215,34 @@ body.v2 .site-header .logo-name,
 body.v2 .site-header .nav a,
 body.v2 .site-header .header-carrito,
 body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
+
+/* Web (ordenador): las páginas ocupan todo el ancho de la pantalla, sin
+   los márgenes laterales de .page (máx. 1400 px). El móvil no cambia. */
+@media (min-width:900px){
+  body.v2 .page{max-width:none;}
+}
+@media (min-width:900px){
+  /* FAQ: categorías en dos columnas, ocupando todo el ancho */
+  body.v2 .faq-rejilla{
+    display:grid; grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:24px 72px; padding:24px 48px 80px; align-items:start;
+  }
+  body.v2 .faq-rejilla .faq-categoria{max-width:none; margin:0; padding:24px 0 8px;}
+  body.v2 .faq-rejilla .faq-categoria-final{padding-bottom:8px; text-align:left;}
+
+  /* Cozumel (historia): capítulos a todo el ancho, foto a sangre en su mitad */
+  body.v2 .historia-hero,
+  body.v2 .qs-capitulo{
+    max-width:none; margin:0; padding:0; gap:0;
+    grid-template-columns:1fr 1fr; min-height:88vh;
+  }
+  body.v2 .historia-hero .qs-foto,
+  body.v2 .qs-capitulo .qs-foto{aspect-ratio:auto; height:100%; min-height:88vh; width:100%;}
+  body.v2 .historia-hero .qs-foto img,
+  body.v2 .qs-capitulo .qs-foto img{width:100%; height:100%; object-fit:cover;}
+  body.v2 .qs-hero-intro, body.v2 .qs-hero-resto{padding:0 8vw;}
+  body.v2 .qs-hero-intro{padding-top:12vh;}
+  body.v2 .qs-hero-resto{padding-bottom:12vh;}
+  body.v2 .qs-capitulo-texto{padding:10vh 8vw; max-width:none;}
+  body.v2 .qs-capitulo--invertido{grid-template-columns:1fr 1fr;}
+}
