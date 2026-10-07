@@ -672,6 +672,42 @@ function crearTarjetaProducto(prod) {
   });
 })();
 
+/* ---------- Shop nuevo: rejilla de la colección (10/2026) ----------
+   Foto (la segunda al pasar el ratón), nombre y precio. Incluye el Kit a
+   tu gusto, que lleva a su propia página. */
+(function () {
+  const rejilla = document.getElementById('v2-grid');
+  if (!rejilla || typeof PRODUCTOS === 'undefined') return;
+  PRODUCTOS.forEach(prod => {
+    const esKitLibre = prod.id === 'kit_personalizado';
+    if (prod.oculto && !esKitLibre) return;
+    const fotos = esKitLibre
+      ? ['img/arma-tu-kit-oro-1.jpg', 'img/arma-tu-kit-oro-2.jpg']
+      : fotosDe(prod, 'oro').map(f => normFoto(f).src);
+    const a = document.createElement('a');
+    a.className = 'v2-card';
+    a.href = esKitLibre ? 'arma-tu-kit.html' : 'personalizar.html?p=' + encodeURIComponent(prod.slug);
+    const media = document.createElement('span');
+    media.className = 'v2-card-media';
+    const img = document.createElement('img');
+    img.src = fotos[0] || ''; img.alt = prod.nombre; img.loading = 'lazy';
+    media.appendChild(img);
+    if (fotos[1]) {
+      const img2 = document.createElement('img');
+      img2.src = fotos[1]; img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+      media.appendChild(img2);
+    }
+    const nombre = document.createElement('span');
+    nombre.className = 'v2-card-nombre';
+    nombre.textContent = prod.nombre;
+    const precio = document.createElement('span');
+    precio.className = 'v2-card-precio';
+    precio.textContent = precioTexto(prod) || '';
+    a.append(media, nombre, precio);
+    rejilla.appendChild(a);
+  });
+})();
+
 const grid = document.getElementById('producto-grid');
 const gridKits = document.getElementById('producto-grid-kits');
 if (grid && typeof PRODUCTOS !== 'undefined') {
@@ -1410,6 +1446,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 (function () {
   const YA_CERRADO = 'popupPreventaCerrado';
   if (CURRENT_PAGE !== 'productos') return;
+  if (document.body.classList.contains('v2')) return; // rediseño: sin popup
 
   // 01/10: una vez por SESIÓN. Sale al entrar en la colección; si se ve
   // una vez, no vuelve a salir al ir al carrito y volver. Al cerrar el
