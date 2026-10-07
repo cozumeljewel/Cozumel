@@ -3170,3 +3170,19 @@ body.v2 .arma-kit--entrada{display:none;}
 @media (max-width:899px){
   body.v2 .site-header .header-acciones .mercado-select{display:none;}
 }
+
+/* Portada: COZUMEL grande mientras se ve el hero; al bajar vuelve al
+   tamaño normal de cabecera (.scrolled). */
+body.v2[data-page="inicio"] .site-header .logo-name{transition:font-size .35s ease, letter-spacing .35s ease;}
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo-name{font-size:27px; letter-spacing:.22em; margin-right:-.22em;}
+@media (max-width:899px){
+  /* En el móvil el idioma está dentro del menú (idioma.js) */
+  body.v2 .site-header .selector-idioma{display:none;}
+}
+body.v2 .menu-movil-nav .selector-idioma{
+  margin-top:22px; font-family:var(--font-sans); font-size:13px; letter-spacing:.16em; color:var(--v2-carbon);
+}
+body.v2 .menu-movil-nav .selector-idioma button{color:var(--v2-carbon); font-size:13px; letter-spacing:.16em;}
+@media (min-width:900px){
+  body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo-name{font-size:42px; letter-spacing:.26em; margin-right:-.26em;}
+}
