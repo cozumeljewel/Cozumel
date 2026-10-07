@@ -3182,3 +3182,9 @@ body.v2 .menu-movil-nav .selector-idioma{
 }
 body.v2 .menu-movil-nav .selector-idioma button{color:var(--v2-carbon); font-size:13px; letter-spacing:.16em;}
 
+
+/* La cabecera tiene que acompañar al hacer scroll en TODAS las páginas.
+   .page llevaba overflow:hidden, que convierte .page en contenedor de
+   scroll y anula el position:sticky de la cabecera (se iba hacia arriba).
+   overflow:clip recorta igual pero no rompe el sticky. */
+body.v2 .page{overflow:visible; overflow:clip;}
