@@ -535,7 +535,8 @@ COZUMEL_EN_CARGADO({
  "Collar": "Necklace",
  "Pulsera": "Bracelet",
  "El CUIT o CUIL tiene 11 dígitos": "The CUIT or CUIL has 11 digits",
- "EE. UU.": "USA"
+ "EE. UU.": "USA",
+ "Ver más": "See more"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

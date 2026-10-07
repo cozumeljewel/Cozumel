@@ -3257,3 +3257,52 @@ body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
 .v2-colecciones a:hover{color:var(--v2-carbon);}
 .v2-colecciones a[aria-current="page"]{color:var(--v2-carbon); border-bottom-color:var(--v2-carbon);}
 @media (min-width:900px){ .v2-colecciones{margin-bottom:40px; gap:36px;} }
+
+/* ---------- STORIES: "Ver más" al pasar el cursor + visor a pantalla completa ---------- */
+.v2-stories-pista .v2-story{
+  position:relative; flex:0 0 46%; min-width:0; aspect-ratio:1/1;
+  padding:0; border:0; margin:0; background:#ddd; cursor:pointer; overflow:hidden;
+  scroll-snap-align:start;
+}
+.v2-stories-pista .v2-story img{
+  position:absolute; inset:0; flex:none; width:100%; height:100%; aspect-ratio:auto;
+  object-fit:cover; display:block;
+}
+.v2-story::after{
+  content:""; position:absolute; inset:0; background:rgba(15,15,14,.55);
+  opacity:0; transition:opacity .35s ease;
+}
+.v2-story-vermas{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:1;
+  font-family:var(--font-sans); font-size:13px; font-weight:500; letter-spacing:.08em;
+  text-transform:uppercase; color:#fff; padding-bottom:5px; border-bottom:1px solid #fff;
+  opacity:0; transition:opacity .35s ease; white-space:nowrap;
+}
+@media (hover:hover){
+  .v2-story:hover::after, .v2-story:focus-visible::after{opacity:1;}
+  .v2-story:hover .v2-story-vermas, .v2-story:focus-visible .v2-story-vermas{opacity:1;}
+}
+@media (min-width:900px){
+  .v2-stories-pista .v2-story{flex-basis:calc((100% - 5 * 2px) / 6);}
+}
+
+.v2-visor{
+  position:fixed; inset:0; z-index:200; background:rgba(12,12,11,.96);
+  display:flex; align-items:center; justify-content:center;
+}
+.v2-visor[hidden]{display:none;}
+.v2-visor img{max-width:min(92vw, 1100px); max-height:86vh; object-fit:contain; display:block; user-select:none;}
+.v2-visor button{
+  position:absolute; background:none; border:0; color:#fff; cursor:pointer;
+  font-family:var(--font-sans); width:56px; height:56px; font-size:28px; line-height:1;
+  opacity:.85;
+}
+.v2-visor button:hover{opacity:1;}
+.v2-visor-cerrar{top:12px; right:12px;}
+.v2-visor-ant{left:8px; top:50%; transform:translateY(-50%);}
+.v2-visor-sig{right:8px; top:50%; transform:translateY(-50%);}
+.v2-visor-contador{
+  position:absolute; bottom:22px; left:0; right:0; text-align:center; color:rgba(255,255,255,.75);
+  font-family:var(--font-sans); font-size:12px; letter-spacing:.2em;
+}
+body.v2-visor-abierto{overflow:hidden;}

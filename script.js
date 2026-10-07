@@ -735,6 +735,73 @@ const FOTOS_TARJETA_V2 = {
   });
 })();
 
+/* ---------- Stories: visor de fotos a pantalla completa (10/2026) ----------
+   Al pulsar una foto de la tira se abre en grande; se pasa con las
+   flechas (pantalla o teclado) o deslizando en el móvil. Esc cierra. */
+(function () {
+  const tira = document.getElementById('v2-stories');
+  if (!tira) return;
+  const fotos = [...tira.querySelectorAll('.v2-story img')].map(img => img.getAttribute('src'));
+  if (!fotos.length) return;
+
+  const visor = document.createElement('div');
+  visor.className = 'v2-visor';
+  visor.hidden = true;
+  visor.setAttribute('role', 'dialog');
+  visor.setAttribute('aria-modal', 'true');
+  visor.setAttribute('aria-label', 'Cozumel stories');
+  visor.innerHTML =
+    '<img alt="">' +
+    '<button type="button" class="v2-visor-cerrar" aria-label="Cerrar">×</button>' +
+    '<button type="button" class="v2-visor-ant" aria-label="Foto anterior">‹</button>' +
+    '<button type="button" class="v2-visor-sig" aria-label="Foto siguiente">›</button>' +
+    '<p class="v2-visor-contador"></p>';
+  document.body.appendChild(visor);
+  const img = visor.querySelector('img');
+  const contador = visor.querySelector('.v2-visor-contador');
+  let actual = 0, origen = null;
+
+  const mostrar = (i) => {
+    actual = (i + fotos.length) % fotos.length;
+    img.src = fotos[actual];
+    contador.textContent = (actual + 1) + ' / ' + fotos.length;
+  };
+  const abrir = (i, boton) => {
+    origen = boton;
+    mostrar(i);
+    visor.hidden = false;
+    document.body.classList.add('v2-visor-abierto');
+    visor.querySelector('.v2-visor-cerrar').focus();
+  };
+  const cerrar = () => {
+    visor.hidden = true;
+    document.body.classList.remove('v2-visor-abierto');
+    if (origen) origen.focus();
+  };
+
+  tira.querySelectorAll('.v2-story').forEach(b => {
+    b.addEventListener('click', () => abrir(Number(b.dataset.i) || 0, b));
+  });
+  visor.querySelector('.v2-visor-cerrar').addEventListener('click', cerrar);
+  visor.querySelector('.v2-visor-ant').addEventListener('click', () => mostrar(actual - 1));
+  visor.querySelector('.v2-visor-sig').addEventListener('click', () => mostrar(actual + 1));
+  visor.addEventListener('click', (e) => { if (e.target === visor) cerrar(); });
+  document.addEventListener('keydown', (e) => {
+    if (visor.hidden) return;
+    if (e.key === 'Escape') cerrar();
+    else if (e.key === 'ArrowLeft') mostrar(actual - 1);
+    else if (e.key === 'ArrowRight') mostrar(actual + 1);
+  });
+  let x0 = null;
+  visor.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  visor.addEventListener('touchend', (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) mostrar(actual + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+})();
+
 const grid = document.getElementById('producto-grid');
 const gridKits = document.getElementById('producto-grid-kits');
 if (grid && typeof PRODUCTOS !== 'undefined') {

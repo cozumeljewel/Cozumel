@@ -1645,3 +1645,7 @@ en: The CUIT or CUIL has 11 digits
 # Selector de moneda (mercado de EE. UU.)
 es: EE. UU.
 en: USA
+
+# ---------- Rediseño 10/2026 ----------
+es: Ver más
+en: See more
