@@ -648,6 +648,20 @@ function crearTarjetaProducto(prod) {
   return card;
 }
 
+/* Rediseño (10/2026): en la portada y en el shop cada pieza enseña su foto
+   principal en oro (la pieza sola) y, al pasar el cursor, a Adri con ella
+   puesta. Independiente de las galerías de la ficha (productos.js). */
+const FOTOS_TARJETA_V2 = {
+  pulsera_vinculo:       ['img/dos-almas-oro-4.jpg',      'img/dos-almas-oro-3.jpg'],
+  pulsera_nombre:        ['img/mi-cielo-oro-5.jpg',       'img/mi-cielo-oro-2.jpg'],
+  brazalete_mensaje:     ['img/brazalete-oro-5.jpg',      'img/brazalete-oro-3.jpg'],
+  collar_esencial:       ['img/collar-esencia-oro-6.jpg', 'img/collar-esencia-oro-1.jpg'],
+  collar_flor_natal:     ['img/collar-destino-oro-4.jpg', 'img/collar-destino-oro-1.jpg'],
+  kit_pedacito_nosotros: ['img/kit-pedacito-2.jpg',       'img/collar-esencia-oro-3.jpg'],
+  kit_mi_consentida:     ['img/kit-consentida-1.jpg',     'img/collar-destino-oro-3.jpg'],
+  kit_personalizado:     ['img/arma-tu-kit-oro-1.jpg',    'img/collar-esencia-oro-2.jpg'],
+};
+
 /* ---------- Portada nueva: productos en scroll horizontal (10/2026) ----------
    Foto, nombre y precio del mercado activo. Cada tarjeta lleva a su ficha. */
 (function () {
@@ -657,17 +671,24 @@ function crearTarjetaProducto(prod) {
     const a = document.createElement('a');
     a.className = 'v2-drop-item';
     a.href = 'personalizar.html?p=' + encodeURIComponent(prod.slug);
-    const foto = normFoto(fotosDe(prod, 'oro')[0] || '');
+    const fotos = FOTOS_TARJETA_V2[prod.id] || fotosDe(prod, 'oro').map(f => normFoto(f).src);
+    const media = document.createElement('span');
+    media.className = 'v2-card-media v2-drop-media';
     const img = document.createElement('img');
-    img.src = foto.src; img.alt = prod.nombre; img.loading = 'lazy';
-    if (foto.pos) img.style.objectPosition = foto.pos;
+    img.src = fotos[0] || ''; img.alt = prod.nombre; img.loading = 'lazy';
+    media.appendChild(img);
+    if (fotos[1]) {
+      const img2 = document.createElement('img');
+      img2.src = fotos[1]; img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+      media.appendChild(img2);
+    }
     const nombre = document.createElement('span');
     nombre.className = 'v2-drop-nombre';
     nombre.textContent = prod.nombre;
     const precio = document.createElement('span');
     precio.className = 'v2-drop-precio';
     precio.textContent = precioTexto(prod) || '';
-    a.append(img, nombre, precio);
+    a.append(media, nombre, precio);
     pista.appendChild(a);
   });
 })();
@@ -681,9 +702,7 @@ function crearTarjetaProducto(prod) {
   PRODUCTOS.forEach(prod => {
     const esKitLibre = prod.id === 'kit_personalizado';
     if (prod.oculto && !esKitLibre) return;
-    const fotos = esKitLibre
-      ? ['img/arma-tu-kit-oro-1.jpg', 'img/arma-tu-kit-oro-2.jpg']
-      : fotosDe(prod, 'oro').map(f => normFoto(f).src);
+    const fotos = FOTOS_TARJETA_V2[prod.id] || fotosDe(prod, 'oro').map(f => normFoto(f).src);
     const a = document.createElement('a');
     a.className = 'v2-card';
     a.href = esKitLibre ? 'arma-tu-kit.html' : 'personalizar.html?p=' + encodeURIComponent(prod.slug);
