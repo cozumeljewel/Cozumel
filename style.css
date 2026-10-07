@@ -3188,3 +3188,30 @@ body.v2 .menu-movil-nav .selector-idioma button{color:var(--v2-carbon); font-siz
    scroll y anula el position:sticky de la cabecera (se iba hacia arriba).
    overflow:clip recorta igual pero no rompe el sticky. */
 body.v2 .page{overflow:visible; overflow:clip;}
+
+/* Portada: al pasar el cursor por la cabecera transparente (o al moverse
+   por ella con el teclado), toma forma igual que al bajar: fondo marfil
+   y texto carbón. Como en la referencia. */
+@media (hover:hover){
+  body.v2[data-page="inicio"] .site-header:hover,
+  body.v2[data-page="inicio"] .site-header:focus-within{
+    background-color:rgba(246,242,235,.96); background-image:none;
+    border-bottom-color:rgba(29,29,27,.08);
+  }
+  body.v2[data-page="inicio"] .site-header:hover .logo-name,
+  body.v2[data-page="inicio"] .site-header:hover .nav a,
+  body.v2[data-page="inicio"] .site-header:hover .header-carrito,
+  body.v2[data-page="inicio"] .site-header:hover .selector-idioma,
+  body.v2[data-page="inicio"] .site-header:hover .selector-idioma button,
+  body.v2[data-page="inicio"] .site-header:focus-within .logo-name,
+  body.v2[data-page="inicio"] .site-header:focus-within .nav a,
+  body.v2[data-page="inicio"] .site-header:focus-within .header-carrito,
+  body.v2[data-page="inicio"] .site-header:focus-within .selector-idioma,
+  body.v2[data-page="inicio"] .site-header:focus-within .selector-idioma button{color:var(--v2-carbon);}
+  body.v2[data-page="inicio"] .site-header:hover .nav-toggle span,
+  body.v2[data-page="inicio"] .site-header:focus-within .nav-toggle span{background:var(--v2-carbon);}
+}
+body.v2 .site-header .logo-name,
+body.v2 .site-header .nav a,
+body.v2 .site-header .header-carrito,
+body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
