@@ -3306,3 +3306,19 @@ body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
   font-family:var(--font-sans); font-size:12px; letter-spacing:.2em;
 }
 body.v2-visor-abierto{overflow:hidden;}
+
+/* ---------- MEN: circulitos de acabado bajo la foto ---------- */
+.v2-tonos{display:flex; gap:10px; justify-content:center; margin-top:14px;}
+.v2-tono{
+  width:16px; height:16px; border-radius:50%; padding:0; cursor:pointer;
+  border:1px solid rgba(29,29,27,.25); box-shadow:inset 0 0 0 2px #fff;
+}
+.v2-tono--oro{background:linear-gradient(135deg,#E9CF8B,#B8913F);}
+.v2-tono--oro_blanco{background:linear-gradient(135deg,#F1F1EF,#B9BBBD);}
+.v2-tono--negro{background:linear-gradient(135deg,#3A3A38,#111);}
+.v2-tono[aria-pressed="true"]{border-color:var(--v2-carbon); outline:1px solid var(--v2-carbon); outline-offset:2px;}
+.v2-tono-nombre{
+  margin-top:8px; font-family:var(--font-sans); font-size:11px; letter-spacing:.08em; color:#55534F;
+}
+.v2-card--hombre .v2-card-nombre{margin-top:6px;}
+.v2-card--hombre .v2-card-media{background:#F4F4F2;}

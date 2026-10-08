@@ -693,6 +693,48 @@ const FOTOS_TARJETA_V2 = {
   });
 })();
 
+/* Tarjeta de la colección MEN: foto de producto (y puesto al pasar el
+   cursor), circulitos de acabado debajo y el nombre del acabado elegido. */
+function tarjetaHombre(prod) {
+  const claves = Object.keys(prod.acabados);
+  const card = document.createElement('div');
+  card.className = 'v2-card v2-card--hombre';
+  const media = document.createElement('span');
+  media.className = 'v2-card-media';
+  const img = document.createElement('img');
+  img.alt = prod.nombre; img.loading = 'lazy';
+  const img2 = document.createElement('img');
+  img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+  media.append(img, img2);
+  const tonos = document.createElement('div');
+  tonos.className = 'v2-tonos';
+  tonos.setAttribute('role', 'group');
+  tonos.setAttribute('aria-label', 'Acabado');
+  const etiqueta = document.createElement('span');
+  etiqueta.className = 'v2-tono-nombre';
+  const poner = (clave) => {
+    const [a, b] = prod.acabados[clave];
+    img.src = a; img2.src = b || a;
+    etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
+    tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
+  };
+  claves.forEach(clave => {
+    const bt = document.createElement('button');
+    bt.type = 'button';
+    bt.className = 'v2-tono v2-tono--' + clave;
+    bt.dataset.tono = clave;
+    bt.setAttribute('aria-label', NOMBRE_ACABADO_HOMBRE[clave]);
+    bt.addEventListener('click', () => poner(clave));
+    tonos.appendChild(bt);
+  });
+  const nombre = document.createElement('span');
+  nombre.className = 'v2-card-nombre';
+  nombre.textContent = prod.nombre;
+  card.append(media, tonos, etiqueta, nombre);
+  poner(claves[0]);
+  return card;
+}
+
 /* ---------- Shop nuevo: rejilla de la colección (10/2026) ----------
    Foto (la segunda al pasar el ratón), nombre y precio. Incluye el Kit a
    tu gusto, que lleva a su propia página. */
@@ -707,6 +749,12 @@ const FOTOS_TARJETA_V2 = {
   document.querySelectorAll('.v2-colecciones a').forEach(a => {
     if (a.dataset.coleccion === coleccion) a.setAttribute('aria-current', 'page');
   });
+
+  // MEN: los collares de hombre (hombre.js), con circulitos de acabado.
+  if (coleccion === 'men' && typeof COLECCION_HOMBRE !== 'undefined') {
+    COLECCION_HOMBRE.forEach(prod => rejilla.appendChild(tarjetaHombre(prod)));
+    return;
+  }
   PRODUCTOS.forEach(prod => {
     const esKitLibre = prod.id === 'kit_personalizado';
     if (prod.oculto && !esKitLibre) return;
