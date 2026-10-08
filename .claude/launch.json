@@ -4,14 +4,34 @@
     {
       "name": "cozumel-local",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["scripts/dev-server-no-cache.py", "8123", "."],
+      "runtimeArgs": [
+        "scripts/dev-server-no-cache.py",
+        "8123",
+        "."
+      ],
       "port": 8123
     },
     {
       "name": "cozumel-local-2",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["scripts/dev-server-no-cache.py", "8124", "."],
+      "runtimeArgs": [
+        "scripts/dev-server-no-cache.py",
+        "8124",
+        "."
+      ],
       "port": 8124
+    },
+    {
+      "name": "cozumel-movil",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8125",
+        "--bind",
+        "0.0.0.0"
+      ],
+      "port": 8125
     }
   ]
 }
