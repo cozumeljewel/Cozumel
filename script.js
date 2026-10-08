@@ -652,7 +652,7 @@ function crearTarjetaProducto(prod) {
    principal en oro (la pieza sola) y, al pasar el cursor, a Adri con ella
    puesta. Independiente de las galerías de la ficha (productos.js). */
 const FOTOS_TARJETA_V2 = {
-  pulsera_vinculo:       ['img/dos-almas-estudio-oro.png',      'img/dos-almas-oro-1.jpg'],
+  pulsera_vinculo:       ['img/dos-almas-estudio-oro.png',      'img/dos-almas-encaje.png'],
   pulsera_nombre:        ['img/mi-cielo-estudio-oro.png',       'img/mi-cielo-oro-2.jpg'],
   brazalete_mensaje:     ['img/brazalete-estudio-oro.png',      'img/brazalete-oro-3.jpg'],
   collar_esencial:       ['img/collar-esencia-estudio-oro.png', 'img/collar-esencia-oro-1.jpg'],
