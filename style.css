@@ -3069,14 +3069,14 @@ body.v2 .menu-movil-nav a{
   font-size:32px; line-height:1; letter-spacing:.1em; text-transform:uppercase;
 }
 .hero-v2-cta{
-  display:inline-flex; align-items:center; justify-content:center; min-height:48px;
-  padding:0 34px; border:1px solid rgba(251,248,243,.92);
-  font-family:var(--font-sans); font-size:12px; font-weight:500;
-  letter-spacing:.22em; text-transform:uppercase; text-decoration:none;
-  color:var(--v2-blanco); background:transparent;
+  display:inline-flex; align-items:center; justify-content:center; min-height:52px;
+  padding:0 40px; border:0; border-radius:4px;
+  font-family:var(--font-sans); font-size:13px; font-weight:400;
+  letter-spacing:.24em; text-transform:uppercase; text-decoration:none;
+  color:var(--v2-carbon); background:#FFFFFF;
   transition:background .25s, color .25s;
 }
-.hero-v2-cta:hover{background:var(--v2-blanco); color:var(--v2-carbon);}
+.hero-v2-cta:hover{background:var(--v2-carbon); color:#FFFFFF;}
 @media (prefers-reduced-motion:no-preference){
   .hero-v2-copy{animation:heroRise .9s ease-out .3s both;}
 }
