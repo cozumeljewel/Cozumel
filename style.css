@@ -3428,3 +3428,12 @@ body.v2 footer{background:#FFFFFF; border-top:1px solid rgba(29,29,27,.08);}
 body.v2 .v2-card-media img:not(.v2-card-hover),
 body.v2 .v2-pieza-foto img,
 body.v2 .v2-pieza-mini img{mix-blend-mode:multiply;}
+
+/* ---------- STORIES en el móvil: rejilla de 2 columnas (como Hanley) ----------
+   Sin scroll lateral ni separación; "Ver más" fijo en la tercera foto
+   para que se entienda que se abren. En el ordenador sigue la tira. */
+@media (max-width:899px){
+  .v2-stories-pista{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:0; overflow:visible; scroll-snap-type:none;}
+  .v2-stories-pista .v2-story{width:100%;}
+  .v2-stories-pista .v2-story:nth-child(3) .v2-story-vermas{opacity:1;}
+}
