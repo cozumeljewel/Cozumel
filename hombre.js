@@ -68,5 +68,10 @@ const COLECCION_HOMBRE = [
       oro_blanco: ['img/hombre/brazalete-1-oro-blanco-producto.png', 'img/hombre/brazalete-1-oro-blanco-puesto.png'],
       negro:      ['img/hombre/brazalete-1-negro-producto.png', 'img/hombre/brazalete-1-negro-puesto.png'],
   } },
+  { id: 'hombre_anillo_1', tipo: 'anillos', nombre: 'Anillo 01', acabados: {
+      oro:        ['img/hombre/anillo-1-oro-producto.png', 'img/hombre/anillo-1-oro-puesto.png'],
+      oro_blanco: ['img/hombre/anillo-1-oro-blanco-producto.png', 'img/hombre/anillo-1-oro-blanco-puesto.png'],
+      negro:      ['img/hombre/anillo-1-negro-producto.png', 'img/hombre/anillo-1-negro-puesto.jpg'],
+  } },
 ];
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', negro: 'Negro' };
