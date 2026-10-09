@@ -3402,3 +3402,17 @@ body.v2-visor-abierto{overflow:hidden;}
   .v2-pieza-info{position:sticky; top:calc(var(--header-h) + 40px); padding:10px 0 0; text-align:left;}
   .v2-pieza-tonos{justify-content:flex-start;}
 }
+
+/* Pieza de hombre: scroll con las otras piezas del mismo tipo */
+.v2-pieza-mas{border-top:1px solid #DEDAD3; padding:40px 0 72px;}
+.v2-pieza-mas-fila{
+  display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding:0 20px; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+}
+.v2-pieza-mas-fila::-webkit-scrollbar{display:none;}
+.v2-pieza-mas-fila .v2-card{flex:0 0 64%; scroll-snap-align:start;}
+@media (min-width:900px){
+  .v2-pieza-mas{padding:56px 0 96px;}
+  .v2-pieza-mas-fila{gap:32px; padding:0 48px; scrollbar-width:thin;}
+  .v2-pieza-mas-fila .v2-card{flex-basis:calc((100% - 3 * 32px) / 4.3);}
+}

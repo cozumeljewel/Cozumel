@@ -848,6 +848,18 @@ function urlPiezaHombre(prod, clave) {
     tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
   }
   pintar();
+
+  // Debajo: scroll horizontal con las otras piezas del mismo tipo
+  // (si abres un collar, salen los demás collares).
+  const otras = COLECCION_HOMBRE.filter(p => p.tipo === prod.tipo && p.id !== prod.id);
+  if (otras.length) {
+    const seccion = crear('section', 'v2-pieza-mas');
+    seccion.setAttribute('aria-label', 'Más piezas');
+    const fila = crear('div', 'v2-pieza-mas-fila');
+    otras.forEach(p => fila.appendChild(tarjetaHombre(p)));
+    seccion.append(fila);
+    caja.after(seccion);
+  }
 })();
 
 /* ---------- Shop nuevo: rejilla de la colección (10/2026) ----------
