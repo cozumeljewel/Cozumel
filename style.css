@@ -3437,3 +3437,10 @@ body.v2 .v2-pieza-mini img{mix-blend-mode:multiply;}
   .v2-stories-pista .v2-story{width:100%;}
   .v2-stories-pista .v2-story:nth-child(3) .v2-story-vermas{opacity:1;}
 }
+
+/* Pie: "Cozumel" con la misma letra que el logo de arriba */
+body.v2 .footer-marca{
+  font-family:var(--font-serif, "Playfair Display", Georgia, serif); font-weight:400;
+  font-size:26px; letter-spacing:.22em; text-transform:uppercase; color:var(--v2-carbon);
+}
+@media (min-width:900px){ body.v2 .footer-marca{font-size:36px;} }
