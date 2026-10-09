@@ -355,7 +355,7 @@ const PRODUCTOS = [
       'Acero inoxidable de alta calidad, en acabado dorado (baño de oro) o plata',
       'Envío en caja especial de regalo',
     ],
-    cierre: 'Un pedacito de lo que regalamos',
+    cierre: 'Cozumel',
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
