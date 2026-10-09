@@ -3258,7 +3258,7 @@ body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
 .v2-colecciones a[aria-current="page"]{color:var(--v2-carbon); border-bottom-color:var(--v2-carbon);}
 @media (min-width:900px){ .v2-colecciones{margin-bottom:40px; gap:36px;} }
 /* MEN: tipos de pieza (Colgantes, Pulseras / Brazaletes, Anillos) */
-.v2-tipos{display:flex; flex-wrap:wrap; gap:10px 22px; margin:-8px 0 26px;}
+.v2-tipos{display:flex; flex-wrap:wrap; justify-content:center; gap:10px 22px; margin:-8px 0 26px;}
 .v2-tipos a{
   font-family:var(--font-sans); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
   text-decoration:none; color:#8A8783; padding-bottom:4px; border-bottom:1px solid transparent;
@@ -3337,14 +3337,68 @@ body.v2-visor-abierto{overflow:hidden;}
 .v2-card--hombre .v2-card-nombre{margin-top:6px;}
 .v2-card--hombre .v2-card-media{background:#F4F4F2;}
 
-/* MEN: carrusel de fotos (producto de cerca, puesto, packaging), sin puntitos */
-.v2-carrusel-pista{
-  position:absolute; inset:0; display:flex; overflow-x:auto; scroll-snap-type:x mandatory;
-  scrollbar-width:none; -webkit-overflow-scrolling:touch;
+/* MEN: los colgantes se ven de cerca (zoom a la parte de abajo, donde
+   cae el colgante). Solo la portada; la foto puesta va entera. */
+.v2-card-media--cerca img:not(.v2-card-hover){transform:scale(1.7); transform-origin:50% 96%;}
+.v2-card--hombre a.v2-card-nombre{color:var(--v2-carbon); text-decoration:none;}
+
+/* ---------- MEN: página de la pieza (hombre.html) ----------
+   Móvil: carrusel con puntitos y la información debajo, centrada.
+   Ordenador: miniaturas | fotos grandes en columna | información fija. */
+.v2-pieza{padding:0 0 64px; color:var(--v2-carbon);}
+.v2-pieza-minis{display:none;}
+.v2-pieza-fotos{position:relative;}
+.v2-pieza-galeria{
+  display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
 }
-.v2-carrusel-pista::-webkit-scrollbar{display:none;}
-.v2-carrusel-foto{position:relative; flex:0 0 100%; scroll-snap-align:start; overflow:hidden;}
-.v2-card-media .v2-carrusel-foto img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
-/* Los collares se ven de cerca: zoom a la parte de abajo, como el colgante */
-.v2-card-media .v2-carrusel-foto--cerca img{transform:scale(1.7); transform-origin:50% 96%;}
-.v2-carrusel-pista{cursor:pointer;}
+.v2-pieza-galeria::-webkit-scrollbar{display:none;}
+.v2-pieza-foto{flex:0 0 100%; margin:0; scroll-snap-align:start; aspect-ratio:1/1; background:#F4F4F2;}
+.v2-pieza-foto img{display:block; width:100%; height:100%; object-fit:cover;}
+.v2-pieza-puntos{display:flex; justify-content:center; gap:10px; padding:18px 0 4px;}
+.v2-pieza-puntos span{width:6px; height:6px; border-radius:50%; background:#B9B6B1;}
+.v2-pieza-puntos span.activo{background:var(--v2-carbon);}
+.v2-pieza-info{padding:18px 20px 0; text-align:center;}
+.v2-pieza-nombre{
+  margin:0; font-family:var(--font-sans); font-size:16px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase;
+}
+.v2-pieza-tonos{display:flex; gap:14px; justify-content:center; margin-top:22px;}
+.v2-pieza-tonos .v2-tono{width:30px; height:30px; box-shadow:inset 0 0 0 3px #fff;}
+.v2-pieza-acabado{margin:10px 0 0; font-family:var(--font-sans); font-size:12px; letter-spacing:.08em; color:#55534F;}
+.v2-pieza-boton{
+  width:100%; margin-top:28px; padding:15px 20px; border:0; border-radius:2px;
+  background:var(--v2-carbon); color:#fff; font-family:var(--font-sans); font-size:13px;
+  letter-spacing:.14em; text-transform:uppercase;
+}
+.v2-pieza-boton:disabled{opacity:.55; cursor:not-allowed;}
+.v2-pieza-desplegables{margin-top:30px; text-align:left; border-top:1px solid #DEDAD3;}
+.v2-pieza-desplegable{border-bottom:1px solid #DEDAD3;}
+.v2-pieza-desplegable summary{
+  display:flex; justify-content:space-between; align-items:center; padding:20px 0; cursor:pointer;
+  list-style:none; font-family:var(--font-sans); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+}
+.v2-pieza-desplegable summary::-webkit-details-marker{display:none;}
+.v2-pieza-desplegable summary::after{content:"+"; font-size:18px; font-weight:300;}
+.v2-pieza-desplegable[open] summary::after{content:"−";}
+.v2-pieza-desplegable-cuerpo{padding:0 0 20px; font-family:var(--font-sans); font-size:13px; line-height:1.7; color:#55534F;}
+.v2-pieza-desplegable-cuerpo p{margin:0;}
+.v2-pieza-desplegable-cuerpo a{color:inherit;}
+@media (min-width:900px){
+  .v2-pieza{
+    display:grid; grid-template-columns:64px minmax(0,1fr) minmax(280px,360px);
+    gap:0 48px; align-items:start; padding:40px 48px 96px;
+  }
+  .v2-pieza-minis{
+    display:flex; flex-direction:column; gap:14px;
+    position:sticky; top:calc(var(--header-h) + 40px);
+  }
+  .v2-pieza-mini{padding:0; border:1px solid transparent; background:#F4F4F2; cursor:pointer; aspect-ratio:1/1;}
+  .v2-pieza-mini img{display:block; width:100%; height:100%; object-fit:cover;}
+  .v2-pieza-mini.activo{border-color:var(--v2-carbon);}
+  .v2-pieza-galeria{flex-direction:column; gap:28px; overflow:visible; scroll-snap-type:none;}
+  .v2-pieza-foto{scroll-margin-top:calc(var(--header-h) + 40px);}
+  .v2-pieza-puntos{display:none;}
+  .v2-pieza-info{position:sticky; top:calc(var(--header-h) + 40px); padding:10px 0 0; text-align:left;}
+  .v2-pieza-tonos{justify-content:flex-start;}
+}

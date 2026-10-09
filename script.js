@@ -694,47 +694,34 @@ const FOTOS_TARJETA_V2 = {
 })();
 
 /* Tarjeta de la colección MEN: foto de producto (y puesto al pasar el
-   cursor), circulitos de acabado debajo y el nombre del acabado elegido. */
+   cursor en el ordenador), circulitos de acabado debajo y el nombre del
+   acabado elegido. Foto y nombre llevan a la pieza (hombre.html), donde
+   se ven todas las fotos. */
 function tarjetaHombre(prod) {
   const claves = Object.keys(prod.acabados);
   const card = document.createElement('div');
   card.className = 'v2-card v2-card--hombre';
-  // Carrusel: producto (de cerca), puesto y packaging.
-  const media = document.createElement('span');
-  media.className = 'v2-card-media v2-carrusel';
-  const pista = document.createElement('span');
-  pista.className = 'v2-carrusel-pista';
-  const crearFoto = (alt, extra) => {
-    const slide = document.createElement('span');
-    slide.className = 'v2-carrusel-foto' + (extra ? ' ' + extra : '');
-    const im = document.createElement('img');
-    im.alt = alt; im.loading = 'lazy';
-    slide.appendChild(im);
-    pista.appendChild(slide);
-    return im;
-  };
+  const media = document.createElement('a');
   // Los colgantes salen de cerca; pulseras y brazaletes ya llenan la foto.
-  const img = crearFoto(prod.nombre, prod.tipo === 'colgantes' ? 'v2-carrusel-foto--cerca' : '');
-  const img2 = crearFoto(prod.nombre + ' puesto');
-  const img3 = crearFoto('Packaging Cozumel');
-  img3.src = 'img/hombre/packaging.png';
-  // Sin puntitos: en el móvil se desliza; en el ordenador, cada clic en la
-  // foto pasa a la siguiente (y de la última vuelve a la primera).
-  pista.addEventListener('click', () => {
-    const i = Math.round(pista.scrollLeft / (pista.clientWidth || 1));
-    pista.scrollTo({ left: ((i + 1) % 3) * pista.clientWidth, behavior: 'smooth' });
-  });
-  media.append(pista);
+  media.className = 'v2-card-media' + (prod.tipo === 'colgantes' ? ' v2-card-media--cerca' : '');
+  const img = document.createElement('img');
+  img.alt = prod.nombre; img.loading = 'lazy';
+  const img2 = document.createElement('img');
+  img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+  media.append(img, img2);
   const tonos = document.createElement('div');
   tonos.className = 'v2-tonos';
   tonos.setAttribute('role', 'group');
   tonos.setAttribute('aria-label', 'Acabado');
   const etiqueta = document.createElement('span');
   etiqueta.className = 'v2-tono-nombre';
+  const nombre = document.createElement('a');
+  nombre.className = 'v2-card-nombre';
+  nombre.textContent = prod.nombre;
   const poner = (clave) => {
     const [a, b] = prod.acabados[clave];
     img.src = a; img2.src = b || a;
-    pista.scrollTo({ left: 0 });
+    media.href = nombre.href = urlPiezaHombre(prod, clave);
     etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
     tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
   };
@@ -747,13 +734,121 @@ function tarjetaHombre(prod) {
     bt.addEventListener('click', () => poner(clave));
     tonos.appendChild(bt);
   });
-  const nombre = document.createElement('span');
-  nombre.className = 'v2-card-nombre';
-  nombre.textContent = prod.nombre;
   card.append(media, tonos, etiqueta, nombre);
   poner(claves[0]);
   return card;
 }
+
+function urlPiezaHombre(prod, clave) {
+  return 'hombre.html?id=' + encodeURIComponent(prod.id) + '&a=' + encodeURIComponent(clave);
+}
+
+/* ---------- Pieza de hombre (hombre.html?id=&a=) ----------
+   Ordenador: miniaturas a la izquierda, fotos grandes una debajo de otra
+   y la información fija a la derecha. Móvil: carrusel con puntitos y la
+   información debajo. Fotos: producto, puesto y siempre el packaging.
+   Aún sin precio ni compra (faltan precios y SKU). */
+(function () {
+  const caja = document.getElementById('v2-pieza');
+  if (!caja || typeof COLECCION_HOMBRE === 'undefined') return;
+  const params = new URLSearchParams(location.search);
+  const prod = COLECCION_HOMBRE.find(p => p.id === params.get('id'));
+  if (!prod) { location.replace('productos.html?c=men'); return; }
+  const claves = Object.keys(prod.acabados);
+  let clave = claves.includes(params.get('a')) ? params.get('a') : claves[0];
+  document.title = prod.nombre + ' · Cozumel Jewelry';
+
+  const crear = (tag, clase, texto) => {
+    const el = document.createElement(tag);
+    if (clase) el.className = clase;
+    if (texto) el.textContent = texto;
+    return el;
+  };
+
+  const miniaturas = crear('div', 'v2-pieza-minis');
+  const galeria = crear('div', 'v2-pieza-galeria');
+  const puntos = crear('div', 'v2-pieza-puntos');
+  puntos.setAttribute('aria-hidden', 'true');
+
+  const info = crear('div', 'v2-pieza-info');
+  const titulo = crear('h1', 'v2-pieza-nombre', prod.nombre);
+  const tonos = crear('div', 'v2-pieza-tonos');
+  tonos.setAttribute('role', 'group');
+  tonos.setAttribute('aria-label', 'Acabado');
+  const etiqueta = crear('p', 'v2-pieza-acabado');
+  const boton = crear('button', 'v2-pieza-boton', 'Muy pronto');
+  boton.type = 'button'; boton.disabled = true;
+
+  const desplegable = (titulo, html) => {
+    const d = crear('details', 'v2-pieza-desplegable');
+    d.append(crear('summary', '', titulo));
+    const cuerpo = crear('div', 'v2-pieza-desplegable-cuerpo');
+    cuerpo.innerHTML = html;
+    d.append(cuerpo);
+    return d;
+  };
+  const desplegables = crear('div', 'v2-pieza-desplegables');
+  desplegables.append(
+    desplegable('Envío', '<p>Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21.</p>'),
+    desplegable('Devoluciones', '<p>Consulta las condiciones en <a href="faq.html">FAQ</a>.</p>')
+  );
+
+  claves.forEach(c => {
+    const bt = crear('button', 'v2-tono v2-tono--' + c);
+    bt.type = 'button';
+    bt.dataset.tono = c;
+    bt.setAttribute('aria-label', NOMBRE_ACABADO_HOMBRE[c]);
+    bt.addEventListener('click', () => { clave = c; pintar(); history.replaceState(null, '', urlPiezaHombre(prod, c)); });
+    tonos.appendChild(bt);
+  });
+  info.append(titulo, tonos, etiqueta, boton, desplegables);
+  const fotos = crear('div', 'v2-pieza-fotos');
+  fotos.append(galeria, puntos);
+  caja.append(miniaturas, fotos, info);
+
+  const marcar = () => {
+    const i = Math.round(galeria.scrollLeft / (galeria.clientWidth || 1));
+    [...puntos.children].forEach((p, j) => p.classList.toggle('activo', i === j));
+  };
+  galeria.addEventListener('scroll', marcar, { passive: true });
+
+  function pintar() {
+    const [a, b] = prod.acabados[clave];
+    const lista = [
+      [a, prod.nombre + ' en ' + NOMBRE_ACABADO_HOMBRE[clave].toLowerCase()],
+      [b, prod.nombre + ' puesto'],
+      ['img/hombre/packaging.png', 'Packaging Cozumel'],
+    ];
+    galeria.textContent = ''; miniaturas.textContent = ''; puntos.textContent = '';
+    lista.forEach(([src, alt], i) => {
+      const fig = crear('figure', 'v2-pieza-foto');
+      fig.id = 'v2-pieza-foto-' + i;
+      const im = crear('img');
+      im.src = src; im.alt = alt;
+      if (i) im.loading = 'lazy';
+      fig.append(im);
+      galeria.append(fig);
+      const mini = crear('button', 'v2-pieza-mini');
+      mini.type = 'button';
+      mini.setAttribute('aria-label', 'Ver foto ' + (i + 1));
+      const mi = crear('img');
+      mi.src = src; mi.alt = '';
+      mini.append(mi);
+      mini.addEventListener('click', () => {
+        fig.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        miniaturas.querySelectorAll('button').forEach(m => m.classList.toggle('activo', m === mini));
+      });
+      if (!i) mini.classList.add('activo');
+      miniaturas.append(mini);
+      puntos.append(crear('span'));
+    });
+    galeria.scrollLeft = 0;
+    marcar();
+    etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
+    tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
+  }
+  pintar();
+})();
 
 /* ---------- Shop nuevo: rejilla de la colección (10/2026) ----------
    Foto (la segunda al pasar el ratón), nombre y precio. Incluye el Kit a
