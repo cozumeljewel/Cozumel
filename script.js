@@ -699,13 +699,40 @@ function tarjetaHombre(prod) {
   const claves = Object.keys(prod.acabados);
   const card = document.createElement('div');
   card.className = 'v2-card v2-card--hombre';
+  // Carrusel: producto (de cerca), puesto y packaging, con puntitos.
   const media = document.createElement('span');
-  media.className = 'v2-card-media';
-  const img = document.createElement('img');
-  img.alt = prod.nombre; img.loading = 'lazy';
-  const img2 = document.createElement('img');
-  img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
-  media.append(img, img2);
+  media.className = 'v2-card-media v2-carrusel';
+  const pista = document.createElement('span');
+  pista.className = 'v2-carrusel-pista';
+  const crearFoto = (alt, extra) => {
+    const slide = document.createElement('span');
+    slide.className = 'v2-carrusel-foto' + (extra ? ' ' + extra : '');
+    const im = document.createElement('img');
+    im.alt = alt; im.loading = 'lazy';
+    slide.appendChild(im);
+    pista.appendChild(slide);
+    return im;
+  };
+  const img = crearFoto(prod.nombre, 'v2-carrusel-foto--cerca');
+  const img2 = crearFoto(prod.nombre + ' puesto');
+  const img3 = crearFoto('Packaging Cozumel');
+  img3.src = 'img/hombre/packaging.png';
+  const puntos = document.createElement('span');
+  puntos.className = 'v2-carrusel-puntos';
+  [0, 1, 2].forEach(i => {
+    const p = document.createElement('button');
+    p.type = 'button';
+    p.setAttribute('aria-label', 'Foto ' + (i + 1));
+    p.addEventListener('click', () => pista.scrollTo({ left: i * pista.clientWidth, behavior: 'smooth' }));
+    puntos.appendChild(p);
+  });
+  const marcarPunto = () => {
+    const i = Math.round(pista.scrollLeft / (pista.clientWidth || 1));
+    puntos.querySelectorAll('button').forEach((p, j) => p.setAttribute('aria-current', String(i === j)));
+  };
+  pista.addEventListener('scroll', marcarPunto, { passive: true });
+  media.append(pista, puntos);
+  marcarPunto();
   const tonos = document.createElement('div');
   tonos.className = 'v2-tonos';
   tonos.setAttribute('role', 'group');
@@ -715,6 +742,7 @@ function tarjetaHombre(prod) {
   const poner = (clave) => {
     const [a, b] = prod.acabados[clave];
     img.src = a; img2.src = b || a;
+    pista.scrollTo({ left: 0 });
     etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
     tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
   };
