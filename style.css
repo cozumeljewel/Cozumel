@@ -3747,3 +3747,5 @@ body.v2 .v2-pieza-tonos{gap:10px; margin-top:24px;}
 }
 /* La foto de cada círculo ya dice el color: sin el nombre debajo */
 body.v2 .v2-pieza-acabado{display:none;}
+/* El zoom de cada círculo coloca la foto dentro (script.js) */
+body.v2 .v2-pieza-tonos .v2-variante{position:relative;}

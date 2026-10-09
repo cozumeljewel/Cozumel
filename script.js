@@ -669,17 +669,8 @@ const FOTOS_TARJETA_V2 = {
   if (!pista) return;
   // Portada: la colección de hombre (hombre.js). Si no está, la de mujer.
   if (typeof COLECCION_HOMBRE !== 'undefined') {
-    // Variedad de acabados: la que tenga negro, en negro; los anillos,
-    // uno de cada material; el resto alterna oro y oro blanco.
-    const turnoAnillo = ['oro', 'oro_blanco', 'negro'];
-    let anillo = 0, resto = 0;
-    COLECCION_HOMBRE.forEach(prod => {
-      let acabado;
-      if (prod.tipo === 'anillos') acabado = turnoAnillo[anillo++ % 3];
-      else if (prod.acabados.negro) acabado = 'negro';
-      else acabado = resto++ % 2 ? 'oro_blanco' : 'oro';
-      pista.appendChild(tarjetaHombre(prod, acabado));
-    });
+    const acabados = acabadosVariados(COLECCION_HOMBRE);
+    COLECCION_HOMBRE.forEach((prod, i) => pista.appendChild(tarjetaHombre(prod, acabados[i])));
     return;
   }
   if (typeof PRODUCTOS === 'undefined') return;
@@ -755,6 +746,19 @@ function tarjetaHombre(prod, inicial) {
   return card;
 }
 
+/* Acabado con el que sale cada pieza en una lista, para que haya
+   variedad: la que tiene negro, en negro; los anillos, uno de cada
+   material; el resto alterna oro y oro blanco. */
+function acabadosVariados(lista) {
+  const turnoAnillo = ['oro', 'oro_blanco', 'negro'];
+  let anillo = 0, resto = 0;
+  return lista.map(prod => {
+    if (prod.tipo === 'anillos') return turnoAnillo[anillo++ % 3];
+    if (prod.acabados.negro) return 'negro';
+    return resto++ % 2 ? 'oro_blanco' : 'oro';
+  });
+}
+
 function urlPiezaHombre(prod, clave) {
   return 'hombre.html?id=' + encodeURIComponent(prod.id) + '&a=' + encodeURIComponent(clave);
 }
@@ -817,6 +821,17 @@ function urlPiezaHombre(prod, clave) {
     bt.setAttribute('aria-label', NOMBRE_ACABADO_HOMBRE[c]);
     const mini = crear('img');
     mini.src = prod.acabados[c][0]; mini.alt = ''; mini.loading = 'lazy';
+    // Muy de cerca, centrado en un trozo de la pieza (hombre-focos.js),
+    // para que se vea bien el color. Sin tocar la foto.
+    const foco = typeof FOCOS_HOMBRE !== 'undefined' && FOCOS_HOMBRE[mini.src.split('/').slice(-3).join('/')];
+    if (foco) {
+      const k = prod.tipo === 'colgantes' ? 6 : prod.tipo === 'anillos' ? 2.4 : 3.5;
+      const pos = (f) => Math.min(0, Math.max(-(k - 1) * 100, 50 - f * k));
+      Object.assign(mini.style, {
+        position: 'absolute', width: k * 100 + '%', height: k * 100 + '%', maxWidth: 'none',
+        left: pos(foco[0]) + '%', top: pos(foco[1]) + '%', transform: 'none',
+      });
+    }
     bt.appendChild(mini);
     bt.addEventListener('click', () => { clave = c; pintar(); history.replaceState(null, '', urlPiezaHombre(prod, c)); });
     tonos.appendChild(bt);
@@ -880,7 +895,8 @@ function urlPiezaHombre(prod, clave) {
     const seccion = crear('section', 'v2-pieza-mas');
     seccion.setAttribute('aria-label', 'Más piezas');
     const fila = crear('div', 'v2-pieza-mas-fila');
-    otras.forEach(p => fila.appendChild(tarjetaHombre(p)));
+    const acabados = acabadosVariados(otras);
+    otras.forEach((p, i) => fila.appendChild(tarjetaHombre(p, acabados[i])));
     seccion.append(fila);
     caja.after(seccion);
   }
@@ -918,7 +934,8 @@ function urlPiezaHombre(prod, clave) {
     });
     rejilla.before(tipos);
     const piezas = COLECCION_HOMBRE.filter(p => p.tipo === tipo);
-    piezas.forEach(prod => rejilla.appendChild(tarjetaHombre(prod)));
+    const acabados = acabadosVariados(piezas);
+    piezas.forEach((prod, i) => rejilla.appendChild(tarjetaHombre(prod, acabados[i])));
     if (!piezas.length) {
       const vacio = document.createElement('p');
       vacio.className = 'v2-grid-vacio';
