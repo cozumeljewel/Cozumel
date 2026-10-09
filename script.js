@@ -713,7 +713,8 @@ function tarjetaHombre(prod) {
     pista.appendChild(slide);
     return im;
   };
-  const img = crearFoto(prod.nombre, 'v2-carrusel-foto--cerca');
+  // Los colgantes salen de cerca; pulseras y brazaletes ya llenan la foto.
+  const img = crearFoto(prod.nombre, prod.tipo === 'colgantes' ? 'v2-carrusel-foto--cerca' : '');
   const img2 = crearFoto(prod.nombre + ' puesto');
   const img3 = crearFoto('Packaging Cozumel');
   img3.src = 'img/hombre/packaging.png';
@@ -769,9 +770,30 @@ function tarjetaHombre(prod) {
     if (a.dataset.coleccion === coleccion) a.setAttribute('aria-current', 'page');
   });
 
-  // MEN: los collares de hombre (hombre.js), con circulitos de acabado.
+  // MEN: las piezas de hombre (hombre.js), con circulitos de acabado y,
+  // encima, el tipo de pieza (?t=colgantes por defecto).
   if (coleccion === 'men' && typeof COLECCION_HOMBRE !== 'undefined') {
-    COLECCION_HOMBRE.forEach(prod => rejilla.appendChild(tarjetaHombre(prod)));
+    const pedido = new URLSearchParams(location.search).get('t');
+    const tipo = TIPOS_HOMBRE.some(t => t.clave === pedido) ? pedido : TIPOS_HOMBRE[0].clave;
+    const tipos = document.createElement('nav');
+    tipos.className = 'v2-tipos';
+    tipos.setAttribute('aria-label', 'Tipo de pieza');
+    TIPOS_HOMBRE.forEach(t => {
+      const a = document.createElement('a');
+      a.href = '?c=men&t=' + t.clave;
+      a.textContent = t.nombre;
+      if (t.clave === tipo) a.setAttribute('aria-current', 'page');
+      tipos.appendChild(a);
+    });
+    rejilla.before(tipos);
+    const piezas = COLECCION_HOMBRE.filter(p => p.tipo === tipo);
+    piezas.forEach(prod => rejilla.appendChild(tarjetaHombre(prod)));
+    if (!piezas.length) {
+      const vacio = document.createElement('p');
+      vacio.className = 'v2-grid-vacio';
+      vacio.textContent = 'Muy pronto';
+      rejilla.appendChild(vacio);
+    }
     return;
   }
   PRODUCTOS.forEach(prod => {

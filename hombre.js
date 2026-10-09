@@ -1,31 +1,72 @@
 /* =========================================================
    COLECCIÓN MEN (rediseño 10/2026)
    Solo para mostrar en el Shop (pestaña MEN). Todavía sin ficha ni
-   compra: faltan nombre, precios y SKU de cada collar.
+   compra: faltan nombre, precios y SKU de cada pieza.
+   tipo: colgantes | pulseras (pulseras y brazaletes) | anillos.
    acabados: en el orden en que salen los circulitos. Cada acabado lleva
-   [foto de producto (portada), foto puesto (al pasar el cursor)].
+   [foto de producto (portada), foto puesto]. El packaging se añade
+   siempre como última foto.
    ========================================================= */
+const TIPOS_HOMBRE = [
+  { clave: 'colgantes', nombre: 'Colgantes' },
+  { clave: 'pulseras',  nombre: 'Pulseras / Brazaletes' },
+  { clave: 'anillos',   nombre: 'Anillos' },
+];
 const COLECCION_HOMBRE = [
-  { id: 'hombre_collar_1', nombre: 'Collar 01', acabados: {
+  { id: 'hombre_collar_1', tipo: 'colgantes', nombre: 'Collar 01', acabados: {
       oro:        ['img/hombre/collar-1-oro-producto.png', 'img/hombre/collar-1-oro-puesto.png'],
       oro_blanco: ['img/hombre/collar-1-oro-blanco-producto.png', 'img/hombre/collar-1-oro-blanco-puesto.png'],
       negro:      ['img/hombre/collar-1-negro-producto.jpg', 'img/hombre/collar-1-negro-puesto.png'],
   } },
-  { id: 'hombre_collar_2', nombre: 'Collar 02', acabados: {
+  { id: 'hombre_collar_2', tipo: 'colgantes', nombre: 'Collar 02', acabados: {
       oro:        ['img/hombre/collar-2-oro-producto.jpg', 'img/hombre/collar-2-oro-puesto.png'],
       oro_blanco: ['img/hombre/collar-2-oro-blanco-producto.png', 'img/hombre/collar-2-oro-blanco-puesto.png'],
   } },
-  { id: 'hombre_collar_3', nombre: 'Collar 03', acabados: {
+  { id: 'hombre_collar_3', tipo: 'colgantes', nombre: 'Collar 03', acabados: {
       oro:        ['img/hombre/collar-3-oro-producto.jpg', 'img/hombre/collar-3-oro-puesto.png'],
       oro_blanco: ['img/hombre/collar-3-oro-blanco-producto.png', 'img/hombre/collar-3-oro-blanco-puesto.jpg'],
   } },
-  { id: 'hombre_collar_4', nombre: 'Collar 04', acabados: {
+  { id: 'hombre_collar_4', tipo: 'colgantes', nombre: 'Collar 04', acabados: {
       oro:        ['img/hombre/collar-4-oro-producto.jpg', 'img/hombre/collar-4-oro-puesto.jpg'],
       oro_blanco: ['img/hombre/collar-4-oro-blanco-producto.png', 'img/hombre/collar-4-oro-blanco-puesto.png'],
   } },
-  { id: 'hombre_collar_5', nombre: 'Collar 05', acabados: {
+  { id: 'hombre_collar_5', tipo: 'colgantes', nombre: 'Collar 05', acabados: {
       oro:        ['img/hombre/collar-5-oro-producto.jpg', 'img/hombre/collar-5-oro-puesto.png'],
       oro_blanco: ['img/hombre/collar-5-oro-blanco-producto.png', 'img/hombre/collar-5-oro-blanco-puesto.jpg'],
+  } },
+  { id: 'hombre_collar_6', tipo: 'colgantes', nombre: 'Collar 06', acabados: {
+      oro:        ['img/hombre/collar-6-oro-producto.jpg', 'img/hombre/collar-6-oro-puesto.png'],
+      oro_blanco: ['img/hombre/collar-6-oro-blanco-producto.png', 'img/hombre/collar-6-oro-blanco-puesto.png'],
+  } },
+  { id: 'hombre_collar_7', tipo: 'colgantes', nombre: 'Collar 07', acabados: {
+      oro:        ['img/hombre/collar-7-oro-producto.png', 'img/hombre/collar-7-oro-puesto.png'],
+      oro_blanco: ['img/hombre/collar-7-oro-blanco-producto.png', 'img/hombre/collar-7-oro-blanco-puesto.png'],
+      negro:      ['img/hombre/collar-7-negro-producto.png', 'img/hombre/collar-7-negro-puesto.png'],
+  } },
+  { id: 'hombre_pulsera_1', tipo: 'pulseras', nombre: 'Pulsera 01', acabados: {
+      oro:        ['img/hombre/pulsera-1-oro-producto.jpg', 'img/hombre/pulsera-1-oro-puesto.jpg'],
+      oro_blanco: ['img/hombre/pulsera-1-oro-blanco-producto.png', 'img/hombre/pulsera-1-oro-blanco-puesto.png'],
+  } },
+  { id: 'hombre_pulsera_2', tipo: 'pulseras', nombre: 'Pulsera 02', acabados: {
+      oro:        ['img/hombre/pulsera-2-oro-producto.jpg', 'img/hombre/pulsera-2-oro-puesto.jpg'],
+      oro_blanco: ['img/hombre/pulsera-2-oro-blanco-producto.png', 'img/hombre/pulsera-2-oro-blanco-puesto.png'],
+  } },
+  { id: 'hombre_pulsera_3', tipo: 'pulseras', nombre: 'Pulsera 03', acabados: {
+      oro:        ['img/hombre/pulsera-3-oro-producto.jpg', 'img/hombre/pulsera-3-oro-puesto.png'],
+      oro_blanco: ['img/hombre/pulsera-3-oro-blanco-producto.png', 'img/hombre/pulsera-3-oro-blanco-puesto.png'],
+  } },
+  { id: 'hombre_pulsera_4', tipo: 'pulseras', nombre: 'Pulsera 04', acabados: {
+      oro:        ['img/hombre/pulsera-4-oro-producto.jpg', 'img/hombre/pulsera-4-oro-puesto.jpg'],
+      oro_blanco: ['img/hombre/pulsera-4-oro-blanco-producto.png', 'img/hombre/pulsera-4-oro-blanco-puesto.png'],
+  } },
+  { id: 'hombre_pulsera_5', tipo: 'pulseras', nombre: 'Pulsera 05', acabados: {
+      oro:        ['img/hombre/pulsera-5-oro-producto.jpg', 'img/hombre/pulsera-5-oro-puesto.png'],
+      oro_blanco: ['img/hombre/pulsera-5-oro-blanco-producto.png', 'img/hombre/pulsera-5-oro-blanco-puesto.png'],
+  } },
+  { id: 'hombre_brazalete_1', tipo: 'pulseras', nombre: 'Brazalete 01', acabados: {
+      oro:        ['img/hombre/brazalete-1-oro-producto.jpg', 'img/hombre/brazalete-1-oro-puesto.png'],
+      oro_blanco: ['img/hombre/brazalete-1-oro-blanco-producto.png', 'img/hombre/brazalete-1-oro-blanco-puesto.png'],
+      negro:      ['img/hombre/brazalete-1-negro-producto.png', 'img/hombre/brazalete-1-negro-puesto.png'],
   } },
 ];
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', negro: 'Negro' };
