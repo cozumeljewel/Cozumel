@@ -13,28 +13,28 @@ const TIPOS_HOMBRE = [
   { clave: 'anillos',   nombre: 'Anillos' },
 ];
 const COLECCION_HOMBRE = [
-  { id: 'hombre_collar_1', tipo: 'colgantes', nombre: 'Collar 01', acabados: {
+  { id: 'hombre_collar_1', tipo: 'colgantes', nombre: 'Holbox', acabados: {
       oro:        ['img/hombre/collar-1-oro-producto.png', 'img/hombre/collar-1-oro-puesto.png', 'img/hombre/collar-1-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-1-oro-blanco-producto.png', 'img/hombre/collar-1-oro-blanco-puesto.png', 'img/hombre/collar-1-oro-blanco-puesto-2.png'],
       negro:      ['img/hombre/collar-1-negro-producto.jpg', 'img/hombre/collar-1-negro-puesto.png', 'img/hombre/collar-1-negro-puesto-2.png'],
   } },
-  { id: 'hombre_collar_2', tipo: 'colgantes', nombre: 'Collar 02', acabados: {
+  { id: 'hombre_collar_2', tipo: 'colgantes', nombre: 'Pulque', acabados: {
       oro:        ['img/hombre/collar-2-oro-producto.jpg', 'img/hombre/collar-2-oro-puesto.png', 'img/hombre/collar-2-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-2-oro-blanco-producto.png', 'img/hombre/collar-2-oro-blanco-puesto.png', 'img/hombre/collar-2-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_collar_3', tipo: 'colgantes', nombre: 'Collar 03', acabados: {
+  { id: 'hombre_collar_3', tipo: 'colgantes', nombre: 'Mezcal', acabados: {
       oro:        ['img/hombre/collar-3-oro-producto.jpg', 'img/hombre/collar-3-oro-puesto.png', 'img/hombre/collar-3-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-3-oro-blanco-producto.png', 'img/hombre/collar-3-oro-blanco-puesto.jpg', 'img/hombre/collar-3-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_collar_4', tipo: 'colgantes', nombre: 'Collar 04', acabados: {
+  { id: 'hombre_collar_4', tipo: 'colgantes', nombre: 'Guajillo', acabados: {
       oro:        ['img/hombre/collar-4-oro-producto.jpg', 'img/hombre/collar-4-oro-puesto.jpg', 'img/hombre/collar-4-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-4-oro-blanco-producto.png', 'img/hombre/collar-4-oro-blanco-puesto.png', 'img/hombre/collar-4-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_collar_5', tipo: 'colgantes', nombre: 'Collar 05', acabados: {
+  { id: 'hombre_collar_5', tipo: 'colgantes', nombre: 'Alma Caribeña', acabados: {
       oro:        ['img/hombre/collar-5-oro-producto.jpg', 'img/hombre/collar-5-oro-puesto.png', 'img/hombre/collar-5-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-5-oro-blanco-producto.png', 'img/hombre/collar-5-oro-blanco-puesto.jpg', 'img/hombre/collar-5-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_collar_6', tipo: 'colgantes', nombre: 'Collar 06', acabados: {
+  { id: 'hombre_collar_6', tipo: 'colgantes', nombre: 'Cacao', acabados: {
       oro:        ['img/hombre/collar-6-oro-producto.jpg', 'img/hombre/collar-6-oro-puesto.png', 'img/hombre/collar-6-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-6-oro-blanco-producto.png', 'img/hombre/collar-6-oro-blanco-puesto.png', 'img/hombre/collar-6-oro-blanco-puesto-2.png'],
   } },
@@ -80,17 +80,17 @@ const COLECCION_HOMBRE = [
       oro:        ['img/hombre/brazalete-3-oro-producto.jpg', 'img/hombre/brazalete-3-oro-puesto.png', 'img/hombre/brazalete-3-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/brazalete-3-oro-blanco-producto.png', 'img/hombre/brazalete-3-oro-blanco-puesto.jpg', 'img/hombre/brazalete-3-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_anillo_1', tipo: 'anillos', nombre: 'Anillo 01', acabados: {
+  { id: 'hombre_anillo_1', tipo: 'anillos', nombre: 'Ocaso', acabados: {
       oro:        ['img/hombre/anillo-1-oro-producto.png', 'img/hombre/anillo-1-oro-puesto.png', 'img/hombre/anillo-1-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/anillo-1-oro-blanco-producto.png', 'img/hombre/anillo-1-oro-blanco-puesto.png', 'img/hombre/anillo-1-oro-blanco-puesto-2.png'],
       negro:      ['img/hombre/anillo-1-negro-producto.png', 'img/hombre/anillo-1-negro-puesto.jpg', 'img/hombre/anillo-1-negro-puesto-2.png'],
   } },
-  { id: 'hombre_anillo_2', tipo: 'anillos', nombre: 'Anillo 02', acabados: {
+  { id: 'hombre_anillo_2', tipo: 'anillos', nombre: 'Marea', acabados: {
       oro:        ['img/hombre/anillo-2-oro-producto.png', 'img/hombre/anillo-2-oro-puesto.png', 'img/hombre/anillo-2-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/anillo-2-oro-blanco-producto.png', 'img/hombre/anillo-2-oro-blanco-puesto.png', 'img/hombre/anillo-2-oro-blanco-puesto-2.png'],
       negro:      ['img/hombre/anillo-2-negro-producto.png', 'img/hombre/anillo-2-negro-puesto.jpg', 'img/hombre/anillo-2-negro-puesto-2.png'],
   } },
-  { id: 'hombre_anillo_3', tipo: 'anillos', nombre: 'Anillo 03', acabados: {
+  { id: 'hombre_anillo_3', tipo: 'anillos', nombre: 'Cenote', acabados: {
       oro:        ['img/hombre/anillo-3-oro-producto.png', 'img/hombre/anillo-3-oro-puesto.png', 'img/hombre/anillo-3-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/anillo-3-oro-blanco-producto.png', 'img/hombre/anillo-3-oro-blanco-puesto.png', 'img/hombre/anillo-3-oro-blanco-puesto-2.png'],
       negro:      ['img/hombre/anillo-3-negro-producto.png', 'img/hombre/anillo-3-negro-puesto.png', 'img/hombre/anillo-3-negro-puesto-2.png'],
