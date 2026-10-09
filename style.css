@@ -2967,7 +2967,9 @@ body[data-page="historia"] .eyebrow{
    queda para el nombre de la marca y momentos editoriales.
    ========================================================= */
 body.v2{
-  --v2-marfil:#F6F2EB;
+  --v2-marfil:#FFFFFF;
+  /* Fondo de las fotos: crema muy, muy suave (como el gris de Hanley) */
+  --v2-crema-foto:#FAF7F2;
   --v2-arena:#ECE4D6;
   --v2-carbon:#1D1D1B;
   --v2-blanco:#FBF8F3;
@@ -2983,7 +2985,7 @@ body.v2[data-page="inicio"] .site-header{
   border-bottom:1px solid transparent; box-shadow:none;
 }
 body.v2[data-page="inicio"] .site-header.scrolled{
-  background:rgba(246,242,235,.9); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  background:rgba(255,255,255,.92); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
   border-bottom-color:rgba(29,29,27,.08); box-shadow:none;
 }
 body.v2 .header-inner{
@@ -3152,7 +3154,7 @@ body.v2 .arma-kit--entrada{display:none;}
   display:flex; flex-direction:column; align-items:center; text-align:center;
   text-decoration:none; color:var(--v2-carbon); min-width:0;
 }
-.v2-card-media{position:relative; display:block; width:100%; aspect-ratio:1/1; overflow:hidden; background:#EFEEEC;}
+.v2-card-media{position:relative; display:block; width:100%; aspect-ratio:1/1; overflow:hidden; background:var(--v2-crema-foto);}
 .v2-card-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;}
 .v2-card-hover{opacity:0; transition:opacity .45s ease;}
 @media (hover:hover){ .v2-card:hover .v2-card-hover{opacity:1;} }
@@ -3195,7 +3197,7 @@ body.v2 .page{overflow:visible; overflow:clip;}
 @media (hover:hover){
   body.v2[data-page="inicio"] .site-header:hover,
   body.v2[data-page="inicio"] .site-header:focus-within{
-    background-color:rgba(246,242,235,.96); background-image:none;
+    background-color:#FFFFFF; background-image:none;
     border-bottom-color:rgba(29,29,27,.08);
   }
   body.v2[data-page="inicio"] .site-header:hover .logo-name,
@@ -3335,7 +3337,7 @@ body.v2-visor-abierto{overflow:hidden;}
   margin-top:8px; font-family:var(--font-sans); font-size:11px; letter-spacing:.08em; color:#55534F;
 }
 .v2-card--hombre .v2-card-nombre{margin-top:6px;}
-.v2-card--hombre .v2-card-media{background:#F4F4F2;}
+.v2-card--hombre .v2-card-media{background:var(--v2-crema-foto);}
 
 /* MEN: los colgantes se ven de cerca (zoom a la parte de abajo, donde
    cae el colgante). Solo la portada; la foto puesta va entera. */
@@ -3353,7 +3355,7 @@ body.v2-visor-abierto{overflow:hidden;}
   -webkit-overflow-scrolling:touch;
 }
 .v2-pieza-galeria::-webkit-scrollbar{display:none;}
-.v2-pieza-foto{flex:0 0 100%; margin:0; scroll-snap-align:start; aspect-ratio:1/1; background:#F4F4F2;}
+.v2-pieza-foto{flex:0 0 100%; margin:0; scroll-snap-align:start; aspect-ratio:1/1; background:var(--v2-crema-foto);}
 .v2-pieza-foto img{display:block; width:100%; height:100%; object-fit:cover;}
 .v2-pieza-puntos{display:flex; justify-content:center; gap:10px; padding:18px 0 4px;}
 .v2-pieza-puntos span{width:6px; height:6px; border-radius:50%; background:#B9B6B1;}
@@ -3393,7 +3395,7 @@ body.v2-visor-abierto{overflow:hidden;}
     display:flex; flex-direction:column; gap:14px;
     position:sticky; top:calc(var(--header-h) + 40px);
   }
-  .v2-pieza-mini{padding:0; border:1px solid transparent; background:#F4F4F2; cursor:pointer; aspect-ratio:1/1;}
+  .v2-pieza-mini{padding:0; border:1px solid transparent; background:var(--v2-crema-foto); cursor:pointer; aspect-ratio:1/1;}
   .v2-pieza-mini img{display:block; width:100%; height:100%; object-fit:cover;}
   .v2-pieza-mini.activo{border-color:var(--v2-carbon);}
   .v2-pieza-galeria{flex-direction:column; gap:28px; overflow:visible; scroll-snap-type:none;}
@@ -3416,3 +3418,13 @@ body.v2-visor-abierto{overflow:hidden;}
   .v2-pieza-mas-fila{gap:32px; padding:0 48px; scrollbar-width:thin;}
   .v2-pieza-mas-fila .v2-card{flex-basis:calc((100% - 3 * 32px) / 4.3);}
 }
+
+/* ---------- Fondo blanco y fotos en crema (como Hanley) ----------
+   Cabecera, página y pie en blanco; solo el recuadro de cada foto lleva
+   un crema muy suave. multiply funde el blanco de las fotos de estudio
+   con ese crema sin tocar los archivos. */
+body.v2{background:#FFFFFF;}
+body.v2 footer{background:#FFFFFF; border-top:1px solid rgba(29,29,27,.08);}
+body.v2 .v2-card-media img:not(.v2-card-hover),
+body.v2 .v2-pieza-foto img,
+body.v2 .v2-pieza-mini img{mix-blend-mode:multiply;}
