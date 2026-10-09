@@ -3260,7 +3260,7 @@ body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
 .v2-colecciones a[aria-current="page"]{color:var(--v2-carbon); border-bottom-color:var(--v2-carbon);}
 @media (min-width:900px){ .v2-colecciones{margin-bottom:40px; gap:36px;} }
 /* MEN: tipos de pieza (Colgantes, Pulseras / Brazaletes, Anillos) */
-.v2-tipos{display:flex; flex-wrap:wrap; justify-content:center; gap:10px 22px; margin:-8px 0 26px;}
+.v2-tipos{display:flex; flex-wrap:wrap; justify-content:center; gap:10px 22px; margin:0 0 26px;}
 .v2-tipos a{
   font-family:var(--font-sans); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
   text-decoration:none; color:#8A8783; padding-bottom:4px; border-bottom:1px solid transparent;
@@ -3272,7 +3272,7 @@ body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
   grid-column:1/-1; padding:48px 0; text-align:center; font-family:var(--font-sans);
   font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#8A8783;
 }
-@media (min-width:900px){ .v2-tipos{margin:-20px 0 40px; gap:12px 32px;} }
+@media (min-width:900px){ .v2-tipos{margin:0 0 40px; gap:12px 32px;} }
 
 /* ---------- STORIES: "Ver más" al pasar el cursor + visor a pantalla completa ---------- */
 .v2-stories-pista .v2-story{
