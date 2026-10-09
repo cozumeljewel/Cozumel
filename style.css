@@ -3712,8 +3712,11 @@ body.v2 .v2-drop-pista, body.v2 .v2-pieza-mas-fila{padding-top:4px; padding-bott
 }
 
 /* ---------- Zoom de fotos en el móvil: en la propia foto ----------
-   El pellizco lo gestiona script.js; el navegador no amplía la página. */
+   Lo gestiona script.js: toque para ampliar y arrastrar, otro para
+   volver. Ampliada, la galería no se desliza. */
 @media (max-width:899px){
-  body.v2 .v2-pieza-foto{touch-action:pan-x pan-y; overflow:hidden;}
+  body.v2 .v2-pieza-foto{overflow:hidden; cursor:zoom-in;}
+  body.v2 .v2-pieza-foto.ampliada{cursor:zoom-out; touch-action:none;}
+  body.v2 .v2-pieza-galeria.con-zoom{overflow-x:hidden; touch-action:none;}
   body.v2 .v2-pieza-foto img{will-change:transform;}
 }

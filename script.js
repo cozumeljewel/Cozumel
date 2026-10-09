@@ -3605,41 +3605,67 @@ if (contactForm) {
 })();
 
 /* ---------- Zoom de las fotos de la pieza (móvil) ----------
-   En la propia foto, sin abrir nada: se pellizca con dos dedos, la foto
-   se amplía donde están los dedos y al soltar vuelve a su sitio. Con un
-   dedo se sigue pasando de foto como siempre. */
+   En la propia foto, sin abrir nada: al tocarla se amplía en ese punto
+   y se recorre moviendo el dedo; otro toque la devuelve a su tamaño.
+   Mientras está ampliada, el dedo mueve la foto en vez de pasar a la
+   siguiente. */
 (function () {
   const galeria = document.querySelector('.v2-pieza-galeria');
   if (!galeria) return;
-  const distancia = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
-  let img = null, inicio = 0, origen = null;
-  galeria.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 2) return;
+  const movil = () => window.matchMedia('(max-width:899px)').matches;
+  const ESCALA = 2.5;
+  let activa = null; // { foto, img, tx, ty }
+  let toque = null;  // { x, y, tx, ty, movido }
+
+  const limitar = (v, max) => Math.max(-max, Math.min(max, v));
+  function aplicar() {
+    const r = activa.foto.getBoundingClientRect();
+    activa.tx = limitar(activa.tx, (ESCALA - 1) * r.width / 2);
+    activa.ty = limitar(activa.ty, (ESCALA - 1) * r.height / 2);
+    activa.img.style.transform = 'translate(' + activa.tx + 'px,' + activa.ty + 'px) scale(' + ESCALA + ')';
+  }
+  function ampliar(foto, x, y) {
+    const img = foto.querySelector('img');
+    const r = foto.getBoundingClientRect();
+    // El punto tocado se queda bajo el dedo al ampliar.
+    const dx = x - (r.left + r.width / 2), dy = y - (r.top + r.height / 2);
+    activa = { foto, img, tx: dx * (1 - ESCALA), ty: dy * (1 - ESCALA) };
+    foto.classList.add('ampliada');
+    galeria.classList.add('con-zoom');
+    img.style.transition = 'transform .3s ease';
+    aplicar();
+  }
+  function reducir() {
+    if (!activa) return;
+    activa.img.style.transition = 'transform .3s ease';
+    activa.img.style.transform = '';
+    activa.foto.classList.remove('ampliada');
+    galeria.classList.remove('con-zoom');
+    activa = null;
+  }
+
+  galeria.addEventListener('click', (e) => {
     const foto = e.target.closest('.v2-pieza-foto');
-    if (!foto) return;
-    img = foto.querySelector('img');
-    inicio = distancia(e.touches[0], e.touches[1]);
-    const r = img.getBoundingClientRect();
-    const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-    const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-    origen = { cx, cy };
-    img.style.transition = 'none';
-    img.style.transformOrigin = ((cx - r.left) / r.width * 100) + '% ' + ((cy - r.top) / r.height * 100) + '%';
+    if (!foto || !movil()) return;
+    if (toque && toque.movido) return; // fue un arrastre, no un toque
+    if (activa) reducir(); else ampliar(foto, e.clientX, e.clientY);
+  });
+  galeria.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    toque = { x: t.clientX, y: t.clientY, tx: activa ? activa.tx : 0, ty: activa ? activa.ty : 0, movido: false };
   }, { passive: true });
   galeria.addEventListener('touchmove', (e) => {
-    if (!img || e.touches.length !== 2) return;
-    e.preventDefault(); // que no se mueva ni amplíe la página entera
-    const escala = Math.min(4, Math.max(1, distancia(e.touches[0], e.touches[1]) / inicio));
-    const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-    const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-    img.style.transform = 'translate(' + (cx - origen.cx) + 'px,' + (cy - origen.cy) + 'px) scale(' + escala + ')';
+    if (!toque) return;
+    const t = e.touches[0];
+    const mx = t.clientX - toque.x, my = t.clientY - toque.y;
+    if (Math.abs(mx) > 6 || Math.abs(my) > 6) toque.movido = true;
+    if (!activa) return;
+    e.preventDefault(); // ampliada: el dedo mueve la foto
+    activa.img.style.transition = 'none';
+    activa.tx = toque.tx + mx;
+    activa.ty = toque.ty + my;
+    aplicar();
   }, { passive: false });
-  const soltar = (e) => {
-    if (!img || e.touches.length >= 2) return;
-    img.style.transition = 'transform .3s ease';
-    img.style.transform = '';
-    img = null;
-  };
-  galeria.addEventListener('touchend', soltar);
-  galeria.addEventListener('touchcancel', soltar);
+  // Al cambiar de acabado se repintan las fotos: empezar sin zoom.
+  document.querySelectorAll('.v2-pieza-tonos .v2-tono').forEach(bt => bt.addEventListener('click', () => { activa = null; galeria.classList.remove('con-zoom'); }));
 })();
