@@ -24,7 +24,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <!-- Idioma (español / inglés): antes de la cuenta atrás. -->
 <script src="idioma.js"></script>
@@ -42,6 +42,7 @@
 <script src="supabase-config.js" defer></script>
 <script src="mercados.js" defer></script>
 <script src="productos.js" defer></script>
+<script src="hombre.js" defer></script>
 </head>
 <body data-page="inicio" class="v2">
 
@@ -236,14 +237,34 @@
   </section>
 
   <!-- ===== FOOTER ===== -->
+  <!-- ===== NEWSLETTER (rediseño 10/2026) =====
+       Silencioso y editorial: una línea, una frase y el campo de email.
+       Lo envía script.js a lista_espera (fuente "newsletter"). -->
+  <section class="v2-news" aria-label="Newsletter">
+    <span class="v2-news-linea" aria-hidden="true"></span>
+    <p class="v2-news-texto">Suscríbete y recibe un código de descuento para tu primer pedido.</p>
+    <form class="v2-news-form" id="v2-news-form" novalidate>
+      <label class="v2-news-campo">
+        <span class="sr-only">Tu correo electrónico</span>
+        <input type="email" name="email" placeholder="Tu correo electrónico" autocomplete="email" required>
+        <button type="submit" aria-label="Suscribirme">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </button>
+      </label>
+      <p class="v2-news-legal">Al suscribirte aceptas la <a href="privacidad.html">política de privacidad</a>.</p>
+      <p class="v2-news-aviso" id="v2-news-aviso" role="status"></p>
+    </form>
+  </section>
+
   <footer>
     <div class="footer-inner">
       <a class="footer-marca" href="index.html">Cozumel</a>
 
       <nav class="footer-nav" aria-label="Enlaces del pie de página">
+        <a href="productos.html?c=men">Colección</a>
+        <a href="faq.html#envios">Envíos</a>
+        <a href="faq.html#devoluciones">Devoluciones</a>
         <a href="contacto.html">Contacto</a>
-        <a href="historia.html">Quiénes somos</a>
-        <a href="faq.html">FAQ</a>
       </nav>
 
       <div class="footer-grupos">

@@ -3445,3 +3445,248 @@ body.v2 .footer-marca{
   font-size:28px; letter-spacing:.16em; text-transform:uppercase; color:var(--v2-carbon);
 }
 @media (min-width:900px){ body.v2 .footer-marca{font-size:38px;} }
+
+/* =========================================================
+   ESTÉTICA FINAL COZUMEL (10/2026): joyería masculina, limpia, cálida
+   Tokens únicos para toda la web: mismos colores, tipografías,
+   espaciados y botones en todas las páginas.
+   Marfil #F8F6F1 · verde petróleo #173634 · gris #62625F
+   líneas #DCD8D1 · fondo de foto #F1F1EF · oro #C4A15A (solo detalles)
+   Cormorant Garamond solo para el logo; Inter para todo lo demás.
+   ========================================================= */
+body.v2{
+  --c-fondo:#F8F6F1;
+  --c-texto:#173634;
+  --c-texto-2:#62625F;
+  --c-linea:#DCD8D1;
+  --c-foto:#F1F1EF;
+  --c-oro:#C4A15A;
+  --c-boton-hover:#24504D;
+  --pad-lateral:20px;
+  --ancho-max:1400px;
+
+  /* Tipografías: dos familias en toda la web */
+  --font-serif:'Cormorant Garamond', Georgia, serif;
+  --font-sans:'Inter', system-ui, -apple-system, sans-serif;
+  --font-historia:var(--font-sans);
+
+  /* Los tokens antiguos apuntan a los nuevos (páginas heredadas) */
+  --background:var(--c-fondo);
+  --foreground:var(--c-texto);
+  --ink:var(--c-texto);
+  --deep:var(--c-texto);
+  --ink-soft:var(--c-texto-2);
+  --muted:var(--c-texto-2);
+  --border:var(--c-linea);
+  --line-1:var(--c-linea); --line-2:var(--c-linea); --line-3:var(--c-linea);
+  --accent:var(--c-texto);
+  --foam:var(--c-fondo);
+  --v2-carbon:var(--c-texto);
+  --v2-marfil:var(--c-fondo);
+  --v2-crema-foto:var(--c-foto);
+
+  background:var(--c-fondo); color:var(--c-texto);
+  font-family:var(--font-sans); font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  --header-h:60px;
+}
+@media (min-width:900px){ body.v2{--header-h:72px; --pad-lateral:48px;} }
+body.v2 .v2-shop, body.v2 .v2-drop, body.v2 .v2-stories, body.v2 .v2-pieza-mas{background:transparent;}
+
+/* ---------- Ancho: centrado, máx. 1400 px en el ordenador ---------- */
+@media (min-width:900px){
+  body.v2 .page{max-width:var(--ancho-max); margin-left:auto; margin-right:auto;}
+}
+
+/* ---------- Cabecera: limpia, compacta, sin sombras ---------- */
+body.v2:not([data-page="inicio"]) .site-header,
+body.v2[data-page="inicio"] .site-header.scrolled{
+  background:var(--c-fondo); border-bottom:1px solid var(--c-linea); box-shadow:none;
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+}
+@media (hover:hover){
+  body.v2[data-page="inicio"] .site-header:hover,
+  body.v2[data-page="inicio"] .site-header:focus-within{background-color:var(--c-fondo); border-bottom-color:var(--c-linea);}
+}
+body.v2 .site-header .logo{display:flex; flex-direction:column; align-items:center; text-decoration:none;}
+body.v2 .site-header .logo-name{
+  font-family:var(--font-serif); font-weight:500;
+  font-size:28px; line-height:1; letter-spacing:.14em; margin-right:-.14em;
+}
+/* "JEWELRY" muy pequeño debajo, con mucho tracking */
+body.v2 .site-header .logo::after{
+  content:"Jewelry"; display:block; margin-top:4px; margin-right:-.42em;
+  font-family:var(--font-sans); font-size:7.5px; font-weight:400;
+  letter-spacing:.42em; text-transform:uppercase; color:var(--c-texto);
+}
+/* Sobre la foto de la portada, en blanco como el logo */
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo::after{color:var(--v2-blanco);}
+@media (hover:hover){
+  body.v2[data-page="inicio"] .site-header:hover .logo::after,
+  body.v2[data-page="inicio"] .site-header:focus-within .logo::after{color:var(--c-texto);}
+}
+@media (min-width:900px){
+  body.v2 .site-header .logo-name{font-size:34px;}
+  body.v2 .site-header .logo::after{font-size:8.5px; margin-top:5px;}
+  body.v2 .site-header .header-inner{padding:0 var(--pad-lateral);}
+  body.v2 .site-header .nav a{font-family:var(--font-sans); font-size:11px; font-weight:400; letter-spacing:.16em;}
+}
+body.v2 .header-carrito svg{stroke-width:1.2;}
+
+/* ---------- Menú móvil ---------- */
+body.v2 .menu-movil{background:rgba(23,54,52,.28);}
+body.v2 .menu-movil-caja{background:var(--c-fondo);}
+body.v2 .menu-movil-marca{font-family:var(--font-serif); font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .menu-movil-nav a{font-family:var(--font-sans); font-size:13px; font-weight:400; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+
+/* ---------- Foto de producto: cuadrado gris claro, sin borde ---------- */
+body.v2 .v2-card-media,
+body.v2 .v2-pieza-foto,
+body.v2 .v2-pieza-mini{background:var(--c-foto);}
+body.v2 .v2-card-media img{transition:transform .3s ease, opacity .45s ease;}
+/* Los colgantes, de cerca pero sin pasarse */
+body.v2 .v2-card-media--cerca img:not(.v2-card-hover){transform:scale(1.35); transform-origin:50% 92%;}
+@media (hover:hover){
+  body.v2 .v2-card:hover .v2-card-media img{transform:scale(1.015);}
+  body.v2 .v2-card:hover .v2-card-media--cerca img:not(.v2-card-hover){transform:scale(1.37);}
+}
+
+/* ---------- Rejilla: mucho aire ---------- */
+body.v2 .v2-shop{padding:28px var(--pad-lateral) 72px;}
+body.v2 .v2-grid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:44px 14px;}
+@media (min-width:600px){ body.v2 .v2-grid{grid-template-columns:repeat(3, minmax(0,1fr)); gap:52px 24px;} }
+@media (min-width:1100px){ body.v2 .v2-grid{grid-template-columns:repeat(4, minmax(0,1fr)); gap:56px 28px;} }
+
+/* ---------- Tarjeta: foto · nombre · precio · variantes ---------- */
+body.v2 .v2-card{color:var(--c-texto);}
+body.v2 .v2-card-nombre, body.v2 .v2-drop-nombre{
+  margin-top:16px; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto); text-decoration:none; line-height:1.4;
+}
+body.v2 .v2-card-precio, body.v2 .v2-drop-precio{
+  margin-top:6px; font-family:var(--font-sans); font-size:13px; font-weight:400;
+  letter-spacing:.04em; color:var(--c-texto);
+}
+body.v2 .v2-card-precio s, body.v2 .v2-drop-precio s{font-size:11px; color:var(--c-texto-2); margin-left:6px;}
+@media (min-width:900px){
+  body.v2 .v2-card-nombre, body.v2 .v2-drop-nombre{font-size:12px; margin-top:18px;}
+  body.v2 .v2-card-precio, body.v2 .v2-drop-precio{font-size:14px;}
+}
+/* Variantes: círculos de 18 px, aro fino en la activa */
+body.v2 .v2-tonos{gap:12px; margin-top:12px;}
+body.v2 .v2-tono{width:18px; height:18px; border:0; box-shadow:none; outline:none; transition:box-shadow .25s ease;}
+body.v2 .v2-tono[aria-pressed="true"]{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto); outline:none;}
+body.v2 .v2-tono:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-oro);}
+body.v2 .v2-tono[aria-pressed="true"]:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-tono--oro{background:linear-gradient(135deg,#E2C98A,#B8944A);}
+body.v2 .v2-tono--oro_blanco{background:linear-gradient(135deg,#F4F4F2,#BDBFC0);}
+body.v2 .v2-tono--negro{background:linear-gradient(135deg,#3A3A38,#121212);}
+body.v2 .v2-tono-nombre{display:none;}
+body.v2 .v2-card--hombre .v2-card-nombre{margin-top:16px;}
+@media (min-width:900px){ body.v2 .v2-card--hombre .v2-card-nombre{margin-top:18px;} }
+
+/* Tipos de pieza (Colgantes · Pulseras · Anillos) */
+body.v2 .v2-tipos a{font-family:var(--font-sans); font-size:11px; font-weight:400; letter-spacing:.14em; color:var(--c-texto-2);}
+body.v2 .v2-tipos a:hover{color:var(--c-texto);}
+body.v2 .v2-tipos a[aria-current="page"]{color:var(--c-texto); border-bottom-color:var(--c-oro);}
+/* En el móvil caben los tres en una línea */
+@media (max-width:599px){
+  body.v2 .v2-tipos{flex-wrap:nowrap; gap:16px; justify-content:center;}
+  body.v2 .v2-tipos a{font-size:10px; letter-spacing:.1em; white-space:nowrap;}
+}
+
+/* ---------- Portada: productos en scroll ---------- */
+body.v2 .v2-drop{padding:48px 0 56px;}
+body.v2 .v2-drop-pista{gap:14px; padding:0 var(--pad-lateral); scroll-padding-inline:var(--pad-lateral);}
+body.v2 .v2-drop-pista .v2-card{flex:0 0 64%; min-width:0; scroll-snap-align:start;}
+@media (min-width:900px){
+  body.v2 .v2-drop{padding:72px 0 88px;}
+  body.v2 .v2-drop-pista{gap:28px; max-width:var(--ancho-max); margin:0 auto;}
+  body.v2 .v2-drop-pista .v2-card{flex-basis:calc((100% - 3 * 28px) / 4.25);}
+}
+
+/* ---------- Botones: verde petróleo, rectos ---------- */
+body.v2 .v2-pieza-boton{
+  background:var(--c-texto); color:var(--c-fondo); border:0; border-radius:2px; box-shadow:none;
+  font-family:var(--font-sans); font-size:12px; font-weight:400; letter-spacing:.14em; text-transform:uppercase;
+  transition:background .3s ease;
+}
+body.v2 .v2-pieza-boton:not(:disabled):hover{background:var(--c-boton-hover);}
+body.v2 .hero-v2-cta{border-radius:2px; color:var(--c-texto); font-family:var(--font-sans); font-size:12px; letter-spacing:.24em;}
+body.v2 .hero-v2-cta:hover{background:var(--c-texto); color:var(--c-fondo);}
+body.v2 .hero-v2-kicker, body.v2 .hero-v2-titulo{font-family:var(--font-sans);}
+body.v2 .hero-v2-titulo{font-weight:300;}
+
+/* ---------- Ficha de pieza ---------- */
+body.v2 .v2-pieza{color:var(--c-texto);}
+body.v2 .v2-pieza-info{padding-left:var(--pad-lateral); padding-right:var(--pad-lateral);}
+body.v2 .v2-pieza-nombre{font-family:var(--font-sans); font-size:14px; font-weight:400; letter-spacing:.14em; color:var(--c-texto);}
+body.v2 .v2-pieza-tonos{gap:14px; margin-top:22px;}
+body.v2 .v2-pieza-tonos .v2-tono{width:20px; height:20px;}
+body.v2 .v2-pieza-tonos .v2-tono[aria-pressed="true"]{box-shadow:0 0 0 3px var(--c-fondo), 0 0 0 4px var(--c-texto);}
+body.v2 .v2-pieza-acabado{font-size:12px; letter-spacing:.06em; color:var(--c-texto-2);}
+body.v2 .v2-pieza-boton{padding:16px 20px; margin-top:28px;}
+body.v2 .v2-pieza-puntos span{background:var(--c-linea);}
+body.v2 .v2-pieza-puntos span.activo{background:var(--c-texto);}
+body.v2 .v2-pieza-mini.activo{border-color:var(--c-texto);}
+body.v2 .v2-pieza-mas{border-top:1px solid var(--c-linea);}
+body.v2 .v2-pieza-mas-fila{padding:0 var(--pad-lateral);}
+/* Acordeones como Hanley: líneas finas, texto pequeño, + a la derecha */
+body.v2 .v2-pieza-desplegables{border-top:1px solid var(--c-linea); margin-top:32px;}
+body.v2 .v2-pieza-desplegable{border-bottom:1px solid var(--c-linea);}
+body.v2 .v2-pieza-desplegable summary{
+  min-height:60px; padding:0; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.16em; color:var(--c-texto);
+}
+body.v2 .v2-pieza-desplegable summary::after{font-size:18px; font-weight:300; color:var(--c-texto);}
+body.v2 .v2-pieza-desplegable-cuerpo{font-family:var(--font-sans); font-size:13px; line-height:1.7; color:var(--c-texto-2); padding-bottom:22px;}
+@media (min-width:900px){
+  body.v2 .v2-pieza{max-width:var(--ancho-max); margin:0 auto; padding-left:var(--pad-lateral); padding-right:var(--pad-lateral);}
+  body.v2 .v2-pieza-info{padding-left:0; padding-right:0;}
+  body.v2 .v2-pieza-desplegable summary{min-height:68px;}
+  body.v2 .v2-pieza-nombre{font-size:15px;}
+}
+
+/* ---------- Newsletter: silenciosa y editorial ---------- */
+body.v2 .v2-news{padding:88px var(--pad-lateral) 96px; text-align:center; background:var(--c-fondo); color:var(--c-texto);}
+body.v2 .v2-news-linea{display:block; width:40px; height:1px; margin:0 auto 32px; background:var(--c-texto); opacity:.6;}
+body.v2 .v2-news-texto{
+  max-width:520px; margin:0 auto; font-family:var(--font-sans); font-size:12px; font-weight:400;
+  line-height:2; letter-spacing:.2em; text-transform:uppercase;
+}
+body.v2 .v2-news-form{max-width:480px; margin:40px auto 0;}
+body.v2 .v2-news-campo{display:flex; align-items:center; border-bottom:1px solid var(--c-texto);}
+body.v2 .v2-news-campo input{
+  flex:1; min-width:0; padding:14px 0; border:0; background:transparent; outline:none;
+  font-family:var(--font-sans); font-size:14px; letter-spacing:.04em; color:var(--c-texto); border-radius:0;
+}
+body.v2 .v2-news-campo input::placeholder{color:var(--c-texto-2);}
+body.v2 .v2-news-campo button{padding:10px 0 10px 16px; border:0; background:none; color:var(--c-texto); cursor:pointer; transition:color .25s ease;}
+body.v2 .v2-news-campo button:hover{color:var(--c-oro);}
+body.v2 .v2-news-legal{margin:14px 0 0; font-size:11px; color:var(--c-texto-2); letter-spacing:.02em;}
+body.v2 .v2-news-legal a{color:inherit;}
+body.v2 .v2-news-aviso{margin:10px 0 0; min-height:1em; font-size:12px; color:var(--c-texto);}
+@media (min-width:900px){ body.v2 .v2-news{padding:120px var(--pad-lateral) 128px;} body.v2 .v2-news-texto{font-size:13px;} }
+
+/* ---------- Pie minimalista ---------- */
+body.v2 footer{padding:64px var(--pad-lateral) 48px; background:var(--c-fondo); border-top:1px solid var(--c-linea); color:var(--c-texto-2);}
+body.v2 .footer-marca{
+  font-family:var(--font-serif); font-weight:500; font-size:28px; letter-spacing:.14em;
+  margin-right:-.14em; color:var(--c-texto);
+}
+@media (min-width:900px){ body.v2 .footer-marca{font-size:34px;} }
+body.v2 .footer-nav{gap:10px 28px; margin:28px 0 36px; padding-bottom:36px; border-bottom:1px solid var(--c-linea);}
+body.v2 .footer-nav a{font-family:var(--font-sans); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .footer-nav a:hover{color:var(--c-texto-2);}
+body.v2 .footer-grupo-titulo{font-size:10px; letter-spacing:.18em; color:var(--c-texto-2);}
+body.v2 .footer-item{font-size:12px; color:var(--c-texto-2); text-decoration:none;}
+body.v2 .footer-item:hover{color:var(--c-texto);}
+body.v2 .footer-olas{display:none;}
+
+/* ---------- Sin sombras de interfaz ni tarjetas redondeadas ---------- */
+body.v2 .v2-card, body.v2 .v2-card-media, body.v2 .v2-pieza-foto{box-shadow:none; border-radius:0;}
+
+/* Compra: mismos fondos y botones que el resto (sin turquesa ni oro de fondo) */
+body.v2 .reserva{background:var(--c-fondo);}
+body.v2 .compra-sorteo{background:transparent; border:1px solid var(--c-linea); border-radius:0;}
+body.v2 .carrito-anadir-mas{background:transparent; border:1px solid var(--c-linea); border-radius:2px; color:var(--c-texto);}

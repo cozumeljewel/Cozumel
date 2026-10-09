@@ -666,7 +666,13 @@ const FOTOS_TARJETA_V2 = {
    Foto, nombre y precio del mercado activo. Cada tarjeta lleva a su ficha. */
 (function () {
   const pista = document.getElementById('v2-drop');
-  if (!pista || typeof PRODUCTOS === 'undefined') return;
+  if (!pista) return;
+  // Portada: la colección de hombre (hombre.js). Si no está, la de mujer.
+  if (typeof COLECCION_HOMBRE !== 'undefined') {
+    COLECCION_HOMBRE.forEach(prod => pista.appendChild(tarjetaHombre(prod)));
+    return;
+  }
+  if (typeof PRODUCTOS === 'undefined') return;
   PRODUCTOS.filter(prod => !prod.oculto).forEach(prod => {
     const a = document.createElement('a');
     a.className = 'v2-drop-item';
@@ -694,8 +700,7 @@ const FOTOS_TARJETA_V2 = {
 })();
 
 /* Tarjeta de la colección MEN: foto de producto (y puesto al pasar el
-   cursor en el ordenador), circulitos de acabado debajo y el nombre del
-   acabado elegido. Foto y nombre llevan a la pieza (hombre.html), donde
+   cursor en el ordenador), nombre y circulitos de acabado debajo. Foto y nombre llevan a la pieza (hombre.html), donde
    se ven todas las fotos. */
 function tarjetaHombre(prod) {
   const claves = Object.keys(prod.acabados);
@@ -734,7 +739,8 @@ function tarjetaHombre(prod) {
     bt.addEventListener('click', () => poner(clave));
     tonos.appendChild(bt);
   });
-  card.append(media, tonos, etiqueta, nombre);
+  // Foto, nombre y circulitos; el nombre del acabado solo en la ficha.
+  card.append(media, nombre, tonos);
   poner(claves[0]);
   return card;
 }
@@ -3519,3 +3525,45 @@ if (contactForm) {
     }
   });
 }
+
+/* ---------- Newsletter de la portada (rediseño 10/2026) ----------
+   Guarda el email en lista_espera con fuente "newsletter". Necesita la
+   migración v32 (la política de inserción solo admitía "cuenta_atras"). */
+(function () {
+  const form = document.getElementById('v2-news-form');
+  if (!form) return;
+  const aviso = document.getElementById('v2-news-aviso');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      aviso.textContent = 'Escribe un email válido';
+      form.email.focus();
+      return;
+    }
+    if (typeof SUPABASE_URL === 'undefined') return;
+    const boton = form.querySelector('button');
+    boton.disabled = true;
+    aviso.textContent = 'Guardando…';
+    try {
+      const resp = await fetch(SUPABASE_URL + '/rest/v1/lista_espera', {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: 'Bearer ' + SUPABASE_ANON_KEY,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({ email, consentimiento: true, fuente: 'newsletter' }),
+      });
+      // 409 = ya estaba apuntado: para quien se apunta, es lo mismo.
+      if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
+      form.querySelector('.v2-news-campo').remove();
+      aviso.textContent = 'Gracias. Te enviaremos tu código por email.';
+    } catch (err) {
+      console.error('Newsletter:', err);
+      aviso.textContent = 'No se ha podido guardar. Inténtalo de nuevo en un momento';
+      boton.disabled = false;
+    }
+  });
+})();
