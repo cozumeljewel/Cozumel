@@ -2967,7 +2967,7 @@ body[data-page="historia"] .eyebrow{
    queda para el nombre de la marca y momentos editoriales.
    ========================================================= */
 body.v2{
-  --v2-marfil:#FFFFFF;
+  --v2-marfil:#FAF7F2; /* cabecera: el mismo crema que el fondo de las fotos */
   /* Fondo de las fotos: crema muy, muy suave (como el gris de Hanley) */
   --v2-crema-foto:#FAF7F2;
   --v2-arena:#ECE4D6;
@@ -2985,7 +2985,7 @@ body.v2[data-page="inicio"] .site-header{
   border-bottom:1px solid transparent; box-shadow:none;
 }
 body.v2[data-page="inicio"] .site-header.scrolled{
-  background:rgba(255,255,255,.92); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  background:rgba(250,247,242,.94); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
   border-bottom-color:rgba(29,29,27,.08); box-shadow:none;
 }
 body.v2 .header-inner{
@@ -3198,7 +3198,7 @@ body.v2 .page{overflow:visible; overflow:clip;}
 @media (hover:hover){
   body.v2[data-page="inicio"] .site-header:hover,
   body.v2[data-page="inicio"] .site-header:focus-within{
-    background-color:#FFFFFF; background-image:none;
+    background-color:#FAF7F2; background-image:none;
     border-bottom-color:rgba(29,29,27,.08);
   }
   body.v2[data-page="inicio"] .site-header:hover .logo-name,
