@@ -70,7 +70,15 @@ const COLECCION_HOMBRE = [
   { id: 'hombre_brazalete_1', tipo: 'pulseras', nombre: 'Brazalete 01', acabados: {
       oro:        ['img/hombre/brazalete-1-oro-producto.jpg', 'img/hombre/brazalete-1-oro-puesto.png'],
       oro_blanco: ['img/hombre/brazalete-1-oro-blanco-producto.png', 'img/hombre/brazalete-1-oro-blanco-puesto.png'],
-      negro:      ['img/hombre/brazalete-1-negro-producto.png', 'img/hombre/brazalete-1-negro-puesto.png'],
+  } },
+  { id: 'hombre_brazalete_2', tipo: 'pulseras', nombre: 'Brazalete 02', acabados: {
+      oro:        ['img/hombre/brazalete-2-oro-producto.jpg', 'img/hombre/brazalete-2-oro-puesto.png'],
+      oro_blanco: ['img/hombre/brazalete-2-oro-blanco-producto.png', 'img/hombre/brazalete-2-oro-blanco-puesto.png'],
+      negro:      ['img/hombre/brazalete-2-negro-producto.png', 'img/hombre/brazalete-2-negro-puesto.png'],
+  } },
+  { id: 'hombre_brazalete_3', tipo: 'pulseras', nombre: 'Brazalete 03', acabados: {
+      oro:        ['img/hombre/brazalete-3-oro-producto.jpg', 'img/hombre/brazalete-3-oro-puesto.png'],
+      oro_blanco: ['img/hombre/brazalete-3-oro-blanco-producto.png', 'img/hombre/brazalete-3-oro-blanco-puesto.jpg'],
   } },
   { id: 'hombre_anillo_1', tipo: 'anillos', nombre: 'Anillo 01', acabados: {
       oro:        ['img/hombre/anillo-1-oro-producto.png', 'img/hombre/anillo-1-oro-puesto.png'],
@@ -81,6 +89,11 @@ const COLECCION_HOMBRE = [
       oro:        ['img/hombre/anillo-2-oro-producto.png', 'img/hombre/anillo-2-oro-puesto.png'],
       oro_blanco: ['img/hombre/anillo-2-oro-blanco-producto.png', 'img/hombre/anillo-2-oro-blanco-puesto.png'],
       negro:      ['img/hombre/anillo-2-negro-producto.png', 'img/hombre/anillo-2-negro-puesto.jpg'],
+  } },
+  { id: 'hombre_anillo_3', tipo: 'anillos', nombre: 'Anillo 03', acabados: {
+      oro:        ['img/hombre/anillo-3-oro-producto.png', 'img/hombre/anillo-3-oro-puesto.png'],
+      oro_blanco: ['img/hombre/anillo-3-oro-blanco-producto.png', 'img/hombre/anillo-3-oro-blanco-puesto.png'],
+      negro:      ['img/hombre/anillo-3-negro-producto.png', 'img/hombre/anillo-3-negro-puesto.png'],
   } },
 ];
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', negro: 'Negro' };
