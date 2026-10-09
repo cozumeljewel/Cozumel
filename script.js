@@ -669,7 +669,17 @@ const FOTOS_TARJETA_V2 = {
   if (!pista) return;
   // Portada: la colección de hombre (hombre.js). Si no está, la de mujer.
   if (typeof COLECCION_HOMBRE !== 'undefined') {
-    COLECCION_HOMBRE.forEach(prod => pista.appendChild(tarjetaHombre(prod)));
+    // Variedad de acabados: la que tenga negro, en negro; los anillos,
+    // uno de cada material; el resto alterna oro y oro blanco.
+    const turnoAnillo = ['oro', 'oro_blanco', 'negro'];
+    let anillo = 0, resto = 0;
+    COLECCION_HOMBRE.forEach(prod => {
+      let acabado;
+      if (prod.tipo === 'anillos') acabado = turnoAnillo[anillo++ % 3];
+      else if (prod.acabados.negro) acabado = 'negro';
+      else acabado = resto++ % 2 ? 'oro_blanco' : 'oro';
+      pista.appendChild(tarjetaHombre(prod, acabado));
+    });
     return;
   }
   if (typeof PRODUCTOS === 'undefined') return;
@@ -702,7 +712,7 @@ const FOTOS_TARJETA_V2 = {
 /* Tarjeta de la colección MEN: foto de producto (y puesto al pasar el
    cursor en el ordenador), nombre y circulitos de acabado debajo. Foto y nombre llevan a la pieza (hombre.html), donde
    se ven todas las fotos. */
-function tarjetaHombre(prod) {
+function tarjetaHombre(prod, inicial) {
   const claves = Object.keys(prod.acabados);
   const card = document.createElement('div');
   card.className = 'v2-card v2-card--hombre';
@@ -741,7 +751,7 @@ function tarjetaHombre(prod) {
   });
   // Foto, nombre y circulitos; el nombre del acabado solo en la ficha.
   card.append(media, nombre, tonos);
-  poner(claves[0]);
+  poner(claves.includes(inicial) ? inicial : claves[0]);
   return card;
 }
 
@@ -800,16 +810,23 @@ function urlPiezaHombre(prod, clave) {
   );
 
   claves.forEach(c => {
-    const bt = crear('button', 'v2-tono v2-tono--' + c);
+    // Cada acabado se elige con la foto de la pieza en ese color (como Hanley).
+    const bt = crear('button', 'v2-tono v2-variante');
     bt.type = 'button';
     bt.dataset.tono = c;
     bt.setAttribute('aria-label', NOMBRE_ACABADO_HOMBRE[c]);
+    const mini = crear('img');
+    mini.src = prod.acabados[c][0]; mini.alt = ''; mini.loading = 'lazy';
+    bt.appendChild(mini);
     bt.addEventListener('click', () => { clave = c; pintar(); history.replaceState(null, '', urlPiezaHombre(prod, c)); });
     tonos.appendChild(bt);
   });
   info.append(titulo, tonos, etiqueta, boton, desplegables);
   const fotos = crear('div', 'v2-pieza-fotos');
-  fotos.append(galeria, puntos);
+  const lupa = crear('span', 'v2-pieza-lupa');
+  lupa.setAttribute('aria-hidden', 'true');
+  lupa.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4M11 8.5v5M8.5 11h5"/></svg>';
+  fotos.append(galeria, puntos, lupa);
   caja.append(miniaturas, fotos, info);
 
   const marcar = () => {

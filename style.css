@@ -3720,3 +3720,30 @@ body.v2 .v2-drop-pista, body.v2 .v2-pieza-mas-fila{padding-top:4px; padding-bott
   body.v2 .v2-pieza-galeria.con-zoom{overflow-x:hidden; touch-action:none;}
   body.v2 .v2-pieza-foto img{will-change:transform;}
 }
+
+/* ---------- Ficha: variantes con la foto de la pieza en cada color ----------
+   Círculos con la foto de producto (fondo gris de foto); el activo lleva
+   un aro fino. En el móvil, alineados a la izquierda como en Hanley. */
+body.v2 .v2-pieza-tonos .v2-variante{
+  width:52px; height:52px; padding:0; overflow:hidden; border-radius:50%;
+  background:var(--c-foto); box-shadow:none; transition:box-shadow .25s ease;
+}
+body.v2 .v2-pieza-tonos .v2-variante img{display:block; width:100%; height:100%; object-fit:cover; mix-blend-mode:multiply; transform:scale(1.15);}
+body.v2 .v2-pieza-tonos .v2-variante[aria-pressed="true"]{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-pieza-tonos .v2-variante:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-oro);}
+body.v2 .v2-pieza-tonos .v2-variante[aria-pressed="true"]:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-pieza-tonos{gap:10px; margin-top:24px;}
+@media (max-width:899px){ body.v2 .v2-pieza-tonos{justify-content:flex-start;} }
+@media (min-width:900px){ body.v2 .v2-pieza-tonos .v2-variante{width:56px; height:56px;} }
+
+/* Lupa en la esquina de la foto (móvil): avisa de que se puede ampliar */
+.v2-pieza-lupa{display:none;}
+@media (max-width:899px){
+  .v2-pieza-lupa{
+    display:flex; align-items:center; justify-content:center; pointer-events:none;
+    position:absolute; top:14px; right:14px; z-index:1; width:40px; height:40px; border-radius:50%;
+    background:rgba(248,246,241,.92); color:var(--c-texto);
+  }
+}
+/* La foto de cada círculo ya dice el color: sin el nombre debajo */
+body.v2 .v2-pieza-acabado{display:none;}
