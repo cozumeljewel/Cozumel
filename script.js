@@ -813,10 +813,11 @@ function urlPiezaHombre(prod, clave) {
   galeria.addEventListener('scroll', marcar, { passive: true });
 
   function pintar() {
-    const [a, b] = prod.acabados[clave];
+    // Producto, todas las fotos puestas que tenga y, al final, el packaging.
+    const [a, ...puestas] = prod.acabados[clave];
     const lista = [
       [a, prod.nombre + ' en ' + NOMBRE_ACABADO_HOMBRE[clave].toLowerCase()],
-      [b, prod.nombre + ' puesto'],
+      ...puestas.map(src => [src, prod.nombre + ' puesto']),
       ['img/hombre/packaging.png', 'Packaging Cozumel'],
     ];
     galeria.textContent = ''; miniaturas.textContent = ''; puntos.textContent = '';
