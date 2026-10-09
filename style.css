@@ -3693,3 +3693,27 @@ body.v2 .carrito-anadir-mas{background:transparent; border:1px solid var(--c-lin
 
 /* Los carruseles recortan lo que sobresale: margen para el aro del círculo activo */
 body.v2 .v2-drop-pista, body.v2 .v2-pieza-mas-fila{padding-top:4px; padding-bottom:8px;}
+
+/* ---------- Flechas de los carruseles: solo en el ordenador ---------- */
+.v2-carrusel-caja{position:relative;}
+.v2-flecha{display:none;}
+@media (min-width:900px) and (hover:hover){
+  .v2-flecha{
+    display:flex; align-items:center; justify-content:center;
+    position:absolute; top:calc(50% - 40px); transform:translateY(-50%); z-index:2;
+    width:44px; height:44px; padding:0; border:0; border-radius:50%; cursor:pointer;
+    background:rgba(248,246,241,.92); color:var(--c-texto);
+    transition:background .25s ease, color .25s ease;
+  }
+  .v2-flecha:hover{background:var(--c-texto); color:var(--c-fondo);}
+  .v2-flecha[hidden]{display:none;}
+  .v2-flecha--izq{left:16px;}
+  .v2-flecha--der{right:16px;}
+}
+
+/* ---------- Zoom de fotos en el móvil: en la propia foto ----------
+   El pellizco lo gestiona script.js; el navegador no amplía la página. */
+@media (max-width:899px){
+  body.v2 .v2-pieza-foto{touch-action:pan-x pan-y; overflow:hidden;}
+  body.v2 .v2-pieza-foto img{will-change:transform;}
+}

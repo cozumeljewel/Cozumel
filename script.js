@@ -3567,3 +3567,79 @@ if (contactForm) {
     }
   });
 })();
+
+/* ---------- Flechas en los carruseles (solo ordenador) ----------
+   Portada y "más piezas": una flecha a cada lado que pasa casi una
+   pantalla. En el móvil se desliza con el dedo y no salen. */
+(function () {
+  const flecha = (dir) =>
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' +
+    (dir < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>';
+  function montar(pista) {
+    const caja = document.createElement('div');
+    caja.className = 'v2-carrusel-caja';
+    pista.before(caja);
+    caja.appendChild(pista);
+    [-1, 1].forEach(dir => {
+      const bt = document.createElement('button');
+      bt.type = 'button';
+      bt.className = 'v2-flecha ' + (dir < 0 ? 'v2-flecha--izq' : 'v2-flecha--der');
+      bt.setAttribute('aria-label', dir < 0 ? 'Anteriores' : 'Siguientes');
+      bt.innerHTML = flecha(dir);
+      bt.addEventListener('click', () => pista.scrollBy({ left: dir * pista.clientWidth * 0.8, behavior: 'smooth' }));
+      caja.appendChild(bt);
+    });
+    const actualizar = () => {
+      const max = pista.scrollWidth - pista.clientWidth - 2;
+      caja.querySelector('.v2-flecha--izq').hidden = pista.scrollLeft <= 2;
+      caja.querySelector('.v2-flecha--der').hidden = pista.scrollLeft >= max;
+    };
+    pista.addEventListener('scroll', actualizar, { passive: true });
+    window.addEventListener('resize', actualizar);
+    actualizar();
+  }
+  // Las pistas se rellenan en otros bloques: esperar a que tengan piezas.
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.v2-drop-pista, .v2-pieza-mas-fila').forEach(montar);
+  });
+})();
+
+/* ---------- Zoom de las fotos de la pieza (móvil) ----------
+   En la propia foto, sin abrir nada: se pellizca con dos dedos, la foto
+   se amplía donde están los dedos y al soltar vuelve a su sitio. Con un
+   dedo se sigue pasando de foto como siempre. */
+(function () {
+  const galeria = document.querySelector('.v2-pieza-galeria');
+  if (!galeria) return;
+  const distancia = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+  let img = null, inicio = 0, origen = null;
+  galeria.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 2) return;
+    const foto = e.target.closest('.v2-pieza-foto');
+    if (!foto) return;
+    img = foto.querySelector('img');
+    inicio = distancia(e.touches[0], e.touches[1]);
+    const r = img.getBoundingClientRect();
+    const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    origen = { cx, cy };
+    img.style.transition = 'none';
+    img.style.transformOrigin = ((cx - r.left) / r.width * 100) + '% ' + ((cy - r.top) / r.height * 100) + '%';
+  }, { passive: true });
+  galeria.addEventListener('touchmove', (e) => {
+    if (!img || e.touches.length !== 2) return;
+    e.preventDefault(); // que no se mueva ni amplíe la página entera
+    const escala = Math.min(4, Math.max(1, distancia(e.touches[0], e.touches[1]) / inicio));
+    const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    img.style.transform = 'translate(' + (cx - origen.cx) + 'px,' + (cy - origen.cy) + 'px) scale(' + escala + ')';
+  }, { passive: false });
+  const soltar = (e) => {
+    if (!img || e.touches.length >= 2) return;
+    img.style.transition = 'transform .3s ease';
+    img.style.transform = '';
+    img = null;
+  };
+  galeria.addEventListener('touchend', soltar);
+  galeria.addEventListener('touchcancel', soltar);
+})();
