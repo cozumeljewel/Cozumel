@@ -2015,9 +2015,15 @@ if (navToggle && menuMovil) {
 
 /* ---------- Marcar el enlace de la página activa ---------- */
 const currentFile = location.pathname.split('/').pop() || 'index.html';
+// FOR MEN / FOR WOMAN van los dos a productos.html: se marca el de la
+// colección abierta (?c=, MEN por defecto); las piezas de hombre, FOR MEN.
+const coleccionActual = currentFile === 'hombre.html' ? 'men'
+  : new URLSearchParams(location.search).get('c') === 'woman' ? 'woman' : 'men';
 document.querySelectorAll('.nav a, .footer-nav a, .menu-movil-nav a').forEach(a => {
-  // Sin el ?c=... (SHOP lleva a productos.html?c=men)
-  if ((a.getAttribute('href') || '').split('?')[0] === currentFile) a.setAttribute('aria-current', 'page');
+  const [archivo, query] = (a.getAttribute('href') || '').split('?');
+  const c = new URLSearchParams(query || '').get('c');
+  const enColeccion = c && (currentFile === 'productos.html' || currentFile === 'hombre.html') && c === coleccionActual;
+  if ((!c && archivo === currentFile) || enColeccion) a.setAttribute('aria-current', 'page');
 });
 
 
