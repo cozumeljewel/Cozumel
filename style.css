@@ -3511,7 +3511,7 @@ body.v2[data-page="inicio"] .site-header.scrolled{
 body.v2 .site-header .logo{display:flex; flex-direction:column; align-items:center; text-decoration:none;}
 body.v2 .site-header .logo-name{
   font-family:var(--font-serif); font-weight:500;
-  font-size:28px; line-height:1; letter-spacing:.14em; margin-right:-.14em;
+  font-size:32px; line-height:1; letter-spacing:.14em; margin-right:-.14em;
 }
 /* "JEWELRY" muy pequeño debajo, con mucho tracking */
 body.v2 .site-header .logo::after{
@@ -3526,8 +3526,8 @@ body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo::after{color:var(-
   body.v2[data-page="inicio"] .site-header:focus-within .logo::after{color:var(--c-texto);}
 }
 @media (min-width:900px){
-  body.v2 .site-header .logo-name{font-size:34px;}
-  body.v2 .site-header .logo::after{font-size:8.5px; margin-top:5px;}
+  body.v2 .site-header .logo-name{font-size:40px;}
+  body.v2 .site-header .logo::after{font-size:9px; margin-top:5px;}
   body.v2 .site-header .header-inner{padding:0 var(--pad-lateral);}
   body.v2 .site-header .nav a{font-family:var(--font-sans); font-size:11px; font-weight:400; letter-spacing:.16em;}
 }
