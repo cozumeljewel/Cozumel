@@ -3749,3 +3749,24 @@ body.v2 .v2-pieza-tonos{gap:10px; margin-top:24px;}
 body.v2 .v2-pieza-acabado{display:none;}
 /* El zoom de cada círculo coloca la foto dentro (script.js) */
 body.v2 .v2-pieza-tonos .v2-variante{position:relative;}
+
+/* ---------- Tarjetas: círculos de color con la pieza de cerca ----------
+   Igual que en la ficha, más pequeños. */
+body.v2 .v2-tonos .v2-variante{
+  position:relative; width:30px; height:30px; padding:0; overflow:hidden; border-radius:50%;
+  background:var(--c-foto); box-shadow:none;
+}
+body.v2 .v2-tonos .v2-variante img{display:block; mix-blend-mode:multiply;}
+body.v2 .v2-tonos .v2-variante[aria-pressed="true"]{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-tonos .v2-variante:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-oro);}
+body.v2 .v2-tonos .v2-variante[aria-pressed="true"]:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-tonos{gap:10px;}
+@media (min-width:900px){ body.v2 .v2-tonos .v2-variante{width:34px; height:34px;} }
+
+/* Pie: pequeña bandera de México bajo COZUMEL (verde, blanco, rojo) */
+body.v2 .footer-marca{display:inline-flex; flex-direction:column; align-items:center;}
+body.v2 .footer-marca::after{
+  content:""; display:block; width:27px; height:18px; margin-top:14px; margin-left:-.14em;
+  background:linear-gradient(to right, #006847 0 33.33%, #FFFFFF 33.33% 66.66%, #CE1126 66.66% 100%);
+  box-shadow:0 0 0 1px var(--c-linea);
+}

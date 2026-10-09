@@ -734,9 +734,10 @@ function tarjetaHombre(prod, inicial) {
   claves.forEach(clave => {
     const bt = document.createElement('button');
     bt.type = 'button';
-    bt.className = 'v2-tono v2-tono--' + clave;
+    bt.className = 'v2-tono v2-variante';
     bt.dataset.tono = clave;
     bt.setAttribute('aria-label', NOMBRE_ACABADO_HOMBRE[clave]);
+    bt.appendChild(miniaturaAcabado(prod, clave, 1.7));
     bt.addEventListener('click', () => poner(clave));
     tonos.appendChild(bt);
   });
@@ -744,6 +745,26 @@ function tarjetaHombre(prod, inicial) {
   card.append(media, nombre, tonos);
   poner(claves.includes(inicial) ? inicial : claves[0]);
   return card;
+}
+
+/* Foto del círculo de un acabado: la pieza en ese color, muy de cerca y
+   centrada en un trozo de ella (hombre-focos.js), para que se vea bien
+   el color. Sin tocar la foto. Se usa en tarjetas y fichas. */
+function miniaturaAcabado(prod, clave, mas = 1) {
+  const mini = document.createElement('img');
+  mini.src = prod.acabados[clave][0]; mini.alt = ''; mini.loading = 'lazy';
+  const foco = typeof FOCOS_HOMBRE !== 'undefined' && FOCOS_HOMBRE[prod.acabados[clave][0]];
+  if (foco) {
+    // mas: zoom extra para los círculos pequeños de las tarjetas
+    const k = (prod.tipo === 'colgantes' ? 6 : prod.tipo === 'anillos' ? 2.4 : 3.5) * mas;
+    const pos = (f) => Math.min(0, Math.max(-(k - 1) * 100, 50 - f * k));
+    Object.assign(mini.style, {
+      position: 'absolute', width: k * 100 + '%', height: k * 100 + '%', maxWidth: 'none',
+      // (en los colgantes el foco va un poco más abajo: la cadena queda centrada)
+      left: pos(foco[0]) + '%', top: pos(foco[1] + (prod.tipo === 'colgantes' ? 2 : 0)) + '%', transform: 'none',
+    });
+  }
+  return mini;
 }
 
 /* Acabado con el que sale cada pieza en una lista, para que haya
@@ -819,20 +840,7 @@ function urlPiezaHombre(prod, clave) {
     bt.type = 'button';
     bt.dataset.tono = c;
     bt.setAttribute('aria-label', NOMBRE_ACABADO_HOMBRE[c]);
-    const mini = crear('img');
-    mini.src = prod.acabados[c][0]; mini.alt = ''; mini.loading = 'lazy';
-    // Muy de cerca, centrado en un trozo de la pieza (hombre-focos.js),
-    // para que se vea bien el color. Sin tocar la foto.
-    const foco = typeof FOCOS_HOMBRE !== 'undefined' && FOCOS_HOMBRE[mini.src.split('/').slice(-3).join('/')];
-    if (foco) {
-      const k = prod.tipo === 'colgantes' ? 6 : prod.tipo === 'anillos' ? 2.4 : 3.5;
-      const pos = (f) => Math.min(0, Math.max(-(k - 1) * 100, 50 - f * k));
-      Object.assign(mini.style, {
-        position: 'absolute', width: k * 100 + '%', height: k * 100 + '%', maxWidth: 'none',
-        left: pos(foco[0]) + '%', top: pos(foco[1]) + '%', transform: 'none',
-      });
-    }
-    bt.appendChild(mini);
+    bt.appendChild(miniaturaAcabado(prod, c));
     bt.addEventListener('click', () => { clave = c; pintar(); history.replaceState(null, '', urlPiezaHombre(prod, c)); });
     tonos.appendChild(bt);
   });
