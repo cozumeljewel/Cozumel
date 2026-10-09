@@ -699,7 +699,7 @@ function tarjetaHombre(prod) {
   const claves = Object.keys(prod.acabados);
   const card = document.createElement('div');
   card.className = 'v2-card v2-card--hombre';
-  // Carrusel: producto (de cerca), puesto y packaging, con puntitos.
+  // Carrusel: producto (de cerca), puesto y packaging.
   const media = document.createElement('span');
   media.className = 'v2-card-media v2-carrusel';
   const pista = document.createElement('span');
@@ -717,22 +717,13 @@ function tarjetaHombre(prod) {
   const img2 = crearFoto(prod.nombre + ' puesto');
   const img3 = crearFoto('Packaging Cozumel');
   img3.src = 'img/hombre/packaging.png';
-  const puntos = document.createElement('span');
-  puntos.className = 'v2-carrusel-puntos';
-  [0, 1, 2].forEach(i => {
-    const p = document.createElement('button');
-    p.type = 'button';
-    p.setAttribute('aria-label', 'Foto ' + (i + 1));
-    p.addEventListener('click', () => pista.scrollTo({ left: i * pista.clientWidth, behavior: 'smooth' }));
-    puntos.appendChild(p);
-  });
-  const marcarPunto = () => {
+  // Sin puntitos: en el móvil se desliza; en el ordenador, cada clic en la
+  // foto pasa a la siguiente (y de la última vuelve a la primera).
+  pista.addEventListener('click', () => {
     const i = Math.round(pista.scrollLeft / (pista.clientWidth || 1));
-    puntos.querySelectorAll('button').forEach((p, j) => p.setAttribute('aria-current', String(i === j)));
-  };
-  pista.addEventListener('scroll', marcarPunto, { passive: true });
-  media.append(pista, puntos);
-  marcarPunto();
+    pista.scrollTo({ left: ((i + 1) % 3) * pista.clientWidth, behavior: 'smooth' });
+  });
+  media.append(pista);
   const tonos = document.createElement('div');
   tonos.className = 'v2-tonos';
   tonos.setAttribute('role', 'group');

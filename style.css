@@ -3323,7 +3323,7 @@ body.v2-visor-abierto{overflow:hidden;}
 .v2-card--hombre .v2-card-nombre{margin-top:6px;}
 .v2-card--hombre .v2-card-media{background:#F4F4F2;}
 
-/* MEN: carrusel de fotos (producto de cerca, puesto, packaging) */
+/* MEN: carrusel de fotos (producto de cerca, puesto, packaging), sin puntitos */
 .v2-carrusel-pista{
   position:absolute; inset:0; display:flex; overflow-x:auto; scroll-snap-type:x mandatory;
   scrollbar-width:none; -webkit-overflow-scrolling:touch;
@@ -3333,9 +3333,4 @@ body.v2-visor-abierto{overflow:hidden;}
 .v2-card-media .v2-carrusel-foto img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
 /* Los collares se ven de cerca: zoom a la parte de abajo, como el colgante */
 .v2-card-media .v2-carrusel-foto--cerca img{transform:scale(1.7); transform-origin:50% 96%;}
-.v2-carrusel-puntos{position:absolute; left:12px; bottom:12px; display:flex; gap:6px; z-index:1;}
-.v2-carrusel-puntos button{
-  width:8px; height:8px; padding:0; border-radius:50%; cursor:pointer;
-  border:1px solid var(--v2-carbon); background:transparent;
-}
-.v2-carrusel-puntos button[aria-current="true"]{background:var(--v2-carbon);}
+.v2-carrusel-pista{cursor:pointer;}
