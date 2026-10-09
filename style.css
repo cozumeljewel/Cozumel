@@ -2996,9 +2996,10 @@ body.v2 .nav-toggle{grid-column:1; justify-self:start; margin:0 0 0 -10px;}
 body.v2 .site-header .nav{display:none;}
 body.v2 .site-header .logo{grid-column:2; justify-self:center; text-decoration:none;}
 body.v2 .site-header .logo-name{
-  display:block; font-family:var(--font-serif); font-weight:400;
-  font-size:26px; line-height:1; letter-spacing:.22em; text-transform:uppercase;
-  margin-right:-.22em; /* el espaciado de la última letra descentraba la palabra */
+  /* Como Hanley: palo seco, grueso y apretado, con más fuerza */
+  display:block; font-family:var(--font-sans); font-weight:600;
+  font-size:30px; line-height:1; letter-spacing:.06em; text-transform:uppercase;
+  margin-right:-.06em; /* el espaciado de la última letra descentraba la palabra */
 }
 body.v2 .site-header .header-acciones{grid-column:3; justify-self:end; gap:14px;}
 
@@ -3036,7 +3037,7 @@ body.v2 .menu-movil-nav a{
     letter-spacing:.18em; text-transform:uppercase; opacity:.92;
   }
   body.v2 .site-header .nav a:hover{opacity:1;}
-  body.v2 .site-header .logo-name{font-size:36px; letter-spacing:.24em; margin-right:-.24em;}
+  body.v2 .site-header .logo-name{font-size:42px;}
 }
 
 /* ---------- HERO ---------- */
@@ -3440,7 +3441,7 @@ body.v2 .v2-pieza-mini img{mix-blend-mode:multiply;}
 
 /* Pie: "Cozumel" con la misma letra que el logo de arriba */
 body.v2 .footer-marca{
-  font-family:var(--font-serif, "Playfair Display", Georgia, serif); font-weight:400;
-  font-size:26px; letter-spacing:.22em; text-transform:uppercase; color:var(--v2-carbon);
+  font-family:var(--font-sans); font-weight:600;
+  font-size:30px; letter-spacing:.06em; text-transform:uppercase; color:var(--v2-carbon);
 }
-@media (min-width:900px){ body.v2 .footer-marca{font-size:36px;} }
+@media (min-width:900px){ body.v2 .footer-marca{font-size:42px;} }
