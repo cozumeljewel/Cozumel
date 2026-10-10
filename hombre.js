@@ -50,6 +50,10 @@ const COLECCION_HOMBRE = [
   { id: 'hombre_colgante_2', tipo: 'colgantes', nombre: 'Pacífico', acabados: {
       oro:        ['img/hombre/colgante-2-oro-producto.jpg', 'img/hombre/colgante-2-oro-puesto.jpg'],
   } },
+  { id: 'hombre_colgante_3', tipo: 'colgantes', nombre: 'Mazunte', acabados: {
+      oro:        ['img/hombre/colgante-3-oro-producto.jpg', 'img/hombre/colgante-3-oro-puesto.png', 'img/hombre/colgante-3-oro-puesto-2.png'],
+      oro_blanco: ['img/hombre/colgante-3-oro-blanco-producto.png', 'img/hombre/colgante-3-oro-blanco-puesto.png'],
+  } },
   { id: 'hombre_pulsera_1', tipo: 'pulseras', nombre: 'Maya', acabados: {
       oro:        ['img/hombre/pulsera-1-oro-producto.jpg', 'img/hombre/pulsera-1-oro-puesto.jpg', 'img/hombre/pulsera-1-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/pulsera-1-oro-blanco-producto.png', 'img/hombre/pulsera-1-oro-blanco-puesto.png', 'img/hombre/pulsera-1-oro-blanco-puesto-2.png'],
@@ -143,3 +147,9 @@ const CHARMS_HOMBRE = [
 ];
 // Piezas que ya llevan colgante: no se les ofrece charm.
 const CON_COLGANTE_HOMBRE = ['hombre_collar_5', 'hombre_colgante_2', 'hombre_colgante_3'];
+
+// Foto propia para el círculo de color (un trozo de la pieza de cerca).
+// Si una pieza no tiene, se hace zoom sobre su foto de producto.
+const MINIATURAS_HOMBRE = {
+  hombre_colgante_3: { oro: 'img/hombre/colgante-3-oro-mini.jpg', oro_blanco: 'img/hombre/colgante-3-oro-blanco-mini.png' },
+};

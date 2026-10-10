@@ -752,7 +752,15 @@ function tarjetaHombre(prod, inicial) {
    el color. Sin tocar la foto. Se usa en tarjetas y fichas. */
 function miniaturaAcabado(prod, clave, mas = 1) {
   const mini = document.createElement('img');
-  mini.src = prod.acabados[clave][0]; mini.alt = ''; mini.loading = 'lazy';
+  mini.alt = ''; mini.loading = 'lazy';
+  // Si la pieza tiene foto propia para el círculo, esa, sin zoom.
+  const propia = typeof MINIATURAS_HOMBRE !== 'undefined' && MINIATURAS_HOMBRE[prod.id] && MINIATURAS_HOMBRE[prod.id][clave];
+  if (propia) {
+    mini.src = propia;
+    Object.assign(mini.style, { width: '100%', height: '100%', objectFit: 'cover', transform: 'none' });
+    return mini;
+  }
+  mini.src = prod.acabados[clave][0];
   const foco = typeof FOCOS_HOMBRE !== 'undefined' && FOCOS_HOMBRE[prod.acabados[clave][0]];
   if (foco) {
     // mas: zoom extra para los círculos pequeños de las tarjetas

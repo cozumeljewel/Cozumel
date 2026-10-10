@@ -77,6 +77,14 @@ const FOCOS_HOMBRE = {
   52.9,
   87.1
  ],
+ "img/hombre/colgante-3-oro-blanco-producto.png": [
+  50.4,
+  86.8
+ ],
+ "img/hombre/colgante-3-oro-producto.jpg": [
+  50.8,
+  86.1
+ ],
  "img/hombre/collar-1-negro-producto.jpg": [
   48.9,
   93.1
