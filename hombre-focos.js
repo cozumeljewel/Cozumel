@@ -73,6 +73,14 @@ const FOCOS_HOMBRE = {
   25.8,
   71.5
  ],
+ "img/hombre/colgante-1-oro-blanco-producto.png": [
+  48.9,
+  83.2
+ ],
+ "img/hombre/colgante-1-oro-producto.jpg": [
+  49.4,
+  82.9
+ ],
  "img/hombre/colgante-2-oro-producto.jpg": [
   52.9,
   87.1
@@ -120,14 +128,6 @@ const FOCOS_HOMBRE = {
  "img/hombre/collar-4-oro-producto.jpg": [
   49.5,
   88.6
- ],
- "img/hombre/collar-5-oro-blanco-producto.png": [
-  48.9,
-  86.6
- ],
- "img/hombre/collar-5-oro-producto.jpg": [
-  49.4,
-  86.3
  ],
  "img/hombre/collar-6-oro-blanco-producto.png": [
   48.6,

@@ -30,10 +30,6 @@ const COLECCION_HOMBRE = [
       oro:        ['img/hombre/collar-4-oro-producto.jpg', 'img/hombre/collar-4-oro-puesto.jpg', 'img/hombre/collar-4-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-4-oro-blanco-producto.png', 'img/hombre/collar-4-oro-blanco-puesto.png', 'img/hombre/collar-4-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_collar_5', tipo: 'colgantes', nombre: 'Alma Caribeña', acabados: {
-      oro:        ['img/hombre/collar-5-oro-producto.jpg', 'img/hombre/collar-5-oro-puesto.png', 'img/hombre/collar-5-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/collar-5-oro-blanco-producto.png', 'img/hombre/collar-5-oro-blanco-puesto.jpg', 'img/hombre/collar-5-oro-blanco-puesto-2.png'],
-  } },
   { id: 'hombre_collar_6', tipo: 'colgantes', nombre: 'Cacao', acabados: {
       oro:        ['img/hombre/collar-6-oro-producto.jpg', 'img/hombre/collar-6-oro-puesto.png', 'img/hombre/collar-6-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-6-oro-blanco-producto.png', 'img/hombre/collar-6-oro-blanco-puesto.png', 'img/hombre/collar-6-oro-blanco-puesto-2.png'],
@@ -46,6 +42,10 @@ const COLECCION_HOMBRE = [
   { id: 'hombre_collar_8', tipo: 'colgantes', nombre: 'Obsidiana', acabados: {
       oro:        ['img/hombre/collar-8-oro-producto.jpg', 'img/hombre/collar-8-oro-puesto.png', 'img/hombre/collar-8-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-8-oro-blanco-producto.png', 'img/hombre/collar-8-oro-blanco-puesto.png', 'img/hombre/collar-8-oro-blanco-puesto-2.png'],
+  } },
+  { id: 'hombre_colgante_1', tipo: 'colgantes', nombre: 'Alma Caribeña', acabados: {
+      oro:        ['img/hombre/colgante-1-oro-producto.jpg', 'img/hombre/colgante-1-oro-puesto.png', 'img/hombre/colgante-1-oro-puesto-2.png'],
+      oro_blanco: ['img/hombre/colgante-1-oro-blanco-producto.png', 'img/hombre/colgante-1-oro-blanco-puesto.jpg', 'img/hombre/colgante-1-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_colgante_2', tipo: 'colgantes', nombre: 'Pacífico', acabados: {
       oro:        ['img/hombre/colgante-2-oro-producto.jpg', 'img/hombre/colgante-2-oro-puesto.jpg'],
@@ -146,7 +146,7 @@ const CHARMS_HOMBRE = [
     colores: { dorado: 'BP2522-Gold Color' } },
 ];
 // Piezas que ya llevan colgante: no se les ofrece charm.
-const CON_COLGANTE_HOMBRE = ['hombre_collar_5', 'hombre_colgante_2', 'hombre_colgante_3'];
+const CON_COLGANTE_HOMBRE = ['hombre_colgante_1', 'hombre_colgante_2', 'hombre_colgante_3'];
 
 // Foto propia para el círculo de color (un trozo de la pieza de cerca).
 // Si una pieza no tiene, se hace zoom sobre su foto de producto.
