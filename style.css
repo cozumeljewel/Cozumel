@@ -3797,3 +3797,11 @@ body.v2 .v2-charm-opcion[data-charm^="charm_"] .v2-charm-circulo img{transform:s
 /* Título en una línea; el charm elegido se recorta con "…" si no cabe */
 body.v2 .v2-charm-titulo{white-space:nowrap;}
 body.v2 .v2-charm-elegido{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:right;}
+
+/* Foto grande del charm elegido: cuadrado gris como las de producto.
+   En el móvil se amplía tocándola (mismo zoom que la galería). */
+body.v2 .v2-charm-vista{margin-top:16px; max-width:320px;}
+body.v2 .v2-charm-vista[hidden]{display:none;}
+body.v2 .v2-charm-foto{margin:0; aspect-ratio:1/1; overflow:hidden; background:var(--c-foto);}
+body.v2 .v2-charm-foto img{display:block; width:100%; height:100%; object-fit:cover; mix-blend-mode:multiply;}
+@media (max-width:899px){ body.v2 .v2-charm-vista{max-width:none;} }

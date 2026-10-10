@@ -882,7 +882,15 @@ function urlPiezaHombre(prod, clave) {
       if (ch.grupo !== grupo) { grupo = ch.grupo; rejilla.append(crear('span', 'v2-charm-grupo', grupo)); }
       rejilla.append(opcion(ch));
     });
-    cuerpo.append(rejilla, nombreCharm);
+    // Foto grande del charm elegido (en el móvil se amplía al tocarla).
+    const vista = crear('div', 'v2-charm-vista');
+    const vistaFoto = crear('figure', 'v2-pieza-foto v2-charm-foto');
+    const vistaImg = crear('img');
+    vistaImg.alt = '';
+    vistaFoto.append(vistaImg);
+    vista.append(vistaFoto);
+    vista.hidden = true;
+    cuerpo.append(rejilla, nombreCharm, vista);
     d.append(sum, cuerpo);
     desplegables.append(d);
     function marcarCharm() {
@@ -896,6 +904,17 @@ function urlPiezaHombre(prod, clave) {
       });
       const color = ch ? (colorCharm(ch) === 'dorado' ? 'dorado' : 'plateado') : '';
       elegido.textContent = ch ? ch.nombre : '';
+      vista.hidden = !ch;
+      if (ch) {
+        const src = ch.fotos[colorCharm(ch)];
+        if (vistaImg.getAttribute('src') !== src) {
+          if (vista.reiniciarZoom) vista.reiniciarZoom();
+          vistaImg.style.transform = '';
+          vistaFoto.classList.remove('ampliada');
+          vistaImg.src = src;
+          vistaImg.alt = ch.nombre;
+        }
+      }
       nombreCharm.textContent = ch ? ch.nombre + ' · ' + color : 'Sin charm';
     }
     marcarCharm();
@@ -3723,8 +3742,8 @@ if (contactForm) {
    y se recorre moviendo el dedo; otro toque la devuelve a su tamaño.
    Mientras está ampliada, el dedo mueve la foto en vez de pasar a la
    siguiente. */
-(function () {
-  const galeria = document.querySelector('.v2-pieza-galeria');
+// Se usa en la galería de la pieza y en la foto grande del charm elegido.
+function zoomEnFotos(galeria) {
   if (!galeria) return;
   const movil = () => window.matchMedia('(max-width:899px)').matches;
   const ESCALA = 2.5;
@@ -3780,6 +3799,9 @@ if (contactForm) {
     activa.ty = toque.ty + my;
     aplicar();
   }, { passive: false });
-  // Al cambiar de acabado se repintan las fotos: empezar sin zoom.
-  document.querySelectorAll('.v2-pieza-tonos .v2-tono').forEach(bt => bt.addEventListener('click', () => { activa = null; galeria.classList.remove('con-zoom'); }));
-})();
+  // Al cambiar de acabado (o de charm) se repintan las fotos: sin zoom.
+  galeria.reiniciarZoom = () => { activa = null; galeria.classList.remove('con-zoom'); };
+  document.querySelectorAll('.v2-pieza-tonos .v2-tono').forEach(bt => bt.addEventListener('click', galeria.reiniciarZoom));
+}
+zoomEnFotos(document.querySelector('.v2-pieza-galeria'));
+zoomEnFotos(document.querySelector('.v2-charm-vista'));
