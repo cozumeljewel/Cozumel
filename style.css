@@ -3790,3 +3790,10 @@ body.v2 .v2-charm-circulo img{width:100%; height:100%; object-fit:cover; mix-ble
 body.v2 .v2-charm-opcion:hover .v2-charm-circulo{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-oro);}
 body.v2 .v2-charm-opcion[aria-pressed="true"] .v2-charm-circulo{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
 body.v2 .v2-charm-nombre{margin:16px 0 0; font-size:12px; letter-spacing:.06em; color:var(--c-texto);}
+/* Las fotos de los charms tienen mucho aire: se amplían para llenar el círculo */
+body.v2 .v2-charm-circulo img{transform:scale(1.9);}
+/* Las placas son más grandes: menos zoom para que se vean enteras */
+body.v2 .v2-charm-opcion[data-charm^="charm_"] .v2-charm-circulo img{transform:scale(1.35);}
+/* Título en una línea; el charm elegido se recorta con "…" si no cabe */
+body.v2 .v2-charm-titulo{white-space:nowrap;}
+body.v2 .v2-charm-elegido{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:right;}

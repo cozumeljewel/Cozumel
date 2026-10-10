@@ -114,35 +114,35 @@ const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', negro: 'Ne
    Se eligen en la ficha, en el desplegable "Añade un charm · Gratis".
    colores: referencia del proveedor por color. Si el charm existe en
    los dos, se pone en el color de la cadena (oro blanco/negro -> plata).
-   foto: null hasta tener las fotos (se enseña el código en el círculo).
+   fotos: foto de cada color (img/hombre/charms/, de CHARMS/LIMPIAS).
    Referencias en "SKU PRODUCTOS COLECCIÓN 1/skus-hombre.md".
    ========================================================= */
 const CHARMS_HOMBRE = [
-  { id: 'charm_1', codigo: '1', nombre: 'Placa cuadrada', grupo: 'Placas', foto: null,
+  { id: 'charm_1', codigo: '1', nombre: 'Placa cuadrada', grupo: 'Placas', fotos: { dorado: 'img/hombre/charms/charm-1-dorado.png', plateado: 'img/hombre/charms/charm-1-plateado.png' },
     colores: { dorado: 'YP23728-Gold Color', plateado: 'YP23728-Silver Color' } },
-  { id: 'charm_2', codigo: '2', nombre: 'Placa rectangular', grupo: 'Placas', foto: null,
+  { id: 'charm_2', codigo: '2', nombre: 'Placa rectangular', grupo: 'Placas', fotos: { dorado: 'img/hombre/charms/charm-2-dorado.png', plateado: 'img/hombre/charms/charm-2-plateado.png' },
     colores: { dorado: 'YP23732-Gold Color', plateado: 'YP23731-Silver Color' } },
-  { id: 'charm_3', codigo: '3', nombre: 'Placa ovalada', grupo: 'Placas', foto: null,
+  { id: 'charm_3', codigo: '3', nombre: 'Placa ovalada', grupo: 'Placas', fotos: { dorado: 'img/hombre/charms/charm-3-dorado.png', plateado: 'img/hombre/charms/charm-3-plateado.png' },
     colores: { dorado: 'XP49649-Gold Color', plateado: 'XP49649-Silver Color' } },
-  { id: 'cruz_1', codigo: 'C1', nombre: 'Cruz con circonitas', grupo: 'Cruces', foto: null,
+  { id: 'cruz_1', codigo: 'C1', nombre: 'Cruz con circonitas', grupo: 'Cruces', fotos: { dorado: 'img/hombre/charms/cruz-1-dorado.png', plateado: 'img/hombre/charms/cruz-1-plateado.png' },
     colores: { dorado: 'AP43158-Gold Color', plateado: 'AP43158-Silver Color' } },
-  { id: 'cruz_2', codigo: 'C2', nombre: 'Cruz grande', grupo: 'Cruces', foto: null,
+  { id: 'cruz_2', codigo: 'C2', nombre: 'Cruz grande', grupo: 'Cruces', fotos: { dorado: 'img/hombre/charms/cruz-2-dorado.png' },
     colores: { dorado: 'JP40788-Gold Color' } },
-  { id: 'cruz_3', codigo: 'C3', nombre: 'Cruz de perlas', grupo: 'Cruces', foto: null,
+  { id: 'cruz_3', codigo: 'C3', nombre: 'Cruz de perlas', grupo: 'Cruces', fotos: { dorado: 'img/hombre/charms/cruz-3-dorado.png' },
     colores: { dorado: 'AP40919-Gold Color' } },
-  { id: 'cruz_5', codigo: 'C5', nombre: 'Cruz lisa', grupo: 'Cruces', foto: null,
+  { id: 'cruz_5', codigo: 'C5', nombre: 'Cruz lisa', grupo: 'Cruces', fotos: { dorado: 'img/hombre/charms/cruz-5-dorado.png' },
     colores: { dorado: 'YP2877-Gold Color' } },
-  { id: 'simbolo_a', codigo: 'A', nombre: 'Triángulo', grupo: 'Símbolos', foto: null,
+  { id: 'simbolo_a', codigo: 'A', nombre: 'Triángulo con ojo', grupo: 'Símbolos', fotos: { dorado: 'img/hombre/charms/simbolo-a-dorado.png' },
     colores: { dorado: 'YP33599-Gold Color' } },
-  { id: 'simbolo_b', codigo: 'B', nombre: 'Sol', grupo: 'Símbolos', foto: null,
+  { id: 'simbolo_b', codigo: 'B', nombre: 'Sol con ojo', grupo: 'Símbolos', fotos: { dorado: 'img/hombre/charms/simbolo-b-dorado.png' },
     colores: { dorado: 'YP33606-Gold Color' } },
-  { id: 'simbolo_c', codigo: 'C', nombre: 'Rombo', grupo: 'Símbolos', foto: null,
+  { id: 'simbolo_c', codigo: 'C', nombre: 'Medalla con ojo', grupo: 'Símbolos', fotos: { dorado: 'img/hombre/charms/simbolo-c-dorado.png' },
     colores: { dorado: 'FP31840-Gold Color' } },
-  { id: 'simbolo_d', codigo: 'D', nombre: 'Mano', grupo: 'Símbolos', foto: null,
+  { id: 'simbolo_d', codigo: 'D', nombre: 'Mano', grupo: 'Símbolos', fotos: { dorado: 'img/hombre/charms/simbolo-d-dorado.png' },
     colores: { dorado: 'YP33627-Gold Color' } },
-  { id: 'simbolo_e', codigo: 'E', nombre: 'Ojo', grupo: 'Símbolos', foto: null,
+  { id: 'simbolo_e', codigo: 'E', nombre: 'Ojo', grupo: 'Símbolos', fotos: { dorado: 'img/hombre/charms/simbolo-e-dorado.png' },
     colores: { dorado: 'BP00049-Gold Color' } },
-  { id: 'simbolo_f', codigo: 'F', nombre: 'Hamsa', grupo: 'Símbolos', foto: null,
+  { id: 'simbolo_f', codigo: 'F', nombre: 'Hamsa', grupo: 'Símbolos', fotos: { dorado: 'img/hombre/charms/simbolo-f-dorado.png' },
     colores: { dorado: 'BP2522-Gold Color' } },
 ];
 // Piezas que ya llevan colgante: no se les ofrece charm.

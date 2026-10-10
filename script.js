@@ -870,7 +870,7 @@ function urlPiezaHombre(prod, clave) {
       bt.dataset.charm = ch ? ch.id : '';
       bt.setAttribute('aria-label', ch ? ch.nombre : 'Sin charm');
       const circulo = crear('span', 'v2-charm-circulo');
-      if (ch && ch.foto) { const im = crear('img'); im.src = ch.foto; im.alt = ''; circulo.append(im); }
+      if (ch && ch.fotos) { const im = crear('img'); im.alt = ''; im.loading = 'lazy'; circulo.append(im); }
       else circulo.textContent = ch ? ch.codigo : '—';
       bt.append(circulo);
       bt.addEventListener('click', () => { charmElegido = ch ? ch.id : null; marcarCharm(); });
@@ -887,7 +887,13 @@ function urlPiezaHombre(prod, clave) {
     desplegables.append(d);
     function marcarCharm() {
       const ch = CHARMS_HOMBRE.find(c => c.id === charmElegido);
-      rejilla.querySelectorAll('.v2-charm-opcion').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.charm || null) === charmElegido)));
+      rejilla.querySelectorAll('.v2-charm-opcion').forEach(b => {
+        b.setAttribute('aria-pressed', String((b.dataset.charm || null) === charmElegido));
+        // Foto del charm en el color que toca con esta cadena
+        const c = CHARMS_HOMBRE.find(x => x.id === b.dataset.charm);
+        const im = b.querySelector('img');
+        if (c && im) im.src = c.fotos[colorCharm(c)];
+      });
       const color = ch ? (colorCharm(ch) === 'dorado' ? 'dorado' : 'plateado') : '';
       elegido.textContent = ch ? ch.nombre : '';
       nombreCharm.textContent = ch ? ch.nombre + ' · ' + color : 'Sin charm';
