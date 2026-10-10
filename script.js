@@ -780,11 +780,16 @@ function miniaturaAcabado(prod, clave, mas = 1) {
    material; el resto alterna oro y oro blanco. */
 function acabadosVariados(lista) {
   const turnoAnillo = ['oro', 'oro_blanco', 'negro'];
-  let anillo = 0, resto = 0;
+  let anillo = 0, ultimo = 'oro_blanco';
   return lista.map(prod => {
     if (prod.tipo === 'anillos') return turnoAnillo[anillo++ % 3];
     if (prod.acabados.negro) return 'negro';
-    return resto++ % 2 ? 'oro_blanco' : 'oro';
+    // El contrario del último oro / oro blanco mostrado; si la pieza no
+    // lo tiene, el que tenga.
+    const quiere = ultimo === 'oro' ? 'oro_blanco' : 'oro';
+    const sale = prod.acabados[quiere] ? quiere : Object.keys(prod.acabados)[0];
+    if (sale !== 'negro') ultimo = sale;
+    return sale;
   });
 }
 
