@@ -24,7 +24,7 @@ Material de todo: acero inoxidable.
 | Cacao (Collar 6) | YX44921 (MAN002) | B · I | 55 cm | 1,5 mm | chapa logo 4×8 mm | ✔ confirmado |
 | Copal (Collar 7) | **5 mm:** YX44951 · **4 mm:** YX44953 | B · I · H | 55 cm | 5 mm o 4 mm cubana | chapa lisa 4×8 mm | ✔ confirmado · 2 grosores |
 | Obsidiana (Collar 8) | YX44929 (MAN004) | B · I | 55 cm | 1,5 mm caja | chapa logo 4×8 mm | ✔ confirmado · coste 1,71–1,97 € |
-| Pacífico (Colgante 2) ✔ | YX44942 (MAN015) | B · I | 58 cm | 1 mm grano de café | colgante barra 13×3,5 mm | falta foto en oro blanco |
+| Pacífico (Colgante 2) ✔ | YX44942 (MAN015) | B · I | 58 cm | 1 mm grano de café | colgante barra 13×3,5 mm | |
 | Mazunte (Colgante 3) ✔ | YX44941 (MAN014) | B · I | 58 cm | 1 mm caja | colgante barra 13×3,5 mm | coste 2,47 € oro · 2,72 € oro blanco |
 
 ## PULSERAS / BRAZALETES
