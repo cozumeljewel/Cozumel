@@ -830,7 +830,60 @@ function urlPiezaHombre(prod, clave) {
   };
   const desplegables = crear('div', 'v2-pieza-desplegables');
   desplegables.append(
-    desplegable('Envío', '<p>Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21.</p>'),
+    desplegable('Envío', '<p>Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21.</p>')
+  );
+  // Cadenas sin colgante: charm de regalo, justo después de Envío.
+  const ofreceCharm = prod.tipo === 'colgantes' && typeof CHARMS_HOMBRE !== 'undefined' &&
+    !(typeof CON_COLGANTE_HOMBRE !== 'undefined' && CON_COLGANTE_HOMBRE.includes(prod.id));
+  let charmElegido = null; // id del charm, o null = sin charm
+  const colorCharm = (ch) => {
+    // El charm sigue el color de la cadena si existe en los dos.
+    const quiere = clave === 'oro' ? 'dorado' : 'plateado';
+    return ch.colores[quiere] ? quiere : Object.keys(ch.colores)[0];
+  };
+  if (ofreceCharm) {
+    const d = crear('details', 'v2-pieza-desplegable v2-charm');
+    const sum = crear('summary');
+    const tit = crear('span', 'v2-charm-titulo');
+    tit.innerHTML = 'Añade un charm <em>Gratis</em>';
+    const elegido = crear('span', 'v2-charm-elegido');
+    sum.append(tit, elegido);
+    const cuerpo = crear('div', 'v2-pieza-desplegable-cuerpo');
+    const rejilla = crear('div', 'v2-charm-rejilla');
+    const nombreCharm = crear('p', 'v2-charm-nombre');
+    const opcion = (ch) => {
+      const bt = crear('button', 'v2-charm-opcion');
+      bt.type = 'button';
+      bt.dataset.charm = ch ? ch.id : '';
+      bt.setAttribute('aria-label', ch ? ch.nombre : 'Sin charm');
+      const circulo = crear('span', 'v2-charm-circulo');
+      if (ch && ch.foto) { const im = crear('img'); im.src = ch.foto; im.alt = ''; circulo.append(im); }
+      else circulo.textContent = ch ? ch.codigo : '—';
+      bt.append(circulo);
+      bt.addEventListener('click', () => { charmElegido = ch ? ch.id : null; marcarCharm(); });
+      return bt;
+    };
+    rejilla.append(opcion(null));
+    let grupo = '';
+    CHARMS_HOMBRE.forEach(ch => {
+      if (ch.grupo !== grupo) { grupo = ch.grupo; rejilla.append(crear('span', 'v2-charm-grupo', grupo)); }
+      rejilla.append(opcion(ch));
+    });
+    cuerpo.append(rejilla, nombreCharm);
+    d.append(sum, cuerpo);
+    desplegables.append(d);
+    function marcarCharm() {
+      const ch = CHARMS_HOMBRE.find(c => c.id === charmElegido);
+      rejilla.querySelectorAll('.v2-charm-opcion').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.charm || null) === charmElegido)));
+      const color = ch ? (colorCharm(ch) === 'dorado' ? 'dorado' : 'plateado') : '';
+      elegido.textContent = ch ? ch.nombre : '';
+      nombreCharm.textContent = ch ? ch.nombre + ' · ' + color : 'Sin charm';
+    }
+    marcarCharm();
+    // Al cambiar el color de la cadena, el charm cambia de color con ella.
+    tonos.addEventListener('click', () => setTimeout(marcarCharm));
+  }
+  desplegables.append(
     desplegable('Devoluciones', '<p>Consulta las condiciones en <a href="faq.html">FAQ</a>.</p>')
   );
 
