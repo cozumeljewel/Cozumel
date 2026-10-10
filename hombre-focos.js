@@ -65,6 +65,14 @@ const FOCOS_HOMBRE = {
   30.1,
   72.0
  ],
+ "img/hombre/brazalete-4-oro-blanco-producto.png": [
+  26.1,
+  72.7
+ ],
+ "img/hombre/brazalete-4-oro-producto.jpg": [
+  25.8,
+  71.5
+ ],
  "img/hombre/collar-1-negro-producto.jpg": [
   48.9,
   93.1
