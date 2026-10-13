@@ -174,6 +174,7 @@ COLECCION_HOMBRE.sort((a, b) => {
 // o material no está aquí, su tarjeta no muestra lupa. Para añadir una:
 // copiar las fotos a img/hombre/ y poner aquí su ruta en el material.
 const CERCA_HOMBRE = {
+  hombre_colgante_2: { oro: ['img/hombre/colgante-2-oro-cerca-1.webp', 'img/hombre/colgante-2-oro-cerca-2.png'] },
   hombre_colgante_3: { oro: ['img/hombre/colgante-3-oro-cerca-1.webp', 'img/hombre/colgante-3-oro-cerca-2.png'] },
   hombre_colgante_1: { oro: ['img/hombre/colgante-1-oro-cerca-1.webp', 'img/hombre/colgante-1-oro-cerca-2.png'] },
   hombre_pulsera_4: { oro: ['img/hombre/pulsera-4-oro-cerca-1.png', 'img/hombre/pulsera-4-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-4-oro-blanco-cerca-1.jpg', 'img/hombre/pulsera-4-oro-blanco-cerca-2.jpg'] },
