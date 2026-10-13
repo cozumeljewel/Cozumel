@@ -835,25 +835,96 @@ function abrirMacroHombre(fotos, titulo, origen) {
     const py = Math.min(100, Math.max(0, (y - r.top) / r.height * 100));
     img.style.transformOrigin = px + '% ' + py + '%';
   };
-  img.addEventListener('click', (e) => { enfocar(e.clientX, e.clientY); marco.classList.toggle('ampliada'); });
+  let ultimoToque = 0; // para que el clic que sigue a un toque no amplíe dos veces
+  img.addEventListener('click', (e) => {
+    if (Date.now() - ultimoToque < 600) return; // en el móvil manda el gesto táctil
+    enfocar(e.clientX, e.clientY); marco.classList.toggle('ampliada');
+  });
   img.addEventListener('mousemove', (e) => { if (marco.classList.contains('ampliada')) enfocar(e.clientX, e.clientY); });
-  img.addEventListener('touchmove', (e) => {
-    if (!marco.classList.contains('ampliada')) return;
-    e.preventDefault();
-    enfocar(e.touches[0].clientX, e.touches[0].clientY);
+
+  // Móvil: zoom con dos dedos (1x–4x), arrastrar con un dedo cuando está
+  // ampliada y doble toque para ampliar / volver. Todo dentro del visor,
+  // sin que se amplíe ni se mueva la página de detrás.
+  const z = { s: 1, x: 0, y: 0 };
+  let gesto = null, tocadoAntes = 0;
+  const limite = (v, s, lado) => Math.max(-(s - 1) * lado / 2, Math.min((s - 1) * lado / 2, v));
+  const aplicar = (animar) => {
+    const r = marco.getBoundingClientRect();
+    z.x = limite(z.x, z.s, r.width); z.y = limite(z.y, z.s, r.height);
+    img.style.transition = animar ? 'transform .3s ease' : 'none';
+    img.style.transformOrigin = '50% 50%';
+    img.style.transform = z.s > 1 ? 'translate(' + z.x + 'px,' + z.y + 'px) scale(' + z.s + ')' : '';
+    marco.classList.toggle('ampliada', z.s > 1);
+  };
+  const reiniciar = () => { z.s = 1; z.x = 0; z.y = 0; img.style.transform = ''; img.style.transition = ''; marco.classList.remove('ampliada'); };
+  const dist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  const medio = (t) => ({ x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2 });
+  marco.addEventListener('touchstart', (e) => {
+    ultimoToque = Date.now();
+    if (e.touches.length === 2) {
+      gesto = { tipo: 'pellizco', d: dist(e.touches), m: medio(e.touches), s: z.s, x: z.x, y: z.y };
+    } else if (e.touches.length === 1) {
+      const t = e.touches[0];
+      gesto = { tipo: 'arrastre', px: t.clientX, py: t.clientY, x: z.x, y: z.y, movido: false };
+    }
+  }, { passive: true });
+  marco.addEventListener('touchmove', (e) => {
+    if (!gesto) return;
+    if (gesto.tipo === 'pellizco' && e.touches.length === 2) {
+      e.preventDefault();
+      const m = medio(e.touches);
+      z.s = Math.min(4, Math.max(1, gesto.s * dist(e.touches) / gesto.d));
+      z.x = gesto.x + (m.x - gesto.m.x); z.y = gesto.y + (m.y - gesto.m.y);
+      aplicar(false);
+    } else if (gesto.tipo === 'arrastre' && e.touches.length === 1) {
+      const t = e.touches[0];
+      if (Math.abs(t.clientX - gesto.px) + Math.abs(t.clientY - gesto.py) > 6) gesto.movido = true;
+      if (z.s > 1) {
+        e.preventDefault();
+        z.x = gesto.x + (t.clientX - gesto.px); z.y = gesto.y + (t.clientY - gesto.py);
+        aplicar(false);
+      }
+    }
   }, { passive: false });
+  marco.addEventListener('touchend', (e) => {
+    ultimoToque = Date.now();
+    if (gesto && gesto.tipo === 'arrastre' && !gesto.movido && e.touches.length === 0) {
+      // Doble toque: amplía 2,5x donde se tocó, o vuelve a su tamaño.
+      if (Date.now() - tocadoAntes < 320) {
+        if (z.s > 1) { z.s = 1; z.x = 0; z.y = 0; }
+        else {
+          const r = marco.getBoundingClientRect(), t = e.changedTouches[0];
+          z.s = 2.5;
+          z.x = (r.left + r.width / 2 - t.clientX) * 1.5;
+          z.y = (r.top + r.height / 2 - t.clientY) * 1.5;
+        }
+        aplicar(true);
+        tocadoAntes = 0;
+      } else tocadoAntes = Date.now();
+    }
+    if (z.s < 1.03 && e.touches.length === 0) { z.s = 1; z.x = 0; z.y = 0; aplicar(true); }
+    if (e.touches.length === 0) gesto = null;
+  });
 
   const mostrar = (n) => {
     i = (n + fotos.length) % fotos.length;
     marco.classList.remove('ampliada');
+    reiniciar();
+    // Sin saltos: el marco ya tiene su tamaño y la foto aparece al cargar.
+    img.classList.remove('cargada');
+    img.onload = () => img.classList.add('cargada');
     img.src = fotos[i];
+    if (img.complete) img.classList.add('cargada');
     img.alt = titulo + ' de cerca' + (fotos.length > 1 ? ' (' + (i + 1) + ' de ' + fotos.length + ')' : '');
     if (contador) contador.textContent = (i + 1) + ' / ' + fotos.length;
   };
   const cerrar = () => {
     document.removeEventListener('keydown', teclas);
     visor.remove();
+    // Desbloquear el fondo y volver exactamente al mismo punto.
     document.body.classList.remove('v2-macro-abierto');
+    Object.assign(document.body.style, { position: '', top: '', left: '', right: '', width: '' });
+    window.scrollTo({ top: posicion, left: 0, behavior: 'instant' });
     if (origen && document.contains(origen)) origen.focus({ preventScroll: true });
   };
   const teclas = (e) => {
@@ -874,8 +945,12 @@ function abrirMacroHombre(fotos, titulo, origen) {
   visor.addEventListener('click', (e) => { if (e.target === visor) cerrar(); });
   document.addEventListener('keydown', teclas);
   mostrar(0);
+  // Bloquear el scroll de fondo (también en iPhone, donde overflow:hidden
+  // no basta): la página se fija en su sitio y se recupera al cerrar.
+  const posicion = window.scrollY;
   document.body.append(visor);
   document.body.classList.add('v2-macro-abierto');
+  Object.assign(document.body.style, { position: 'fixed', top: -posicion + 'px', left: '0', right: '0', width: '100%' });
   visor.querySelector('.v2-macro-cerrar').focus({ preventScroll: true });
 }
 
