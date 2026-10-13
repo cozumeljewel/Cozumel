@@ -745,6 +745,8 @@ function tarjetaHombre(prod, inicial) {
     const conCharm = fotosCharmHombre(prod, clave);
     img.src = conCharm.length ? conCharm[0].foto : a;
     img2.src = conCharm.length ? a : (b || a);
+    // La foto de estudio de debajo también va sobre el gris de la caja.
+    media.classList.toggle('v2-card-media--estudio', conCharm.length > 0);
     media.href = nombre.href = urlPiezaHombre(prod, clave);
     claveActual = clave;
     lupa.hidden = !macrosHombre(prod, clave).length;
