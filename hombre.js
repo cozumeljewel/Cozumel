@@ -168,3 +168,18 @@ COLECCION_HOMBRE.sort((a, b) => {
   const pos = (p) => { const i = ORDEN_HOMBRE.indexOf(p.id); return i < 0 ? ORDEN_HOMBRE.length : i; };
   return pos(a) - pos(b);
 });
+
+// Fotos de cerca (cadena y cierre) que se alternan con la foto de producto
+// en las tarjetas de la portada, cada 2 s con un fundido. Del catálogo eManco.
+const CERCA_HOMBRE = {
+  hombre_pulsera_4: { oro: ['img/hombre/pulsera-4-oro-cerca-1.png', 'img/hombre/pulsera-4-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-4-oro-blanco-cerca-1.jpg', 'img/hombre/pulsera-4-oro-blanco-cerca-2.jpg'] },
+  hombre_pulsera_5: { oro: ['img/hombre/pulsera-5-oro-cerca-1.png', 'img/hombre/pulsera-5-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-5-oro-blanco-cerca-1.png', 'img/hombre/pulsera-5-oro-blanco-cerca-2.png'] },
+  hombre_pulsera_2: { oro: ['img/hombre/pulsera-2-oro-cerca-1.png', 'img/hombre/pulsera-2-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-2-oro-blanco-cerca-1.png', 'img/hombre/pulsera-2-oro-blanco-cerca-2.png'] },
+  hombre_pulsera_1: { oro: ['img/hombre/pulsera-1-oro-cerca-1.png', 'img/hombre/pulsera-1-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-1-oro-blanco-cerca-1.png', 'img/hombre/pulsera-1-oro-blanco-cerca-2.png'] },
+  hombre_pulsera_3: { oro: ['img/hombre/pulsera-3-oro-cerca-1.jpg', 'img/hombre/pulsera-3-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-3-oro-blanco-cerca-1.png', 'img/hombre/pulsera-3-oro-blanco-cerca-2.png'] },
+  hombre_collar_6: { oro: ['img/hombre/collar-6-oro-cerca-1.jpg', 'img/hombre/collar-6-oro-cerca-2.png'], oro_blanco: ['img/hombre/collar-6-oro-blanco-cerca-1.png', 'img/hombre/collar-6-oro-blanco-cerca-2.png'] },
+  hombre_collar_2: { oro: ['img/hombre/collar-2-oro-cerca-1.jpg', 'img/hombre/collar-2-oro-cerca-2.png'], oro_blanco: ['img/hombre/collar-2-oro-blanco-cerca-1.png', 'img/hombre/collar-2-oro-blanco-cerca-2.png'] },
+  hombre_collar_8: { oro: ['img/hombre/collar-8-oro-cerca-1.jpg', 'img/hombre/collar-8-oro-cerca-2.png'], oro_blanco: ['img/hombre/collar-8-oro-blanco-cerca-1.png', 'img/hombre/collar-8-oro-blanco-cerca-2.png'] },
+  hombre_collar_4: { oro: ['img/hombre/collar-4-oro-cerca-1.png', 'img/hombre/collar-4-oro-cerca-2.png'], oro_blanco: ['img/hombre/collar-4-oro-blanco-cerca-1.png', 'img/hombre/collar-4-oro-blanco-cerca-2.png'] },
+  hombre_collar_3: { oro: ['img/hombre/collar-3-oro-cerca-1.png', 'img/hombre/collar-3-oro-cerca-2.png'], oro_blanco: ['img/hombre/collar-3-oro-blanco-cerca-1.jpg', 'img/hombre/collar-3-oro-blanco-cerca-2.png'] },
+};

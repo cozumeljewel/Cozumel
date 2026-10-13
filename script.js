@@ -670,7 +670,7 @@ const FOTOS_TARJETA_V2 = {
   // Portada: la colección de hombre (hombre.js). Si no está, la de mujer.
   if (typeof COLECCION_HOMBRE !== 'undefined') {
     const acabados = acabadosVariados(COLECCION_HOMBRE);
-    COLECCION_HOMBRE.forEach((prod, i) => pista.appendChild(tarjetaHombre(prod, acabados[i])));
+    COLECCION_HOMBRE.forEach((prod, i) => pista.appendChild(tarjetaHombre(prod, acabados[i], true)));
     return;
   }
   if (typeof PRODUCTOS === 'undefined') return;
@@ -703,7 +703,7 @@ const FOTOS_TARJETA_V2 = {
 /* Tarjeta de la colección MEN: foto de producto (y puesto al pasar el
    cursor en el ordenador), nombre y circulitos de acabado debajo. Foto y nombre llevan a la pieza (hombre.html), donde
    se ven todas las fotos. */
-function tarjetaHombre(prod, inicial) {
+function tarjetaHombre(prod, inicial, conCerca) {
   const claves = Object.keys(prod.acabados);
   const card = document.createElement('div');
   card.className = 'v2-card v2-card--hombre';
@@ -714,7 +714,22 @@ function tarjetaHombre(prod, inicial) {
   img.alt = prod.nombre; img.loading = 'lazy';
   const img2 = document.createElement('img');
   img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
-  media.append(img, img2);
+  // Portada: capas con fotos de cerca (cadena y cierre) que se alternan con
+  // la de producto cada 2 s, con un fundido (CERCA_HOMBRE en hombre.js).
+  const capas = document.createElement('span');
+  capas.className = 'v2-card-cerca';
+  media.append(img, capas, img2);
+  const cerca = conCerca && typeof CERCA_HOMBRE !== 'undefined' && CERCA_HOMBRE[prod.id];
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let turno = 0;
+  if (cerca && !quieto) {
+    setInterval(() => {
+      const fotos = capas.children;
+      if (!fotos.length || document.hidden) return;
+      turno = (turno + 1) % (fotos.length + 1); // 0 = foto de producto
+      [...fotos].forEach((f, i) => f.classList.toggle('visible', i + 1 === turno));
+    }, 2000);
+  }
   const tonos = document.createElement('div');
   tonos.className = 'v2-tonos';
   tonos.setAttribute('role', 'group');
@@ -727,6 +742,12 @@ function tarjetaHombre(prod, inicial) {
   const poner = (clave) => {
     const [a, b] = prod.acabados[clave];
     img.src = a; img2.src = b || a;
+    capas.textContent = ''; turno = 0;
+    if (cerca && cerca[clave]) cerca[clave].forEach(src => {
+      const c = document.createElement('img');
+      c.src = src; c.alt = ''; c.loading = 'lazy';
+      capas.append(c);
+    });
     media.href = nombre.href = urlPiezaHombre(prod, clave);
     etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
     tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
