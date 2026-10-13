@@ -1055,7 +1055,7 @@ function urlPiezaHombre(prod, clave) {
     rejilla.before(tipos);
     const piezas = COLECCION_HOMBRE.filter(p => p.tipo === tipo);
     const acabados = acabadosVariados(piezas);
-    piezas.forEach((prod, i) => rejilla.appendChild(tarjetaHombre(prod, acabados[i])));
+    piezas.forEach((prod, i) => rejilla.appendChild(tarjetaHombre(prod, acabados[i], true)));
     if (!piezas.length) {
       const vacio = document.createElement('p');
       vacio.className = 'v2-grid-vacio';
