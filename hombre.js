@@ -16,81 +16,81 @@ const COLECCION_HOMBRE = [
   { id: 'hombre_collar_1', tipo: 'colgantes', nombre: 'Holbox', acabados: {
       oro:        ['img/hombre/collar-1-oro-producto.png', 'img/hombre/collar-1-oro-puesto.png', 'img/hombre/collar-1-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-1-oro-blanco-producto.png', 'img/hombre/collar-1-oro-blanco-puesto.png', 'img/hombre/collar-1-oro-blanco-puesto-2.png'],
-      negro:      ['img/hombre/collar-1-negro-producto.jpg', 'img/hombre/collar-1-negro-puesto.png', 'img/hombre/collar-1-negro-puesto-2.png'],
+      negro:      ['img/hombre/collar-1-negro-producto.jpg', 'img/hombre/collar-1-negro-puesto.png', 'img/hombre/collar-1-negro-puesto-2.png', 'img/hombre/collar-1-negro-extra-1.png'],
   } },
   { id: 'hombre_collar_2', tipo: 'colgantes', nombre: 'Pulque', acabados: {
-      oro:        ['img/hombre/collar-2-oro-producto.jpg', 'img/hombre/collar-2-oro-puesto.png', 'img/hombre/collar-2-oro-puesto-2.png'],
+      oro:        ['img/hombre/collar-2-oro-producto.jpg', 'img/hombre/collar-2-oro-puesto.png', 'img/hombre/collar-2-oro-puesto-2.png', 'img/hombre/collar-2-oro-extra-1.jpg', 'img/hombre/collar-2-oro-extra-2.png', 'img/hombre/collar-2-oro-extra-3.png'],
       oro_blanco: ['img/hombre/collar-2-oro-blanco-producto.png', 'img/hombre/collar-2-oro-blanco-puesto.png', 'img/hombre/collar-2-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_collar_3', tipo: 'colgantes', nombre: 'Mezcal', acabados: {
       oro:        ['img/hombre/collar-3-oro-producto.jpg', 'img/hombre/collar-3-oro-puesto.png', 'img/hombre/collar-3-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/collar-3-oro-blanco-producto.png', 'img/hombre/collar-3-oro-blanco-puesto.jpg', 'img/hombre/collar-3-oro-blanco-puesto-2.png'],
+      oro_blanco: ['img/hombre/collar-3-oro-blanco-producto.png', 'img/hombre/collar-3-oro-blanco-puesto.jpg', 'img/hombre/collar-3-oro-blanco-puesto-2.png', 'img/hombre/collar-3-oro-blanco-extra-1.jpg'],
   } },
   { id: 'hombre_collar_4', tipo: 'colgantes', nombre: 'Guajillo', acabados: {
-      oro:        ['img/hombre/collar-4-oro-producto.jpg', 'img/hombre/collar-4-oro-puesto.jpg', 'img/hombre/collar-4-oro-puesto-2.png'],
+      oro:        ['img/hombre/collar-4-oro-producto.jpg', 'img/hombre/collar-4-oro-puesto.jpg', 'img/hombre/collar-4-oro-puesto-2.png', 'img/hombre/collar-4-oro-extra-1.png', 'img/hombre/collar-4-oro-extra-2.png'],
       oro_blanco: ['img/hombre/collar-4-oro-blanco-producto.png', 'img/hombre/collar-4-oro-blanco-puesto.png', 'img/hombre/collar-4-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_collar_6', tipo: 'colgantes', nombre: 'Cacao', acabados: {
-      oro:        ['img/hombre/collar-6-oro-producto.jpg', 'img/hombre/collar-6-oro-puesto.png', 'img/hombre/collar-6-oro-puesto-2.png'],
+      oro:        ['img/hombre/collar-6-oro-producto.jpg', 'img/hombre/collar-6-oro-puesto.png', 'img/hombre/collar-6-oro-puesto-2.png', 'img/hombre/collar-6-oro-extra-1.jpg', 'img/hombre/collar-6-oro-extra-2.png', 'img/hombre/collar-6-oro-extra-3.png'],
       oro_blanco: ['img/hombre/collar-6-oro-blanco-producto.png', 'img/hombre/collar-6-oro-blanco-puesto.png', 'img/hombre/collar-6-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_collar_7', tipo: 'colgantes', nombre: 'Copal', acabados: {
       oro:        ['img/hombre/collar-7-oro-producto.png', 'img/hombre/collar-7-oro-puesto.png', 'img/hombre/collar-7-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/collar-7-oro-blanco-producto.png', 'img/hombre/collar-7-oro-blanco-puesto.png', 'img/hombre/collar-7-oro-blanco-puesto-2.png'],
-      negro:      ['img/hombre/collar-7-negro-producto.png', 'img/hombre/collar-7-negro-puesto.png', 'img/hombre/collar-7-negro-puesto-2.png'],
+      negro:      ['img/hombre/collar-7-negro-producto.png', 'img/hombre/collar-7-negro-puesto.png', 'img/hombre/collar-7-negro-puesto-2.png', 'img/hombre/collar-7-negro-extra-1.png'],
   } },
   { id: 'hombre_collar_8', tipo: 'colgantes', nombre: 'Obsidiana', acabados: {
-      oro:        ['img/hombre/collar-8-oro-producto.jpg', 'img/hombre/collar-8-oro-puesto.png', 'img/hombre/collar-8-oro-puesto-2.png'],
+      oro:        ['img/hombre/collar-8-oro-producto.jpg', 'img/hombre/collar-8-oro-puesto.png', 'img/hombre/collar-8-oro-puesto-2.png', 'img/hombre/collar-8-oro-extra-1.jpg', 'img/hombre/collar-8-oro-extra-2.png', 'img/hombre/collar-8-oro-extra-3.png'],
       oro_blanco: ['img/hombre/collar-8-oro-blanco-producto.png', 'img/hombre/collar-8-oro-blanco-puesto.png', 'img/hombre/collar-8-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_colgante_1', tipo: 'colgantes', nombre: 'Alma Caribeña', acabados: {
-      oro:        ['img/hombre/colgante-1-oro-producto.jpg', 'img/hombre/colgante-1-oro-puesto.png', 'img/hombre/colgante-1-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/colgante-1-oro-blanco-producto.png', 'img/hombre/colgante-1-oro-blanco-puesto.jpg', 'img/hombre/colgante-1-oro-blanco-puesto-2.png'],
+      oro:        ['img/hombre/colgante-1-oro-producto.jpg', 'img/hombre/colgante-1-oro-puesto.png', 'img/hombre/colgante-1-oro-puesto-2.png', 'img/hombre/colgante-1-oro-extra-1.png'],
+      oro_blanco: ['img/hombre/colgante-1-oro-blanco-producto.png', 'img/hombre/colgante-1-oro-blanco-puesto.jpg', 'img/hombre/colgante-1-oro-blanco-puesto-2.png', 'img/hombre/colgante-1-oro-blanco-extra-1.jpg'],
   } },
   { id: 'hombre_colgante_2', tipo: 'colgantes', nombre: 'Pacífico', acabados: {
-      oro:        ['img/hombre/colgante-2-oro-producto.jpg', 'img/hombre/colgante-2-oro-puesto.png', 'img/hombre/colgante-2-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/colgante-2-oro-blanco-producto.png', 'img/hombre/colgante-2-oro-blanco-puesto.png', 'img/hombre/colgante-2-oro-blanco-puesto-2.png'],
+      oro:        ['img/hombre/colgante-2-oro-producto.jpg', 'img/hombre/colgante-2-oro-puesto.png', 'img/hombre/colgante-2-oro-puesto-2.png', 'img/hombre/colgante-2-oro-extra-1.png'],
+      oro_blanco: ['img/hombre/colgante-2-oro-blanco-producto.png', 'img/hombre/colgante-2-oro-blanco-puesto.png', 'img/hombre/colgante-2-oro-blanco-puesto-2.png', 'img/hombre/colgante-2-oro-blanco-extra-1.jpg'],
   } },
   { id: 'hombre_colgante_3', tipo: 'colgantes', nombre: 'Mazunte', acabados: {
-      oro:        ['img/hombre/colgante-3-oro-producto.jpg', 'img/hombre/colgante-3-oro-puesto.png', 'img/hombre/colgante-3-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/colgante-3-oro-blanco-producto.png', 'img/hombre/colgante-3-oro-blanco-puesto.png'],
+      oro:        ['img/hombre/colgante-3-oro-producto.jpg', 'img/hombre/colgante-3-oro-puesto.png', 'img/hombre/colgante-3-oro-puesto-2.png', 'img/hombre/colgante-3-oro-extra-1.png'],
+      oro_blanco: ['img/hombre/colgante-3-oro-blanco-producto.png', 'img/hombre/colgante-3-oro-blanco-puesto.png', 'img/hombre/colgante-3-oro-blanco-extra-1.jpg'],
   } },
   { id: 'hombre_pulsera_1', tipo: 'pulseras', nombre: 'Maya', acabados: {
-      oro:        ['img/hombre/pulsera-1-oro-producto.jpg', 'img/hombre/pulsera-1-oro-puesto.jpg', 'img/hombre/pulsera-1-oro-puesto-2.png'],
+      oro:        ['img/hombre/pulsera-1-oro-producto.jpg', 'img/hombre/pulsera-1-oro-puesto.jpg', 'img/hombre/pulsera-1-oro-puesto-2.png', 'img/hombre/pulsera-1-oro-extra-1.png', 'img/hombre/pulsera-1-oro-extra-2.png', 'img/hombre/pulsera-1-oro-extra-3.png'],
       oro_blanco: ['img/hombre/pulsera-1-oro-blanco-producto.png', 'img/hombre/pulsera-1-oro-blanco-puesto.png', 'img/hombre/pulsera-1-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_pulsera_2', tipo: 'pulseras', nombre: 'Coyote', acabados: {
-      oro:        ['img/hombre/pulsera-2-oro-producto.jpg', 'img/hombre/pulsera-2-oro-puesto.jpg', 'img/hombre/pulsera-2-oro-puesto-2.png'],
+      oro:        ['img/hombre/pulsera-2-oro-producto.jpg', 'img/hombre/pulsera-2-oro-puesto.jpg', 'img/hombre/pulsera-2-oro-puesto-2.png', 'img/hombre/pulsera-2-oro-extra-1.png', 'img/hombre/pulsera-2-oro-extra-2.png'],
       oro_blanco: ['img/hombre/pulsera-2-oro-blanco-producto.png', 'img/hombre/pulsera-2-oro-blanco-puesto.png', 'img/hombre/pulsera-2-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_pulsera_3', tipo: 'pulseras', nombre: 'Tulum', acabados: {
-      oro:        ['img/hombre/pulsera-3-oro-producto.jpg', 'img/hombre/pulsera-3-oro-puesto.png', 'img/hombre/pulsera-3-oro-puesto-2.png'],
+      oro:        ['img/hombre/pulsera-3-oro-producto.jpg', 'img/hombre/pulsera-3-oro-puesto.png', 'img/hombre/pulsera-3-oro-puesto-2.png', 'img/hombre/pulsera-3-oro-extra-1.jpg', 'img/hombre/pulsera-3-oro-extra-2.png'],
       oro_blanco: ['img/hombre/pulsera-3-oro-blanco-producto.png', 'img/hombre/pulsera-3-oro-blanco-puesto.png', 'img/hombre/pulsera-3-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_pulsera_4', tipo: 'pulseras', nombre: 'Quetzal', acabados: {
       oro:        ['img/hombre/pulsera-4-oro-producto.jpg', 'img/hombre/pulsera-4-oro-puesto.jpg', 'img/hombre/pulsera-4-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/pulsera-4-oro-blanco-producto.png', 'img/hombre/pulsera-4-oro-blanco-puesto.png', 'img/hombre/pulsera-4-oro-blanco-puesto-2.png'],
+      oro_blanco: ['img/hombre/pulsera-4-oro-blanco-producto.png', 'img/hombre/pulsera-4-oro-blanco-puesto.png', 'img/hombre/pulsera-4-oro-blanco-puesto-2.png', 'img/hombre/pulsera-4-oro-blanco-extra-1.jpg', 'img/hombre/pulsera-4-oro-blanco-extra-2.jpg'],
   } },
   { id: 'hombre_pulsera_5', tipo: 'pulseras', nombre: 'Palenque', acabados: {
-      oro:        ['img/hombre/pulsera-5-oro-producto.jpg', 'img/hombre/pulsera-5-oro-puesto.png', 'img/hombre/pulsera-5-oro-puesto-2.png'],
+      oro:        ['img/hombre/pulsera-5-oro-producto.jpg', 'img/hombre/pulsera-5-oro-puesto.png', 'img/hombre/pulsera-5-oro-puesto-2.png', 'img/hombre/pulsera-5-oro-extra-1.png', 'img/hombre/pulsera-5-oro-extra-2.png'],
       oro_blanco: ['img/hombre/pulsera-5-oro-blanco-producto.png', 'img/hombre/pulsera-5-oro-blanco-puesto.png', 'img/hombre/pulsera-5-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_brazalete_1', tipo: 'pulseras', nombre: 'Jaguar', acabados: {
-      oro:        ['img/hombre/brazalete-1-oro-producto.jpg', 'img/hombre/brazalete-1-oro-puesto.png', 'img/hombre/brazalete-1-oro-puesto-2.png'],
+      oro:        ['img/hombre/brazalete-1-oro-producto.jpg', 'img/hombre/brazalete-1-oro-puesto.png', 'img/hombre/brazalete-1-oro-puesto-2.png', 'img/hombre/brazalete-1-oro-extra-1.png', 'img/hombre/brazalete-1-oro-extra-2.jpg'],
       oro_blanco: ['img/hombre/brazalete-1-oro-blanco-producto.png', 'img/hombre/brazalete-1-oro-blanco-puesto.png', 'img/hombre/brazalete-1-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_brazalete_2', tipo: 'pulseras', nombre: 'Agave', acabados: {
       oro:        ['img/hombre/brazalete-2-oro-producto.jpg', 'img/hombre/brazalete-2-oro-puesto.png', 'img/hombre/brazalete-2-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/brazalete-2-oro-blanco-producto.png', 'img/hombre/brazalete-2-oro-blanco-puesto.png', 'img/hombre/brazalete-2-oro-blanco-puesto-2.png'],
-      negro:      ['img/hombre/brazalete-2-negro-producto.png', 'img/hombre/brazalete-2-negro-puesto.png', 'img/hombre/brazalete-2-negro-puesto-2.png'],
+      negro:      ['img/hombre/brazalete-2-negro-producto.png', 'img/hombre/brazalete-2-negro-puesto.png', 'img/hombre/brazalete-2-negro-puesto-2.png', 'img/hombre/brazalete-2-negro-extra-1.jpg'],
   } },
   { id: 'hombre_brazalete_3', tipo: 'pulseras', nombre: 'Bacalar', acabados: {
       oro:        ['img/hombre/brazalete-3-oro-producto.jpg', 'img/hombre/brazalete-3-oro-puesto.png', 'img/hombre/brazalete-3-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/brazalete-3-oro-blanco-producto.png', 'img/hombre/brazalete-3-oro-blanco-puesto.jpg', 'img/hombre/brazalete-3-oro-blanco-puesto-2.png'],
+      oro_blanco: ['img/hombre/brazalete-3-oro-blanco-producto.png', 'img/hombre/brazalete-3-oro-blanco-puesto.jpg', 'img/hombre/brazalete-3-oro-blanco-puesto-2.png', 'img/hombre/brazalete-3-oro-blanco-extra-1.jpg', 'img/hombre/brazalete-3-oro-blanco-extra-2.jpg'],
   } },
   { id: 'hombre_brazalete_4', tipo: 'pulseras', nombre: 'Ajolote', acabados: {
       oro:        ['img/hombre/brazalete-4-oro-producto.jpg', 'img/hombre/brazalete-4-oro-puesto.png', 'img/hombre/brazalete-4-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/brazalete-4-oro-blanco-producto.png', 'img/hombre/brazalete-4-oro-blanco-puesto.jpg', 'img/hombre/brazalete-4-oro-blanco-puesto-2.jpg'],
+      oro_blanco: ['img/hombre/brazalete-4-oro-blanco-producto.png', 'img/hombre/brazalete-4-oro-blanco-puesto.jpg', 'img/hombre/brazalete-4-oro-blanco-puesto-2.jpg', 'img/hombre/brazalete-4-oro-blanco-extra-1.jpg', 'img/hombre/brazalete-4-oro-blanco-extra-2.jpg'],
   } },
   { id: 'hombre_anillo_1', tipo: 'anillos', nombre: 'Ocaso', acabados: {
       oro:        ['img/hombre/anillo-1-oro-producto.png', 'img/hombre/anillo-1-oro-puesto.png', 'img/hombre/anillo-1-oro-puesto-2.png'],
@@ -105,7 +105,7 @@ const COLECCION_HOMBRE = [
   { id: 'hombre_anillo_3', tipo: 'anillos', nombre: 'Cenote', acabados: {
       oro:        ['img/hombre/anillo-3-oro-producto.png', 'img/hombre/anillo-3-oro-puesto.png', 'img/hombre/anillo-3-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/anillo-3-oro-blanco-producto.png', 'img/hombre/anillo-3-oro-blanco-puesto.png', 'img/hombre/anillo-3-oro-blanco-puesto-2.png'],
-      negro:      ['img/hombre/anillo-3-negro-producto.png', 'img/hombre/anillo-3-negro-puesto.png', 'img/hombre/anillo-3-negro-puesto-2.png'],
+      negro:      ['img/hombre/anillo-3-negro-producto.png', 'img/hombre/anillo-3-negro-puesto.png', 'img/hombre/anillo-3-negro-puesto-2.png', 'img/hombre/anillo-3-negro-extra-1.png'],
   } },
 ];
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', negro: 'Negro' };
