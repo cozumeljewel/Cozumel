@@ -1031,6 +1031,7 @@ function urlPiezaHombre(prod, clave) {
   const ofreceCharm = prod.tipo === 'colgantes' && typeof CHARMS_HOMBRE !== 'undefined' &&
     !(typeof CON_COLGANTE_HOMBRE !== 'undefined' && CON_COLGANTE_HOMBRE.includes(prod.id));
   let charmElegido = null; // id del charm, o null = sin charm
+  let bloqueCharm = null;  // va justo debajo del botón de compra
   const colorCharm = (ch) => {
     // El charm sigue el color de la cadena si existe en los dos.
     const quiere = clave === 'oro' ? 'dorado' : 'plateado';
@@ -1040,7 +1041,7 @@ function urlPiezaHombre(prod, clave) {
     const d = crear('details', 'v2-pieza-desplegable v2-charm');
     const sum = crear('summary');
     const tit = crear('span', 'v2-charm-titulo');
-    tit.innerHTML = 'Añade un charm <em>Gratis</em>';
+    tit.innerHTML = 'Añade un charm de regalo <em class="v2-charm-gratis">Gratis</em>';
     const elegido = crear('span', 'v2-charm-elegido');
     sum.append(tit, elegido);
     const cuerpo = crear('div', 'v2-pieza-desplegable-cuerpo');
@@ -1074,7 +1075,7 @@ function urlPiezaHombre(prod, clave) {
     vista.hidden = true;
     cuerpo.append(rejilla, nombreCharm, vista);
     d.append(sum, cuerpo);
-    desplegables.append(d);
+    bloqueCharm = d;
     function marcarCharm() {
       const ch = CHARMS_HOMBRE.find(c => c.id === charmElegido);
       rejilla.querySelectorAll('.v2-charm-opcion').forEach(b => {
@@ -1118,6 +1119,7 @@ function urlPiezaHombre(prod, clave) {
     tonos.appendChild(bt);
   });
   info.append(titulo, tonos, etiqueta, boton, desplegables);
+  if (bloqueCharm) boton.after(bloqueCharm);
   const fotos = crear('div', 'v2-pieza-fotos');
   const lupa = crear('span', 'v2-pieza-lupa');
   lupa.setAttribute('aria-hidden', 'true');

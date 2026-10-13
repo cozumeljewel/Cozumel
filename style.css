@@ -3892,3 +3892,12 @@ body.v2-macro-abierto{overflow:hidden;}
 }
 /* La foto se ve entera (contain): sin franjas grises, directamente sobre el marfil */
 .v2-macro-marco{background:transparent;}
+
+/* Charm de regalo: justo debajo del botón de compra, con "GRATIS" bien visible */
+body.v2 .v2-pieza-info > .v2-charm{margin-top:18px; border-top:1px solid var(--c-linea); border-bottom:1px solid var(--c-linea);}
+body.v2 .v2-charm-titulo .v2-charm-gratis{
+  display:inline-block; margin-left:10px; padding:4px 9px 3px; border-radius:2px;
+  background:var(--c-oro); color:#FFFFFF; font-style:normal; font-size:10px;
+  font-weight:500; letter-spacing:.16em; line-height:1; vertical-align:1px;
+}
+body.v2 .v2-pieza-info > .v2-charm + .v2-pieza-desplegables{margin-top:0; border-top:0;}
