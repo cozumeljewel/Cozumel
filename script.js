@@ -1150,7 +1150,39 @@ function urlPiezaHombre(prod, clave) {
     bt.addEventListener('click', () => { clave = c; pintar(); history.replaceState(null, '', urlPiezaHombre(prod, c)); });
     tonos.appendChild(bt);
   });
-  info.append(titulo, tonos, etiqueta, boton, desplegables);
+  // Talla / largo / grosor / ancho, si la pieza tiene varias (hombre.js).
+  const opcion = typeof OPCIONES_HOMBRE !== 'undefined' && OPCIONES_HOMBRE[prod.id];
+  const medidas = crear('div', 'v2-pieza-medidas');
+  if (opcion) {
+    const cab = crear('p', 'v2-pieza-opcion-titulo');
+    const nombreOp = crear('span', '', opcion.nombre);
+    const elegidaOp = crear('span', 'v2-pieza-opcion-elegida', 'Elige ' + opcion.nombre.toLowerCase());
+    cab.append(nombreOp, elegidaOp);
+    const fila = crear('div', 'v2-pieza-opciones');
+    fila.setAttribute('role', 'group');
+    fila.setAttribute('aria-label', opcion.nombre);
+    opcion.valores.forEach(v => {
+      const bt = crear('button', 'v2-pieza-opcion');
+      bt.type = 'button';
+      bt.dataset.valor = v.id;
+      bt.setAttribute('aria-pressed', 'false');
+      bt.append(crear('span', '', v.texto));
+      if (v.sub) bt.append(crear('small', '', v.sub));
+      bt.addEventListener('click', () => {
+        fila.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === bt)));
+        elegidaOp.textContent = v.texto + (v.sub ? ' · ' + v.sub : '');
+        caja.dataset.opcion = v.id;
+      });
+      fila.append(bt);
+    });
+    medidas.append(cab, fila);
+    if (opcion.nota) medidas.append(crear('p', 'v2-pieza-medida', opcion.nota));
+  }
+  const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
+  if (fija) medidas.append(crear('p', 'v2-pieza-medida', fija));
+  info.append(titulo, tonos, etiqueta);
+  if (medidas.childElementCount) info.append(medidas);
+  info.append(boton, desplegables);
   if (bloqueCharm) boton.after(bloqueCharm);
   const fotos = crear('div', 'v2-pieza-fotos');
   const lupa = crear('span', 'v2-pieza-lupa');

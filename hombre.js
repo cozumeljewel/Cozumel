@@ -184,6 +184,46 @@ const FOTOS_CHARM_HOMBRE = {
 // si no es el que tocaría por turno.
 const ACABADO_INICIAL_HOMBRE = { hombre_collar_7: 'oro_blanco' };
 
+// Opciones que el cliente escoge en la ficha (talla, largo, grosor, ancho),
+// con la referencia del proveedor de cada una (skus-hombre.md), y la
+// medida fija de las piezas que solo vienen en una.
+const LARGO_PULSERA = { nombre: 'Largo', nota: '+ 2 cm de alargador', valores: [
+  { id: '15', texto: '15 cm' }, { id: '18', texto: '18 cm' }, { id: '20', texto: '20 cm' }] };
+const TALLA_ANILLO = { nombre: 'Talla', nota: 'Contorno interior del anillo', valores: [
+  { id: '7', texto: 'US 7', sub: '54 mm' }, { id: '8', texto: 'US 8', sub: '57 mm' }, { id: '9', texto: 'US 9', sub: '59 mm' }] };
+const conRef = (op, refs) => ({ ...op, valores: op.valores.map((v, i) => ({ ...v, ref: refs[i] })) });
+const OPCIONES_HOMBRE = {
+  hombre_collar_7: { nombre: 'Grosor', valores: [{ id: '4', texto: '4 mm', ref: 'YX44953' }, { id: '5', texto: '5 mm', ref: 'YX44951' }] },
+  hombre_pulsera_1: conRef(LARGO_PULSERA, ['YS44931', 'YS44932', 'YS44933']),
+  hombre_pulsera_2: conRef(LARGO_PULSERA, ['YS44926', 'YS44927', 'YS44928']),
+  hombre_pulsera_3: conRef(LARGO_PULSERA, ['YS44936', 'YS44937', 'YS44938']),
+  hombre_pulsera_4: conRef(LARGO_PULSERA, ['YS44918', 'YS44919', 'YS44920']),
+  hombre_pulsera_5: conRef(LARGO_PULSERA, ['YS44922', 'YS44923', 'YS44924']),
+  hombre_brazalete_1: { nombre: 'Ancho', valores: [{ id: '3.5', texto: '3,5 mm', ref: 'YZ44947' }, { id: '5', texto: '5 mm', ref: 'YZ44948' }] },
+  hombre_anillo_1: conRef(TALLA_ANILLO, ['YJ44953', 'YJ44953', 'YJ44953']),
+  hombre_anillo_2: conRef(TALLA_ANILLO, ['YJ44954', 'YJ44954', 'YJ44954']),
+  hombre_anillo_3: conRef(TALLA_ANILLO, ['YJ44955', 'YJ44955', 'YJ44955']),
+};
+const MEDIDAS_HOMBRE = {
+  hombre_collar_1: 'Largo 55 cm · cadena 2,5 mm',
+  hombre_collar_2: 'Largo 55 cm · cadena cubana 1,8 mm',
+  hombre_collar_3: 'Largo 55 cm · cadena 2 mm',
+  hombre_collar_4: 'Largo 55 cm · cadena 1,3 mm',
+  hombre_collar_6: 'Largo 55 cm · cadena 1,5 mm',
+  hombre_collar_7: 'Largo 55 cm · cadena cubana',
+  hombre_collar_8: 'Largo 55 cm · cadena de caja 1,5 mm',
+  hombre_colgante_1: 'Largo 58 cm · cadena cubana 1 mm · barra 13 × 3,5 mm',
+  hombre_colgante_2: 'Largo 58 cm · cadena 1 mm · barra 13 × 3,5 mm',
+  hombre_colgante_3: 'Largo 58 cm · cadena de caja 1 mm · barra 13 × 3,5 mm',
+  hombre_brazalete_1: 'Abierto, talla única',
+  hombre_brazalete_2: 'Abierto, talla única · ancho 3 mm · interior 6,5 cm',
+  hombre_brazalete_3: 'Abierto, talla única · ancho 6 mm',
+  hombre_brazalete_4: 'Abierto, talla única · ancho 5 mm',
+  hombre_anillo_1: 'Ancho 7,5 mm',
+  hombre_anillo_2: 'Ancho 6 mm',
+  hombre_anillo_3: 'Ancho 2 mm',
+};
+
 // Piezas que ya llevan colgante: no se les ofrece charm.
 const CON_COLGANTE_HOMBRE = ['hombre_colgante_1', 'hombre_colgante_2', 'hombre_colgante_3'];
 // Cadenas que tampoco llevan charm (Pulque, Holbox y Copal).
