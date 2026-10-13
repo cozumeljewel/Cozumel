@@ -800,7 +800,10 @@ function miniaturaAcabado(prod, clave, mas = 1) {
    Las fotos solo se descargan al abrir el visor. */
 function macrosHombre(prod, clave) {
   const m = typeof CERCA_HOMBRE !== 'undefined' && CERCA_HOMBRE[prod.id];
-  return (m && clave && m[clave]) || [];
+  if (m && clave && m[clave]) return m[clave];
+  // Colgantes: su foto de cerca de la miniatura (MINIATURAS_HOMBRE).
+  const mini = typeof MINIATURAS_HOMBRE !== 'undefined' && MINIATURAS_HOMBRE[prod.id];
+  return (mini && clave && mini[clave]) ? [mini[clave]] : [];
 }
 
 function abrirMacroHombre(fotos, titulo, origen) {
