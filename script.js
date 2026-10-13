@@ -715,6 +715,20 @@ function tarjetaHombre(prod, inicial) {
   const img2 = document.createElement('img');
   img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
   media.append(img, img2);
+  // Lupa para ver la foto macro del material elegido (fuera del enlace de
+  // la foto: abre el visor, no la ficha). Solo si hay macro de ese color.
+  const marco = document.createElement('div');
+  marco.className = 'v2-card-marco';
+  const lupa = document.createElement('button');
+  lupa.type = 'button';
+  lupa.className = 'v2-card-lupa';
+  lupa.innerHTML = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4M11 8.5v5M8.5 11h5"/></svg>';
+  marco.append(media, lupa);
+  let claveActual = null;
+  lupa.addEventListener('click', (e) => {
+    e.preventDefault(); e.stopPropagation();
+    abrirMacroHombre(macrosHombre(prod, claveActual), prod.nombre + ' · ' + NOMBRE_ACABADO_HOMBRE[claveActual], lupa);
+  });
   const tonos = document.createElement('div');
   tonos.className = 'v2-tonos';
   tonos.setAttribute('role', 'group');
@@ -728,6 +742,9 @@ function tarjetaHombre(prod, inicial) {
     const [a, b] = prod.acabados[clave];
     img.src = a; img2.src = b || a;
     media.href = nombre.href = urlPiezaHombre(prod, clave);
+    claveActual = clave;
+    lupa.hidden = !macrosHombre(prod, clave).length;
+    lupa.setAttribute('aria-label', 'Ver de cerca ' + prod.nombre + ' en ' + NOMBRE_ACABADO_HOMBRE[clave].toLowerCase());
     etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
     tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
   };
@@ -742,7 +759,7 @@ function tarjetaHombre(prod, inicial) {
     tonos.appendChild(bt);
   });
   // Foto, nombre y circulitos; el nombre del acabado solo en la ficha.
-  card.append(media, nombre, tonos);
+  card.append(marco, nombre, tonos);
   poner(claves.includes(inicial) ? inicial : claves[0]);
   return card;
 }
@@ -773,6 +790,93 @@ function miniaturaAcabado(prod, clave, mas = 1) {
     });
   }
   return mini;
+}
+
+/* ---------- Visor macro (lupa de las tarjetas) ----------
+   Fotos macro reales por pieza y material: CERCA_HOMBRE (hombre.js),
+   { id_pieza: { oro: [...], oro_blanco: [...] } }. Cada material solo
+   enseña las suyas; si no tiene, la tarjeta no muestra lupa.
+   Se abre encima de la página (sin navegar) y al cerrar todo queda igual.
+   Las fotos solo se descargan al abrir el visor. */
+function macrosHombre(prod, clave) {
+  const m = typeof CERCA_HOMBRE !== 'undefined' && CERCA_HOMBRE[prod.id];
+  return (m && clave && m[clave]) || [];
+}
+
+function abrirMacroHombre(fotos, titulo, origen) {
+  if (!fotos.length) return;
+  let i = 0;
+  const visor = document.createElement('div');
+  visor.className = 'v2-macro';
+  visor.setAttribute('role', 'dialog');
+  visor.setAttribute('aria-modal', 'true');
+  visor.setAttribute('aria-label', titulo + ', vista de cerca');
+  const flecha = (d) => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + (d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>';
+  visor.innerHTML =
+    '<div class="v2-macro-marco"><img alt=""></div>' +
+    '<p class="v2-macro-titulo"></p>' +
+    (fotos.length > 1
+      ? '<button type="button" class="v2-macro-flecha v2-macro-flecha--izq" aria-label="Foto anterior">' + flecha(-1) + '</button>' +
+        '<button type="button" class="v2-macro-flecha v2-macro-flecha--der" aria-label="Foto siguiente">' + flecha(1) + '</button>' +
+        '<p class="v2-macro-contador" aria-live="polite"></p>'
+      : '') +
+    '<button type="button" class="v2-macro-cerrar" aria-label="Cerrar">' +
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
+  const marco = visor.querySelector('.v2-macro-marco');
+  const img = marco.querySelector('img');
+  visor.querySelector('.v2-macro-titulo').textContent = titulo;
+  const contador = visor.querySelector('.v2-macro-contador');
+
+  // Ampliar todavía más: clic/toque en la foto; se recorre moviendo el
+  // ratón o el dedo. Otro clic la devuelve a su tamaño.
+  const enfocar = (x, y) => {
+    const r = img.getBoundingClientRect();
+    const px = Math.min(100, Math.max(0, (x - r.left) / r.width * 100));
+    const py = Math.min(100, Math.max(0, (y - r.top) / r.height * 100));
+    img.style.transformOrigin = px + '% ' + py + '%';
+  };
+  img.addEventListener('click', (e) => { enfocar(e.clientX, e.clientY); marco.classList.toggle('ampliada'); });
+  img.addEventListener('mousemove', (e) => { if (marco.classList.contains('ampliada')) enfocar(e.clientX, e.clientY); });
+  img.addEventListener('touchmove', (e) => {
+    if (!marco.classList.contains('ampliada')) return;
+    e.preventDefault();
+    enfocar(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+
+  const mostrar = (n) => {
+    i = (n + fotos.length) % fotos.length;
+    marco.classList.remove('ampliada');
+    img.src = fotos[i];
+    img.alt = titulo + ' de cerca' + (fotos.length > 1 ? ' (' + (i + 1) + ' de ' + fotos.length + ')' : '');
+    if (contador) contador.textContent = (i + 1) + ' / ' + fotos.length;
+  };
+  const cerrar = () => {
+    document.removeEventListener('keydown', teclas);
+    visor.remove();
+    document.body.classList.remove('v2-macro-abierto');
+    if (origen && document.contains(origen)) origen.focus({ preventScroll: true });
+  };
+  const teclas = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); cerrar(); }
+    else if (e.key === 'ArrowLeft' && fotos.length > 1) mostrar(i - 1);
+    else if (e.key === 'ArrowRight' && fotos.length > 1) mostrar(i + 1);
+    else if (e.key === 'Tab') {
+      // El foco no sale del visor mientras está abierto.
+      const f = [...visor.querySelectorAll('button')];
+      const idx = f.indexOf(document.activeElement);
+      if (e.shiftKey && idx <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && idx === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  };
+  visor.querySelector('.v2-macro-cerrar').addEventListener('click', cerrar);
+  visor.querySelectorAll('.v2-macro-flecha').forEach((b, k) => b.addEventListener('click', () => mostrar(i + (k ? 1 : -1))));
+  // Clic fuera de la foto (en el fondo) también cierra.
+  visor.addEventListener('click', (e) => { if (e.target === visor) cerrar(); });
+  document.addEventListener('keydown', teclas);
+  mostrar(0);
+  document.body.append(visor);
+  document.body.classList.add('v2-macro-abierto');
+  visor.querySelector('.v2-macro-cerrar').focus({ preventScroll: true });
 }
 
 /* Acabado con el que sale cada pieza en una lista, para que haya

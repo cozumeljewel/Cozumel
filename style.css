@@ -3805,3 +3805,63 @@ body.v2 .v2-charm-vista[hidden]{display:none;}
 body.v2 .v2-charm-foto{margin:0; aspect-ratio:1/1; overflow:hidden; background:var(--c-foto);}
 body.v2 .v2-charm-foto img{display:block; width:100%; height:100%; object-fit:cover; mix-blend-mode:multiply;}
 @media (max-width:899px){ body.v2 .v2-charm-vista{max-width:none;} }
+
+/* ---------- Lupa de las tarjetas + visor macro ----------
+   La lupa va en la esquina inferior derecha de la foto: aparece al pasar
+   el cursor (ordenador) y está siempre visible en pantallas táctiles. */
+.v2-card-marco{position:relative; width:100%;}
+.v2-card-lupa{
+  position:absolute; right:10px; bottom:10px; z-index:2;
+  display:flex; align-items:center; justify-content:center;
+  width:34px; height:34px; padding:0; border:0; border-radius:50%; cursor:zoom-in;
+  background:rgba(248,246,241,.92); color:var(--c-texto, #173634);
+  opacity:0; transition:opacity .25s ease, background .25s ease;
+}
+.v2-card-lupa[hidden]{display:none;}
+.v2-card-marco:hover .v2-card-lupa, .v2-card-lupa:focus-visible{opacity:1;}
+.v2-card-lupa:hover{background:#FFFFFF;}
+.v2-card-lupa:focus-visible{outline:1px solid var(--c-texto, #173634); outline-offset:2px;}
+@media (hover:none){ .v2-card-lupa{opacity:1;} }
+
+.v2-macro{
+  position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center;
+  padding:64px 72px; background:var(--c-fondo, #F8F6F1); color:var(--c-texto, #173634);
+  animation:v2-macro-entra .25s ease;
+}
+@keyframes v2-macro-entra{from{opacity:0;} to{opacity:1;}}
+.v2-macro-marco{
+  position:relative; width:min(78vh, 100%); max-height:100%; aspect-ratio:3/4; overflow:hidden;
+  background:var(--c-foto, #F1F1EF);
+}
+.v2-macro-marco img{
+  display:block; width:100%; height:100%; object-fit:cover; cursor:zoom-in;
+  transition:transform .35s ease;
+}
+.v2-macro-marco.ampliada img{transform:scale(2.2); cursor:zoom-out; transition:transform .35s ease, transform-origin 0s;}
+.v2-macro-titulo{
+  position:absolute; left:0; right:0; bottom:22px; margin:0; text-align:center;
+  font-family:var(--font-sans); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+}
+.v2-macro-contador{
+  position:absolute; left:0; right:0; top:26px; margin:0; text-align:center;
+  font-family:var(--font-sans); font-size:11px; letter-spacing:.12em; color:var(--c-texto-2, #62625F);
+}
+.v2-macro-cerrar, .v2-macro-flecha{
+  position:absolute; display:flex; align-items:center; justify-content:center;
+  width:44px; height:44px; padding:0; border:0; border-radius:50%; cursor:pointer;
+  background:transparent; color:inherit; transition:background .25s ease;
+}
+.v2-macro-cerrar:hover, .v2-macro-flecha:hover{background:rgba(23,54,52,.06);}
+.v2-macro-cerrar:focus-visible, .v2-macro-flecha:focus-visible{outline:1px solid currentColor; outline-offset:2px;}
+.v2-macro-cerrar{top:14px; right:14px;}
+.v2-macro-flecha{top:50%; transform:translateY(-50%);}
+.v2-macro-flecha--izq{left:14px;}
+.v2-macro-flecha--der{right:14px;}
+body.v2-macro-abierto{overflow:hidden;}
+@media (max-width:899px){
+  .v2-macro{padding:64px 0 56px;}
+  .v2-macro-marco{width:100%;}
+  .v2-macro-marco.ampliada img{touch-action:none;}
+  .v2-macro-flecha{top:auto; bottom:8px; transform:none;}
+}
+@media (prefers-reduced-motion: reduce){ .v2-macro{animation:none;} .v2-macro-marco img{transition:none;} }

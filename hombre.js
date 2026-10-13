@@ -169,8 +169,10 @@ COLECCION_HOMBRE.sort((a, b) => {
   return pos(a) - pos(b);
 });
 
-// Fotos de cerca (cadena y cierre) para la galería de la pieza, detrás de
-// las fotos puestas y antes de la caja. Del catálogo eManco.
+// Fotos macro reales (cadena y cierre) por pieza y material. Se usan en el
+// visor de la lupa de las tarjetas y en la galería de la pieza. Si una pieza
+// o material no está aquí, su tarjeta no muestra lupa. Para añadir una:
+// copiar las fotos a img/hombre/ y poner aquí su ruta en el material.
 const CERCA_HOMBRE = {
   hombre_pulsera_4: { oro: ['img/hombre/pulsera-4-oro-cerca-1.png', 'img/hombre/pulsera-4-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-4-oro-blanco-cerca-1.jpg', 'img/hombre/pulsera-4-oro-blanco-cerca-2.jpg'] },
   hombre_pulsera_5: { oro: ['img/hombre/pulsera-5-oro-cerca-1.png', 'img/hombre/pulsera-5-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-5-oro-blanco-cerca-1.png', 'img/hombre/pulsera-5-oro-blanco-cerca-2.png'] },
