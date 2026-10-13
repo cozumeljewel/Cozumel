@@ -45,7 +45,7 @@ const COLECCION_HOMBRE = [
   } },
   { id: 'hombre_colgante_1', tipo: 'colgantes', nombre: 'Alma Caribeña', acabados: {
       oro:        ['img/hombre/colgante-1-oro-producto.jpg', 'img/hombre/colgante-1-oro-puesto.png', 'img/hombre/colgante-1-oro-puesto-2.png'],
-      oro_blanco: ['img/hombre/colgante-1-oro-blanco-producto.png', 'img/hombre/colgante-1-oro-blanco-puesto.jpg', 'img/hombre/colgante-1-oro-blanco-puesto-2.png'],
+      oro_blanco: ['img/hombre/colgante-1-oro-blanco-producto.png', 'img/hombre/colgante-1-oro-blanco-puesto.png', 'img/hombre/colgante-1-oro-blanco-puesto-2.png'],
   } },
   { id: 'hombre_colgante_2', tipo: 'colgantes', nombre: 'Pacífico', acabados: {
       oro:        ['img/hombre/colgante-2-oro-producto.jpg', 'img/hombre/colgante-2-oro-puesto.png', 'img/hombre/colgante-2-oro-puesto-2.png'],
