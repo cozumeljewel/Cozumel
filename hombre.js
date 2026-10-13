@@ -146,6 +146,40 @@ const CHARMS_HOMBRE = [
   { id: 'simbolo_f', codigo: 'F', nombre: 'Hamsa', grupo: 'Símbolos', fotos: { dorado: 'img/hombre/charms/simbolo-f-dorado.png' },
     colores: { dorado: 'BP2522-Gold Color' } },
 ];
+// FOTOS_CHARM (generado por scripts/charms-hombre.py)
+// Cadena con el charm puesto, por acabado y en orden de variación.
+const FOTOS_CHARM_HOMBRE = {
+  hombre_collar_1: {
+    oro: [{ charm: 'simbolo_a', foto: 'img/hombre/collar-1-oro-charm-simbolo-a.png' }, { charm: 'cruz_1', foto: 'img/hombre/collar-1-oro-charm-cruz-1.png' }],
+    oro_blanco: [{ charm: 'charm_1', foto: 'img/hombre/collar-1-oro-blanco-charm-charm-1.png' }, { charm: 'cruz_1', foto: 'img/hombre/collar-1-oro-blanco-charm-cruz-1.png' }]
+  },
+  hombre_collar_2: {
+    oro_blanco: [{ charm: 'charm_2', foto: 'img/hombre/collar-2-oro-blanco-charm-charm-2.png' }, { charm: 'charm_3', foto: 'img/hombre/collar-2-oro-blanco-charm-charm-3.png' }],
+    oro: [{ charm: 'simbolo_b', foto: 'img/hombre/collar-2-oro-charm-simbolo-b.png' }, { charm: 'charm_2', foto: 'img/hombre/collar-2-oro-charm-charm-2.png' }]
+  },
+  hombre_collar_3: {
+    oro_blanco: [{ charm: 'cruz_1', foto: 'img/hombre/collar-3-oro-blanco-charm-cruz-1.png' }, { charm: 'charm_1', foto: 'img/hombre/collar-3-oro-blanco-charm-charm-1.png' }],
+    oro: [{ charm: 'simbolo_c', foto: 'img/hombre/collar-3-oro-charm-simbolo-c.png' }, { charm: 'cruz_2', foto: 'img/hombre/collar-3-oro-charm-cruz-2.png' }]
+  },
+  hombre_collar_4: {
+    oro_blanco: [{ charm: 'charm_3', foto: 'img/hombre/collar-4-oro-blanco-charm-charm-3.png' }, { charm: 'charm_2', foto: 'img/hombre/collar-4-oro-blanco-charm-charm-2.png' }],
+    oro: [{ charm: 'simbolo_d', foto: 'img/hombre/collar-4-oro-charm-simbolo-d.png' }, { charm: 'charm_3', foto: 'img/hombre/collar-4-oro-charm-charm-3.png' }]
+  },
+  hombre_collar_6: {
+    oro_blanco: [{ charm: 'charm_1', foto: 'img/hombre/collar-6-oro-blanco-charm-charm-1.png' }, { charm: 'charm_3', foto: 'img/hombre/collar-6-oro-blanco-charm-charm-3.png' }],
+    oro: [{ charm: 'simbolo_e', foto: 'img/hombre/collar-6-oro-charm-simbolo-e.png' }, { charm: 'cruz_3', foto: 'img/hombre/collar-6-oro-charm-cruz-3.png' }]
+  },
+  hombre_collar_7: {
+    oro_blanco: [{ charm: 'charm_2', foto: 'img/hombre/collar-7-oro-blanco-charm-charm-2.png' }, { charm: 'cruz_1', foto: 'img/hombre/collar-7-oro-blanco-charm-cruz-1.png' }],
+    oro: [{ charm: 'simbolo_f', foto: 'img/hombre/collar-7-oro-charm-simbolo-f.png' }, { charm: 'charm_1', foto: 'img/hombre/collar-7-oro-charm-charm-1.png' }]
+  },
+  hombre_collar_8: {
+    oro_blanco: [{ charm: 'charm_3', foto: 'img/hombre/collar-8-oro-blanco-charm-charm-3.png' }, { charm: 'charm_1', foto: 'img/hombre/collar-8-oro-blanco-charm-charm-1.png' }],
+    oro: [{ charm: 'cruz_5', foto: 'img/hombre/collar-8-oro-charm-cruz-5.png' }, { charm: 'simbolo_a', foto: 'img/hombre/collar-8-oro-charm-simbolo-a.png' }]
+  },
+};
+// FIN_FOTOS_CHARM
+
 // Piezas que ya llevan colgante: no se les ofrece charm.
 const CON_COLGANTE_HOMBRE = ['hombre_colgante_1', 'hombre_colgante_2', 'hombre_colgante_3'];
 

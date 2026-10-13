@@ -740,7 +740,11 @@ function tarjetaHombre(prod, inicial) {
   nombre.textContent = prod.nombre;
   const poner = (clave) => {
     const [a, b] = prod.acabados[clave];
-    img.src = a; img2.src = b || a;
+    // Si la cadena tiene foto con charm, sale esa y, al pasar el ratón,
+    // la cadena sola; las fotos puestas quedan dentro de la ficha.
+    const conCharm = fotosCharmHombre(prod, clave);
+    img.src = conCharm.length ? conCharm[0].foto : a;
+    img2.src = conCharm.length ? a : (b || a);
     media.href = nombre.href = urlPiezaHombre(prod, clave);
     claveActual = clave;
     lupa.hidden = !macrosHombre(prod, clave).length;
@@ -762,6 +766,12 @@ function tarjetaHombre(prod, inicial) {
   card.append(marco, nombre, tonos);
   poner(claves.includes(inicial) ? inicial : claves[0]);
   return card;
+}
+
+/* Fotos de la cadena con un charm puesto (FOTOS_CHARM_HOMBRE, hombre.js)
+   para ese acabado, en orden de variación. */
+function fotosCharmHombre(prod, clave) {
+  return (typeof FOTOS_CHARM_HOMBRE !== 'undefined' && FOTOS_CHARM_HOMBRE[prod.id] && FOTOS_CHARM_HOMBRE[prod.id][clave]) || [];
 }
 
 /* Foto del círculo de un acabado: la pieza en ese color, muy de cerca y
@@ -1031,12 +1041,10 @@ function urlPiezaHombre(prod, clave) {
   const ofreceCharm = prod.tipo === 'colgantes' && typeof CHARMS_HOMBRE !== 'undefined' &&
     !(typeof CON_COLGANTE_HOMBRE !== 'undefined' && CON_COLGANTE_HOMBRE.includes(prod.id));
   let charmElegido = null; // id del charm, o null = sin charm
+  let charmTocado = false;  // hasta que se elige, salen las fotos de ejemplo con charm
   let bloqueCharm = null;  // va justo debajo del botón de compra
-  const colorCharm = (ch) => {
-    // El charm sigue el color de la cadena si existe en los dos.
-    const quiere = clave === 'oro' ? 'dorado' : 'plateado';
-    return ch.colores[quiere] ? quiere : Object.keys(ch.colores)[0];
-  };
+  // Cadena dorada: solo charms dorados; oro blanco (y negro): plateados.
+  const colorCharm = () => clave === 'oro' ? 'dorado' : 'plateado';
   if (ofreceCharm) {
     const d = crear('details', 'v2-pieza-desplegable v2-charm');
     const sum = crear('summary');
@@ -1056,13 +1064,18 @@ function urlPiezaHombre(prod, clave) {
       if (ch && ch.fotos) { const im = crear('img'); im.alt = ''; im.loading = 'lazy'; circulo.append(im); }
       else circulo.textContent = ch ? ch.codigo : '—';
       bt.append(circulo);
-      bt.addEventListener('click', () => { charmElegido = ch ? ch.id : null; marcarCharm(); });
+      bt.addEventListener('click', () => { charmElegido = ch ? ch.id : null; charmTocado = true; marcarCharm(); pintar(); });
       return bt;
     };
     rejilla.append(opcion(null));
     let grupo = '';
     CHARMS_HOMBRE.forEach(ch => {
-      if (ch.grupo !== grupo) { grupo = ch.grupo; rejilla.append(crear('span', 'v2-charm-grupo', grupo)); }
+      if (ch.grupo !== grupo) {
+        grupo = ch.grupo;
+        const g = crear('span', 'v2-charm-grupo', grupo);
+        g.dataset.grupo = grupo;
+        rejilla.append(g);
+      }
       rejilla.append(opcion(ch));
     });
     // Foto grande del charm elegido (en el móvil se amplía al tocarla).
@@ -1077,19 +1090,26 @@ function urlPiezaHombre(prod, clave) {
     d.append(sum, cuerpo);
     bloqueCharm = d;
     function marcarCharm() {
+      const color = colorCharm();
+      // Si el charm elegido no existe en el color de la nueva cadena, se quita.
+      const antes = CHARMS_HOMBRE.find(c => c.id === charmElegido);
+      if (antes && !antes.fotos[color]) { charmElegido = null; charmTocado = false; pintar(); }
       const ch = CHARMS_HOMBRE.find(c => c.id === charmElegido);
       rejilla.querySelectorAll('.v2-charm-opcion').forEach(b => {
         b.setAttribute('aria-pressed', String((b.dataset.charm || null) === charmElegido));
-        // Foto del charm en el color que toca con esta cadena
+        // Solo los charms del color de la cadena, con su foto
         const c = CHARMS_HOMBRE.find(x => x.id === b.dataset.charm);
+        b.hidden = !!c && !c.fotos[color];
         const im = b.querySelector('img');
-        if (c && im) im.src = c.fotos[colorCharm(c)];
+        if (c && im && c.fotos[color]) im.src = c.fotos[color];
       });
-      const color = ch ? (colorCharm(ch) === 'dorado' ? 'dorado' : 'plateado') : '';
+      rejilla.querySelectorAll('.v2-charm-grupo').forEach(g => {
+        g.hidden = !CHARMS_HOMBRE.some(c => c.grupo === g.dataset.grupo && c.fotos[color]);
+      });
       elegido.textContent = ch ? ch.nombre : '';
       vista.hidden = !ch;
       if (ch) {
-        const src = ch.fotos[colorCharm(ch)];
+        const src = ch.fotos[color];
         if (vistaImg.getAttribute('src') !== src) {
           if (vista.reiniciarZoom) vista.reiniciarZoom();
           vistaImg.style.transform = '';
@@ -1134,9 +1154,14 @@ function urlPiezaHombre(prod, clave) {
   galeria.addEventListener('scroll', marcar, { passive: true });
 
   function pintar() {
-    // Producto, todas las fotos puestas que tenga y, al final, el packaging.
+    // Cadena con charm (las de ejemplo o la del charm elegido), producto,
+    // todas las fotos puestas que tenga y, al final, el packaging.
     const [a, ...puestas] = prod.acabados[clave];
+    const nombreCh = (id) => (CHARMS_HOMBRE.find(c => c.id === id) || {}).nombre || 'charm';
+    const conCharm = fotosCharmHombre(prod, clave)
+      .filter(x => !charmTocado || x.charm === charmElegido);
     const lista = [
+      ...conCharm.map(x => [x.foto, prod.nombre + ' con ' + nombreCh(x.charm).toLowerCase()]),
       [a, prod.nombre + ' en ' + NOMBRE_ACABADO_HOMBRE[clave].toLowerCase()],
       ...puestas.map(src => [src, prod.nombre + ' puesto']),
       // Fotos de cerca de la cadena y el cierre (CERCA_HOMBRE, hombre.js)
