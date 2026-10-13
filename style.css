@@ -3812,7 +3812,7 @@ body.v2 .v2-charm-foto img{display:block; width:100%; height:100%; object-fit:co
 .v2-card-cerca{position:absolute; inset:0;}
 body.v2 .v2-card-media .v2-card-cerca img{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  opacity:0; transform:none; mix-blend-mode:normal; transition:opacity .9s ease;
+  opacity:0; transform:none; mix-blend-mode:normal; transition:opacity 1.4s ease;
 }
 body.v2 .v2-card-media .v2-card-cerca img.visible{opacity:1;}
 @media (prefers-reduced-motion: reduce){ body.v2 .v2-card-media .v2-card-cerca img{transition:none;} }

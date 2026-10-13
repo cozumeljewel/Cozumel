@@ -715,7 +715,7 @@ function tarjetaHombre(prod, inicial, conCerca) {
   const img2 = document.createElement('img');
   img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
   // Portada: capas con fotos de cerca (cadena y cierre) que se alternan con
-  // la de producto cada 2 s, con un fundido (CERCA_HOMBRE en hombre.js).
+  // la de producto cada 3,5 s, con un fundido (CERCA_HOMBRE en hombre.js).
   const capas = document.createElement('span');
   capas.className = 'v2-card-cerca';
   media.append(img, capas, img2);
@@ -728,7 +728,7 @@ function tarjetaHombre(prod, inicial, conCerca) {
       if (!fotos.length || document.hidden) return;
       turno = (turno + 1) % (fotos.length + 1); // 0 = foto de producto
       [...fotos].forEach((f, i) => f.classList.toggle('visible', i + 1 === turno));
-    }, 2000);
+    }, 3500);
   }
   const tonos = document.createElement('div');
   tonos.className = 'v2-tonos';
