@@ -180,6 +180,10 @@ const FOTOS_CHARM_HOMBRE = {
 };
 // FIN_FOTOS_CHARM
 
+// Color con el que sale la pieza en el Shop, la portada y "más piezas"
+// si no es el que tocaría por turno.
+const ACABADO_INICIAL_HOMBRE = { hombre_collar_7: 'oro_blanco' };
+
 // Piezas que ya llevan colgante: no se les ofrece charm.
 const CON_COLGANTE_HOMBRE = ['hombre_colgante_1', 'hombre_colgante_2', 'hombre_colgante_3'];
 // Cadenas que tampoco llevan charm (Pulque, Holbox y Copal).

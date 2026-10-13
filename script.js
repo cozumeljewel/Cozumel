@@ -983,6 +983,8 @@ function acabadosVariados(lista) {
   const turnoAnillo = ['oro', 'oro_blanco', 'negro'];
   let anillo = 0, ultimo = 'oro_blanco';
   return lista.map(prod => {
+    const fijo = typeof ACABADO_INICIAL_HOMBRE !== 'undefined' && ACABADO_INICIAL_HOMBRE[prod.id];
+    if (fijo && prod.acabados[fijo]) { if (fijo !== 'negro') ultimo = fijo; return fijo; }
     if (prod.tipo === 'anillos') return turnoAnillo[anillo++ % 3];
     if (prod.acabados.negro) return 'negro';
     // El contrario del último oro / oro blanco mostrado; si la pieza no
