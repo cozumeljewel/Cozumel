@@ -768,9 +768,18 @@ function tarjetaHombre(prod, inicial) {
   return card;
 }
 
+/* Si a la pieza se le ofrece charm de regalo: cadenas, menos las que ya
+   llevan colgante y las de SIN_CHARM_HOMBRE (hombre.js). */
+function llevaCharmHombre(prod) {
+  return prod.tipo === 'colgantes' && typeof CHARMS_HOMBRE !== 'undefined' &&
+    !(typeof CON_COLGANTE_HOMBRE !== 'undefined' && CON_COLGANTE_HOMBRE.includes(prod.id)) &&
+    !(typeof SIN_CHARM_HOMBRE !== 'undefined' && SIN_CHARM_HOMBRE.includes(prod.id));
+}
+
 /* Fotos de la cadena con un charm puesto (FOTOS_CHARM_HOMBRE, hombre.js)
    para ese acabado, en orden de variación. */
 function fotosCharmHombre(prod, clave) {
+  if (!llevaCharmHombre(prod)) return [];
   return (typeof FOTOS_CHARM_HOMBRE !== 'undefined' && FOTOS_CHARM_HOMBRE[prod.id] && FOTOS_CHARM_HOMBRE[prod.id][clave]) || [];
 }
 
@@ -1038,8 +1047,7 @@ function urlPiezaHombre(prod, clave) {
     desplegable('Envío', '<p>Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21.</p>')
   );
   // Cadenas sin colgante: charm de regalo, justo después de Envío.
-  const ofreceCharm = prod.tipo === 'colgantes' && typeof CHARMS_HOMBRE !== 'undefined' &&
-    !(typeof CON_COLGANTE_HOMBRE !== 'undefined' && CON_COLGANTE_HOMBRE.includes(prod.id));
+  const ofreceCharm = llevaCharmHombre(prod);
   let charmElegido = null; // id del charm, o null = sin charm
   let bloqueCharm = null;  // va justo debajo del botón de compra
   // Cadena dorada: solo charms dorados; oro blanco (y negro): plateados.

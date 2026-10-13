@@ -182,6 +182,8 @@ const FOTOS_CHARM_HOMBRE = {
 
 // Piezas que ya llevan colgante: no se les ofrece charm.
 const CON_COLGANTE_HOMBRE = ['hombre_colgante_1', 'hombre_colgante_2', 'hombre_colgante_3'];
+// Cadenas que tampoco llevan charm (Pulque, Holbox y Copal).
+const SIN_CHARM_HOMBRE = ['hombre_collar_2', 'hombre_collar_1', 'hombre_collar_7'];
 
 // Foto propia para el círculo de color (un trozo de la pieza de cerca).
 // Si una pieza no tiene, se hace zoom sobre su foto de producto.
