@@ -3805,14 +3805,3 @@ body.v2 .v2-charm-vista[hidden]{display:none;}
 body.v2 .v2-charm-foto{margin:0; aspect-ratio:1/1; overflow:hidden; background:var(--c-foto);}
 body.v2 .v2-charm-foto img{display:block; width:100%; height:100%; object-fit:cover; mix-blend-mode:multiply;}
 @media (max-width:899px){ body.v2 .v2-charm-vista{max-width:none;} }
-
-/* ---------- Portada: fotos de cerca que se alternan con la de producto ----------
-   Capas encima de la foto de producto; se encienden de una en una cada 2 s
-   con un fundido. La foto puesta (hover) sigue por encima de todo. */
-.v2-card-cerca{position:absolute; inset:0;}
-body.v2 .v2-card-media .v2-card-cerca img{
-  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  opacity:0; transform:none; mix-blend-mode:normal; transition:opacity 1.4s ease;
-}
-body.v2 .v2-card-media .v2-card-cerca img.visible{opacity:1;}
-@media (prefers-reduced-motion: reduce){ body.v2 .v2-card-media .v2-card-cerca img{transition:none;} }

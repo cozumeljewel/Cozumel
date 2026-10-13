@@ -169,8 +169,8 @@ COLECCION_HOMBRE.sort((a, b) => {
   return pos(a) - pos(b);
 });
 
-// Fotos de cerca (cadena y cierre) que se alternan con la foto de producto
-// en las tarjetas de la portada y del Shop, cada 3,5 s con un fundido. Del catálogo eManco.
+// Fotos de cerca (cadena y cierre) para la galería de la pieza, detrás de
+// las fotos puestas y antes de la caja. Del catálogo eManco.
 const CERCA_HOMBRE = {
   hombre_pulsera_4: { oro: ['img/hombre/pulsera-4-oro-cerca-1.png', 'img/hombre/pulsera-4-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-4-oro-blanco-cerca-1.jpg', 'img/hombre/pulsera-4-oro-blanco-cerca-2.jpg'] },
   hombre_pulsera_5: { oro: ['img/hombre/pulsera-5-oro-cerca-1.png', 'img/hombre/pulsera-5-oro-cerca-2.png'], oro_blanco: ['img/hombre/pulsera-5-oro-blanco-cerca-1.png', 'img/hombre/pulsera-5-oro-blanco-cerca-2.png'] },
