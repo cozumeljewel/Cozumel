@@ -740,13 +740,11 @@ function tarjetaHombre(prod, inicial) {
   nombre.textContent = prod.nombre;
   const poner = (clave) => {
     const [a, b] = prod.acabados[clave];
-    // Si la cadena tiene foto con charm, sale esa y, al pasar el ratón,
-    // la cadena sola; las fotos puestas quedan dentro de la ficha.
+    // Cadenas con charm: sale con el charm; si no, la pieza sola. Al pasar
+    // el ratón, siempre la foto con modelo.
     const conCharm = fotosCharmHombre(prod, clave);
     img.src = conCharm.length ? conCharm[0].foto : a;
-    img2.src = conCharm.length ? a : (b || a);
-    // La foto de estudio de debajo también va sobre el gris de la caja.
-    media.classList.toggle('v2-card-media--estudio', conCharm.length > 0);
+    img2.src = b || a;
     media.href = nombre.href = urlPiezaHombre(prod, clave);
     claveActual = clave;
     lupa.hidden = !macrosHombre(prod, clave).length;

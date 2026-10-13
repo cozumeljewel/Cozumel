@@ -3910,10 +3910,3 @@ body.v2 .galeria-foto.con-foto{background-color:var(--c-foto); background-blend-
 @media (min-width:900px){
   body.v2 .galeria-punto{background-color:var(--c-foto); background-blend-mode:multiply;}
 }
-/* Tarjeta con charm: al pasar el ratón sale la cadena sola, que es foto de
-   estudio. Se funde con el gris como la primera y esta se esconde debajo. */
-body.v2 .v2-card-media--estudio .v2-card-hover{mix-blend-mode:multiply;}
-body.v2 .v2-card-media--estudio img:not(.v2-card-hover){transition:opacity .45s ease, transform .6s ease;}
-@media (hover:hover){
-  body.v2 .v2-card:hover .v2-card-media--estudio img:not(.v2-card-hover){opacity:0;}
-}
