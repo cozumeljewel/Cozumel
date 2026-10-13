@@ -140,38 +140,38 @@ La talla española equivale aproximadamente al contorno en mm menos 40
 
 Del "Emanco Men Jewelry Catalog (2).xlsx". Fotos del catálogo en
 `img/Joyeria hombre/NUEVAS DEL CATALOGO/`. Nombres propuestos.
-Stock = unidades en el proveedor a 13/10/2026 (ojo con las de stock 0).
+Precio catálogo = "Wholesale Price" del Excel. Stock = unidades en el proveedor a 13/10/2026 (ojo con las de stock 0).
 
 ### Pulseras de cadena
 
-| Pieza | Referencia | Colores (stock) | Largo | Ancho | Coste |
+| Pieza | Referencia | Colores (stock) | Largo | Ancho | Precio catálogo |
 |---|---|---|---|---|---|
-| Sayulita (Pulsera 6) | YS48446 / YS48447 / YS48448 (MAN029) | B · I | 15 / 18 / 20 cm + 2 cm | 2 mm clip, chapa 10×4×2 mm | 3 € |
-| Tequila (Pulsera 7) | NS92055 (GF-SD-11 / 10) | oro 14K (1) · plata (0) | 22 cm | 6 mm | 17 € |
-| Oaxaca (Pulsera 8) | NS92059 (GF-SD-34 / 35) | oro 14K (4) · plata (0) | 23 cm | 7 mm | 26 € |
-| Henequén (Pulsera 9) | NS92062 (GF-SD-45) | plata (9) | 22 cm | 6 mm | 20 € |
-| Uxmal (Pulsera 10) | NS92067 (GF-SD-77) | plata (2) | 21 cm | 6 mm | 6 € |
-| Izamal (Pulsera 11) | NS92075 (GF-SD-98) | plata (1) | 22 cm | 11 mm | 27 € |
-| Sonora (Pulsera 12) | NS92076 (GF-SD-101) | plata (6) | 22 cm | 8 mm | 27 € |
-| Durango (Pulsera 13) | NS92077 (GF-SD-103) | plata (1) | 22 cm | 10 mm | 43 € |
-| Huasteca (Pulsera 14) | NS92079 (GF-SD-142) | plata (1) | 20 cm | 5 mm | 16 € |
-| Celestún (Pulsera 15) | NS92085 (GF-SD-190) | plata (4) | 18 cm + 3 cm | 5 mm | 11 € |
-| Volcán (Pulsera 16) | NS92090 (GF-SD-296) | negro (0) | 22 cm | 10 mm | 30 € |
-| Xibalbá (Pulsera 17) | NS92091 (GF-SD-297) | negro (0) | 22 cm | 8 mm | 31 € |
-| Tezontle (Pulsera 18) | NS92093 (GF-SD-308) | negro (6) | 22 cm | 7 mm | 25 € |
-| Chamula (Pulsera 19) | NS92096 (GF-SD-313) | negro (11) | 22 cm | 5 mm | 18 € |
+| Sayulita (Pulsera 6) | YS48446 / YS48447 / YS48448 (MAN029) | B · I | 15 / 18 / 20 cm + 2 cm | 2 mm clip, chapa 10×4×2 mm | 1,69–1,88 |
+| Tequila (Pulsera 7) | NS92055 (GF-SD-11 / 10) | oro 14K (1) · plata (0) | 22 cm | 6 mm | 2,83 oro · 1,65 plata |
+| Oaxaca (Pulsera 8) | NS92059 (GF-SD-34 / 35) | oro 14K (4) · plata (0) | 23 cm | 7 mm | 2,83 oro · 1,96 plata |
+| Henequén (Pulsera 9) | NS92062 (GF-SD-45) | plata (9) | 22 cm | 6 mm | 1,65 |
+| Uxmal (Pulsera 10) | NS92067 (GF-SD-77) | plata (2) | 21 cm | 6 mm | 1,22 |
+| Izamal (Pulsera 11) | NS92075 (GF-SD-98) | plata (1) | 22 cm | 11 mm | 4,57 |
+| Sonora (Pulsera 12) | NS92076 (GF-SD-101) | plata (6) | 22 cm | 8 mm | 4,79 |
+| Durango (Pulsera 13) | NS92077 (GF-SD-103) | plata (1) | 22 cm | 10 mm | 4,36 |
+| Huasteca (Pulsera 14) | NS92079 (GF-SD-142) | plata (1) | 20 cm | 5 mm | 2,53 |
+| Celestún (Pulsera 15) | NS92085 (GF-SD-190) | plata (4) | 18 cm + 3 cm | 5 mm | 1,31 |
+| Volcán (Pulsera 16) | NS92090 (GF-SD-296) | negro (0) | 22 cm | 10 mm | 2,18 |
+| Xibalbá (Pulsera 17) | NS92091 (GF-SD-297) | negro (0) | 22 cm | 8 mm | 3,27 |
+| Tezontle (Pulsera 18) | NS92093 (GF-SD-308) | negro (6) | 22 cm | 7 mm | 1,52 |
+| Chamula (Pulsera 19) | NS92096 (GF-SD-313) | negro (11) | 22 cm | 5 mm | 2,53 |
 
 ### Anillos
 
-| Pieza | Referencia | Colores | Tallas US | Ancho | Coste |
+| Pieza | Referencia | Colores | Tallas US | Ancho | Precio catálogo |
 |---|---|---|---|---|---|
-| Xcaret (Anillo 4) | **4 mm:** YJ44943 · **5 mm:** YJ44944 (MAN006) | B · I | 7 · 8 · 9 | 4 o 5 mm, abierto | 3–4 € |
-| Calakmul (Anillo 5) | YJ44946 (MAN007) | B · I | 7 · 8 · 9 | 5 mm, sello abierto | 4 € |
-| Baja (Anillo 6) | YJ44945 (MAN008) | B · I | 7 · 8 · 9 | 8 mm, abierto | 5 € |
-| Frida (Anillo 7) | TR24065 | oro 14K · plata | 7–11 | corazón (claddagh), 14 mm | 6 € |
-| Guadalupe (Anillo 8) | TR24155 | plata | 8–11 | escudo con cruz, 15 mm | 7 € |
-| Luchador (Anillo 9) | TR24157 | plata | 7–11 | máscara, 25 mm | 11 € |
-| Misión (Anillo 10) | TR24152 | oro 14K (sin stock) · plata | 8–11 | sello con cruz, 16 mm | 10 € |
-| Charro (Anillo 11) | TR24149 | plata | 7–11 | herradura, 21 mm | 15 € |
-| Catedral (Anillo 12) | TR24167 | plata | 7–10 | cruz gótica, 19 mm | 8 € |
-| Nahual (Anillo 13) | TR24174 | oro 14K · plata | 7–11 | lobo, 16 mm | 9 € |
+| Xcaret (Anillo 4) | **4 mm:** YJ44943 · **5 mm:** YJ44944 (MAN006) | B · I | 7 · 8 · 9 | 4 o 5 mm, abierto | 1,49–1,65 |
+| Calakmul (Anillo 5) | YJ44946 (MAN007) | B · I | 7 · 8 · 9 | 5 mm, sello abierto | 2,04–2,12 |
+| Baja (Anillo 6) | YJ44945 (MAN008) | B · I | 7 · 8 · 9 | 8 mm, abierto | 3,47–3,53 |
+| Frida (Anillo 7) | TR24065 | oro 14K · plata | 7–11 | corazón (claddagh), 14 mm | 1,76 oro · 1,57 plata |
+| Guadalupe (Anillo 8) | TR24155 | plata | 8–11 | escudo con cruz, 15 mm | 1,76 |
+| Luchador (Anillo 9) | TR24157 | plata | 7–11 | máscara, 25 mm | 1,76 |
+| Misión (Anillo 10) | TR24152 | oro 14K (sin stock) · plata | 8–11 | sello con cruz, 16 mm | 1,96 oro · 1,76 plata |
+| Charro (Anillo 11) | TR24149 | plata | 7–11 | herradura, 21 mm | 1,76 |
+| Catedral (Anillo 12) | TR24167 | plata | 7–10 | cruz gótica, 19 mm | 1,96 |
+| Nahual (Anillo 13) | TR24174 | oro 14K · plata | 7–11 | lobo, 16 mm | 2,16 oro · 1,96 plata |
