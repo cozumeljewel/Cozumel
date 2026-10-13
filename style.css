@@ -3901,3 +3901,12 @@ body.v2 .v2-charm-titulo .v2-charm-gratis{
   font-weight:500; letter-spacing:.16em; line-height:1; vertical-align:1px;
 }
 body.v2 .v2-pieza-info > .v2-charm + .v2-pieza-desplegables{margin-top:0; border-top:0;}
+
+/* ---------- Mismo fondo gris en todas las fotos de producto ----------
+   La ficha de mujer pinta las fotos como fondo (--foto): multiply las
+   funde con el gris de las cajas de foto, igual que en hombre, sin tocar
+   los archivos. En el ordenador también las miniaturas. */
+body.v2 .galeria-foto.con-foto{background-color:var(--c-foto); background-blend-mode:multiply;}
+@media (min-width:900px){
+  body.v2 .galeria-punto{background-color:var(--c-foto); background-blend-mode:multiply;}
+}
