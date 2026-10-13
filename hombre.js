@@ -196,12 +196,13 @@ const MINIATURAS_HOMBRE = {
   hombre_colgante_3: { oro: 'img/hombre/colgante-3-oro-mini.jpg', oro_blanco: 'img/hombre/colgante-3-oro-blanco-mini.png' },
 };
 
-// Orden en la web (Shop, portada y "más piezas"): primero las cadenas,
-// después Holbox y Copal (las de negro) y al final los colgantes de barra.
+// Orden en la web (Shop, portada y "más piezas"): collares (con charm:
+// Mezcal, Guajillo, Cacao, Obsidiana), cadenas (sin charm: Pulque, Holbox,
+// Copal) y colgantes (Alma Caribeña, Pacífico, Mazunte).
 // Las piezas que no estén en la lista van detrás, en su orden.
 const ORDEN_HOMBRE = [
-  'hombre_collar_2', 'hombre_collar_3', 'hombre_collar_4', 'hombre_collar_6', 'hombre_collar_8',
-  'hombre_collar_1', 'hombre_collar_7',
+  'hombre_collar_3', 'hombre_collar_4', 'hombre_collar_6', 'hombre_collar_8',
+  'hombre_collar_2', 'hombre_collar_1', 'hombre_collar_7',
   'hombre_colgante_1', 'hombre_colgante_2', 'hombre_colgante_3',
 ];
 COLECCION_HOMBRE.sort((a, b) => {
