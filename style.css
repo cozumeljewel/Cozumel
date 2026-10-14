@@ -3958,3 +3958,129 @@ body.v2 .v2-card--hombre .v2-card-precio{display:block; text-align:center; margi
 body.v2 .v2-pieza-condiciones{margin:6px 0 0; font-family:var(--font-sans); font-size:12px; letter-spacing:.04em; color:var(--c-texto-2);}
 body.v2 .v2-pieza-desplegable-cuerpo ul{margin:8px 0 10px; padding-left:18px;}
 body.v2 .v2-pieza-desplegable-cuerpo p + p{margin-top:8px;}
+
+/* =========================================================
+   FICHA DE MUJER CON EL DISEÑO DE LA DE HOMBRE (14/10/2026)
+   Mismo esquema que hombre.html: en el ordenador, miniaturas a la
+   izquierda, fotos grandes una debajo de otra e información a la
+   derecha; nombre pequeño en mayúsculas, color, grabado, botón verde
+   petróleo y desplegables de líneas finas. Solo estilo: los ids y la
+   lógica de personalizar.html no cambian (el selector de acabado lo
+   sube script.js a la columna de información).
+   ========================================================= */
+body.v2 .producto-layout{color:var(--c-texto);}
+body.v2 .producto-col-info{display:flex; flex-direction:column; padding:22px var(--pad-lateral) 0;}
+body.v2 .producto-col-info > .producto-cabecera{order:1;}
+body.v2 .producto-col-info > .acabado{order:2;}
+body.v2 .producto-col-info > .grabado-banda{order:3;}
+body.v2 .producto-col-info > .final-cta{order:4;}
+body.v2 .producto-col-info > .producto-detalle{order:5;}
+body.v2 .producto-col-info > .producto-info-adicional{order:6;}
+
+/* Cabecera: solo el nombre, como en hombre */
+body.v2 .producto-cabecera{padding:0; text-align:center;}
+body.v2 .producto-cabecera .edicion-badge,
+body.v2 .producto-cabecera .eyebrow{display:none;}
+body.v2 .producto-cabecera h2,
+body.v2 #producto-titulo{margin:0; font-family:var(--font-sans); font-size:14px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+
+/* Acabado: botones finos rectos, el elegido con borde verde */
+body.v2 .producto-col-info .acabado{margin:22px 0 0; padding:0; text-align:center;}
+body.v2 .acabado-label{margin:0 0 10px; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .acabado-opciones{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+body.v2 .acabado-op{min-height:44px; padding:8px 16px; border:1px solid var(--c-linea); border-radius:2px;
+  background:transparent; box-shadow:none; font-family:var(--font-sans); font-size:12px; letter-spacing:.06em; color:var(--c-texto);}
+body.v2 .acabado-op:hover{border-color:var(--c-texto);}
+body.v2 .acabado-op.activo{border-color:var(--c-texto); background:transparent; box-shadow:inset 0 0 0 1px var(--c-texto);}
+body.v2 .acabado-grupo + .acabado-grupo{margin-top:16px;}
+
+/* Grabado: sin banda de color, campos de línea fina */
+body.v2 .grabado-banda{margin-top:26px; padding:0; background:none; border:0; border-image:none; text-align:left;}
+body.v2 .grabado-banda .eyebrow{display:none;}
+body.v2 .grabado-banda h3{margin:0 0 12px; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .grabado-banda .fields{max-width:none; margin:0;}
+body.v2 .grabado-banda label{font-family:var(--font-sans); font-size:12px; letter-spacing:.04em; color:var(--c-texto-2);}
+body.v2 .grabado-banda input,
+body.v2 .grabado-banda select{border:1px solid var(--c-linea); border-radius:2px; background:transparent;
+  font-family:var(--font-sans); font-size:14px; color:var(--c-texto); box-shadow:none;}
+body.v2 .grabado-banda input:focus,
+body.v2 .grabado-banda select:focus{border-color:var(--c-texto); outline:none;}
+body.v2 .grabado-nota{margin-top:10px; font-family:var(--font-sans); font-size:12px; color:var(--c-texto-2); text-align:left;}
+
+/* Compra: solo el botón, verde petróleo y recto */
+body.v2 .final-cta{margin:28px 0 0; padding:0; border:0; border-radius:0; background:none; color:inherit; text-align:left;}
+body.v2 .final-cta h2{display:none;}
+body.v2 .final-cta .btn,
+body.v2 .final-cta .btn-primary{width:100%; padding:16px 20px; border:0; border-radius:2px; box-shadow:none;
+  background:var(--c-texto); color:var(--c-fondo); font-family:var(--font-sans); font-size:12px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase;}
+body.v2 .final-cta .btn-primary:hover{background:var(--c-boton-hover);}
+
+/* Descripción: texto pequeño bajo el botón */
+body.v2 .producto-detalle{margin-top:28px; padding:0; text-align:left;}
+body.v2 .producto-detalle .producto-desc,
+body.v2 .producto-detalle .ficha-parrafo{margin:0 0 12px; font-family:var(--font-sans); font-size:13px; line-height:1.7;
+  color:var(--c-texto-2); text-align:left; hyphens:none; -webkit-hyphens:none;}
+body.v2 .producto-ficha{margin-top:12px;}
+body.v2 .ficha-lista{margin:14px 0 0; padding:14px 0 0; border-top:1px solid var(--c-linea);}
+body.v2 .ficha-lista li{font-family:var(--font-sans); font-size:12.5px; color:var(--c-texto-2);}
+body.v2 .ficha-lista li::before{background:var(--c-oro);}
+body.v2 .ficha-oferta{background:none; border-left:2px solid var(--c-oro); color:var(--c-texto); font-weight:400; font-size:13px;}
+body.v2 .ficha-cierre{border-top:1px solid var(--c-linea); font-family:var(--font-sans); font-style:normal; font-size:12.5px;
+  letter-spacing:.04em; color:var(--c-texto);}
+body.v2 .cambiar-pieza{display:none;}
+
+/* Desplegables: como los de hombre */
+body.v2 .producto-info-adicional{margin-top:32px; padding:0; background:none; border-top:1px solid var(--c-linea);}
+body.v2 .info-item{border-bottom:1px solid var(--c-linea); padding:0;}
+body.v2 .info-item summary{min-height:60px; padding:0; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .info-item summary::after{font-size:18px; font-weight:300; color:var(--c-texto);}
+body.v2 .info-item p,
+body.v2 .info-item ul{padding-left:0; padding-right:0; font-family:var(--font-sans); font-size:13px; line-height:1.7; color:var(--c-texto-2);}
+body.v2 .info-item ul{padding-left:18px;}
+body.v2 .info-item li::marker{color:var(--c-oro);}
+body.v2 .cuidados-titulo{color:var(--c-texto); font-weight:500;}
+body.v2 .cuidados-bloque + .cuidados-bloque{border-top:1px solid var(--c-linea);}
+
+/* Fotos: cuadradas, sin esquinas */
+body.v2 .galeria-foto{border-radius:0;}
+
+@media (min-width:900px){
+  body.v2 .producto-layout{
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,360px); column-gap:48px; align-items:start;
+    max-width:var(--ancho-max); margin:0 auto; padding:40px var(--pad-lateral) 96px;
+  }
+  body.v2 .producto-col-galeria{position:static;}
+  body.v2 .producto-col-galeria .producto-galeria{
+    display:grid; grid-template-columns:64px minmax(0,1fr); column-gap:48px; align-items:start;
+    max-width:none; margin:0;
+  }
+  body.v2 .galeria-puntos{grid-column:1; grid-row:1; display:flex; flex-direction:column; justify-content:flex-start;
+    gap:14px; margin:0; position:sticky; top:calc(var(--header-h) + 40px);}
+  body.v2 .galeria-punto{width:64px; height:64px; opacity:1; border-radius:0; border:1px solid transparent; transform:none;
+    background-size:cover; background-position:center;}
+  body.v2 .galeria-punto.activo{border-color:var(--c-texto);}
+  body.v2 .galeria-pista{grid-column:2; grid-row:1; flex-direction:column; gap:28px; overflow:visible;
+    scroll-snap-type:none; padding:0;}
+  body.v2 .galeria-foto{flex:none; width:100%; aspect-ratio:1/1; scroll-margin-top:calc(var(--header-h) + 40px);}
+  body.v2 .producto-col-info{position:sticky; top:calc(var(--header-h) + 40px); padding:10px 0 0;}
+  body.v2 .producto-cabecera,
+  body.v2 .producto-col-info .acabado{text-align:left;}
+  body.v2 .acabado-opciones{justify-content:flex-start;}
+  body.v2 #producto-titulo{font-size:15px;}
+  body.v2 .info-item summary{min-height:68px;}
+}
+body.v2 .final-cta .btn.btn-lg{font-size:12px; font-weight:400; letter-spacing:.14em; min-height:0; padding:16px 20px;}
+body.v2 .final-cta .btn .cta-texto{font-size:inherit; font-weight:inherit; letter-spacing:inherit;}
+body.v2 .grabado-banda h3::after{display:none;}
+body.v2 #cta-reservar{font-size:12px; font-weight:400; letter-spacing:.14em; padding:16px 20px; min-height:0; box-shadow:none; border-radius:2px;}
+body.v2 .producto-galeria{background:none; padding-left:0; padding-right:0;}
+/* En el móvil, fotos a todo el ancho y de una en una, como en hombre */
+@media (max-width:899px){
+  body.v2 .galeria-pista{padding:0; gap:0; scroll-padding:0;}
+  body.v2 .galeria-foto{flex:0 0 100%; scroll-snap-align:start;}
+}

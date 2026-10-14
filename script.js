@@ -4123,3 +4123,13 @@ function zoomEnFotos(galeria) {
 }
 zoomEnFotos(document.querySelector('.v2-pieza-galeria'));
 zoomEnFotos(document.querySelector('.v2-charm-vista'));
+
+/* Ficha de mujer con el diseño nuevo: el selector de acabado pasa de
+   debajo de las fotos a la columna de información, bajo el nombre (como
+   en la ficha de hombre). Mismo elemento y mismo id: la lógica no cambia. */
+(function () {
+  const acabado = document.getElementById('acabado-contenedor');
+  const cabecera = document.querySelector('.producto-col-info .producto-cabecera');
+  if (!acabado || !cabecera || !document.body.classList.contains('v2')) return;
+  cabecera.after(acabado);
+})();
