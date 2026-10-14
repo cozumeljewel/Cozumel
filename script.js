@@ -762,8 +762,11 @@ function tarjetaHombre(prod, inicial) {
     bt.addEventListener('click', () => poner(clave));
     tonos.appendChild(bt);
   });
-  // Foto, nombre y circulitos; el nombre del acabado solo en la ficha.
-  card.append(marco, nombre, tonos);
+  // Foto, nombre, precio y circulitos; el nombre del acabado solo en la ficha.
+  const precio = document.createElement('span');
+  precio.className = 'v2-card-precio';
+  precio.textContent = (typeof precioTexto === 'function' && precioTexto(prod)) || '';
+  card.append(marco, nombre, precio, tonos);
   poner(claves.includes(inicial) ? inicial : claves[0]);
   return card;
 }
@@ -1201,7 +1204,10 @@ function urlPiezaHombre(prod, clave) {
   });
   const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
   if (fija) medidas.append(crear('p', 'v2-pieza-medida', fija));
-  info.append(titulo, tonos, etiqueta);
+  const precioPieza = crear('p', 'v2-pieza-precio', (typeof precioTexto === 'function' && precioTexto(prod)) || '');
+  info.append(titulo);
+  if (precioPieza.textContent) info.append(precioPieza);
+  info.append(tonos, etiqueta);
   if (medidas.childElementCount) info.append(medidas);
   info.append(boton, desplegables);
   if (bloqueCharm) boton.after(bloqueCharm);

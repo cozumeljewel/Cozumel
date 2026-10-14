@@ -3948,3 +3948,7 @@ body.v2 .v2-charm-sub{display:flex; flex-wrap:wrap; gap:12px; padding:4px 0 16px
 body.v2 .v2-charm-opcion[data-charm^="numero_"] .v2-charm-circulo img{transform:scale(1); object-fit:contain;}
 body.v2 .v2-charm-opcion[data-charm^="letra_"] .v2-charm-circulo img{transform:scale(1.15); object-fit:contain;}
 body.v2 .v2-charm-opcion[data-charm^="circonita_"] .v2-charm-circulo img{transform:scale(1); object-fit:contain;}
+
+/* Precio en la ficha de hombre, bajo el nombre (como en la de mujer). */
+body.v2 .v2-pieza-precio{margin:10px 0 0; font-family:var(--font-sans); font-size:14px; letter-spacing:.06em; color:var(--c-texto);}
+body.v2 .v2-card--hombre .v2-card-precio{display:block; text-align:center; margin-top:4px;}
