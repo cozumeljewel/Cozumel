@@ -3955,8 +3955,6 @@ body.v2 .v2-card--hombre .v2-card-precio{display:block; text-align:center; margi
 
 /* Ficha de hombre: mismas condiciones que la de mujer (edición limitada,
    material del acabado y envío incluido), en la estética nueva. */
-body.v2 .v2-pieza-edicion{margin:0 0 14px; font-family:var(--font-sans); font-size:10px; letter-spacing:.18em;
-  text-transform:uppercase; color:var(--c-oro);}
 body.v2 .v2-pieza-condiciones{margin:6px 0 0; font-family:var(--font-sans); font-size:12px; letter-spacing:.04em; color:var(--c-texto-2);}
 body.v2 .v2-pieza-desplegable-cuerpo ul{margin:8px 0 10px; padding-left:18px;}
 body.v2 .v2-pieza-desplegable-cuerpo p + p{margin-top:8px;}

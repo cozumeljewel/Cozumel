@@ -1242,10 +1242,8 @@ function urlPiezaHombre(prod, clave) {
   const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
   if (fija) medidas.append(crear('p', 'v2-pieza-medida', fija));
   const precioPieza = crear('p', 'v2-pieza-precio', (typeof precioTexto === 'function' && precioTexto(prod)) || '');
-  // Igual que en la ficha de mujer: edición limitada arriba y, bajo el
-  // precio, el material del acabado elegido y el envío incluido.
-  const edicion = crear('p', 'v2-pieza-edicion', 'Edición de lanzamiento · unidades limitadas');
-  info.append(edicion, titulo);
+  // Bajo el precio, el material del acabado elegido y el envío incluido.
+  info.append(titulo);
   if (precioPieza.textContent) info.append(precioPieza);
   info.append(condiciones);
   info.append(tonos, etiqueta);
