@@ -1185,7 +1185,7 @@ function urlPiezaHombre(prod, clave) {
     '<li>Evita el cloro y los productos de limpieza.</li>' +
     '<li>Guárdala en un lugar seco cuando no la lleves.</li>' +
     '<li>Para recuperar el brillo, límpiala con un paño de microfibra.</li></ul>';
-  const materiales = desplegable('Materiales', '');
+  const materiales = desplegable('Detalles · ' + prod.nombre, '');
   const cuidados = desplegable('Cuidados', '');
   desplegables.prepend(materiales);
   desplegables.append(cuidados);
