@@ -1081,15 +1081,28 @@ function urlPiezaHombre(prod, clave) {
       return bt;
     };
     rejilla.append(opcion(null));
-    let grupo = '';
+    // Cada grupo con su título; los de GRUPOS_CHARM_PLEGADOS (números,
+    // letras, circonitas) en un desplegable propio, cerrado al principio.
+    let grupo = '', destino = rejilla;
+    const plegados = typeof GRUPOS_CHARM_PLEGADOS !== 'undefined' ? GRUPOS_CHARM_PLEGADOS : [];
     CHARMS_HOMBRE.forEach(ch => {
       if (ch.grupo !== grupo) {
         grupo = ch.grupo;
-        const g = crear('span', 'v2-charm-grupo', grupo);
-        g.dataset.grupo = grupo;
-        rejilla.append(g);
+        if (plegados.includes(grupo)) {
+          const g = crear('details', 'v2-charm-plegable');
+          g.dataset.grupo = grupo;
+          g.append(crear('summary', 'v2-charm-grupo', grupo));
+          destino = crear('div', 'v2-charm-sub');
+          g.append(destino);
+          rejilla.append(g);
+        } else {
+          const g = crear('span', 'v2-charm-grupo', grupo);
+          g.dataset.grupo = grupo;
+          rejilla.append(g);
+          destino = rejilla;
+        }
       }
-      rejilla.append(opcion(ch));
+      destino.append(opcion(ch));
     });
     // Foto grande del charm elegido: la cadena con él puesto, o el charm solo
     // si aún no hay esa foto (en el móvil se amplía al tocarla).
@@ -1117,7 +1130,7 @@ function urlPiezaHombre(prod, clave) {
         const im = b.querySelector('img');
         if (c && im && c.fotos[color]) im.src = c.fotos[color];
       });
-      rejilla.querySelectorAll('.v2-charm-grupo').forEach(g => {
+      rejilla.querySelectorAll('[data-grupo]').forEach(g => {
         g.hidden = !CHARMS_HOMBRE.some(c => c.grupo === g.dataset.grupo && c.fotos[color]);
       });
       elegido.textContent = ch ? ch.nombre : '';
