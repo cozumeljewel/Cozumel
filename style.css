@@ -3934,7 +3934,8 @@ body.v2 .v2-pieza-opcion-bloque + .v2-pieza-opcion-bloque{margin-top:18px;}
 /* Grupos de charms plegados (números, letras, circonitas): una línea fina
    con +/−; al abrirse, sus círculos como el resto. */
 body.v2 .v2-charm .v2-charm-plegable{flex-basis:100%; border-top:1px solid var(--c-linea);}
-body.v2 .v2-charm .v2-charm-plegable:last-of-type{border-bottom:1px solid var(--c-linea);}
+body.v2 .v2-charm .v2-charm-plegable{border-bottom:0; padding:0;}
+body.v2 .v2-charm .v2-charm-plegable:last-child{border-bottom:1px solid var(--c-linea);}
 body.v2 .v2-charm .v2-charm-plegable > summary{
   min-height:44px; margin:0; padding:0; display:flex; align-items:center; justify-content:space-between;
   font-size:10px; letter-spacing:.18em; color:var(--c-texto-2);
@@ -3942,3 +3943,8 @@ body.v2 .v2-charm .v2-charm-plegable > summary{
 body.v2 .v2-charm .v2-charm-plegable > summary::after{content:"+"; font-size:15px; color:var(--c-texto);}
 body.v2 .v2-charm .v2-charm-plegable[open] > summary::after{content:"−";}
 body.v2 .v2-charm-sub{display:flex; flex-wrap:wrap; gap:12px; padding:4px 0 16px;}
+/* Números y letras ocupan casi toda su foto: sin zoom (si no, se cortan);
+   tampoco las circonitas. */
+body.v2 .v2-charm-opcion[data-charm^="numero_"] .v2-charm-circulo img{transform:scale(1); object-fit:contain;}
+body.v2 .v2-charm-opcion[data-charm^="letra_"] .v2-charm-circulo img{transform:scale(1.15); object-fit:contain;}
+body.v2 .v2-charm-opcion[data-charm^="circonita_"] .v2-charm-circulo img{transform:scale(1); object-fit:contain;}

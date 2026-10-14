@@ -329,8 +329,8 @@ const CHARMS_HOMBRE = [
   { id: 'circonita_redonda', codigo: '', nombre: 'Circonita redonda', grupo: 'Circonitas', fotos: { dorado: 'img/hombre/charms/circonita-redonda-dorado.jpg' },
     colores: { dorado: 'XP49975D0W0', plateado: 'XP49975A0W0' } },
 ];
-// Grupos de charms que salen plegados (se abren al tocar el título).
-const GRUPOS_CHARM_PLEGADOS = ['Números', 'Letras', 'Circonitas'];
+// Grupos de charms: todos plegados (se abren al tocar el título).
+const GRUPOS_CHARM_PLEGADOS = ['Placas', 'Cruces', 'Símbolos', 'Números', 'Letras', 'Circonitas'];
 // FOTOS_CHARM (generado por scripts/charms-hombre.py)
 // Cadena con el charm puesto, por acabado y en orden de variación.
 const FOTOS_CHARM_HOMBRE = {
