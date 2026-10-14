@@ -107,8 +107,84 @@ const COLECCION_HOMBRE = [
       oro_blanco: ['img/hombre/anillo-3-oro-blanco-producto.png', 'img/hombre/anillo-3-oro-blanco-puesto.png', 'img/hombre/anillo-3-oro-blanco-puesto-2.png'],
       negro:      ['img/hombre/anillo-3-negro-producto.png', 'img/hombre/anillo-3-negro-puesto.png', 'img/hombre/anillo-3-negro-puesto-2.png'],
   } },
+  // Nuevas del catálogo (14/10/2026)
+  { id: 'hombre_pulsera_6', tipo: 'pulseras', nombre: 'Sayulita', acabados: {
+      oro_blanco: ['img/hombre/pulsera-6-oro-blanco-producto.png', 'img/hombre/pulsera-6-oro-blanco-puesto.png', 'img/hombre/pulsera-6-oro-blanco-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_7', tipo: 'pulseras', nombre: 'Tequila', acabados: {
+      oro:        ['img/hombre/pulsera-7-oro-producto.png', 'img/hombre/pulsera-7-oro-puesto.png', 'img/hombre/pulsera-7-oro-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_8', tipo: 'pulseras', nombre: 'Oaxaca', acabados: {
+      oro:        ['img/hombre/pulsera-8-oro-producto.png', 'img/hombre/pulsera-8-oro-puesto.png', 'img/hombre/pulsera-8-oro-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_9', tipo: 'pulseras', nombre: 'Henequén', acabados: {
+      plata:      ['img/hombre/pulsera-9-plata-producto.png', 'img/hombre/pulsera-9-plata-puesto.png', 'img/hombre/pulsera-9-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_10', tipo: 'pulseras', nombre: 'Uxmal', acabados: {
+      plata:      ['img/hombre/pulsera-10-plata-producto.png', 'img/hombre/pulsera-10-plata-puesto.png', 'img/hombre/pulsera-10-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_11', tipo: 'pulseras', nombre: 'Izamal', acabados: {
+      plata:      ['img/hombre/pulsera-11-plata-producto.png', 'img/hombre/pulsera-11-plata-puesto.png', 'img/hombre/pulsera-11-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_12', tipo: 'pulseras', nombre: 'Sonora', acabados: {
+      plata:      ['img/hombre/pulsera-12-plata-producto.png', 'img/hombre/pulsera-12-plata-puesto.png', 'img/hombre/pulsera-12-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_13', tipo: 'pulseras', nombre: 'Durango', acabados: {
+      plata:      ['img/hombre/pulsera-13-plata-producto.png', 'img/hombre/pulsera-13-plata-puesto.png', 'img/hombre/pulsera-13-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_14', tipo: 'pulseras', nombre: 'Huasteca', acabados: {
+      plata:      ['img/hombre/pulsera-14-plata-producto.png', 'img/hombre/pulsera-14-plata-puesto.png', 'img/hombre/pulsera-14-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_15', tipo: 'pulseras', nombre: 'Celestún', acabados: {
+      plata:      ['img/hombre/pulsera-15-plata-producto.png', 'img/hombre/pulsera-15-plata-puesto.png', 'img/hombre/pulsera-15-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_16', tipo: 'pulseras', nombre: 'Volcán', acabados: {
+      negro:      ['img/hombre/pulsera-16-negro-producto.png', 'img/hombre/pulsera-16-negro-puesto.png', 'img/hombre/pulsera-16-negro-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_17', tipo: 'pulseras', nombre: 'Xibalbá', acabados: {
+      negro:      ['img/hombre/pulsera-17-negro-producto.png', 'img/hombre/pulsera-17-negro-puesto.png', 'img/hombre/pulsera-17-negro-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_18', tipo: 'pulseras', nombre: 'Tezontle', acabados: {
+      negro:      ['img/hombre/pulsera-18-negro-producto.png', 'img/hombre/pulsera-18-negro-puesto.png', 'img/hombre/pulsera-18-negro-puesto-2.png'],
+  } },
+  { id: 'hombre_pulsera_19', tipo: 'pulseras', nombre: 'Chamula', acabados: {
+      negro:      ['img/hombre/pulsera-19-negro-producto.png', 'img/hombre/pulsera-19-negro-puesto.png', 'img/hombre/pulsera-19-negro-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_4', tipo: 'anillos', nombre: 'Xcaret', acabados: {
+      oro:        ['img/hombre/anillo-4-oro-producto.png', 'img/hombre/anillo-4-oro-puesto.png', 'img/hombre/anillo-4-oro-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_5', tipo: 'anillos', nombre: 'Calakmul', acabados: {
+      oro_blanco: ['img/hombre/anillo-5-oro-blanco-producto.png', 'img/hombre/anillo-5-oro-blanco-puesto.png', 'img/hombre/anillo-5-oro-blanco-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_6', tipo: 'anillos', nombre: 'Baja', acabados: {
+      oro_blanco: ['img/hombre/anillo-6-oro-blanco-producto.png', 'img/hombre/anillo-6-oro-blanco-puesto.png', 'img/hombre/anillo-6-oro-blanco-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_7', tipo: 'anillos', nombre: 'Frida', acabados: {
+      oro:        ['img/hombre/anillo-7-oro-producto.png', 'img/hombre/anillo-7-oro-puesto.png', 'img/hombre/anillo-7-oro-puesto-2.png'],
+      plata:      ['img/hombre/anillo-7-plata-producto.png', 'img/hombre/anillo-7-plata-puesto.png', 'img/hombre/anillo-7-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_8', tipo: 'anillos', nombre: 'Guadalupe', acabados: {
+      plata:      ['img/hombre/anillo-8-plata-producto.png', 'img/hombre/anillo-8-plata-puesto.png', 'img/hombre/anillo-8-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_9', tipo: 'anillos', nombre: 'Luchador', acabados: {
+      plata:      ['img/hombre/anillo-9-plata-producto.png', 'img/hombre/anillo-9-plata-puesto.png', 'img/hombre/anillo-9-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_10', tipo: 'anillos', nombre: 'Misión', acabados: {
+      oro:        ['img/hombre/anillo-10-oro-producto.png', 'img/hombre/anillo-10-oro-puesto.png', 'img/hombre/anillo-10-oro-puesto-2.png'],
+      plata:      ['img/hombre/anillo-10-plata-producto.png', 'img/hombre/anillo-10-plata-puesto.png', 'img/hombre/anillo-10-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_11', tipo: 'anillos', nombre: 'Charro', acabados: {
+      plata:      ['img/hombre/anillo-11-plata-producto.png', 'img/hombre/anillo-11-plata-puesto.png', 'img/hombre/anillo-11-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_12', tipo: 'anillos', nombre: 'Catedral', acabados: {
+      plata:      ['img/hombre/anillo-12-plata-producto.png', 'img/hombre/anillo-12-plata-puesto.png', 'img/hombre/anillo-12-plata-puesto-2.png'],
+  } },
+  { id: 'hombre_anillo_13', tipo: 'anillos', nombre: 'Nahual', acabados: {
+      oro:        ['img/hombre/anillo-13-oro-producto.png', 'img/hombre/anillo-13-oro-puesto.png', 'img/hombre/anillo-13-oro-puesto-2.png'],
+      plata:      ['img/hombre/anillo-13-plata-producto.png', 'img/hombre/anillo-13-plata-puesto.png', 'img/hombre/anillo-13-plata-puesto-2.png'],
+  } },
 ];
-const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', negro: 'Negro' };
+const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 
 /* =========================================================
    CHARMS GRATIS para las cadenas (sin colgante)
@@ -191,6 +267,10 @@ const LARGO_PULSERA = { nombre: 'Largo', nota: '+ 2 cm de alargador', valores: [
   { id: '15', texto: '15 cm' }, { id: '18', texto: '18 cm' }, { id: '20', texto: '20 cm' }] };
 const TALLA_ANILLO = { nombre: 'Talla', nota: 'Contorno interior del anillo', valores: [
   { id: '7', texto: 'US 7', sub: '54 mm' }, { id: '8', texto: 'US 8', sub: '57 mm' }, { id: '9', texto: 'US 9', sub: '59 mm' }] };
+// Anillos de los catálogos TR: tallas US 7 a 11 (algunos sin la 7 o sin la 11).
+const TALLAS_US = { '7': '54 mm', '8': '57 mm', '9': '59 mm', '10': '62 mm', '11': '65 mm' };
+const tallasAnillo = (desde, hasta, ref) => ({ nombre: 'Talla', nota: 'Contorno interior del anillo',
+  valores: Object.keys(TALLAS_US).filter(t => +t >= desde && +t <= hasta).map(t => ({ id: t, texto: 'US ' + t, sub: TALLAS_US[t], ref })) });
 const conRef = (op, refs) => ({ ...op, valores: op.valores.map((v, i) => ({ ...v, ref: refs[i] })) });
 const OPCIONES_HOMBRE = {
   hombre_collar_7: { nombre: 'Grosor', valores: [{ id: '4', texto: '4 mm', ref: 'YX44953' }, { id: '5', texto: '5 mm', ref: 'YX44951' }] },
@@ -203,6 +283,21 @@ const OPCIONES_HOMBRE = {
   hombre_anillo_1: conRef(TALLA_ANILLO, ['YJ44953', 'YJ44953', 'YJ44953']),
   hombre_anillo_2: conRef(TALLA_ANILLO, ['YJ44954', 'YJ44954', 'YJ44954']),
   hombre_anillo_3: conRef(TALLA_ANILLO, ['YJ44955', 'YJ44955', 'YJ44955']),
+  // Nuevas del catálogo
+  hombre_pulsera_6: conRef(LARGO_PULSERA, ['YS48446', 'YS48447', 'YS48448']),
+  hombre_anillo_4: [
+    { nombre: 'Ancho', valores: [{ id: '4', texto: '4 mm', ref: 'YJ44943' }, { id: '5', texto: '5 mm', ref: 'YJ44944' }] },
+    TALLA_ANILLO,
+  ],
+  hombre_anillo_5: conRef(TALLA_ANILLO, ['YJ44946', 'YJ44946', 'YJ44946']),
+  hombre_anillo_6: conRef(TALLA_ANILLO, ['YJ44945', 'YJ44945', 'YJ44945']),
+  hombre_anillo_7: tallasAnillo(7, 11, 'TR24065'),
+  hombre_anillo_8: tallasAnillo(8, 11, 'TR24155'),
+  hombre_anillo_9: tallasAnillo(7, 11, 'TR24157'),
+  hombre_anillo_10: tallasAnillo(8, 11, 'TR24152'),
+  hombre_anillo_11: tallasAnillo(7, 11, 'TR24149'),
+  hombre_anillo_12: tallasAnillo(7, 10, 'TR24167'),
+  hombre_anillo_13: tallasAnillo(7, 11, 'TR24174'),
 };
 const MEDIDAS_HOMBRE = {
   hombre_collar_1: 'Largo 55 cm · cadena 2,5 mm',
@@ -222,6 +317,31 @@ const MEDIDAS_HOMBRE = {
   hombre_anillo_1: 'Ancho 7,5 mm',
   hombre_anillo_2: 'Ancho 6 mm',
   hombre_anillo_3: 'Ancho 2 mm',
+  // Nuevas del catálogo
+  hombre_pulsera_6: 'Cadena clip 2 mm · chapa 10 × 4 mm',
+  hombre_pulsera_7: 'Largo 22 cm · ancho 6 mm',
+  hombre_pulsera_8: 'Largo 23 cm · ancho 7 mm',
+  hombre_pulsera_9: 'Largo 22 cm · ancho 6 mm',
+  hombre_pulsera_10: 'Largo 21 cm · ancho 6 mm',
+  hombre_pulsera_11: 'Largo 22 cm · ancho 11 mm',
+  hombre_pulsera_12: 'Largo 22 cm · ancho 8 mm',
+  hombre_pulsera_13: 'Largo 22 cm · ancho 10 mm',
+  hombre_pulsera_14: 'Largo 20 cm · ancho 5 mm',
+  hombre_pulsera_15: 'Largo 18 cm + 3 cm de alargador · ancho 5 mm',
+  hombre_pulsera_16: 'Largo 22 cm · ancho 10 mm',
+  hombre_pulsera_17: 'Largo 22 cm · ancho 8 mm',
+  hombre_pulsera_18: 'Largo 22 cm · ancho 7 mm',
+  hombre_pulsera_19: 'Largo 22 cm · ancho 5 mm',
+  hombre_anillo_4: 'Abierto',
+  hombre_anillo_5: 'Sello abierto · ancho 5 mm',
+  hombre_anillo_6: 'Abierto · ancho 8 mm',
+  hombre_anillo_7: 'Frente 14 mm',
+  hombre_anillo_8: 'Frente 15 mm',
+  hombre_anillo_9: 'Frente 25 mm',
+  hombre_anillo_10: 'Frente 16 mm',
+  hombre_anillo_11: 'Frente 21 mm',
+  hombre_anillo_12: 'Frente 19 mm',
+  hombre_anillo_13: 'Frente 16 mm',
 };
 
 // Piezas que ya llevan colgante: no se les ofrece charm.
@@ -255,6 +375,20 @@ COLECCION_HOMBRE.sort((a, b) => {
 // o material no está aquí, su tarjeta no muestra lupa. Para añadir una:
 // copiar las fotos a img/hombre/ y poner aquí su ruta en el material.
 const CERCA_HOMBRE = {
+  hombre_pulsera_6: { oro_blanco: ['img/hombre/pulsera-6-oro-blanco-cerca-1.png'] },
+  hombre_pulsera_7: { oro: ['img/hombre/pulsera-7-oro-cerca-1.png'] },
+  hombre_pulsera_8: { oro: ['img/hombre/pulsera-8-oro-cerca-1.png'] },
+  hombre_pulsera_9: { plata: ['img/hombre/pulsera-9-plata-cerca-1.png'] },
+  hombre_pulsera_10: { plata: ['img/hombre/pulsera-10-plata-cerca-1.png'] },
+  hombre_pulsera_11: { plata: ['img/hombre/pulsera-11-plata-cerca-1.png'] },
+  hombre_pulsera_12: { plata: ['img/hombre/pulsera-12-plata-cerca-1.png'] },
+  hombre_pulsera_13: { plata: ['img/hombre/pulsera-13-plata-cerca-1.png'] },
+  hombre_pulsera_14: { plata: ['img/hombre/pulsera-14-plata-cerca-1.png'] },
+  hombre_pulsera_15: { plata: ['img/hombre/pulsera-15-plata-cerca-1.png'] },
+  hombre_pulsera_16: { negro: ['img/hombre/pulsera-16-negro-cerca-1.png'] },
+  hombre_pulsera_17: { negro: ['img/hombre/pulsera-17-negro-cerca-1.png'] },
+  hombre_pulsera_18: { negro: ['img/hombre/pulsera-18-negro-cerca-1.png'] },
+  hombre_pulsera_19: { negro: ['img/hombre/pulsera-19-negro-cerca-1.png'] },
   hombre_colgante_2: { oro: ['img/hombre/colgante-2-oro-cerca-1.webp', 'img/hombre/colgante-2-oro-cerca-2.png'], oro_blanco: ['img/hombre/colgante-2-oro-blanco-cerca-1.png', 'img/hombre/colgante-2-oro-blanco-cerca-2.png'] },
   hombre_colgante_3: { oro: ['img/hombre/colgante-3-oro-cerca-1.webp', 'img/hombre/colgante-3-oro-cerca-2.png'], oro_blanco: ['img/hombre/colgante-3-oro-blanco-cerca-1.png', 'img/hombre/colgante-3-oro-blanco-cerca-2.png'] },
   hombre_colgante_1: { oro: ['img/hombre/colgante-1-oro-cerca-1.webp', 'img/hombre/colgante-1-oro-cerca-2.png'], oro_blanco: ['img/hombre/colgante-1-oro-blanco-cerca-1.png', 'img/hombre/colgante-1-oro-blanco-cerca-2.png'] },

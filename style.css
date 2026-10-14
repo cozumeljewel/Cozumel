@@ -3929,3 +3929,4 @@ body.v2 .v2-pieza-opcion[aria-pressed="true"]{background:var(--c-texto); border-
 body.v2 .v2-pieza-opcion[aria-pressed="true"] small{color:rgba(248,246,241,.75);}
 body.v2 .v2-pieza-opcion:focus-visible{outline:2px solid var(--c-oro); outline-offset:2px;}
 body.v2 .v2-pieza-medida{margin:10px 0 0; font-family:var(--font-sans); font-size:12px; letter-spacing:.03em; color:var(--c-texto-2);}
+body.v2 .v2-pieza-opcion-bloque + .v2-pieza-opcion-bloque{margin-top:18px;}

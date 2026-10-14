@@ -985,7 +985,11 @@ function acabadosVariados(lista) {
   return lista.map(prod => {
     const fijo = typeof ACABADO_INICIAL_HOMBRE !== 'undefined' && ACABADO_INICIAL_HOMBRE[prod.id];
     if (fijo && prod.acabados[fijo]) { if (fijo !== 'negro') ultimo = fijo; return fijo; }
-    if (prod.tipo === 'anillos') return turnoAnillo[anillo++ % 3];
+    if (prod.tipo === 'anillos') {
+      // Uno de cada material; si el anillo no lo tiene, el que tenga.
+      const t = turnoAnillo[anillo++ % 3];
+      return prod.acabados[t] ? t : Object.keys(prod.acabados)[0];
+    }
     if (prod.acabados.negro) return 'negro';
     // El contrario del último oro / oro blanco mostrado; si la pieza no
     // lo tiene, el que tenga.
@@ -1151,9 +1155,11 @@ function urlPiezaHombre(prod, clave) {
     tonos.appendChild(bt);
   });
   // Talla / largo / grosor / ancho, si la pieza tiene varias (hombre.js).
-  const opcion = typeof OPCIONES_HOMBRE !== 'undefined' && OPCIONES_HOMBRE[prod.id];
+  // Una pieza puede tener más de una (Xcaret: ancho y talla).
+  const opciones = [].concat((typeof OPCIONES_HOMBRE !== 'undefined' && OPCIONES_HOMBRE[prod.id]) || []);
   const medidas = crear('div', 'v2-pieza-medidas');
-  if (opcion) {
+  const elegidas = {};
+  opciones.forEach(opcion => {
     const cab = crear('p', 'v2-pieza-opcion-titulo');
     const nombreOp = crear('span', '', opcion.nombre);
     const elegidaOp = crear('span', 'v2-pieza-opcion-elegida', 'Elige ' + opcion.nombre.toLowerCase());
@@ -1171,13 +1177,15 @@ function urlPiezaHombre(prod, clave) {
       bt.addEventListener('click', () => {
         fila.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === bt)));
         elegidaOp.textContent = v.texto + (v.sub ? ' · ' + v.sub : '');
-        caja.dataset.opcion = v.id;
+        elegidas[opcion.nombre] = v;
       });
       fila.append(bt);
     });
-    medidas.append(cab, fila);
-    if (opcion.nota) medidas.append(crear('p', 'v2-pieza-medida', opcion.nota));
-  }
+    const bloque = crear('div', 'v2-pieza-opcion-bloque');
+    bloque.append(cab, fila);
+    if (opcion.nota) bloque.append(crear('p', 'v2-pieza-medida', opcion.nota));
+    medidas.append(bloque);
+  });
   const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
   if (fija) medidas.append(crear('p', 'v2-pieza-medida', fija));
   info.append(titulo, tonos, etiqueta);
