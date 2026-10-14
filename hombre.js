@@ -2,14 +2,15 @@
    COLECCIÓN MEN (rediseño 10/2026)
    Solo para mostrar en el Shop (pestaña MEN). Todavía sin ficha ni
    compra: faltan nombre, precios y SKU de cada pieza.
-   tipo: colgantes | pulseras (pulseras y brazaletes) | anillos.
+   tipo: colgantes | pulseras | brazaletes | anillos.
    acabados: en el orden en que salen los circulitos. Cada acabado lleva
    [foto de producto (portada), foto puesto, otra foto puesta]. El packaging se añade
    siempre como última foto.
    ========================================================= */
 const TIPOS_HOMBRE = [
   { clave: 'colgantes', nombre: 'Colgantes' },
-  { clave: 'pulseras',  nombre: 'Pulseras / Brazaletes' },
+  { clave: 'pulseras',  nombre: 'Pulseras' },
+  { clave: 'brazaletes', nombre: 'Brazaletes' },
   { clave: 'anillos',   nombre: 'Anillos' },
 ];
 const COLECCION_HOMBRE = [
@@ -75,20 +76,20 @@ const COLECCION_HOMBRE = [
       oro:        ['img/hombre/pulsera-5-oro-producto.jpg', 'img/hombre/pulsera-5-oro-puesto.png', 'img/hombre/pulsera-5-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/pulsera-5-oro-blanco-producto.png', 'img/hombre/pulsera-5-oro-blanco-puesto.png', 'img/hombre/pulsera-5-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_brazalete_1', tipo: 'pulseras', nombre: 'Jaguar', acabados: {
+  { id: 'hombre_brazalete_1', tipo: 'brazaletes', nombre: 'Jaguar', acabados: {
       oro:        ['img/hombre/brazalete-1-oro-producto.jpg', 'img/hombre/brazalete-1-oro-puesto.png', 'img/hombre/brazalete-1-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/brazalete-1-oro-blanco-producto.png', 'img/hombre/brazalete-1-oro-blanco-puesto.png', 'img/hombre/brazalete-1-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_brazalete_2', tipo: 'pulseras', nombre: 'Agave', acabados: {
+  { id: 'hombre_brazalete_2', tipo: 'brazaletes', nombre: 'Agave', acabados: {
       oro:        ['img/hombre/brazalete-2-oro-producto.jpg', 'img/hombre/brazalete-2-oro-puesto.png', 'img/hombre/brazalete-2-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/brazalete-2-oro-blanco-producto.png', 'img/hombre/brazalete-2-oro-blanco-puesto.png', 'img/hombre/brazalete-2-oro-blanco-puesto-2.png'],
       negro:      ['img/hombre/brazalete-2-negro-producto.png', 'img/hombre/brazalete-2-negro-puesto.png', 'img/hombre/brazalete-2-negro-puesto-2.png'],
   } },
-  { id: 'hombre_brazalete_3', tipo: 'pulseras', nombre: 'Bacalar', acabados: {
+  { id: 'hombre_brazalete_3', tipo: 'brazaletes', nombre: 'Bacalar', acabados: {
       oro:        ['img/hombre/brazalete-3-oro-producto.jpg', 'img/hombre/brazalete-3-oro-puesto.png', 'img/hombre/brazalete-3-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/brazalete-3-oro-blanco-producto.png', 'img/hombre/brazalete-3-oro-blanco-puesto.jpg', 'img/hombre/brazalete-3-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_brazalete_4', tipo: 'pulseras', nombre: 'Ajolote', acabados: {
+  { id: 'hombre_brazalete_4', tipo: 'brazaletes', nombre: 'Ajolote', acabados: {
       oro:        ['img/hombre/brazalete-4-oro-producto.jpg', 'img/hombre/brazalete-4-oro-puesto.png', 'img/hombre/brazalete-4-oro-puesto-2.png'],
       oro_blanco: ['img/hombre/brazalete-4-oro-blanco-producto.png', 'img/hombre/brazalete-4-oro-blanco-puesto.jpg', 'img/hombre/brazalete-4-oro-blanco-puesto-2.jpg'],
   } },
