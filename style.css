@@ -4087,3 +4087,10 @@ body.v2 .producto-galeria{background:none; padding-left:0; padding-right:0;}
 /* Sin descripción larga en la ficha de mujer (14/10): nombre, acabado,
    grabado, botón y desplegables, como en hombre. */
 body.v2 .producto-col-info > .producto-detalle{display:none;}
+/* Stories en el móvil en damero: hombre y Adri se alternan también en
+   vertical (en las filas pares se cambian de lado). */
+@media (max-width:899px){
+  .v2-stories-pista{grid-auto-flow:row dense;}
+  .v2-stories-pista .v2-story:nth-child(4n+3){grid-column:2;}
+  .v2-stories-pista .v2-story:nth-child(4n+4){grid-column:1;}
+}
