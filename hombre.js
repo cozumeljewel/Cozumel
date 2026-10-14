@@ -221,6 +221,9 @@ const ESCALON_HOMBRE = {
 };
 COLECCION_HOMBRE.forEach(p => { if (ESCALON_HOMBRE[p.id]) p.precios = ESCALONES_HOMBRE[ESCALON_HOMBRE[p.id]]; });
 
+// Piezas con baño de oro de 14 K (catálogos GF-SD y TR del proveedor);
+// el resto, oro y oro blanco de 18 K.
+const ORO_14K_HOMBRE = ['hombre_pulsera_7', 'hombre_pulsera_8', 'hombre_anillo_7', 'hombre_anillo_10', 'hombre_anillo_13'];
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 
 /* =========================================================

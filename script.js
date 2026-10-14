@@ -1040,6 +1040,7 @@ function urlPiezaHombre(prod, clave) {
   tonos.setAttribute('role', 'group');
   tonos.setAttribute('aria-label', 'Acabado');
   const etiqueta = crear('p', 'v2-pieza-acabado');
+  const condiciones = crear('p', 'v2-pieza-condiciones');
   const boton = crear('button', 'v2-pieza-boton', 'Muy pronto');
   boton.type = 'button'; boton.disabled = true;
 
@@ -1053,7 +1054,9 @@ function urlPiezaHombre(prod, clave) {
   };
   const desplegables = crear('div', 'v2-pieza-desplegables');
   desplegables.append(
-    desplegable('Envío', '<p>Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21.</p>')
+    desplegable('Envío', '<p>Envío incluido en el precio, con los impuestos de importación: no pagas nada más al recibirlo.</p>' +
+      '<p>Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21.</p>' +
+      '<p>Cada pieza va en su caja Cozumel, lista para regalar.</p>')
   );
   // Cadenas sin colgante: charm de regalo, justo después de Envío.
   const ofreceCharm = llevaCharmHombre(prod);
@@ -1065,7 +1068,7 @@ function urlPiezaHombre(prod, clave) {
     const d = crear('details', 'v2-pieza-desplegable v2-charm');
     const sum = crear('summary');
     const tit = crear('span', 'v2-charm-titulo');
-    tit.innerHTML = 'Añade un charm de regalo <em class="v2-charm-gratis">Gratis</em>';
+    tit.innerHTML = 'Añade tu colgante <em class="v2-charm-gratis">Gratis</em>';
     const elegido = crear('span', 'v2-charm-elegido');
     sum.append(tit, elegido);
     const cuerpo = crear('div', 'v2-pieza-desplegable-cuerpo');
@@ -1157,8 +1160,42 @@ function urlPiezaHombre(prod, clave) {
     tonos.addEventListener('click', () => setTimeout(marcarCharm));
   }
   desplegables.append(
-    desplegable('Devoluciones', '<p>Consulta las condiciones en <a href="faq.html">FAQ</a>.</p>')
+    desplegable('Devoluciones', '<p>Consulta las condiciones en <a href="faq.html#devoluciones">FAQ</a>.</p>')
   );
+  // Materiales y cuidados según el acabado elegido (se rellenan en pintar()).
+  // Oro y oro blanco de 18 K; las pocas piezas del catálogo de 14 K, en
+  // ORO_14K_HOMBRE (hombre.js).
+  const kilates = typeof ORO_14K_HOMBRE !== 'undefined' && ORO_14K_HOMBRE.includes(prod.id) ? '14 K' : '18 K';
+  const MATERIAL = {
+    oro: ['Baño de oro de ' + kilates, 'Acero inoxidable de alta calidad con baño de oro de ' + kilates + ': el brillo del oro sobre una base resistente, pensada para llevarse a diario.'],
+    oro_blanco: ['Baño de oro blanco de ' + kilates, 'Acero inoxidable de alta calidad con baño de oro blanco de ' + kilates + ': un plateado luminoso que no amarillea, sobre una base resistente.'],
+    plata: ['Acero inoxidable', 'Acero inoxidable de alta calidad, resistente y duradero, con un acabado plateado limpio y atemporal.'],
+    negro: ['Acabado negro IP', 'Acero inoxidable de alta calidad con acabado negro IP (depósito iónico), más resistente al roce que una pintura o un baño normal.'],
+  };
+  const CUIDADOS_BANO = '<p>Para conservar el brillo del baño durante más tiempo:</p><ul>' +
+    '<li>Evita el contacto directo con perfumes, cremas, aceites y otros cosméticos.</li>' +
+    '<li>No la expongas durante largos periodos al agua, al cloro o al agua de mar.</li>' +
+    '<li>Quítatela antes de ducharte, bañarte o hacer deporte.</li>' +
+    '<li>Guárdala en un lugar seco, mejor en su caja, cuando no la lleves.</li>' +
+    '<li>Para limpiarla, usa un paño suave y seco, sin productos abrasivos ni químicos.</li></ul>' +
+    '<p>El baño es un acabado delicado que puede presentar desgaste natural con el uso y el paso del tiempo.</p>';
+  const CUIDADOS_ACERO = '<p>El acero inoxidable es resistente y está pensado para el uso diario. Para que mantenga su aspecto:</p><ul>' +
+    '<li>Evita el contacto prolongado con perfumes, cremas y productos químicos.</li>' +
+    '<li>Si se moja, sécala con un paño suave.</li>' +
+    '<li>Evita el cloro y los productos de limpieza.</li>' +
+    '<li>Guárdala en un lugar seco cuando no la lleves.</li>' +
+    '<li>Para recuperar el brillo, límpiala con un paño de microfibra.</li></ul>';
+  const materiales = desplegable('Materiales', '');
+  const cuidados = desplegable('Cuidados', '');
+  desplegables.prepend(materiales);
+  desplegables.append(cuidados);
+  const pintarMaterial = () => {
+    const [corto, largo] = MATERIAL[clave] || MATERIAL.plata;
+    materiales.querySelector('.v2-pieza-desplegable-cuerpo').innerHTML = '<p><strong>' + corto + '.</strong> ' + largo.replace(/^[^:]+: /, '') + '</p>';
+    cuidados.querySelector('.v2-pieza-desplegable-cuerpo').innerHTML =
+      (clave === 'oro' || clave === 'oro_blanco') ? CUIDADOS_BANO : CUIDADOS_ACERO;
+    condiciones.textContent = corto + ' · Envío incluido';
+  };
 
   claves.forEach(c => {
     // Cada acabado se elige con la foto de la pieza en ese color (como Hanley).
@@ -1205,8 +1242,12 @@ function urlPiezaHombre(prod, clave) {
   const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
   if (fija) medidas.append(crear('p', 'v2-pieza-medida', fija));
   const precioPieza = crear('p', 'v2-pieza-precio', (typeof precioTexto === 'function' && precioTexto(prod)) || '');
-  info.append(titulo);
+  // Igual que en la ficha de mujer: edición limitada arriba y, bajo el
+  // precio, el material del acabado elegido y el envío incluido.
+  const edicion = crear('p', 'v2-pieza-edicion', 'Edición de lanzamiento · unidades limitadas');
+  info.append(edicion, titulo);
   if (precioPieza.textContent) info.append(precioPieza);
+  info.append(condiciones);
   info.append(tonos, etiqueta);
   if (medidas.childElementCount) info.append(medidas);
   info.append(boton, desplegables);
@@ -1260,6 +1301,7 @@ function urlPiezaHombre(prod, clave) {
     });
     galeria.scrollLeft = 0;
     marcar();
+    pintarMaterial();
     etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
     tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
   }
