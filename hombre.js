@@ -185,10 +185,11 @@ const COLECCION_HOMBRE = [
       plata:      ['img/hombre/anillo-13-plata-producto.png', 'img/hombre/anillo-13-plata-puesto.png', 'img/hombre/anillo-13-plata-puesto-2.png'],
   } },
 ];
-/* ---------- Precios (mismos escalones que la colección de mujer) ----------
-   Mismo proveedor y costes parecidos: cada pieza va a uno de los cuatro
-   precios de mujer (Mi Cielo 24,90 · Eterno 27,90 · Dos Almas/Esencia
-   29,90 · Destino 34,90 €), según su coste y lo grande que es. Precio
+/* ---------- Precios ----------
+   Escalones de la colección de mujer (mismo proveedor y costes) más uno
+   de 39,90 € para lo más grueso. Cada pieza va al suyo según su coste,
+   su tamaño y si lleva charm de regalo (margen calculado el 14/10/2026:
+   en España, el país más justo, nada baja de ~9 $ por pieza). Precio
    final con envío incluido; MX es el maestro y el resto de países van
    fijados a mano, igual que en productos.js. */
 const ESCALONES_HOMBRE = {
@@ -196,26 +197,27 @@ const ESCALONES_HOMBRE = {
   B: { MX: 399, ES: 27.90, US: 32.90, CL: 27990, PE: 89.90, AR: 33.90 },
   C: { MX: 449, ES: 29.90, US: 34.90, CL: 29990, PE: 99.90, AR: 35.90 },
   D: { MX: 499, ES: 34.90, US: 39.90, CL: 34990, PE: 119.90, AR: 40.90 },
+  E: { MX: 549, ES: 39.90, US: 44.90, CL: 39990, PE: 139.90, AR: 45.90 },
 };
 const ESCALON_HOMBRE = {
-  // Collares y cadenas finas (coste 1,8–2,8 $) y colgantes de barra: como Collar Esencia
-  hombre_collar_2: 'C', hombre_collar_3: 'C', hombre_collar_4: 'C', hombre_collar_6: 'C', hombre_collar_8: 'C',
-  hombre_colgante_1: 'C', hombre_colgante_2: 'C', hombre_colgante_3: 'C',
-  // Cadenas gruesas (Holbox 2,5 mm, Copal 4–5 mm): como Collar Destino
-  hombre_collar_1: 'D', hombre_collar_7: 'D',
-  // Pulseras de cadena fina con chapa (1,2–1,7 $): como Mi Cielo; Quetzal (2,8 $), un escalón más
-  hombre_pulsera_1: 'A', hombre_pulsera_2: 'A', hombre_pulsera_3: 'A', hombre_pulsera_5: 'A', hombre_pulsera_6: 'A',
-  hombre_pulsera_4: 'B',
-  // Pulseras de eslabón (catálogo nuevo): finas 5–6 mm (1,2–1,7 $) · medias 6–8 mm (2,2–3,3 $) · gruesas 8–11 mm (4,4–4,8 $)
-  hombre_pulsera_9: 'B', hombre_pulsera_10: 'B', hombre_pulsera_15: 'B', hombre_pulsera_18: 'B',
-  hombre_pulsera_7: 'C', hombre_pulsera_8: 'C', hombre_pulsera_14: 'C', hombre_pulsera_16: 'C', hombre_pulsera_17: 'C', hombre_pulsera_19: 'C',
-  hombre_pulsera_11: 'D', hombre_pulsera_12: 'D', hombre_pulsera_13: 'D',
-  // Brazaletes (2,5–2,9 $): como Brazalete Eterno; Ajolote (6 $), el más caro
-  hombre_brazalete_1: 'B', hombre_brazalete_2: 'B', hombre_brazalete_3: 'B', hombre_brazalete_4: 'D',
-  // Anillos lisos finos (1,4–1,7 $) · sellos y anillos con relieve (1,8–3,5 $)
+  // 24,90 €: precio de entrada, anillos lisos finos
   hombre_anillo_2: 'A', hombre_anillo_3: 'A', hombre_anillo_4: 'A',
-  hombre_anillo_1: 'B', hombre_anillo_5: 'B', hombre_anillo_6: 'B', hombre_anillo_7: 'B', hombre_anillo_8: 'B',
-  hombre_anillo_9: 'B', hombre_anillo_10: 'B', hombre_anillo_11: 'B', hombre_anillo_12: 'B', hombre_anillo_13: 'B',
+  // 27,90 €: pulseras finas con chapa y pulseras de eslabón finas
+  hombre_pulsera_1: 'B', hombre_pulsera_2: 'B', hombre_pulsera_3: 'B', hombre_pulsera_4: 'B', hombre_pulsera_5: 'B', hombre_pulsera_6: 'B',
+  hombre_pulsera_9: 'B', hombre_pulsera_10: 'B', hombre_pulsera_15: 'B', hombre_pulsera_18: 'B',
+  // 29,90 €: anillos de sello y con relieve, brazaletes y Pulque (cadena sin charm)
+  hombre_anillo_1: 'C', hombre_anillo_5: 'C', hombre_anillo_6: 'C', hombre_anillo_7: 'C', hombre_anillo_8: 'C',
+  hombre_anillo_9: 'C', hombre_anillo_10: 'C', hombre_anillo_11: 'C', hombre_anillo_12: 'C', hombre_anillo_13: 'C',
+  hombre_brazalete_1: 'C', hombre_brazalete_2: 'C', hombre_brazalete_3: 'C',
+  hombre_collar_2: 'C',
+  // 34,90 €: collares con charm de regalo, colgantes de barra y pulseras de eslabón medias
+  hombre_collar_3: 'D', hombre_collar_4: 'D', hombre_collar_6: 'D', hombre_collar_8: 'D',
+  hombre_colgante_1: 'D', hombre_colgante_2: 'D', hombre_colgante_3: 'D',
+  hombre_pulsera_7: 'D', hombre_pulsera_8: 'D', hombre_pulsera_14: 'D', hombre_pulsera_16: 'D', hombre_pulsera_17: 'D', hombre_pulsera_19: 'D',
+  // 39,90 €: cadenas gruesas, pulseras gruesas y Ajolote
+  hombre_collar_1: 'E', hombre_collar_7: 'E',
+  hombre_pulsera_11: 'E', hombre_pulsera_12: 'E', hombre_pulsera_13: 'E',
+  hombre_brazalete_4: 'E',
 };
 COLECCION_HOMBRE.forEach(p => { if (ESCALON_HOMBRE[p.id]) p.precios = ESCALONES_HOMBRE[ESCALON_HOMBRE[p.id]]; });
 
