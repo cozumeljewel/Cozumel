@@ -4101,7 +4101,7 @@ body.v2 .producto-col-info > .producto-detalle{display:none;}
 /* En el ordenador la portada recorta arriba y abajo: se ancla abajo, que
    es donde están las joyas en los bodegones. */
 @media (min-width:900px){
-  .hero-v2-solo-web, .hero-v2-foto-2{object-position:center 100%;}
+  .hero-v2-solo-web, .hero-v2-foto-2{object-position:center 82%;}
 }
 /* La fila de la portada mide lo que la portada: así las fotos se recortan
    (cover) en vez de medir lo que su alto natural y salirse por abajo. */
