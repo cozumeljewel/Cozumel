@@ -4087,10 +4087,14 @@ body.v2 .producto-galeria{background:none; padding-left:0; padding-right:0;}
 /* Sin descripción larga en la ficha de mujer (14/10): nombre, acabado,
    grabado, botón y desplegables, como en hombre. */
 body.v2 .producto-col-info > .producto-detalle{display:none;}
-/* Stories en el móvil en damero: hombre y Adri se alternan también en
-   vertical (en las filas pares se cambian de lado). */
-@media (max-width:899px){
-  .v2-stories-pista{grid-auto-flow:row dense;}
-  .v2-stories-pista .v2-story:nth-child(4n+3){grid-column:2;}
-  .v2-stories-pista .v2-story:nth-child(4n+4){grid-column:1;}
+/* Portada: en el móvil una foto (portada-movil); en el ordenador, díptico
+   portada-web + portada-movil. */
+.hero-v2-solo-web{display:none;}
+@media (min-width:900px){
+  .hero-v2-solo-movil{display:none;}
+  .hero-v2-solo-web{display:block;}
 }
+/* Las fotos de portada tienen fondos claros: sombra suave arriba para que
+   se lea el menú blanco. */
+.hero-v2-fotos::after{content:""; position:absolute; left:0; right:0; top:0; height:160px; pointer-events:none;
+  background:linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,0));}

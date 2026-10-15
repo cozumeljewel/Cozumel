@@ -37,7 +37,8 @@
      producción, no empezaba a pedirla hasta los 330 ms. Con este preload
      arranca a la vez que el CSS. Solo va en el inicio: es la única página
      con hero, y precargar de más quita ancho de banda a lo que sí urge. -->
-<link rel="preload" as="image" href="img/hombre-hero-1.png" fetchpriority="high">
+<link rel="preload" as="image" href="img/portada-movil.png" media="(max-width: 899px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/portada-web.png" media="(min-width: 900px)" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="mercados.js" defer></script>
@@ -53,8 +54,10 @@
        colección de hombre. Móvil: una foto; ordenador: díptico. -->
   <section class="hero-v2">
     <div class="hero-v2-fotos">
-      <img class="hero-v2-foto" src="img/hombre-hero-1.png" alt="Cozumel, colección de hombre" width="1132" height="1389" fetchpriority="high">
-      <img class="hero-v2-foto hero-v2-foto-2" src="img/hombre-hero-2.png" alt="" width="1122" height="1402" loading="lazy">
+      <!-- Móvil: portada-movil. Ordenador: díptico portada-web + portada-movil. -->
+      <img class="hero-v2-foto hero-v2-solo-movil" src="img/portada-movil.png" alt="Cozumel, colección de hombre" width="1025" height="1534" fetchpriority="high">
+      <img class="hero-v2-foto hero-v2-solo-web" src="img/portada-web.png" alt="Cozumel, colección de hombre" width="1024" height="1536" loading="lazy">
+      <img class="hero-v2-foto hero-v2-foto-2" src="img/portada-movil.png" alt="" width="1025" height="1534" loading="lazy">
     </div>
     <div class="hero-v2-copy">
       <h1 class="hero-v2-titulo">New drop</h1>
@@ -69,8 +72,8 @@
 </section>
 
 <!-- ===== COZUMEL STORIES EN TIRA (rediseño 10/2026) =====
-     Solo fotos, sin texto, separadas por una línea blanca. Se alternan
-     una de hombre y una de Adri. -->
+     Solo fotos, sin texto, separadas por una línea blanca. Van mezcladas:
+     hombre, Adri y bodegón con las piezas. -->
 <section class="v2-stories" aria-label="Cozumel stories">
   <div class="v2-stories-pista" id="v2-stories">
     <button type="button" class="v2-story" data-i="0" aria-label="Ver foto 1 en grande">
@@ -82,50 +85,70 @@
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="2" aria-label="Ver foto 3 en grande">
-      <img src="img/stories-hombre-2.png" alt="" width="1013" height="1553" loading="lazy">
+      <img src="img/stories-bodegon-2.png" alt="" width="1024" height="1536" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="3" aria-label="Ver foto 4 en grande">
-      <img src="img/stories-adri-4.jpg" alt="" width="1050" height="1400" loading="lazy">
+      <img src="img/stories-hombre-2.png" alt="" width="1013" height="1553" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="4" aria-label="Ver foto 5 en grande">
-      <img src="img/stories-hombre-3.png" alt="" width="941" height="1672" loading="lazy">
+      <img src="img/stories-adri-4.jpg" alt="" width="1050" height="1400" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="5" aria-label="Ver foto 6 en grande">
-      <img src="img/stories-adri-1.jpg" alt="" width="1050" height="1400" loading="lazy">
+      <img src="img/stories-bodegon-3.png" alt="" width="1024" height="1536" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="6" aria-label="Ver foto 7 en grande">
-      <img src="img/stories-hombre-4.png" alt="" width="1254" height="1254" loading="lazy">
+      <img src="img/stories-hombre-3.png" alt="" width="941" height="1672" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="7" aria-label="Ver foto 8 en grande">
-      <img src="img/stories-adri-3.jpg" alt="" width="1050" height="1400" loading="lazy">
+      <img src="img/stories-adri-1.jpg" alt="" width="1050" height="1400" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="8" aria-label="Ver foto 9 en grande">
-      <img src="img/stories-hombre-5.png" alt="" width="1122" height="1402" loading="lazy">
+      <img src="img/stories-bodegon-4.png" alt="" width="941" height="1672" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="9" aria-label="Ver foto 10 en grande">
-      <img src="img/stories-cotidiano-1.jpg" alt="" width="1120" height="1400" loading="lazy">
+      <img src="img/stories-hombre-4.png" alt="" width="1254" height="1254" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="10" aria-label="Ver foto 11 en grande">
-      <img src="img/stories-hombre-6.png" alt="" width="1142" height="1377" loading="lazy">
+      <img src="img/stories-adri-3.jpg" alt="" width="1050" height="1400" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="11" aria-label="Ver foto 12 en grande">
-      <img src="img/stories-pareja-2.jpg" alt="" width="1120" height="1400" loading="lazy">
+      <img src="img/stories-bodegon-5.png" alt="" width="1024" height="1536" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="12" aria-label="Ver foto 13 en grande">
-      <img src="img/stories-hombre-7.png" alt="" width="1122" height="1402" loading="lazy">
+      <img src="img/stories-hombre-5.png" alt="" width="1122" height="1402" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
     <button type="button" class="v2-story" data-i="13" aria-label="Ver foto 14 en grande">
+      <img src="img/stories-cotidiano-1.jpg" alt="" width="1120" height="1400" loading="lazy">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="14" aria-label="Ver foto 15 en grande">
+      <img src="img/stories-bodegon-6.png" alt="" width="1060" height="1484" loading="lazy">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="15" aria-label="Ver foto 16 en grande">
+      <img src="img/stories-hombre-6.png" alt="" width="1142" height="1377" loading="lazy">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="16" aria-label="Ver foto 17 en grande">
+      <img src="img/stories-pareja-2.jpg" alt="" width="1120" height="1400" loading="lazy">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="17" aria-label="Ver foto 18 en grande">
+      <img src="img/stories-hombre-7.png" alt="" width="1122" height="1402" loading="lazy">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="18" aria-label="Ver foto 19 en grande">
       <img src="img/stories-cotidiano-3.jpg" alt="" width="1120" height="1400" loading="lazy">
       <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
     </button>
