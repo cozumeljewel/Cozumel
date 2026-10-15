@@ -224,6 +224,10 @@ COLECCION_HOMBRE.forEach(p => { if (ESCALON_HOMBRE[p.id]) p.precios = ESCALONES_
 // Piezas con baño de oro de 14 K (catálogos GF-SD y TR del proveedor);
 // el resto, oro y oro blanco de 18 K.
 const ORO_14K_HOMBRE = ['hombre_pulsera_7', 'hombre_pulsera_8', 'hombre_anillo_7', 'hombre_anillo_10', 'hombre_anillo_13'];
+// Promoción de lanzamiento (descuento REAL sobre los precios de arriba:
+// el tachado es el precio de siempre). null = sin promoción.
+const PROMO_HOMBRE = { descuento: 15, texto: 'Lanzamiento colección de hombre · −15 % en todas las piezas' };
+
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 
 /* =========================================================

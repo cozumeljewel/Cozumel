@@ -4111,3 +4111,35 @@ body.v2 .producto-col-info > .producto-detalle{display:none;}
 @media (min-width:900px){
   .hero-v2-foto-2{object-position:center 50%;}
 }
+
+/* ---------- Portada: logo, menú y botón legibles sobre fotos claras ---------- */
+/* Más sombra arriba (logo y menú) y abajo (título y botón). */
+.hero-v2-fotos::after{height:200px; background:linear-gradient(rgba(10,14,13,.55), rgba(10,14,13,.18) 60%, rgba(10,14,13,0));}
+.hero-v2::after{background:linear-gradient(to top, rgba(10,14,13,.62) 0%, rgba(10,14,13,.28) 28%, rgba(10,14,13,0) 52%);}
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo-name,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo-sub,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .nav a,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .selector-idioma,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .selector-idioma button,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .header-carrito{
+  text-shadow:0 1px 14px rgba(0,0,0,.45), 0 0 2px rgba(0,0,0,.25);
+}
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .header-carrito svg{filter:drop-shadow(0 1px 6px rgba(0,0,0,.45));}
+body.v2 .hero-v2-titulo{font-weight:400; text-shadow:0 2px 24px rgba(0,0,0,.45);}
+/* Shop now en verde petróleo, se ve sobre cualquier foto */
+body.v2 .hero-v2-cta{background:var(--c-texto); color:var(--c-fondo); min-height:54px; padding:0 46px;
+  font-weight:500; box-shadow:0 6px 24px rgba(0,0,0,.25);}
+body.v2 .hero-v2-cta:hover{background:var(--c-fondo); color:var(--c-texto);}
+
+/* ---------- Promoción de lanzamiento de hombre ---------- */
+/* Banner: franja verde petróleo con el texto en marfil */
+.v2-promo{margin:0; padding:13px 16px; background:var(--c-texto); color:var(--c-fondo); text-align:center;
+  font-family:var(--font-sans); font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;}
+/* Precio: el de siempre tachado y, debajo, el rebajado */
+body.v2 .con-promo{display:flex; flex-direction:column; align-items:center; gap:2px;}
+body.v2 .v2-pieza-precio.con-promo{align-items:flex-start;}
+@media (max-width:899px){ body.v2 .v2-pieza-precio.con-promo{align-items:center;} }
+body.v2 .v2-precio-antes{font-size:.92em; color:var(--c-texto-2); text-decoration-thickness:1px;}
+body.v2 .v2-precio-rebajado{color:#9A2B1E; font-weight:500;}
+body.v2 .v2-card--hombre .v2-card-precio.con-promo{display:flex; flex-direction:column; align-items:center; gap:2px;}
+.v2-promo + .v2-tipos{margin-top:28px;}

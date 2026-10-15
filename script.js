@@ -671,6 +671,8 @@ const FOTOS_TARJETA_V2 = {
   if (typeof COLECCION_HOMBRE !== 'undefined') {
     const acabados = acabadosVariados(COLECCION_HOMBRE);
     COLECCION_HOMBRE.forEach((prod, i) => pista.appendChild(tarjetaHombre(prod, acabados[i])));
+    const banner = bannerPromoHombre();
+    if (banner) pista.closest('section').before(banner);
     return;
   }
   if (typeof PRODUCTOS === 'undefined') return;
@@ -765,7 +767,7 @@ function tarjetaHombre(prod, inicial) {
   // Foto, nombre, precio y circulitos; el nombre del acabado solo en la ficha.
   const precio = document.createElement('span');
   precio.className = 'v2-card-precio';
-  precio.textContent = (typeof precioTexto === 'function' && precioTexto(prod)) || '';
+  pintarPrecioHombre(precio, prod);
   card.append(marco, nombre, precio, tonos);
   poner(claves.includes(inicial) ? inicial : claves[0]);
   return card;
@@ -781,6 +783,40 @@ function llevaCharmHombre(prod) {
 
 /* Fotos de la cadena con un charm puesto (FOTOS_CHARM_HOMBRE, hombre.js)
    para ese acabado, en orden de variación. */
+/* Precio de hombre con la promoción de lanzamiento (PROMO_HOMBRE): el de
+   siempre tachado y, debajo, el rebajado. Sin promo, solo el precio. */
+function pintarPrecioHombre(el, prod) {
+  if (typeof precioDe !== 'function') return;
+  const p = precioDe(prod);
+  if (!p) { el.textContent = ''; return; }
+  const promo = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.descuento;
+  const antes = formatearImporte(p.importe, p.moneda);
+  if (!promo) { el.textContent = antes; return; }
+  let rebajado = p.importe * (1 - promo / 100);
+  rebajado = (SIN_DECIMALES.includes(p.moneda) || p.moneda === 'MXN') ? Math.round(rebajado) : Math.round(rebajado * 100) / 100;
+  const ahora = formatearImporte(rebajado, p.moneda);
+  el.textContent = '';
+  const s = document.createElement('s');
+  s.className = 'v2-precio-antes';
+  s.textContent = antes;
+  s.setAttribute('aria-label', 'Antes ' + antes);
+  const r = document.createElement('span');
+  r.className = 'v2-precio-rebajado';
+  r.textContent = ahora;
+  r.setAttribute('aria-label', 'Ahora ' + ahora + ', ' + promo + ' % de descuento');
+  el.append(s, r);
+  el.classList.add('con-promo');
+}
+
+/* Banner de la promoción de lanzamiento de hombre. */
+function bannerPromoHombre() {
+  if (typeof PROMO_HOMBRE === 'undefined' || !PROMO_HOMBRE) return null;
+  const b = document.createElement('p');
+  b.className = 'v2-promo';
+  b.textContent = PROMO_HOMBRE.texto;
+  return b;
+}
+
 function fotosCharmHombre(prod, clave) {
   if (!llevaCharmHombre(prod)) return [];
   return (typeof FOTOS_CHARM_HOMBRE !== 'undefined' && FOTOS_CHARM_HOMBRE[prod.id] && FOTOS_CHARM_HOMBRE[prod.id][clave]) || [];
@@ -1241,7 +1277,8 @@ function urlPiezaHombre(prod, clave) {
   });
   const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
   if (fija) medidas.append(crear('p', 'v2-pieza-medida', fija));
-  const precioPieza = crear('p', 'v2-pieza-precio', (typeof precioTexto === 'function' && precioTexto(prod)) || '');
+  const precioPieza = crear('p', 'v2-pieza-precio');
+  pintarPrecioHombre(precioPieza, prod);
   // Bajo el precio, el material del acabado elegido y el envío incluido.
   info.append(titulo);
   if (precioPieza.textContent) info.append(precioPieza);
@@ -1350,6 +1387,8 @@ function urlPiezaHombre(prod, clave) {
       tipos.appendChild(a);
     });
     rejilla.before(tipos);
+    const banner = bannerPromoHombre();
+    if (banner) tipos.before(banner);
     const piezas = COLECCION_HOMBRE.filter(p => p.tipo === tipo);
     const acabados = acabadosVariados(piezas);
     piezas.forEach((prod, i) => rejilla.appendChild(tarjetaHombre(prod, acabados[i])));
