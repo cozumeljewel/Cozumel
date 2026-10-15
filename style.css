@@ -4107,7 +4107,7 @@ body.v2 .producto-col-info > .producto-detalle{display:none;}
    (cover) en vez de medir lo que su alto natural y salirse por abajo. */
 .hero-v2-fotos{grid-template-rows:minmax(0,1fr);}
 .hero-v2-foto{min-height:0;}
-/* La del jalapeño (derecha), más abajo: la cruz queda justo sobre el borde. */
+/* La de la derecha (jalapeños abiertos con cadenas de plata): centrada. */
 @media (min-width:900px){
-  .hero-v2-foto-2{object-position:center 60%;}
+  .hero-v2-foto-2{object-position:center 50%;}
 }
