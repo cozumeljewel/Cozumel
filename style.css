@@ -4103,3 +4103,7 @@ body.v2 .producto-col-info > .producto-detalle{display:none;}
 @media (min-width:900px){
   .hero-v2-solo-web, .hero-v2-foto-2{object-position:center 100%;}
 }
+/* La fila de la portada mide lo que la portada: así las fotos se recortan
+   (cover) en vez de medir lo que su alto natural y salirse por abajo. */
+.hero-v2-fotos{grid-template-rows:minmax(0,1fr);}
+.hero-v2-foto{min-height:0;}
