@@ -745,7 +745,9 @@ function tarjetaHombre(prod, inicial) {
     // Cadenas con charm: sale con el charm; si no, la pieza sola. Al pasar
     // el ratón, siempre la foto con modelo.
     const conCharm = fotosCharmHombre(prod, clave);
-    img.src = conCharm.length ? conCharm[0].foto : a;
+    const quiere = typeof PORTADA_CHARM_HOMBRE !== 'undefined' && PORTADA_CHARM_HOMBRE[prod.id] && PORTADA_CHARM_HOMBRE[prod.id][clave];
+    const portada = conCharm.find(x => x.charm === quiere) || conCharm[0];
+    img.src = portada ? portada.foto : a;
     img2.src = b || a;
     media.href = nombre.href = urlPiezaHombre(prod, clave);
     claveActual = clave;
