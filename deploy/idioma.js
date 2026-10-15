@@ -81,6 +81,12 @@
     if (acciones && !acciones.querySelector('.selector-idioma')) {
       acciones.insertBefore(selector('selector-cabecera'), acciones.firstChild);
     }
+    // Rediseño (body.v2): en el móvil el idioma va dentro del menú, para
+    // que el logo de la cabecera tenga sitio.
+    const menuNav = document.body.classList.contains('v2') && document.querySelector('.menu-movil-nav');
+    if (menuNav && !menuNav.querySelector('.selector-idioma')) {
+      menuNav.appendChild(selector('selector-menu'));
+    }
   };
 
   if (idioma === 'es') {

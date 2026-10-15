@@ -24,74 +24,116 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <!-- Idioma (español / inglés): antes de la cuenta atrás. -->
 <script src="idioma.js"></script>
 <!-- Cuenta atrás del lanzamiento: tapa la web hasta el 2/10 a las 21:00 de México.
      Va sin defer para taparla antes de que se pinte. -->
 <script src="cuenta-atras.js"></script>
+<script src="cierre.js"></script>
 
 <!-- La foto del hero es un fondo CSS, así que el navegador no se entera
      de que existe hasta haber descargado y procesado style.css: medido en
      producción, no empezaba a pedirla hasta los 330 ms. Con este preload
      arranca a la vez que el CSS. Solo va en el inicio: es la única página
      con hero, y precargar de más quita ancho de banda a lo que sí urge. -->
-<link rel="preload" as="image" href="img/hero-adriana-1.jpg" fetchpriority="high" media="(max-width: 899px)">
-<link rel="preload" as="image" href="img/hero-adriana-horizontal-1.jpg" fetchpriority="high" media="(min-width: 900px)">
+<link rel="preload" as="image" href="img/portada-movil.png" media="(max-width: 899px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/portada-web.png" media="(min-width: 900px)" fetchpriority="high">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="mercados.js" defer></script>
 <script src="productos.js" defer></script>
+<script src="hombre.js" defer></script>
+<script src="hombre-focos.js" defer></script>
 </head>
-<body data-page="inicio">
+<body data-page="inicio" class="v2">
+
+<!-- ===== HERO (rediseño marca hombre, 10/2026) =====
+     Fuera de .page para ir a sangre (.page tiene ancho máximo).
+       Solo foto + una línea + botón, como las tiendas de moda. Fotos de la
+       colección de hombre. Móvil: una foto; ordenador: díptico. -->
+  <section class="hero-v2">
+    <div class="hero-v2-fotos">
+      <!-- Móvil: portada-movil. Ordenador: díptico portada-web + jalapeños abiertos (stories-bodegon-5). -->
+      <img class="hero-v2-foto hero-v2-solo-movil" src="img/portada-movil.png" alt="Cozumel, colección de hombre" width="1025" height="1534" fetchpriority="high">
+      <img class="hero-v2-foto hero-v2-solo-web" src="img/portada-web.png" alt="Cozumel, colección de hombre" width="1024" height="1536" loading="lazy">
+      <img class="hero-v2-foto hero-v2-foto-2" src="img/stories-bodegon-5.png" alt="" width="1024" height="1536" loading="lazy">
+    </div>
+    <div class="hero-v2-copy">
+      <h1 class="hero-v2-titulo">New drop</h1>
+      <a class="hero-v2-cta" href="productos.html?c=men">Shop now</a>
+    </div>
+  </section>
+<!-- ===== PRODUCTOS EN SCROLL (rediseño 10/2026) =====
+     Foto, nombre y precio, en fila horizontal (deslizar en el móvil).
+     Las tarjetas las pinta script.js con productos.js (#v2-drop). -->
+<section class="v2-drop" aria-label="La colección">
+  <div class="v2-drop-pista" id="v2-drop"></div>
+</section>
+
+<!-- ===== COZUMEL STORIES EN TIRA (rediseño 10/2026) =====
+     Solo fotos, sin texto, separadas por una línea blanca. Ocho, mezcladas:
+     3 chicos, 3 de Adri y 2 bodegones de chiles con joyas, encuadradas
+     (object-position) para que se vean las piezas. -->
+<section class="v2-stories" aria-label="Cozumel stories">
+  <div class="v2-stories-pista" id="v2-stories">
+    <button type="button" class="v2-story" data-i="0" aria-label="Ver foto 1 en grande">
+      <img src="img/stories-hombre-1.png" alt="" width="1024" height="1536" loading="lazy" style="object-position:center 35%">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="1" aria-label="Ver foto 2 en grande">
+      <img src="img/stories-adri-2.jpg" alt="" width="1050" height="1400" loading="lazy" style="object-position:center 45%">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="2" aria-label="Ver foto 3 en grande">
+      <img src="img/stories-bodegon-3.png" alt="" width="1024" height="1536" loading="lazy" style="object-position:center 100%">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="3" aria-label="Ver foto 4 en grande">
+      <img src="img/stories-hombre-3.png" alt="" width="941" height="1672" loading="lazy" style="object-position:center 50%">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="4" aria-label="Ver foto 5 en grande">
+      <img src="img/stories-adri-1.jpg" alt="" width="1050" height="1400" loading="lazy" style="object-position:center 45%">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="5" aria-label="Ver foto 6 en grande">
+      <img src="img/portada-movil.png" alt="" width="1025" height="1534" loading="lazy" style="object-position:center 72%">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="6" aria-label="Ver foto 7 en grande">
+      <img src="img/stories-hombre-4.png" alt="" width="1254" height="1254" loading="lazy" style="object-position:center 55%">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+    <button type="button" class="v2-story" data-i="7" aria-label="Ver foto 8 en grande">
+      <img src="img/stories-adri-4.jpg" alt="" width="1050" height="1400" loading="lazy" style="object-position:center 60%">
+      <span class="v2-story-vermas" aria-hidden="true">Ver más</span>
+    </button>
+  </div>
+</section>
 
 <div class="page">
 
   <!-- ===== HEADER ===== -->
+  <!-- ===== HEADER (rediseño marca hombre, 10/2026) =====
+       Patrón de tienda de moda: menú a la izquierda, COZUMEL centrado,
+       idioma y cesta a la derecha. Transparente sobre el hero; marfil con
+       texto carbón al bajar (.scrolled, lo pone script.js). Los ids y
+       clases que usa script.js/idioma.js se mantienen (nav-toggle,
+       header-acciones, header-carrito, site-header). -->
   <header class="site-header" id="site-header">
     <div class="header-inner">
-      <a class="logo" href="index.html" aria-label="Inicio">
-        <span class="logo-mark" aria-hidden="true">
-          <svg viewBox="-15 -15 130 140" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-            <g stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round">
-              <line x1="84" y1="52" x2="95.9" y2="52"/>
-              <line x1="79.4" y1="72" x2="89.7" y2="79"/>
-              <line x1="67" y1="86.6" x2="72.95" y2="98.8"/>
-              <line x1="50" y1="92" x2="50" y2="106"/>
-              <line x1="33" y1="86.6" x2="27.05" y2="98.8"/>
-              <line x1="20.6" y1="72" x2="10.25" y2="79"/>
-              <line x1="16" y1="52" x2="4.1" y2="52"/>
-              <line x1="20.6" y1="32" x2="10.25" y2="25"/>
-              <line x1="33" y1="17.4" x2="27.05" y2="5.2"/>
-              <line x1="50" y1="12" x2="50" y2="-2"/>
-              <line x1="67" y1="17.4" x2="72.95" y2="5.2"/>
-              <line x1="79.4" y1="32" x2="89.7" y2="25"/>
-            </g>
-            <ellipse cx="50" cy="52" rx="34" ry="40" fill="none" stroke="currentColor" stroke-width="2.2"/>
-            <path d="M18,52 C30,36 70,36 82,52 C70,66 30,66 18,52 Z" fill="none" stroke="currentColor" stroke-width="2.2"/>
-            <circle cx="50" cy="52" r="7" fill="currentColor"/>
-          </svg>
-        </span>
-        <span class="logo-word">
-          <span class="logo-name">Cozumel</span>
-          <span class="logo-sub">Jewelry</span>
-          <span class="logo-olas" aria-hidden="true"></span>
-        </span>
-      </a>
-
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-movil">
+        <span></span><span></span><span></span>
+      </button>
       <nav class="nav" id="nav" aria-label="Principal">
-        <a href="productos.html">Colección</a>
-        <div class="nav-dropdown">
-          <a href="personalizar.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="nav-personaliza-panel">Personaliza</a>
-          <div class="nav-dropdown-panel" id="nav-personaliza-panel">
-            <!-- script.js la rellena con las piezas que sí se personalizan -->
-          </div>
-        </div>
-        <a href="historia.html">Nuestra historia</a>
-        <a href="faq.html">FAQ</a>
+        <a href="productos.html?c=men">For men</a>
+        <a href="productos.html?c=woman">For woman</a>
       </nav>
-
+      <a class="logo" href="index.html" aria-label="Cozumel, inicio">
+        <span class="logo-name">Cozumel</span>
+      </a>
       <div class="header-acciones">
         <a class="header-carrito" href="comprar.html" aria-label="Comprar">
           <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -100,9 +142,6 @@
             <circle cx="17" cy="20" r="1.3"/>
           </svg>
         </a>
-        <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-movil">
-          <span></span><span></span><span></span>
-        </button>
       </div>
     </div>
   </header>
@@ -115,50 +154,12 @@
         <button class="menu-movil-cerrar" id="menu-movil-cerrar" type="button" aria-label="Cerrar menú">×</button>
       </div>
       <nav class="menu-movil-nav" aria-label="Principal">
-        <a href="productos.html">Colección</a>
-        <button type="button" class="menu-movil-nav-toggle" id="menu-movil-personaliza-toggle" aria-expanded="false" aria-controls="menu-movil-personaliza-lista">
-          Personaliza tu joya
-        </button>
-        <div class="menu-movil-submenu" id="menu-movil-personaliza-lista" hidden>
-          <!-- script.js la rellena con las piezas que sí se personalizan -->
-        </div>
-        <a href="historia.html">Nuestra historia</a>
-        <a href="faq.html">FAQ</a>
-        <a href="contacto.html">Contacto</a>
+        <a href="productos.html?c=men">For men</a>
+        <a href="productos.html?c=woman">For woman</a>
       </nav>
     </div>
   </div>
 
-  <!-- ===== HERO / INICIO =====
-       Rediseño del 2026-09-23 (referencia del cliente): solo la foto de
-       Adriana a pantalla completa, el logo grande arriba y el botón de la
-       colección abajo. Titular, subtítulo, firma y "Conoce Cozumel" se
-       quitaron a propósito: eran ruido visual sobre la foto. Mientras se
-       está arriba del todo, la cabecera esconde su logo pequeño para no
-       repetirlo junto a este (ver .hero-en-vista en style.css). -->
-  <section class="hero">
-    <div class="hero-media" role="img" aria-label="Adriana llevando piezas de Cozumel Jewelry"></div>
-    <div class="hero-copy">
-      <!-- Solo el nombre (COZUMEL, JEWELRY y la ola), sin el ojo: el ojo
-           es el emblema de la marca y ya está en la cabecera. Sale de la
-           versión oficial en blanco (marca/cozumel-logo-negativo-blanco.png)
-           recortada por debajo del ojo; el de color, en verde azulado,
-           desaparecería sobre los árboles. -->
-      <h1 class="hero-logo reveal-hero">
-        <img src="img/hero-logo-texto-1.png" alt="Cozumel Jewelry" width="1000" height="312">
-      </h1>
-
-      <!-- Para qué son, en una línea (03/10): mucha gente entraba sin
-           entender que son joyas para regalar. -->
-      <div class="hero-abajo">
-        <p class="hero-claim reveal-hero">Joyas grabadas para regalar<br>a quien más quieres</p>
-        <a class="hero-cta reveal-hero" href="productos.html">
-          <span>Descubrir la colección</span>
-          <span class="hero-cta-flecha" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
 
   <!-- ===== COZUMEL STORIES =====
        Placeholders a propósito: no hay fotos todavía. Cada tarjeta lleva
@@ -232,16 +233,33 @@
   </section>
 
   <!-- ===== FOOTER ===== -->
+  <!-- ===== NEWSLETTER (rediseño 10/2026) =====
+       Silencioso y editorial: una línea, una frase y el campo de email.
+       Lo envía script.js a lista_espera (fuente "newsletter"). -->
+  <section class="v2-news" aria-label="Newsletter">
+    <span class="v2-news-linea" aria-hidden="true"></span>
+    <p class="v2-news-texto">Suscríbete y recibe un código de descuento para tu primer pedido.</p>
+    <form class="v2-news-form" id="v2-news-form" novalidate>
+      <label class="v2-news-campo">
+        <span class="sr-only">Tu correo electrónico</span>
+        <input type="email" name="email" placeholder="Tu correo electrónico" autocomplete="email" required>
+        <button type="submit" aria-label="Suscribirme">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+        </button>
+      </label>
+      <p class="v2-news-legal">Al suscribirte aceptas la <a href="privacidad.html">política de privacidad</a>.</p>
+      <p class="v2-news-aviso" id="v2-news-aviso" role="status"></p>
+    </form>
+  </section>
+
   <footer>
     <div class="footer-inner">
       <a class="footer-marca" href="index.html">Cozumel</a>
-      <p class="footer-claim">Un pedacito de lo que regalamos.</p>
 
       <nav class="footer-nav" aria-label="Enlaces del pie de página">
-        <a href="productos.html">Colección</a>
-        <a href="personalizar.html">Personaliza</a>
-        <a href="historia.html">Nuestra historia</a>
-        <a href="faq.html">FAQ</a>
+        <a href="productos.html?c=men">Colección</a>
+        <a href="faq.html#envios">Envíos</a>
+        <a href="faq.html#devoluciones">Devoluciones</a>
         <a href="contacto.html">Contacto</a>
       </nav>
 

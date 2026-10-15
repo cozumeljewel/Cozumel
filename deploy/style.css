@@ -2957,3 +2957,1189 @@ body[data-page="historia"] .eyebrow{
 @media (max-width:339px){
   body:is([data-page="productos"], [data-page="personalizar"], [data-page="arma-kit"], [data-page="comprar"]) .logo-word{display:none;}
 }
+
+/* =========================================================
+   REDISEÑO MARCA HOMBRE (10/2026) · HEADER + HERO
+   Solo afecta a la portada (body.v2). El resto de páginas sigue con el
+   diseño anterior hasta que se rediseñen sección por sección.
+   Paleta: marfil/arena de fondo, carbón para el texto, turquesa Cozumel
+   y dorado solo como acentos. Jost es la tipografía principal; Playfair
+   queda para el nombre de la marca y momentos editoriales.
+   ========================================================= */
+body.v2{
+  --v2-marfil:#FAF7F2; /* cabecera: el mismo crema que el fondo de las fotos */
+  /* Fondo de las fotos: crema muy, muy suave (como el gris de Hanley) */
+  --v2-crema-foto:#FAF7F2;
+  --v2-arena:#ECE4D6;
+  --v2-carbon:#1D1D1B;
+  --v2-blanco:#FBF8F3;
+  --header-h:56px;
+}
+
+/* ---------- HEADER ---------- */
+body.v2[data-page="inicio"] .site-header{
+  background:linear-gradient(to bottom, rgba(20,20,18,.32), rgba(20,20,18,0));
+  /* border-box: si no, el degradado se repite en el borde transparente
+     de 1px y pinta una raya oscura sobre la foto */
+  background-origin:border-box;
+  border-bottom:1px solid transparent; box-shadow:none;
+}
+body.v2[data-page="inicio"] .site-header.scrolled{
+  background:rgba(250,247,242,.94); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  border-bottom-color:rgba(29,29,27,.08); box-shadow:none;
+}
+body.v2 .header-inner{
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+  height:var(--header-h); padding:0 16px; max-width:none;
+}
+body.v2 .nav-toggle{grid-column:1; justify-self:start; margin:0 0 0 -10px;}
+body.v2 .site-header .nav{display:none;}
+body.v2 .site-header .logo{grid-column:2; justify-self:center; text-decoration:none;}
+body.v2 .site-header .logo-name{
+  /* Palo seco con presencia, pero fino y elegante (punto medio) */
+  display:block; font-family:var(--font-sans); font-weight:500;
+  font-size:28px; line-height:1; letter-spacing:.16em; text-transform:uppercase;
+  margin-right:-.16em; /* el espaciado de la última letra descentraba la palabra */
+}
+body.v2 .site-header .header-acciones{grid-column:3; justify-self:end; gap:14px;}
+
+/* Colores: blanco cálido sobre la foto, carbón al bajar */
+body.v2[data-page="inicio"] .site-header .logo-name,
+body.v2[data-page="inicio"] .site-header .nav a,
+body.v2[data-page="inicio"] .site-header .header-carrito,
+body.v2[data-page="inicio"] .site-header .selector-idioma,
+body.v2[data-page="inicio"] .site-header .selector-idioma button{color:var(--v2-blanco);}
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .nav-toggle span{background:var(--v2-blanco);}
+body.v2[data-page="inicio"] .site-header.scrolled .logo-name,
+body.v2[data-page="inicio"] .site-header.scrolled .nav a,
+body.v2[data-page="inicio"] .site-header.scrolled .header-carrito,
+body.v2[data-page="inicio"] .site-header.scrolled .selector-idioma,
+body.v2[data-page="inicio"] .site-header.scrolled .selector-idioma button{color:var(--v2-carbon);}
+body.v2[data-page="inicio"] .site-header.scrolled .nav-toggle span{background:var(--v2-carbon);}
+body.v2 .site-header .selector-idioma{font-family:var(--font-sans); font-size:11px; letter-spacing:.12em; gap:4px;}
+body.v2 .site-header .selector-idioma button.activo{text-decoration-color:currentColor;}
+
+/* Menú móvil: mismas mayúsculas finas que la navegación */
+body.v2 .menu-movil-nav a{
+  font-family:var(--font-sans); font-size:15px; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--v2-carbon);
+}
+
+@media (min-width:900px){
+  body.v2{--header-h:72px;}
+  body.v2 .header-inner{padding:0 32px;}
+  body.v2 .nav-toggle{display:none;}
+  body.v2 .site-header .nav{
+    grid-column:1; justify-self:start; display:flex; gap:30px;
+  }
+  body.v2 .site-header .nav a{
+    font-family:var(--font-sans); font-size:11.5px; font-weight:500;
+    letter-spacing:.18em; text-transform:uppercase; opacity:.92;
+  }
+  body.v2 .site-header .nav a:hover{opacity:1;}
+  body.v2 .site-header .logo-name{font-size:38px;}
+}
+
+/* ---------- HERO ---------- */
+.hero-v2{
+  position:relative; height:100svh; min-height:560px; overflow:hidden;
+  background:var(--v2-carbon);
+}
+.hero-v2-fotos{position:absolute; inset:0; display:grid; grid-template-columns:1fr;}
+.hero-v2-foto{
+  display:block; width:100%; height:100%; object-fit:cover; object-position:center 35%;
+  animation:heroMediaFade 1.2s ease-out both;
+}
+.hero-v2-foto-2{display:none;}
+/* Velo solo abajo, donde va el texto: la foto se ve limpia */
+.hero-v2::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to top, rgba(20,20,18,.55) 0%, rgba(20,20,18,.18) 30%, rgba(20,20,18,0) 50%);
+}
+.hero-v2-copy{
+  position:absolute; left:0; right:0; bottom:0; z-index:2;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  padding:0 20px 40px; color:var(--v2-blanco);
+}
+.hero-v2-kicker{
+  margin:0 0 10px; font-family:var(--font-sans); font-size:11px; font-weight:500;
+  letter-spacing:.3em; text-transform:uppercase; opacity:.88;
+}
+.hero-v2-titulo{
+  margin:0 0 22px; font-family:var(--font-sans); font-weight:500;
+  font-size:32px; line-height:1; letter-spacing:.1em; text-transform:uppercase;
+}
+.hero-v2-cta{
+  display:inline-flex; align-items:center; justify-content:center; min-height:52px;
+  padding:0 40px; border:0; border-radius:4px;
+  font-family:var(--font-sans); font-size:13px; font-weight:400;
+  letter-spacing:.24em; text-transform:uppercase; text-decoration:none;
+  color:var(--v2-carbon); background:#FFFFFF;
+  transition:background .25s, color .25s;
+}
+.hero-v2-cta:hover{background:var(--v2-carbon); color:#FFFFFF;}
+@media (prefers-reduced-motion:no-preference){
+  .hero-v2-copy{animation:heroRise .9s ease-out .3s both;}
+}
+@media (min-width:900px){
+  .hero-v2{height:92vh; min-height:620px;}
+  .hero-v2-fotos{grid-template-columns:1fr 1fr;}
+  .hero-v2-foto-2{display:block;}
+  .hero-v2-copy{padding-bottom:56px;}
+  .hero-v2-titulo{font-size:46px;}
+}
+
+/* ---------- PORTADA NUEVA: PRODUCTOS EN SCROLL ---------- */
+body.v2 .stories{display:none;} /* la sección antigua se queda en el HTML, sin mostrarse */
+.v2-drop{background:#fff; padding:36px 0 44px;}
+.v2-drop-pista{
+  display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding:0 16px; scroll-padding-inline:16px; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+}
+.v2-drop-pista::-webkit-scrollbar{display:none;}
+.v2-drop-item{
+  flex:0 0 62%; min-width:0; scroll-snap-align:start; text-decoration:none; color:var(--v2-carbon);
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+}
+.v2-drop-media{aspect-ratio:4/5;}
+.v2-drop-item:hover .v2-card-hover{opacity:1;}
+.v2-drop-nombre{
+  margin-top:14px; font-family:var(--font-sans); font-size:11.5px; font-weight:500;
+  letter-spacing:.16em; text-transform:uppercase;
+}
+.v2-drop-precio{
+  margin-top:6px; font-family:var(--font-sans); font-size:11.5px; letter-spacing:.08em; color:#55534F;
+}
+@media (min-width:900px){
+  .v2-drop{padding:56px 0 72px;}
+  .v2-drop-pista{gap:12px; padding:0 48px; scroll-padding-inline:48px;}
+  .v2-drop-item{flex-basis:calc((100% - 4 * 12px) / 5);}
+}
+
+/* ---------- PORTADA NUEVA: STORIES EN TIRA ---------- */
+.v2-stories{background:#fff;}
+.v2-stories-pista{
+  display:flex; gap:2px; overflow-x:auto; scroll-snap-type:x mandatory;
+  scrollbar-width:none; background:#fff;
+}
+.v2-stories-pista::-webkit-scrollbar{display:none;}
+.v2-stories-pista img{
+  flex:0 0 46%; min-width:0; width:46%; height:auto; aspect-ratio:1/1; object-fit:cover; display:block; scroll-snap-align:start;
+}
+@media (min-width:900px){
+  .v2-stories-pista img{flex-basis:calc((100% - 5 * 2px) / 6); width:calc((100% - 5 * 2px) / 6);}
+}
+
+/* ---------- PÁGINAS SIN HERO (rediseño): cabecera marfil sólida ---------- */
+body.v2:not([data-page="inicio"]) .site-header{
+  background:var(--v2-marfil); border-bottom:1px solid rgba(29,29,27,.08); box-shadow:none;
+}
+body.v2:not([data-page="inicio"]) .site-header .logo-name,
+body.v2:not([data-page="inicio"]) .site-header .nav a,
+body.v2:not([data-page="inicio"]) .site-header .header-carrito,
+body.v2:not([data-page="inicio"]) .site-header .selector-idioma,
+body.v2:not([data-page="inicio"]) .site-header .selector-idioma button{color:var(--v2-carbon);}
+body.v2:not([data-page="inicio"]) .site-header .nav-toggle span{background:var(--v2-carbon);}
+body.v2 .site-header .mercado-select{
+  font-family:var(--font-sans); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--v2-carbon); background-color:transparent; max-width:118px;
+}
+
+/* ---------- SHOP (rediseño): rejilla limpia ---------- */
+body.v2 .coleccion,
+body.v2 .kits-banda--suelta,
+body.v2 .arma-kit--entrada{display:none;}
+.v2-shop{background:#fff; padding:28px 16px 64px;}
+.v2-grid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:28px 12px;}
+.v2-card{
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  text-decoration:none; color:var(--v2-carbon); min-width:0;
+}
+.v2-card-media{position:relative; display:block; width:100%; aspect-ratio:1/1; overflow:hidden; background:var(--v2-crema-foto);}
+.v2-card-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;}
+.v2-card-hover{opacity:0; transition:opacity .45s ease;}
+@media (hover:hover){ .v2-card:hover .v2-card-hover{opacity:1;} }
+.v2-card-nombre{
+  margin-top:14px; font-family:var(--font-sans); font-size:11px; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase;
+}
+.v2-card-precio{margin-top:6px; font-family:var(--font-sans); font-size:11px; letter-spacing:.06em; color:#55534F;}
+@media (min-width:900px){
+  .v2-shop{padding:56px 48px 96px;}
+  .v2-grid{grid-template-columns:repeat(4, minmax(0,1fr)); gap:56px 60px;}
+  .v2-card-nombre{margin-top:22px;}
+}
+/* En el móvil la moneda no cabe junto al logo: se cambia desde el menú */
+@media (max-width:899px){
+  body.v2 .site-header .header-acciones .mercado-select{display:none;}
+}
+
+/* COZUMEL tiene siempre el mismo tamaño, en todas las páginas y al bajar
+   por la portada: solo cambian el fondo y el color de la cabecera. */
+@media (max-width:899px){
+  /* En el móvil el idioma está dentro del menú (idioma.js) */
+  body.v2 .site-header .selector-idioma{display:none;}
+}
+body.v2 .menu-movil-nav .selector-idioma{
+  margin-top:22px; font-family:var(--font-sans); font-size:13px; letter-spacing:.16em; color:var(--v2-carbon);
+}
+body.v2 .menu-movil-nav .selector-idioma button{color:var(--v2-carbon); font-size:13px; letter-spacing:.16em;}
+
+
+/* La cabecera tiene que acompañar al hacer scroll en TODAS las páginas.
+   .page llevaba overflow:hidden, que convierte .page en contenedor de
+   scroll y anula el position:sticky de la cabecera (se iba hacia arriba).
+   overflow:clip recorta igual pero no rompe el sticky. */
+body.v2 .page{overflow:visible; overflow:clip;}
+
+/* Portada: al pasar el cursor por la cabecera transparente (o al moverse
+   por ella con el teclado), toma forma igual que al bajar: fondo marfil
+   y texto carbón. Como en la referencia. */
+@media (hover:hover){
+  body.v2[data-page="inicio"] .site-header:hover,
+  body.v2[data-page="inicio"] .site-header:focus-within{
+    background-color:#FAF7F2; background-image:none;
+    border-bottom-color:rgba(29,29,27,.08);
+  }
+  body.v2[data-page="inicio"] .site-header:hover .logo-name,
+  body.v2[data-page="inicio"] .site-header:hover .nav a,
+  body.v2[data-page="inicio"] .site-header:hover .header-carrito,
+  body.v2[data-page="inicio"] .site-header:hover .selector-idioma,
+  body.v2[data-page="inicio"] .site-header:hover .selector-idioma button,
+  body.v2[data-page="inicio"] .site-header:focus-within .logo-name,
+  body.v2[data-page="inicio"] .site-header:focus-within .nav a,
+  body.v2[data-page="inicio"] .site-header:focus-within .header-carrito,
+  body.v2[data-page="inicio"] .site-header:focus-within .selector-idioma,
+  body.v2[data-page="inicio"] .site-header:focus-within .selector-idioma button{color:var(--v2-carbon);}
+  body.v2[data-page="inicio"] .site-header:hover .nav-toggle span,
+  body.v2[data-page="inicio"] .site-header:focus-within .nav-toggle span{background:var(--v2-carbon);}
+}
+body.v2 .site-header .logo-name,
+body.v2 .site-header .nav a,
+body.v2 .site-header .header-carrito,
+body.v2 .site-header .selector-idioma button{transition:color .3s ease;}
+
+/* Web (ordenador): las páginas ocupan todo el ancho de la pantalla, sin
+   los márgenes laterales de .page (máx. 1400 px). El móvil no cambia. */
+@media (min-width:900px){
+  body.v2 .page{max-width:none;}
+}
+@media (min-width:900px){
+  /* FAQ: categorías en dos columnas, ocupando todo el ancho */
+  body.v2 .faq-rejilla{
+    display:grid; grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:24px 72px; padding:24px 48px 80px; align-items:start;
+  }
+  body.v2 .faq-rejilla .faq-categoria{max-width:none; margin:0; padding:24px 0 8px;}
+  body.v2 .faq-rejilla .faq-categoria-final{padding-bottom:8px; text-align:left;}
+
+  /* Cozumel (historia): capítulos a todo el ancho, foto a sangre en su mitad */
+  body.v2 .historia-hero,
+  body.v2 .qs-capitulo{
+    max-width:none; margin:0; padding:0; gap:0;
+    grid-template-columns:1fr 1fr; min-height:88vh;
+  }
+  body.v2 .historia-hero .qs-foto,
+  body.v2 .qs-capitulo .qs-foto{aspect-ratio:auto; height:100%; min-height:88vh; width:100%;}
+  body.v2 .historia-hero .qs-foto img,
+  body.v2 .qs-capitulo .qs-foto img{width:100%; height:100%; object-fit:cover;}
+  body.v2 .qs-hero-intro, body.v2 .qs-hero-resto{padding:0 8vw;}
+  body.v2 .qs-hero-intro{padding-top:12vh;}
+  body.v2 .qs-hero-resto{padding-bottom:12vh;}
+  body.v2 .qs-capitulo-texto{padding:10vh 8vw; max-width:none;}
+  body.v2 .qs-capitulo--invertido{grid-template-columns:1fr 1fr;}
+}
+
+/* Shop: colecciones MEN / WOMAN arriba a la izquierda */
+.v2-colecciones{display:flex; gap:28px; margin:0 0 24px;}
+.v2-colecciones a{
+  font-family:var(--font-sans); font-size:12px; font-weight:500; letter-spacing:.2em;
+  text-transform:uppercase; text-decoration:none; color:#8A8783; padding-bottom:6px;
+  border-bottom:1px solid transparent; transition:color .25s, border-color .25s;
+}
+.v2-colecciones a:hover{color:var(--v2-carbon);}
+.v2-colecciones a[aria-current="page"]{color:var(--v2-carbon); border-bottom-color:var(--v2-carbon);}
+@media (min-width:900px){ .v2-colecciones{margin-bottom:40px; gap:36px;} }
+/* MEN: tipos de pieza (Colgantes, Pulseras / Brazaletes, Anillos) */
+.v2-tipos{display:flex; flex-wrap:wrap; justify-content:center; gap:10px 22px; margin:0 0 26px;}
+.v2-tipos a{
+  font-family:var(--font-sans); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  text-decoration:none; color:#8A8783; padding-bottom:4px; border-bottom:1px solid transparent;
+  transition:color .25s, border-color .25s;
+}
+.v2-tipos a:hover{color:var(--v2-carbon);}
+.v2-tipos a[aria-current="page"]{color:var(--v2-carbon); border-bottom-color:var(--v2-carbon);}
+.v2-grid-vacio{
+  grid-column:1/-1; padding:48px 0; text-align:center; font-family:var(--font-sans);
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#8A8783;
+}
+@media (min-width:900px){ .v2-tipos{margin:0 0 40px; gap:12px 32px;} }
+
+/* ---------- STORIES: "Ver más" al pasar el cursor + visor a pantalla completa ---------- */
+.v2-stories-pista .v2-story{
+  position:relative; flex:0 0 46%; min-width:0; aspect-ratio:1/1;
+  padding:0; border:0; margin:0; background:#ddd; cursor:pointer; overflow:hidden;
+  scroll-snap-align:start;
+}
+.v2-stories-pista .v2-story img{
+  position:absolute; inset:0; flex:none; width:100%; height:100%; aspect-ratio:auto;
+  object-fit:cover; display:block;
+}
+.v2-story::after{
+  content:""; position:absolute; inset:0; background:rgba(15,15,14,.55);
+  opacity:0; transition:opacity .35s ease;
+}
+.v2-story-vermas{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:1;
+  font-family:var(--font-sans); font-size:13px; font-weight:500; letter-spacing:.08em;
+  text-transform:uppercase; color:#fff; padding-bottom:5px; border-bottom:1px solid #fff;
+  opacity:0; transition:opacity .35s ease; white-space:nowrap;
+}
+@media (hover:hover){
+  .v2-story:hover::after, .v2-story:focus-visible::after{opacity:1;}
+  .v2-story:hover .v2-story-vermas, .v2-story:focus-visible .v2-story-vermas{opacity:1;}
+}
+@media (min-width:900px){
+  .v2-stories-pista .v2-story{flex-basis:calc((100% - 5 * 2px) / 6);}
+}
+
+.v2-visor{
+  position:fixed; inset:0; z-index:200; background:rgba(12,12,11,.96);
+  display:flex; align-items:center; justify-content:center;
+}
+.v2-visor[hidden]{display:none;}
+.v2-visor img{max-width:min(92vw, 1100px); max-height:86vh; object-fit:contain; display:block; user-select:none;}
+.v2-visor button{
+  position:absolute; background:none; border:0; color:#fff; cursor:pointer;
+  font-family:var(--font-sans); width:56px; height:56px; font-size:28px; line-height:1;
+  opacity:.85;
+}
+.v2-visor button:hover{opacity:1;}
+.v2-visor-cerrar{top:12px; right:12px;}
+.v2-visor-ant{left:8px; top:50%; transform:translateY(-50%);}
+.v2-visor-sig{right:8px; top:50%; transform:translateY(-50%);}
+.v2-visor-contador{
+  position:absolute; bottom:22px; left:0; right:0; text-align:center; color:rgba(255,255,255,.75);
+  font-family:var(--font-sans); font-size:12px; letter-spacing:.2em;
+}
+body.v2-visor-abierto{overflow:hidden;}
+
+/* ---------- MEN: circulitos de acabado bajo la foto ---------- */
+.v2-tonos{display:flex; gap:10px; justify-content:center; margin-top:14px;}
+.v2-tono{
+  width:16px; height:16px; border-radius:50%; padding:0; cursor:pointer;
+  border:1px solid rgba(29,29,27,.25); box-shadow:inset 0 0 0 2px #fff;
+}
+.v2-tono--oro{background:linear-gradient(135deg,#E9CF8B,#B8913F);}
+.v2-tono--oro_blanco{background:linear-gradient(135deg,#F1F1EF,#B9BBBD);}
+.v2-tono--negro{background:linear-gradient(135deg,#3A3A38,#111);}
+.v2-tono[aria-pressed="true"]{border-color:var(--v2-carbon); outline:1px solid var(--v2-carbon); outline-offset:2px;}
+.v2-tono-nombre{
+  margin-top:8px; font-family:var(--font-sans); font-size:11px; letter-spacing:.08em; color:#55534F;
+}
+.v2-card--hombre .v2-card-nombre{margin-top:6px;}
+.v2-card--hombre .v2-card-media{background:var(--v2-crema-foto);}
+
+/* MEN: los colgantes se ven de cerca (zoom a la parte de abajo, donde
+   cae el colgante). Solo la portada; la foto puesta va entera. */
+.v2-card-media--cerca img:not(.v2-card-hover){transform:scale(1.7); transform-origin:50% 96%;}
+.v2-card--hombre a.v2-card-nombre{color:var(--v2-carbon); text-decoration:none;}
+
+/* ---------- MEN: página de la pieza (hombre.html) ----------
+   Móvil: carrusel con puntitos y la información debajo, centrada.
+   Ordenador: miniaturas | fotos grandes en columna | información fija. */
+.v2-pieza{padding:0 0 64px; color:var(--v2-carbon);}
+.v2-pieza-minis{display:none;}
+.v2-pieza-fotos{position:relative;}
+.v2-pieza-galeria{
+  display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.v2-pieza-galeria::-webkit-scrollbar{display:none;}
+.v2-pieza-foto{flex:0 0 100%; margin:0; scroll-snap-align:start; aspect-ratio:1/1; background:var(--v2-crema-foto);}
+.v2-pieza-foto img{display:block; width:100%; height:100%; object-fit:cover;}
+.v2-pieza-puntos{display:flex; justify-content:center; gap:10px; padding:18px 0 4px;}
+.v2-pieza-puntos span{width:6px; height:6px; border-radius:50%; background:#B9B6B1;}
+.v2-pieza-puntos span.activo{background:var(--v2-carbon);}
+.v2-pieza-info{padding:18px 20px 0; text-align:center;}
+.v2-pieza-nombre{
+  margin:0; font-family:var(--font-sans); font-size:16px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase;
+}
+.v2-pieza-tonos{display:flex; gap:14px; justify-content:center; margin-top:22px;}
+.v2-pieza-tonos .v2-tono{width:30px; height:30px; box-shadow:inset 0 0 0 3px #fff;}
+.v2-pieza-acabado{margin:10px 0 0; font-family:var(--font-sans); font-size:12px; letter-spacing:.08em; color:#55534F;}
+.v2-pieza-boton{
+  width:100%; margin-top:28px; padding:15px 20px; border:0; border-radius:2px;
+  background:var(--v2-carbon); color:#fff; font-family:var(--font-sans); font-size:13px;
+  letter-spacing:.14em; text-transform:uppercase;
+}
+.v2-pieza-boton:disabled{opacity:.55; cursor:not-allowed;}
+.v2-pieza-desplegables{margin-top:30px; text-align:left; border-top:1px solid #DEDAD3;}
+.v2-pieza-desplegable{border-bottom:1px solid #DEDAD3;}
+.v2-pieza-desplegable summary{
+  display:flex; justify-content:space-between; align-items:center; padding:20px 0; cursor:pointer;
+  list-style:none; font-family:var(--font-sans); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+}
+.v2-pieza-desplegable summary::-webkit-details-marker{display:none;}
+.v2-pieza-desplegable summary::after{content:"+"; font-size:18px; font-weight:300;}
+.v2-pieza-desplegable[open] summary::after{content:"−";}
+.v2-pieza-desplegable-cuerpo{padding:0 0 20px; font-family:var(--font-sans); font-size:13px; line-height:1.7; color:#55534F;}
+.v2-pieza-desplegable-cuerpo p{margin:0;}
+.v2-pieza-desplegable-cuerpo a{color:inherit;}
+@media (min-width:900px){
+  .v2-pieza{
+    display:grid; grid-template-columns:64px minmax(0,1fr) minmax(280px,360px);
+    gap:0 48px; align-items:start; padding:40px 48px 96px;
+  }
+  .v2-pieza-minis{
+    display:flex; flex-direction:column; gap:14px;
+    position:sticky; top:calc(var(--header-h) + 40px);
+  }
+  .v2-pieza-mini{padding:0; border:1px solid transparent; background:var(--v2-crema-foto); cursor:pointer; aspect-ratio:1/1;}
+  .v2-pieza-mini img{display:block; width:100%; height:100%; object-fit:cover;}
+  .v2-pieza-mini.activo{border-color:var(--v2-carbon);}
+  .v2-pieza-galeria{flex-direction:column; gap:28px; overflow:visible; scroll-snap-type:none;}
+  .v2-pieza-foto{scroll-margin-top:calc(var(--header-h) + 40px);}
+  .v2-pieza-puntos{display:none;}
+  .v2-pieza-info{position:sticky; top:calc(var(--header-h) + 40px); padding:10px 0 0; text-align:left;}
+  .v2-pieza-tonos{justify-content:flex-start;}
+}
+
+/* Pieza de hombre: scroll con las otras piezas del mismo tipo */
+.v2-pieza-mas{border-top:1px solid #DEDAD3; padding:40px 0 72px;}
+.v2-pieza-mas-fila{
+  display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding:0 20px; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+}
+.v2-pieza-mas-fila::-webkit-scrollbar{display:none;}
+.v2-pieza-mas-fila .v2-card{flex:0 0 64%; scroll-snap-align:start;}
+@media (min-width:900px){
+  .v2-pieza-mas{padding:56px 0 96px;}
+  .v2-pieza-mas-fila{gap:32px; padding:0 48px; scrollbar-width:thin;}
+  .v2-pieza-mas-fila .v2-card{flex-basis:calc((100% - 3 * 32px) / 4.3);}
+}
+
+/* ---------- Fondo blanco y fotos en crema (como Hanley) ----------
+   Cabecera, página y pie en blanco; solo el recuadro de cada foto lleva
+   un crema muy suave. multiply funde el blanco de las fotos de estudio
+   con ese crema sin tocar los archivos. */
+body.v2{background:#FFFFFF;}
+body.v2 footer{background:#FFFFFF; border-top:1px solid rgba(29,29,27,.08);}
+body.v2 .v2-card-media img:not(.v2-card-hover),
+body.v2 .v2-pieza-foto img,
+body.v2 .v2-pieza-mini img{mix-blend-mode:multiply;}
+
+/* ---------- STORIES en el móvil: rejilla de 2 columnas (como Hanley) ----------
+   Sin scroll lateral ni separación; "Ver más" fijo en la tercera foto
+   para que se entienda que se abren. En el ordenador sigue la tira. */
+@media (max-width:899px){
+  .v2-stories-pista{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:0; overflow:visible; scroll-snap-type:none;}
+  .v2-stories-pista .v2-story{width:100%;}
+  .v2-stories-pista .v2-story:nth-child(3) .v2-story-vermas{opacity:1;}
+}
+
+/* Pie: "Cozumel" con la misma letra que el logo de arriba */
+body.v2 .footer-marca{
+  font-family:var(--font-sans); font-weight:500;
+  font-size:28px; letter-spacing:.16em; text-transform:uppercase; color:var(--v2-carbon);
+}
+@media (min-width:900px){ body.v2 .footer-marca{font-size:38px;} }
+
+/* =========================================================
+   ESTÉTICA FINAL COZUMEL (10/2026): joyería masculina, limpia, cálida
+   Tokens únicos para toda la web: mismos colores, tipografías,
+   espaciados y botones en todas las páginas.
+   Marfil #F8F6F1 · verde petróleo #173634 · gris #62625F
+   líneas #DCD8D1 · fondo de foto #F1F1EF · oro #C4A15A (solo detalles)
+   Cormorant Garamond solo para el logo; Inter para todo lo demás.
+   ========================================================= */
+body.v2{
+  --c-fondo:#F8F6F1;
+  --c-texto:#173634;
+  --c-texto-2:#62625F;
+  --c-linea:#DCD8D1;
+  --c-foto:#F1F1EF;
+  --c-oro:#C4A15A;
+  --c-boton-hover:#24504D;
+  --pad-lateral:20px;
+  --ancho-max:1400px;
+
+  /* Tipografías: dos familias en toda la web */
+  --font-serif:'Cormorant Garamond', Georgia, serif;
+  --font-sans:'Inter', system-ui, -apple-system, sans-serif;
+  --font-historia:var(--font-sans);
+
+  /* Los tokens antiguos apuntan a los nuevos (páginas heredadas) */
+  --background:var(--c-fondo);
+  --foreground:var(--c-texto);
+  --ink:var(--c-texto);
+  --deep:var(--c-texto);
+  --ink-soft:var(--c-texto-2);
+  --muted:var(--c-texto-2);
+  --border:var(--c-linea);
+  --line-1:var(--c-linea); --line-2:var(--c-linea); --line-3:var(--c-linea);
+  --accent:var(--c-texto);
+  --foam:var(--c-fondo);
+  --v2-carbon:var(--c-texto);
+  --v2-marfil:var(--c-fondo);
+  --v2-crema-foto:var(--c-foto);
+
+  background:var(--c-fondo); color:var(--c-texto);
+  font-family:var(--font-sans); font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  --header-h:60px;
+}
+@media (min-width:900px){ body.v2{--header-h:72px; --pad-lateral:48px;} }
+body.v2 .v2-shop, body.v2 .v2-drop, body.v2 .v2-stories, body.v2 .v2-pieza-mas{background:transparent;}
+
+/* ---------- Ancho: centrado, máx. 1400 px en el ordenador ---------- */
+@media (min-width:900px){
+  body.v2 .page{max-width:var(--ancho-max); margin-left:auto; margin-right:auto;}
+}
+
+/* ---------- Cabecera: limpia, compacta, sin sombras ---------- */
+body.v2:not([data-page="inicio"]) .site-header,
+body.v2[data-page="inicio"] .site-header.scrolled{
+  background:var(--c-fondo); border-bottom:1px solid var(--c-linea); box-shadow:none;
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+}
+@media (hover:hover){
+  body.v2[data-page="inicio"] .site-header:hover,
+  body.v2[data-page="inicio"] .site-header:focus-within{background-color:var(--c-fondo); border-bottom-color:var(--c-linea);}
+}
+body.v2 .site-header .logo{display:flex; flex-direction:column; align-items:center; text-decoration:none;}
+body.v2 .site-header .logo-name{
+  font-family:var(--font-serif); font-weight:500;
+  font-size:32px; line-height:1; letter-spacing:.14em; margin-right:-.14em;
+}
+/* "JEWELRY" muy pequeño debajo, con mucho tracking */
+body.v2 .site-header .logo::after{
+  content:"Jewelry"; display:block; margin-top:4px; margin-right:-.42em;
+  font-family:var(--font-sans); font-size:7.5px; font-weight:400;
+  letter-spacing:.42em; text-transform:uppercase; color:var(--c-texto);
+}
+/* Sobre la foto de la portada, en blanco como el logo */
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo::after{color:var(--v2-blanco);}
+@media (hover:hover){
+  body.v2[data-page="inicio"] .site-header:hover .logo::after,
+  body.v2[data-page="inicio"] .site-header:focus-within .logo::after{color:var(--c-texto);}
+}
+@media (min-width:900px){
+  body.v2 .site-header .logo-name{font-size:40px;}
+  body.v2 .site-header .logo::after{font-size:9px; margin-top:5px;}
+  body.v2 .site-header .header-inner{padding:0 var(--pad-lateral);}
+  body.v2 .site-header .nav a{font-family:var(--font-sans); font-size:11px; font-weight:400; letter-spacing:.16em;}
+}
+body.v2 .header-carrito svg{stroke-width:1.2;}
+
+/* ---------- Menú móvil ---------- */
+body.v2 .menu-movil{background:rgba(23,54,52,.28);}
+body.v2 .menu-movil-caja{background:var(--c-fondo);}
+body.v2 .menu-movil-marca{font-family:var(--font-serif); font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .menu-movil-nav a{font-family:var(--font-sans); font-size:13px; font-weight:400; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+
+/* ---------- Foto de producto: cuadrado gris claro, sin borde ---------- */
+body.v2 .v2-card-media,
+body.v2 .v2-pieza-foto,
+body.v2 .v2-pieza-mini{background:var(--c-foto);}
+body.v2 .v2-card-media img{transition:transform .3s ease, opacity .45s ease;}
+/* Los colgantes, de cerca pero sin pasarse */
+body.v2 .v2-card-media--cerca img:not(.v2-card-hover){transform:scale(1.35); transform-origin:50% 92%;}
+@media (hover:hover){
+  body.v2 .v2-card:hover .v2-card-media img{transform:scale(1.015);}
+  body.v2 .v2-card:hover .v2-card-media--cerca img:not(.v2-card-hover){transform:scale(1.37);}
+}
+
+/* ---------- Rejilla: mucho aire ---------- */
+body.v2 .v2-shop{padding:28px var(--pad-lateral) 72px;}
+body.v2 .v2-grid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:44px 14px;}
+@media (min-width:600px){ body.v2 .v2-grid{grid-template-columns:repeat(3, minmax(0,1fr)); gap:52px 24px;} }
+@media (min-width:1100px){ body.v2 .v2-grid{grid-template-columns:repeat(4, minmax(0,1fr)); gap:56px 28px;} }
+
+/* ---------- Tarjeta: foto · nombre · precio · variantes ---------- */
+body.v2 .v2-card{color:var(--c-texto);}
+body.v2 .v2-card-nombre, body.v2 .v2-drop-nombre{
+  margin-top:16px; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto); text-decoration:none; line-height:1.4;
+}
+body.v2 .v2-card-precio, body.v2 .v2-drop-precio{
+  margin-top:6px; font-family:var(--font-sans); font-size:13px; font-weight:400;
+  letter-spacing:.04em; color:var(--c-texto);
+}
+body.v2 .v2-card-precio s, body.v2 .v2-drop-precio s{font-size:11px; color:var(--c-texto-2); margin-left:6px;}
+@media (min-width:900px){
+  body.v2 .v2-card-nombre, body.v2 .v2-drop-nombre{font-size:12px; margin-top:18px;}
+  body.v2 .v2-card-precio, body.v2 .v2-drop-precio{font-size:14px;}
+}
+/* Variantes: círculos de 18 px, aro fino en la activa */
+body.v2 .v2-tonos{gap:12px; margin-top:12px;}
+body.v2 .v2-tono{width:18px; height:18px; border:0; box-shadow:none; outline:none; transition:box-shadow .25s ease;}
+body.v2 .v2-tono[aria-pressed="true"]{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto); outline:none;}
+body.v2 .v2-tono:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-oro);}
+body.v2 .v2-tono[aria-pressed="true"]:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-tono--oro{background:linear-gradient(135deg,#E2C98A,#B8944A);}
+body.v2 .v2-tono--oro_blanco{background:linear-gradient(135deg,#F4F4F2,#BDBFC0);}
+body.v2 .v2-tono--negro{background:linear-gradient(135deg,#3A3A38,#121212);}
+body.v2 .v2-tono-nombre{display:none;}
+body.v2 .v2-card--hombre .v2-card-nombre{margin-top:16px;}
+@media (min-width:900px){ body.v2 .v2-card--hombre .v2-card-nombre{margin-top:18px;} }
+
+/* Tipos de pieza (Colgantes · Pulseras · Anillos) */
+body.v2 .v2-tipos a{font-family:var(--font-sans); font-size:11px; font-weight:400; letter-spacing:.14em; color:var(--c-texto-2);}
+body.v2 .v2-tipos a:hover{color:var(--c-texto);}
+body.v2 .v2-tipos a[aria-current="page"]{color:var(--c-texto); border-bottom-color:var(--c-oro);}
+/* En el móvil caben los tres en una línea */
+@media (max-width:599px){
+  body.v2 .v2-tipos{flex-wrap:nowrap; gap:16px; justify-content:center;}
+  body.v2 .v2-tipos a{font-size:10px; letter-spacing:.1em; white-space:nowrap;}
+}
+
+/* ---------- Portada: productos en scroll ---------- */
+body.v2 .v2-drop{padding:48px 0 56px;}
+body.v2 .v2-drop-pista{gap:14px; padding:0 var(--pad-lateral); scroll-padding-inline:var(--pad-lateral);}
+body.v2 .v2-drop-pista .v2-card{flex:0 0 64%; min-width:0; scroll-snap-align:start;}
+@media (min-width:900px){
+  body.v2 .v2-drop{padding:72px 0 88px;}
+  body.v2 .v2-drop-pista{gap:28px; max-width:var(--ancho-max); margin:0 auto;}
+  body.v2 .v2-drop-pista .v2-card{flex-basis:calc((100% - 3 * 28px) / 4.25);}
+}
+
+/* ---------- Botones: verde petróleo, rectos ---------- */
+body.v2 .v2-pieza-boton{
+  background:var(--c-texto); color:var(--c-fondo); border:0; border-radius:2px; box-shadow:none;
+  font-family:var(--font-sans); font-size:12px; font-weight:400; letter-spacing:.14em; text-transform:uppercase;
+  transition:background .3s ease;
+}
+body.v2 .v2-pieza-boton:not(:disabled):hover{background:var(--c-boton-hover);}
+body.v2 .hero-v2-cta{border-radius:2px; color:var(--c-texto); font-family:var(--font-sans); font-size:12px; letter-spacing:.24em;}
+body.v2 .hero-v2-cta:hover{background:var(--c-texto); color:var(--c-fondo);}
+body.v2 .hero-v2-kicker, body.v2 .hero-v2-titulo{font-family:var(--font-sans);}
+body.v2 .hero-v2-titulo{font-weight:300;}
+
+/* ---------- Ficha de pieza ---------- */
+body.v2 .v2-pieza{color:var(--c-texto);}
+body.v2 .v2-pieza-info{padding-left:var(--pad-lateral); padding-right:var(--pad-lateral);}
+body.v2 .v2-pieza-nombre{font-family:var(--font-sans); font-size:14px; font-weight:400; letter-spacing:.14em; color:var(--c-texto);}
+body.v2 .v2-pieza-tonos{gap:14px; margin-top:22px;}
+body.v2 .v2-pieza-tonos .v2-tono{width:20px; height:20px;}
+body.v2 .v2-pieza-tonos .v2-tono[aria-pressed="true"]{box-shadow:0 0 0 3px var(--c-fondo), 0 0 0 4px var(--c-texto);}
+body.v2 .v2-pieza-acabado{font-size:12px; letter-spacing:.06em; color:var(--c-texto-2);}
+body.v2 .v2-pieza-boton{padding:16px 20px; margin-top:28px;}
+body.v2 .v2-pieza-puntos span{background:var(--c-linea);}
+body.v2 .v2-pieza-puntos span.activo{background:var(--c-texto);}
+body.v2 .v2-pieza-mini.activo{border-color:var(--c-texto);}
+body.v2 .v2-pieza-mas{border-top:1px solid var(--c-linea);}
+body.v2 .v2-pieza-mas-fila{padding:0 var(--pad-lateral);}
+/* Acordeones como Hanley: líneas finas, texto pequeño, + a la derecha */
+body.v2 .v2-pieza-desplegables{border-top:1px solid var(--c-linea); margin-top:32px;}
+body.v2 .v2-pieza-desplegable{border-bottom:1px solid var(--c-linea);}
+body.v2 .v2-pieza-desplegable summary{
+  min-height:60px; padding:0; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.16em; color:var(--c-texto);
+}
+body.v2 .v2-pieza-desplegable summary::after{font-size:18px; font-weight:300; color:var(--c-texto);}
+body.v2 .v2-pieza-desplegable-cuerpo{font-family:var(--font-sans); font-size:13px; line-height:1.7; color:var(--c-texto-2); padding-bottom:22px;}
+@media (min-width:900px){
+  body.v2 .v2-pieza{max-width:var(--ancho-max); margin:0 auto; padding-left:var(--pad-lateral); padding-right:var(--pad-lateral);}
+  body.v2 .v2-pieza-info{padding-left:0; padding-right:0;}
+  body.v2 .v2-pieza-desplegable summary{min-height:68px;}
+  body.v2 .v2-pieza-nombre{font-size:15px;}
+}
+
+/* ---------- Newsletter: silenciosa y editorial ---------- */
+body.v2 .v2-news{padding:88px var(--pad-lateral) 96px; text-align:center; background:var(--c-fondo); color:var(--c-texto);}
+body.v2 .v2-news-linea{display:block; width:40px; height:1px; margin:0 auto 32px; background:var(--c-texto); opacity:.6;}
+body.v2 .v2-news-texto{
+  max-width:520px; margin:0 auto; font-family:var(--font-sans); font-size:12px; font-weight:400;
+  line-height:2; letter-spacing:.2em; text-transform:uppercase;
+}
+body.v2 .v2-news-form{max-width:480px; margin:40px auto 0;}
+body.v2 .v2-news-campo{display:flex; align-items:center; border-bottom:1px solid var(--c-texto);}
+body.v2 .v2-news-campo input{
+  flex:1; min-width:0; padding:14px 0; border:0; background:transparent; outline:none;
+  font-family:var(--font-sans); font-size:14px; letter-spacing:.04em; color:var(--c-texto); border-radius:0;
+}
+body.v2 .v2-news-campo input::placeholder{color:var(--c-texto-2);}
+body.v2 .v2-news-campo button{padding:10px 0 10px 16px; border:0; background:none; color:var(--c-texto); cursor:pointer; transition:color .25s ease;}
+body.v2 .v2-news-campo button:hover{color:var(--c-oro);}
+body.v2 .v2-news-legal{margin:14px 0 0; font-size:11px; color:var(--c-texto-2); letter-spacing:.02em;}
+body.v2 .v2-news-legal a{color:inherit;}
+body.v2 .v2-news-aviso{margin:10px 0 0; min-height:1em; font-size:12px; color:var(--c-texto);}
+@media (min-width:900px){ body.v2 .v2-news{padding:120px var(--pad-lateral) 128px;} body.v2 .v2-news-texto{font-size:13px;} }
+
+/* ---------- Pie minimalista ---------- */
+body.v2 footer{padding:64px var(--pad-lateral) 48px; background:var(--c-fondo); border-top:1px solid var(--c-linea); color:var(--c-texto-2);}
+body.v2 .footer-marca{
+  font-family:var(--font-serif); font-weight:500; font-size:28px; letter-spacing:.14em;
+  margin-right:-.14em; color:var(--c-texto);
+}
+@media (min-width:900px){ body.v2 .footer-marca{font-size:34px;} }
+body.v2 .footer-nav{gap:10px 28px; margin:28px 0 36px; padding-bottom:36px; border-bottom:1px solid var(--c-linea);}
+body.v2 .footer-nav a{font-family:var(--font-sans); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .footer-nav a:hover{color:var(--c-texto-2);}
+body.v2 .footer-grupo-titulo{font-size:10px; letter-spacing:.18em; color:var(--c-texto-2);}
+body.v2 .footer-item{font-size:12px; color:var(--c-texto-2); text-decoration:none;}
+body.v2 .footer-item:hover{color:var(--c-texto);}
+body.v2 .footer-olas{display:none;}
+
+/* ---------- Sin sombras de interfaz ni tarjetas redondeadas ---------- */
+body.v2 .v2-card, body.v2 .v2-card-media, body.v2 .v2-pieza-foto{box-shadow:none; border-radius:0;}
+
+/* Compra: mismos fondos y botones que el resto (sin turquesa ni oro de fondo) */
+body.v2 .reserva{background:var(--c-fondo);}
+body.v2 .compra-sorteo{background:transparent; border:1px solid var(--c-linea); border-radius:0;}
+body.v2 .carrito-anadir-mas{background:transparent; border:1px solid var(--c-linea); border-radius:2px; color:var(--c-texto);}
+
+/* Los carruseles recortan lo que sobresale: margen para el aro del círculo activo */
+body.v2 .v2-drop-pista, body.v2 .v2-pieza-mas-fila{padding-top:4px; padding-bottom:8px;}
+
+/* ---------- Flechas de los carruseles: solo en el ordenador ---------- */
+.v2-carrusel-caja{position:relative;}
+.v2-flecha{display:none;}
+@media (min-width:900px) and (hover:hover){
+  .v2-flecha{
+    display:flex; align-items:center; justify-content:center;
+    position:absolute; top:calc(50% - 40px); transform:translateY(-50%); z-index:2;
+    width:44px; height:44px; padding:0; border:0; border-radius:50%; cursor:pointer;
+    background:rgba(248,246,241,.92); color:var(--c-texto);
+    transition:background .25s ease, color .25s ease;
+  }
+  .v2-flecha:hover{background:var(--c-texto); color:var(--c-fondo);}
+  .v2-flecha[hidden]{display:none;}
+  .v2-flecha--izq{left:16px;}
+  .v2-flecha--der{right:16px;}
+}
+
+/* ---------- Zoom de fotos en el móvil: en la propia foto ----------
+   Lo gestiona script.js: toque para ampliar y arrastrar, otro para
+   volver. Ampliada, la galería no se desliza. */
+@media (max-width:899px){
+  body.v2 .v2-pieza-foto{overflow:hidden; cursor:zoom-in;}
+  body.v2 .v2-pieza-foto.ampliada{cursor:zoom-out; touch-action:none;}
+  body.v2 .v2-pieza-galeria.con-zoom{overflow-x:hidden; touch-action:none;}
+  body.v2 .v2-pieza-foto img{will-change:transform;}
+}
+
+/* ---------- Ficha: variantes con la foto de la pieza en cada color ----------
+   Círculos con la foto de producto (fondo gris de foto); el activo lleva
+   un aro fino. En el móvil, alineados a la izquierda como en Hanley. */
+body.v2 .v2-pieza-tonos .v2-variante{
+  width:52px; height:52px; padding:0; overflow:hidden; border-radius:50%;
+  background:var(--c-foto); box-shadow:none; transition:box-shadow .25s ease;
+}
+body.v2 .v2-pieza-tonos .v2-variante img{display:block; width:100%; height:100%; object-fit:cover; mix-blend-mode:multiply; transform:scale(1.15);}
+body.v2 .v2-pieza-tonos .v2-variante[aria-pressed="true"]{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-pieza-tonos .v2-variante:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-oro);}
+body.v2 .v2-pieza-tonos .v2-variante[aria-pressed="true"]:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-pieza-tonos{gap:10px; margin-top:24px;}
+@media (max-width:899px){ body.v2 .v2-pieza-tonos{justify-content:flex-start;} }
+@media (min-width:900px){ body.v2 .v2-pieza-tonos .v2-variante{width:56px; height:56px;} }
+
+/* Lupa en la esquina de la foto (móvil): avisa de que se puede ampliar */
+.v2-pieza-lupa{display:none;}
+@media (max-width:899px){
+  .v2-pieza-lupa{
+    display:flex; align-items:center; justify-content:center; pointer-events:none;
+    position:absolute; top:14px; right:14px; z-index:1; width:40px; height:40px; border-radius:50%;
+    background:rgba(248,246,241,.92); color:var(--c-texto);
+  }
+}
+/* La foto de cada círculo ya dice el color: sin el nombre debajo */
+body.v2 .v2-pieza-acabado{display:none;}
+/* El zoom de cada círculo coloca la foto dentro (script.js) */
+body.v2 .v2-pieza-tonos .v2-variante{position:relative;}
+
+/* ---------- Tarjetas: círculos de color con la pieza de cerca ----------
+   Igual que en la ficha, más pequeños. */
+body.v2 .v2-tonos .v2-variante{
+  position:relative; width:30px; height:30px; padding:0; overflow:hidden; border-radius:50%;
+  background:var(--c-foto); box-shadow:none;
+}
+body.v2 .v2-tonos .v2-variante img{display:block; mix-blend-mode:multiply;}
+body.v2 .v2-tonos .v2-variante[aria-pressed="true"]{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-tonos .v2-variante:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-oro);}
+body.v2 .v2-tonos .v2-variante[aria-pressed="true"]:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-tonos{gap:10px;}
+@media (min-width:900px){ body.v2 .v2-tonos .v2-variante{width:34px; height:34px;} }
+
+/* Pie: pequeña bandera de México bajo COZUMEL (verde, blanco, rojo) */
+body.v2 .footer-marca{display:inline-flex; flex-direction:column; align-items:center;}
+body.v2 .footer-marca::after{
+  content:""; display:block; width:27px; height:18px; margin-top:14px; margin-left:-.14em;
+  background:linear-gradient(to right, #006847 0 33.33%, #FFFFFF 33.33% 66.66%, #CE1126 66.66% 100%);
+  box-shadow:0 0 0 1px var(--c-linea);
+}
+
+/* ---------- Ficha: charm de regalo (cadenas sin colgante) ----------
+   Desplegable tras Envío. Círculos como los de color; "—" = sin charm. */
+body.v2 .v2-charm summary{gap:12px;}
+body.v2 .v2-charm-titulo em{font-style:normal; color:var(--c-oro); margin-left:6px;}
+body.v2 .v2-charm-elegido{margin-left:auto; margin-right:12px; font-size:11px; letter-spacing:.06em; text-transform:none; color:var(--c-texto-2);}
+body.v2 .v2-charm-rejilla{display:flex; flex-wrap:wrap; gap:12px; padding-top:2px;}
+body.v2 .v2-charm-grupo{
+  flex-basis:100%; margin-top:8px; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--c-texto-2);
+}
+body.v2 .v2-charm-opcion{padding:0; border:0; background:none; cursor:pointer;}
+body.v2 .v2-charm-circulo{
+  display:flex; align-items:center; justify-content:center; width:48px; height:48px; overflow:hidden;
+  border-radius:50%; background:var(--c-foto); color:var(--c-texto);
+  font-family:var(--font-serif); font-size:17px; transition:box-shadow .25s ease;
+}
+body.v2 .v2-charm-circulo img{width:100%; height:100%; object-fit:cover; mix-blend-mode:multiply;}
+body.v2 .v2-charm-opcion:hover .v2-charm-circulo{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-oro);}
+body.v2 .v2-charm-opcion[aria-pressed="true"] .v2-charm-circulo{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
+body.v2 .v2-charm-nombre{margin:16px 0 0; font-size:12px; letter-spacing:.06em; color:var(--c-texto);}
+/* Las fotos de los charms tienen mucho aire: se amplían para llenar el círculo */
+body.v2 .v2-charm-circulo img{transform:scale(1.9);}
+/* Las placas son más grandes: menos zoom para que se vean enteras */
+body.v2 .v2-charm-opcion[data-charm^="charm_"] .v2-charm-circulo img{transform:scale(1.35);}
+/* Título en una línea; el charm elegido se recorta con "…" si no cabe */
+body.v2 .v2-charm-titulo{white-space:nowrap;}
+body.v2 .v2-charm-elegido{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:right;}
+
+/* Foto grande del charm elegido: cuadrado gris como las de producto.
+   En el móvil se amplía tocándola (mismo zoom que la galería). */
+body.v2 .v2-charm-vista{margin-top:16px; max-width:320px;}
+body.v2 .v2-charm-vista[hidden]{display:none;}
+body.v2 .v2-charm-foto{margin:0; aspect-ratio:1/1; overflow:hidden; background:var(--c-foto);}
+body.v2 .v2-charm-foto img{display:block; width:100%; height:100%; object-fit:cover; mix-blend-mode:multiply;}
+@media (max-width:899px){ body.v2 .v2-charm-vista{max-width:none;} }
+
+/* ---------- Lupa de las tarjetas + visor macro ----------
+   La lupa va en la esquina inferior derecha de la foto: aparece al pasar
+   el cursor (ordenador) y está siempre visible en pantallas táctiles. */
+.v2-card-marco{position:relative; width:100%;}
+.v2-card-lupa{
+  position:absolute; right:10px; bottom:10px; z-index:2;
+  display:flex; align-items:center; justify-content:center;
+  width:34px; height:34px; padding:0; border:0; border-radius:50%; cursor:zoom-in;
+  background:rgba(248,246,241,.92); color:var(--c-texto, #173634);
+  opacity:0; transition:opacity .25s ease, background .25s ease;
+}
+.v2-card-lupa[hidden]{display:none;}
+.v2-card-marco:hover .v2-card-lupa, .v2-card-lupa:focus-visible{opacity:1;}
+.v2-card-lupa:hover{background:#FFFFFF;}
+.v2-card-lupa:focus-visible{outline:1px solid var(--c-texto, #173634); outline-offset:2px;}
+@media (hover:none){ .v2-card-lupa{opacity:1;} }
+
+.v2-macro{
+  position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center;
+  padding:64px 72px; background:var(--c-fondo, #F8F6F1); color:var(--c-texto, #173634);
+  animation:v2-macro-entra .25s ease;
+}
+@keyframes v2-macro-entra{from{opacity:0;} to{opacity:1;}}
+.v2-macro-marco{
+  position:relative; width:min(78vh, 100%); max-height:100%; aspect-ratio:3/4; overflow:hidden;
+  background:var(--c-foto, #F1F1EF);
+}
+.v2-macro-marco img{
+  display:block; width:100%; height:100%; object-fit:cover; cursor:zoom-in;
+  transition:transform .35s ease;
+}
+.v2-macro-marco.ampliada img{transform:scale(2.2); cursor:zoom-out; transition:transform .35s ease, transform-origin 0s;}
+.v2-macro-titulo{
+  position:absolute; left:0; right:0; bottom:22px; margin:0; text-align:center;
+  font-family:var(--font-sans); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+}
+.v2-macro-contador{
+  position:absolute; left:0; right:0; top:26px; margin:0; text-align:center;
+  font-family:var(--font-sans); font-size:11px; letter-spacing:.12em; color:var(--c-texto-2, #62625F);
+}
+.v2-macro-cerrar, .v2-macro-flecha{
+  position:absolute; display:flex; align-items:center; justify-content:center;
+  width:44px; height:44px; padding:0; border:0; border-radius:50%; cursor:pointer;
+  background:transparent; color:inherit; transition:background .25s ease;
+}
+.v2-macro-cerrar:hover, .v2-macro-flecha:hover{background:rgba(23,54,52,.06);}
+.v2-macro-cerrar:focus-visible, .v2-macro-flecha:focus-visible{outline:1px solid currentColor; outline-offset:2px;}
+.v2-macro-cerrar{top:14px; right:14px;}
+.v2-macro-flecha{top:50%; transform:translateY(-50%);}
+.v2-macro-flecha--izq{left:14px;}
+.v2-macro-flecha--der{right:14px;}
+body.v2-macro-abierto{overflow:hidden;}
+@media (max-width:899px){
+  .v2-macro{padding:64px 0 56px;}
+  .v2-macro-marco{width:100%;}
+  .v2-macro-marco.ampliada img{touch-action:none;}
+  .v2-macro-flecha{top:auto; bottom:8px; transform:none;}
+}
+@media (prefers-reduced-motion: reduce){ .v2-macro{animation:none;} .v2-macro-marco img{transition:none;} }
+
+/* ---------- Visor macro: ajustes para móvil (mismo componente) ----------
+   Lupa: se ve igual de discreta (círculo de 32 px) pero la zona táctil es
+   de 44 × 44 px. El visor ocupa la pantalla, respeta las zonas seguras del
+   teléfono y la foto se ve entera, con sus proporciones. */
+.v2-card-lupa{
+  right:5px; bottom:5px; width:44px; height:44px;
+  background:radial-gradient(circle, rgba(248,246,241,.88) 0 16px, transparent 16.5px);
+}
+.v2-card-lupa:hover{background:radial-gradient(circle, #FFFFFF 0 16px, transparent 16.5px);}
+.v2-card-lupa svg{width:15px; height:15px;}
+.v2-macro-marco img{object-fit:contain; opacity:0; transition:opacity .3s ease, transform .35s ease;}
+.v2-macro-marco img.cargada{opacity:1;}
+.v2-macro-marco{touch-action:none;}
+@media (max-width:899px){
+  .v2-macro{
+    padding:calc(56px + env(safe-area-inset-top, 0px)) env(safe-area-inset-right, 0px)
+            calc(64px + env(safe-area-inset-bottom, 0px)) env(safe-area-inset-left, 0px);
+  }
+  .v2-macro-marco{width:100%; height:100%; aspect-ratio:auto;}
+  .v2-macro-cerrar{top:calc(6px + env(safe-area-inset-top, 0px)); right:calc(6px + env(safe-area-inset-right, 0px)); width:48px; height:48px;}
+  .v2-macro-contador{top:calc(22px + env(safe-area-inset-top, 0px));}
+  .v2-macro-titulo{bottom:calc(22px + env(safe-area-inset-bottom, 0px));}
+  .v2-macro-flecha{bottom:calc(8px + env(safe-area-inset-bottom, 0px));}
+}
+/* La foto se ve entera (contain): sin franjas grises, directamente sobre el marfil */
+.v2-macro-marco{background:transparent;}
+
+/* Charm de regalo: justo debajo del botón de compra, con "GRATIS" bien visible */
+body.v2 .v2-pieza-info > .v2-charm{margin-top:18px; border-top:1px solid var(--c-linea); border-bottom:1px solid var(--c-linea);}
+body.v2 .v2-charm-titulo .v2-charm-gratis{
+  display:inline-block; margin-left:10px; padding:4px 9px 3px; border-radius:2px;
+  background:var(--c-oro); color:#FFFFFF; font-style:normal; font-size:10px;
+  font-weight:500; letter-spacing:.16em; line-height:1; vertical-align:1px;
+}
+body.v2 .v2-pieza-info > .v2-charm + .v2-pieza-desplegables{margin-top:0; border-top:0;}
+
+/* ---------- Mismo fondo gris en todas las fotos de producto ----------
+   La ficha de mujer pinta las fotos como fondo (--foto): multiply las
+   funde con el gris de las cajas de foto, igual que en hombre, sin tocar
+   los archivos. En el ordenador también las miniaturas. */
+body.v2 .galeria-foto.con-foto{background-color:var(--c-foto); background-blend-mode:multiply;}
+@media (min-width:900px){
+  body.v2 .galeria-punto{background-color:var(--c-foto); background-blend-mode:multiply;}
+}
+
+/* ---------- Ficha MEN: talla / largo / grosor / ancho ----------
+   Botones rectangulares finos (como Hanley), el elegido relleno en verde
+   petróleo; debajo, la medida fija de la pieza en gris. */
+body.v2 .v2-pieza-medidas{margin-top:26px;}
+body.v2 .v2-pieza-opcion-titulo{display:flex; justify-content:space-between; gap:12px; margin:0 0 10px;
+  font-family:var(--font-sans); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .v2-pieza-opcion-elegida{letter-spacing:.06em; text-transform:none; color:var(--c-texto-2);}
+body.v2 .v2-pieza-opciones{display:flex; flex-wrap:wrap; gap:8px;}
+body.v2 .v2-pieza-opcion{flex:1 1 0; min-width:64px; min-height:44px; padding:8px 10px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:2px; background:transparent; border:1px solid var(--c-linea);
+  color:var(--c-texto); font-family:var(--font-sans); font-size:13px; letter-spacing:.04em; cursor:pointer;
+  transition:border-color .2s ease, background .2s ease, color .2s ease;}
+body.v2 .v2-pieza-opcion small{font-size:10.5px; color:var(--c-texto-2); letter-spacing:.04em;}
+body.v2 .v2-pieza-opcion:hover{border-color:var(--c-texto);}
+body.v2 .v2-pieza-opcion[aria-pressed="true"]{background:var(--c-texto); border-color:var(--c-texto); color:var(--c-fondo);}
+body.v2 .v2-pieza-opcion[aria-pressed="true"] small{color:rgba(248,246,241,.75);}
+body.v2 .v2-pieza-opcion:focus-visible{outline:2px solid var(--c-oro); outline-offset:2px;}
+body.v2 .v2-pieza-medida{margin:10px 0 0; font-family:var(--font-sans); font-size:12px; letter-spacing:.03em; color:var(--c-texto-2);}
+body.v2 .v2-pieza-opcion-bloque + .v2-pieza-opcion-bloque{margin-top:18px;}
+
+/* Grupos de charms plegados (números, letras, circonitas): una línea fina
+   con +/−; al abrirse, sus círculos como el resto. */
+body.v2 .v2-charm .v2-charm-plegable{flex-basis:100%; border-top:1px solid var(--c-linea);}
+body.v2 .v2-charm .v2-charm-plegable{border-bottom:0; padding:0;}
+body.v2 .v2-charm .v2-charm-plegable:last-child{border-bottom:1px solid var(--c-linea);}
+body.v2 .v2-charm .v2-charm-plegable > summary{
+  min-height:44px; margin:0; padding:0; display:flex; align-items:center; justify-content:space-between;
+  font-size:10px; letter-spacing:.18em; color:var(--c-texto-2);
+}
+body.v2 .v2-charm .v2-charm-plegable > summary::after{content:"+"; font-size:15px; color:var(--c-texto);}
+body.v2 .v2-charm .v2-charm-plegable[open] > summary::after{content:"−";}
+body.v2 .v2-charm-sub{display:flex; flex-wrap:wrap; gap:12px; padding:4px 0 16px;}
+/* Números y letras ocupan casi toda su foto: sin zoom (si no, se cortan);
+   tampoco las circonitas. */
+body.v2 .v2-charm-opcion[data-charm^="numero_"] .v2-charm-circulo img{transform:scale(1); object-fit:contain;}
+body.v2 .v2-charm-opcion[data-charm^="letra_"] .v2-charm-circulo img{transform:scale(1.15); object-fit:contain;}
+body.v2 .v2-charm-opcion[data-charm^="circonita_"] .v2-charm-circulo img{transform:scale(1); object-fit:contain;}
+
+/* Precio en la ficha de hombre, bajo el nombre (como en la de mujer). */
+body.v2 .v2-pieza-precio{margin:10px 0 0; font-family:var(--font-sans); font-size:14px; letter-spacing:.06em; color:var(--c-texto);}
+body.v2 .v2-card--hombre .v2-card-precio{display:block; text-align:center; margin-top:4px;}
+
+/* Ficha de hombre: mismas condiciones que la de mujer (edición limitada,
+   material del acabado y envío incluido), en la estética nueva. */
+body.v2 .v2-pieza-condiciones{margin:6px 0 0; font-family:var(--font-sans); font-size:12px; letter-spacing:.04em; color:var(--c-texto-2);}
+body.v2 .v2-pieza-desplegable-cuerpo ul{margin:8px 0 10px; padding-left:18px;}
+body.v2 .v2-pieza-desplegable-cuerpo p + p{margin-top:8px;}
+
+/* =========================================================
+   FICHA DE MUJER CON EL DISEÑO DE LA DE HOMBRE (14/10/2026)
+   Mismo esquema que hombre.html: en el ordenador, miniaturas a la
+   izquierda, fotos grandes una debajo de otra e información a la
+   derecha; nombre pequeño en mayúsculas, color, grabado, botón verde
+   petróleo y desplegables de líneas finas. Solo estilo: los ids y la
+   lógica de personalizar.html no cambian (el selector de acabado lo
+   sube script.js a la columna de información).
+   ========================================================= */
+body.v2 .producto-layout{color:var(--c-texto);}
+body.v2 .producto-col-info{display:flex; flex-direction:column; padding:22px var(--pad-lateral) 0;}
+body.v2 .producto-col-info > .producto-cabecera{order:1;}
+body.v2 .producto-col-info > .acabado{order:2;}
+body.v2 .producto-col-info > .grabado-banda{order:3;}
+body.v2 .producto-col-info > .final-cta{order:4;}
+body.v2 .producto-col-info > .producto-detalle{order:5;}
+body.v2 .producto-col-info > .producto-info-adicional{order:6;}
+
+/* Cabecera: solo el nombre, como en hombre */
+body.v2 .producto-cabecera{padding:0; text-align:center;}
+body.v2 .producto-cabecera .edicion-badge,
+body.v2 .producto-cabecera .eyebrow{display:none;}
+body.v2 .producto-cabecera h2,
+body.v2 #producto-titulo{margin:0; font-family:var(--font-sans); font-size:14px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+
+/* Acabado: botones finos rectos, el elegido con borde verde */
+body.v2 .producto-col-info .acabado{margin:22px 0 0; padding:0; text-align:center;}
+body.v2 .acabado-label{margin:0 0 10px; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .acabado-opciones{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+body.v2 .acabado-op{min-height:44px; padding:8px 16px; border:1px solid var(--c-linea); border-radius:2px;
+  background:transparent; box-shadow:none; font-family:var(--font-sans); font-size:12px; letter-spacing:.06em; color:var(--c-texto);}
+body.v2 .acabado-op:hover{border-color:var(--c-texto);}
+body.v2 .acabado-op.activo{border-color:var(--c-texto); background:transparent; box-shadow:inset 0 0 0 1px var(--c-texto);}
+body.v2 .acabado-grupo + .acabado-grupo{margin-top:16px;}
+
+/* Grabado: sin banda de color, campos de línea fina */
+body.v2 .grabado-banda{margin-top:26px; padding:0; background:none; border:0; border-image:none; text-align:left;}
+body.v2 .grabado-banda .eyebrow{display:none;}
+body.v2 .grabado-banda h3{margin:0 0 12px; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .grabado-banda .fields{max-width:none; margin:0;}
+body.v2 .grabado-banda label{font-family:var(--font-sans); font-size:12px; letter-spacing:.04em; color:var(--c-texto-2);}
+body.v2 .grabado-banda input,
+body.v2 .grabado-banda select{border:1px solid var(--c-linea); border-radius:2px; background:transparent;
+  font-family:var(--font-sans); font-size:14px; color:var(--c-texto); box-shadow:none;}
+body.v2 .grabado-banda input:focus,
+body.v2 .grabado-banda select:focus{border-color:var(--c-texto); outline:none;}
+body.v2 .grabado-nota{margin-top:10px; font-family:var(--font-sans); font-size:12px; color:var(--c-texto-2); text-align:left;}
+
+/* Compra: solo el botón, verde petróleo y recto */
+body.v2 .final-cta{margin:28px 0 0; padding:0; border:0; border-radius:0; background:none; color:inherit; text-align:left;}
+body.v2 .final-cta h2{display:none;}
+body.v2 .final-cta .btn,
+body.v2 .final-cta .btn-primary{width:100%; padding:16px 20px; border:0; border-radius:2px; box-shadow:none;
+  background:var(--c-texto); color:var(--c-fondo); font-family:var(--font-sans); font-size:12px; font-weight:400;
+  letter-spacing:.14em; text-transform:uppercase;}
+body.v2 .final-cta .btn-primary:hover{background:var(--c-boton-hover);}
+
+/* Descripción: texto pequeño bajo el botón */
+body.v2 .producto-detalle{margin-top:28px; padding:0; text-align:left;}
+body.v2 .producto-detalle .producto-desc,
+body.v2 .producto-detalle .ficha-parrafo{margin:0 0 12px; font-family:var(--font-sans); font-size:13px; line-height:1.7;
+  color:var(--c-texto-2); text-align:left; hyphens:none; -webkit-hyphens:none;}
+body.v2 .producto-ficha{margin-top:12px;}
+body.v2 .ficha-lista{margin:14px 0 0; padding:14px 0 0; border-top:1px solid var(--c-linea);}
+body.v2 .ficha-lista li{font-family:var(--font-sans); font-size:12.5px; color:var(--c-texto-2);}
+body.v2 .ficha-lista li::before{background:var(--c-oro);}
+body.v2 .ficha-oferta{background:none; border-left:2px solid var(--c-oro); color:var(--c-texto); font-weight:400; font-size:13px;}
+body.v2 .ficha-cierre{border-top:1px solid var(--c-linea); font-family:var(--font-sans); font-style:normal; font-size:12.5px;
+  letter-spacing:.04em; color:var(--c-texto);}
+body.v2 .cambiar-pieza{display:none;}
+
+/* Desplegables: como los de hombre */
+body.v2 .producto-info-adicional{margin-top:32px; padding:0; background:none; border-top:1px solid var(--c-linea);}
+body.v2 .info-item{border-bottom:1px solid var(--c-linea); padding:0;}
+body.v2 .info-item summary{min-height:60px; padding:0; font-family:var(--font-sans); font-size:11px; font-weight:400;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .info-item summary::after{font-size:18px; font-weight:300; color:var(--c-texto);}
+body.v2 .info-item p,
+body.v2 .info-item ul{padding-left:0; padding-right:0; font-family:var(--font-sans); font-size:13px; line-height:1.7; color:var(--c-texto-2);}
+body.v2 .info-item ul{padding-left:18px;}
+body.v2 .info-item li::marker{color:var(--c-oro);}
+body.v2 .cuidados-titulo{color:var(--c-texto); font-weight:500;}
+body.v2 .cuidados-bloque + .cuidados-bloque{border-top:1px solid var(--c-linea);}
+
+/* Fotos: cuadradas, sin esquinas */
+body.v2 .galeria-foto{border-radius:0;}
+
+@media (min-width:900px){
+  body.v2 .producto-layout{
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,360px); column-gap:48px; align-items:start;
+    max-width:var(--ancho-max); margin:0 auto; padding:40px var(--pad-lateral) 96px;
+  }
+  body.v2 .producto-col-galeria{position:static;}
+  body.v2 .producto-col-galeria .producto-galeria{
+    display:grid; grid-template-columns:64px minmax(0,1fr); column-gap:48px; align-items:start;
+    max-width:none; margin:0;
+  }
+  body.v2 .galeria-puntos{grid-column:1; grid-row:1; display:flex; flex-direction:column; justify-content:flex-start;
+    gap:14px; margin:0; position:sticky; top:calc(var(--header-h) + 40px);}
+  body.v2 .galeria-punto{width:64px; height:64px; opacity:1; border-radius:0; border:1px solid transparent; transform:none;
+    background-size:cover; background-position:center;}
+  body.v2 .galeria-punto.activo{border-color:var(--c-texto);}
+  body.v2 .galeria-pista{grid-column:2; grid-row:1; flex-direction:column; gap:28px; overflow:visible;
+    scroll-snap-type:none; padding:0;}
+  body.v2 .galeria-foto{flex:none; width:100%; aspect-ratio:1/1; scroll-margin-top:calc(var(--header-h) + 40px);}
+  body.v2 .producto-col-info{position:sticky; top:calc(var(--header-h) + 40px); padding:10px 0 0;}
+  body.v2 .producto-cabecera,
+  body.v2 .producto-col-info .acabado{text-align:left;}
+  body.v2 .acabado-opciones{justify-content:flex-start;}
+  body.v2 #producto-titulo{font-size:15px;}
+  body.v2 .info-item summary{min-height:68px;}
+}
+body.v2 .final-cta .btn.btn-lg{font-size:12px; font-weight:400; letter-spacing:.14em; min-height:0; padding:16px 20px;}
+body.v2 .final-cta .btn .cta-texto{font-size:inherit; font-weight:inherit; letter-spacing:inherit;}
+body.v2 .grabado-banda h3::after{display:none;}
+body.v2 #cta-reservar{font-size:12px; font-weight:400; letter-spacing:.14em; padding:16px 20px; min-height:0; box-shadow:none; border-radius:2px;}
+body.v2 .producto-galeria{background:none; padding-left:0; padding-right:0;}
+/* En el móvil, fotos a todo el ancho y de una en una, como en hombre */
+@media (max-width:899px){
+  body.v2 .galeria-pista{padding:0; gap:0; scroll-padding:0;}
+  body.v2 .galeria-foto{flex:0 0 100%; scroll-snap-align:start;}
+}
+/* Sin descripción larga en la ficha de mujer (14/10): nombre, acabado,
+   grabado, botón y desplegables, como en hombre. */
+body.v2 .producto-col-info > .producto-detalle{display:none;}
+/* Portada: en el móvil una foto (portada-movil); en el ordenador, díptico
+   portada-web + portada-movil. */
+.hero-v2-solo-web{display:none;}
+@media (min-width:900px){
+  .hero-v2-solo-movil{display:none;}
+  .hero-v2-solo-web{display:block;}
+}
+/* Las fotos de portada tienen fondos claros: sombra suave arriba para que
+   se lea el menú blanco. */
+.hero-v2-fotos::after{content:""; position:absolute; left:0; right:0; top:0; height:160px; pointer-events:none;
+  background:linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,0));}
+/* En el ordenador la portada recorta arriba y abajo: se ancla abajo, que
+   es donde están las joyas en los bodegones. */
+@media (min-width:900px){
+  .hero-v2-solo-web, .hero-v2-foto-2{object-position:center 82%;}
+}
+/* La fila de la portada mide lo que la portada: así las fotos se recortan
+   (cover) en vez de medir lo que su alto natural y salirse por abajo. */
+.hero-v2-fotos{grid-template-rows:minmax(0,1fr);}
+.hero-v2-foto{min-height:0;}
+/* La de la derecha (jalapeños abiertos con cadenas de plata): centrada. */
+@media (min-width:900px){
+  .hero-v2-foto-2{object-position:center 50%;}
+}
+
+/* ---------- Portada: logo, menú y botón legibles sobre fotos claras ---------- */
+/* Más sombra arriba (logo y menú) y abajo (título y botón). */
+.hero-v2-fotos::after{height:200px; background:linear-gradient(rgba(10,14,13,.55), rgba(10,14,13,.18) 60%, rgba(10,14,13,0));}
+.hero-v2::after{background:linear-gradient(to top, rgba(10,14,13,.62) 0%, rgba(10,14,13,.28) 28%, rgba(10,14,13,0) 52%);}
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo-name,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .logo-sub,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .nav a,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .selector-idioma,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .selector-idioma button,
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .header-carrito{
+  text-shadow:0 1px 14px rgba(0,0,0,.45), 0 0 2px rgba(0,0,0,.25);
+}
+body.v2[data-page="inicio"] .site-header:not(.scrolled) .header-carrito svg{filter:drop-shadow(0 1px 6px rgba(0,0,0,.45));}
+body.v2 .hero-v2-titulo{font-weight:400; text-shadow:0 2px 24px rgba(0,0,0,.45);}
+/* Shop now en verde petróleo, se ve sobre cualquier foto */
+body.v2 .hero-v2-cta{background:var(--c-texto); color:var(--c-fondo); min-height:54px; padding:0 46px;
+  font-weight:500; box-shadow:0 6px 24px rgba(0,0,0,.25);}
+body.v2 .hero-v2-cta:hover{background:var(--c-fondo); color:var(--c-texto);}
+
+/* ---------- Promoción de lanzamiento de hombre ---------- */
+/* Banner: franja verde petróleo con el texto en marfil */
+.v2-promo{margin:0; padding:13px 16px; background:var(--c-texto); color:var(--c-fondo); text-align:center;
+  font-family:var(--font-sans); font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;}
+/* Precio: el de siempre tachado y, debajo, el rebajado */
+body.v2 .con-promo{display:flex; flex-direction:column; align-items:center; gap:2px;}
+body.v2 .v2-pieza-precio.con-promo{align-items:flex-start;}
+@media (max-width:899px){ body.v2 .v2-pieza-precio.con-promo{align-items:center;} }
+body.v2 .v2-precio-antes{font-size:.92em; color:var(--c-texto-2); text-decoration-thickness:1px;}
+body.v2 .v2-precio-rebajado{color:#9A2B1E; font-weight:500;}
+body.v2 .v2-card--hombre .v2-card-precio.con-promo{display:flex; flex-direction:column; align-items:center; gap:2px;}
+.v2-promo + .v2-tipos{margin-top:28px;}

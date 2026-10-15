@@ -648,6 +648,853 @@ function crearTarjetaProducto(prod) {
   return card;
 }
 
+/* Rediseño (10/2026): en la portada y en el shop cada pieza enseña su foto
+   principal en oro (la pieza sola) y, al pasar el cursor, a Adri con ella
+   puesta. Independiente de las galerías de la ficha (productos.js). */
+const FOTOS_TARJETA_V2 = {
+  pulsera_vinculo:       ['img/dos-almas-estudio-oro.png',      'img/dos-almas-encaje.png'],
+  pulsera_nombre:        ['img/mi-cielo-estudio-oro.png',       'img/mi-cielo-oro-2.jpg'],
+  brazalete_mensaje:     ['img/brazalete-estudio-oro.png',      'img/brazalete-oro-3.jpg'],
+  collar_esencial:       ['img/collar-esencia-estudio-oro.png', 'img/collar-esencia-oro-1.jpg'],
+  collar_flor_natal:     ['img/collar-destino-estudio-oro.png', 'img/collar-destino-oro-1.jpg'],
+  kit_pedacito_nosotros: ['img/kit-pedacito-2.jpg',       'img/collar-esencia-oro-3.jpg'],
+  kit_mi_consentida:     ['img/kit-consentida-1.jpg',     'img/collar-destino-oro-3.jpg'],
+  kit_personalizado:     ['img/arma-tu-kit-oro-1.jpg',    'img/collar-esencia-oro-2.jpg'],
+};
+
+/* ---------- Portada nueva: productos en scroll horizontal (10/2026) ----------
+   Foto, nombre y precio del mercado activo. Cada tarjeta lleva a su ficha. */
+(function () {
+  const pista = document.getElementById('v2-drop');
+  if (!pista) return;
+  // Portada: la colección de hombre (hombre.js). Si no está, la de mujer.
+  if (typeof COLECCION_HOMBRE !== 'undefined') {
+    const acabados = acabadosVariados(COLECCION_HOMBRE);
+    COLECCION_HOMBRE.forEach((prod, i) => pista.appendChild(tarjetaHombre(prod, acabados[i])));
+    const banner = bannerPromoHombre();
+    if (banner) pista.closest('section').before(banner);
+    return;
+  }
+  if (typeof PRODUCTOS === 'undefined') return;
+  PRODUCTOS.filter(prod => !prod.oculto).forEach(prod => {
+    const a = document.createElement('a');
+    a.className = 'v2-drop-item';
+    a.href = 'personalizar.html?p=' + encodeURIComponent(prod.slug);
+    const fotos = FOTOS_TARJETA_V2[prod.id] || fotosDe(prod, 'oro').map(f => normFoto(f).src);
+    const media = document.createElement('span');
+    media.className = 'v2-card-media v2-drop-media';
+    const img = document.createElement('img');
+    img.src = fotos[0] || ''; img.alt = prod.nombre; img.loading = 'lazy';
+    media.appendChild(img);
+    if (fotos[1]) {
+      const img2 = document.createElement('img');
+      img2.src = fotos[1]; img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+      media.appendChild(img2);
+    }
+    const nombre = document.createElement('span');
+    nombre.className = 'v2-drop-nombre';
+    nombre.textContent = prod.nombre;
+    const precio = document.createElement('span');
+    precio.className = 'v2-drop-precio';
+    precio.textContent = precioTexto(prod) || '';
+    a.append(media, nombre, precio);
+    pista.appendChild(a);
+  });
+})();
+
+/* Tarjeta de la colección MEN: foto de producto (y puesto al pasar el
+   cursor en el ordenador), nombre y circulitos de acabado debajo. Foto y nombre llevan a la pieza (hombre.html), donde
+   se ven todas las fotos. */
+function tarjetaHombre(prod, inicial) {
+  const claves = Object.keys(prod.acabados);
+  const card = document.createElement('div');
+  card.className = 'v2-card v2-card--hombre';
+  const media = document.createElement('a');
+  // Los colgantes salen de cerca; pulseras y brazaletes ya llenan la foto.
+  media.className = 'v2-card-media' + (prod.tipo === 'colgantes' ? ' v2-card-media--cerca' : '');
+  const img = document.createElement('img');
+  img.alt = prod.nombre; img.loading = 'lazy';
+  const img2 = document.createElement('img');
+  img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+  media.append(img, img2);
+  // Lupa para ver la foto macro del material elegido (fuera del enlace de
+  // la foto: abre el visor, no la ficha). Solo si hay macro de ese color.
+  const marco = document.createElement('div');
+  marco.className = 'v2-card-marco';
+  const lupa = document.createElement('button');
+  lupa.type = 'button';
+  lupa.className = 'v2-card-lupa';
+  lupa.innerHTML = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4M11 8.5v5M8.5 11h5"/></svg>';
+  marco.append(media, lupa);
+  let claveActual = null;
+  lupa.addEventListener('click', (e) => {
+    e.preventDefault(); e.stopPropagation();
+    abrirMacroHombre(macrosHombre(prod, claveActual), prod.nombre + ' · ' + NOMBRE_ACABADO_HOMBRE[claveActual], lupa);
+  });
+  const tonos = document.createElement('div');
+  tonos.className = 'v2-tonos';
+  tonos.setAttribute('role', 'group');
+  tonos.setAttribute('aria-label', 'Acabado');
+  const etiqueta = document.createElement('span');
+  etiqueta.className = 'v2-tono-nombre';
+  const nombre = document.createElement('a');
+  nombre.className = 'v2-card-nombre';
+  nombre.textContent = prod.nombre;
+  const poner = (clave) => {
+    const [a, b] = prod.acabados[clave];
+    // Cadenas con charm: sale con el charm; si no, la pieza sola. Al pasar
+    // el ratón, siempre la foto con modelo.
+    const conCharm = fotosCharmHombre(prod, clave);
+    img.src = conCharm.length ? conCharm[0].foto : a;
+    img2.src = b || a;
+    media.href = nombre.href = urlPiezaHombre(prod, clave);
+    claveActual = clave;
+    lupa.hidden = !macrosHombre(prod, clave).length;
+    lupa.setAttribute('aria-label', 'Ver de cerca ' + prod.nombre + ' en ' + NOMBRE_ACABADO_HOMBRE[clave].toLowerCase());
+    etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
+    tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
+  };
+  claves.forEach(clave => {
+    const bt = document.createElement('button');
+    bt.type = 'button';
+    bt.className = 'v2-tono v2-variante';
+    bt.dataset.tono = clave;
+    bt.setAttribute('aria-label', NOMBRE_ACABADO_HOMBRE[clave]);
+    bt.appendChild(miniaturaAcabado(prod, clave, 1.7));
+    bt.addEventListener('click', () => poner(clave));
+    tonos.appendChild(bt);
+  });
+  // Foto, nombre, precio y circulitos; el nombre del acabado solo en la ficha.
+  const precio = document.createElement('span');
+  precio.className = 'v2-card-precio';
+  pintarPrecioHombre(precio, prod);
+  card.append(marco, nombre, precio, tonos);
+  poner(claves.includes(inicial) ? inicial : claves[0]);
+  return card;
+}
+
+/* Si a la pieza se le ofrece charm de regalo: cadenas, menos las que ya
+   llevan colgante y las de SIN_CHARM_HOMBRE (hombre.js). */
+function llevaCharmHombre(prod) {
+  return prod.tipo === 'colgantes' && typeof CHARMS_HOMBRE !== 'undefined' &&
+    !(typeof CON_COLGANTE_HOMBRE !== 'undefined' && CON_COLGANTE_HOMBRE.includes(prod.id)) &&
+    !(typeof SIN_CHARM_HOMBRE !== 'undefined' && SIN_CHARM_HOMBRE.includes(prod.id));
+}
+
+/* Fotos de la cadena con un charm puesto (FOTOS_CHARM_HOMBRE, hombre.js)
+   para ese acabado, en orden de variación. */
+/* Precio de hombre con la promoción de lanzamiento (PROMO_HOMBRE): el de
+   siempre tachado y, debajo, el rebajado. Sin promo, solo el precio. */
+function pintarPrecioHombre(el, prod) {
+  if (typeof precioDe !== 'function') return;
+  const p = precioDe(prod);
+  if (!p) { el.textContent = ''; return; }
+  const promo = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.descuento;
+  const antes = formatearImporte(p.importe, p.moneda);
+  if (!promo) { el.textContent = antes; return; }
+  let rebajado = p.importe * (1 - promo / 100);
+  rebajado = (SIN_DECIMALES.includes(p.moneda) || p.moneda === 'MXN') ? Math.round(rebajado) : Math.round(rebajado * 100) / 100;
+  const ahora = formatearImporte(rebajado, p.moneda);
+  el.textContent = '';
+  const s = document.createElement('s');
+  s.className = 'v2-precio-antes';
+  s.textContent = antes;
+  s.setAttribute('aria-label', 'Antes ' + antes);
+  const r = document.createElement('span');
+  r.className = 'v2-precio-rebajado';
+  r.textContent = ahora;
+  r.setAttribute('aria-label', 'Ahora ' + ahora + ', ' + promo + ' % de descuento');
+  el.append(s, r);
+  el.classList.add('con-promo');
+}
+
+/* Banner de la promoción de lanzamiento de hombre. */
+function bannerPromoHombre() {
+  if (typeof PROMO_HOMBRE === 'undefined' || !PROMO_HOMBRE) return null;
+  const b = document.createElement('p');
+  b.className = 'v2-promo';
+  b.textContent = PROMO_HOMBRE.texto;
+  return b;
+}
+
+function fotosCharmHombre(prod, clave) {
+  if (!llevaCharmHombre(prod)) return [];
+  return (typeof FOTOS_CHARM_HOMBRE !== 'undefined' && FOTOS_CHARM_HOMBRE[prod.id] && FOTOS_CHARM_HOMBRE[prod.id][clave]) || [];
+}
+
+/* Foto del círculo de un acabado: la pieza en ese color, muy de cerca y
+   centrada en un trozo de ella (hombre-focos.js), para que se vea bien
+   el color. Sin tocar la foto. Se usa en tarjetas y fichas. */
+function miniaturaAcabado(prod, clave, mas = 1) {
+  const mini = document.createElement('img');
+  mini.alt = ''; mini.loading = 'lazy';
+  // Si la pieza tiene foto propia para el círculo, esa, sin zoom.
+  const propia = typeof MINIATURAS_HOMBRE !== 'undefined' && MINIATURAS_HOMBRE[prod.id] && MINIATURAS_HOMBRE[prod.id][clave];
+  if (propia) {
+    mini.src = propia;
+    Object.assign(mini.style, { width: '100%', height: '100%', objectFit: 'cover', transform: 'none' });
+    return mini;
+  }
+  mini.src = prod.acabados[clave][0];
+  const foco = typeof FOCOS_HOMBRE !== 'undefined' && FOCOS_HOMBRE[prod.acabados[clave][0]];
+  if (foco) {
+    // mas: zoom extra para los círculos pequeños de las tarjetas
+    const k = (prod.tipo === 'colgantes' ? 6 : prod.tipo === 'anillos' ? 2.4 : 3.5) * mas;
+    const pos = (f) => Math.min(0, Math.max(-(k - 1) * 100, 50 - f * k));
+    Object.assign(mini.style, {
+      position: 'absolute', width: k * 100 + '%', height: k * 100 + '%', maxWidth: 'none',
+      // (en los colgantes el foco va un poco más abajo: la cadena queda centrada)
+      left: pos(foco[0]) + '%', top: pos(foco[1] + (prod.tipo === 'colgantes' ? 2 : 0)) + '%', transform: 'none',
+    });
+  }
+  return mini;
+}
+
+/* ---------- Visor macro (lupa de las tarjetas) ----------
+   Fotos macro reales por pieza y material: CERCA_HOMBRE (hombre.js),
+   { id_pieza: { oro: [...], oro_blanco: [...] } }. Cada material solo
+   enseña las suyas; si no tiene, la tarjeta no muestra lupa.
+   Se abre encima de la página (sin navegar) y al cerrar todo queda igual.
+   Las fotos solo se descargan al abrir el visor. */
+function macrosHombre(prod, clave) {
+  const m = typeof CERCA_HOMBRE !== 'undefined' && CERCA_HOMBRE[prod.id];
+  if (m && clave && m[clave]) return m[clave];
+  // Colgantes: su foto de cerca de la miniatura (MINIATURAS_HOMBRE).
+  const mini = typeof MINIATURAS_HOMBRE !== 'undefined' && MINIATURAS_HOMBRE[prod.id];
+  return (mini && clave && mini[clave]) ? [mini[clave]] : [];
+}
+
+function abrirMacroHombre(fotos, titulo, origen) {
+  if (!fotos.length) return;
+  let i = 0;
+  const visor = document.createElement('div');
+  visor.className = 'v2-macro';
+  visor.setAttribute('role', 'dialog');
+  visor.setAttribute('aria-modal', 'true');
+  visor.setAttribute('aria-label', titulo + ', vista de cerca');
+  const flecha = (d) => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + (d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>';
+  visor.innerHTML =
+    '<div class="v2-macro-marco"><img alt=""></div>' +
+    '<p class="v2-macro-titulo"></p>' +
+    (fotos.length > 1
+      ? '<button type="button" class="v2-macro-flecha v2-macro-flecha--izq" aria-label="Foto anterior">' + flecha(-1) + '</button>' +
+        '<button type="button" class="v2-macro-flecha v2-macro-flecha--der" aria-label="Foto siguiente">' + flecha(1) + '</button>' +
+        '<p class="v2-macro-contador" aria-live="polite"></p>'
+      : '') +
+    '<button type="button" class="v2-macro-cerrar" aria-label="Cerrar">' +
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
+  const marco = visor.querySelector('.v2-macro-marco');
+  const img = marco.querySelector('img');
+  visor.querySelector('.v2-macro-titulo').textContent = titulo;
+  const contador = visor.querySelector('.v2-macro-contador');
+
+  // Ampliar todavía más: clic/toque en la foto; se recorre moviendo el
+  // ratón o el dedo. Otro clic la devuelve a su tamaño.
+  const enfocar = (x, y) => {
+    const r = img.getBoundingClientRect();
+    const px = Math.min(100, Math.max(0, (x - r.left) / r.width * 100));
+    const py = Math.min(100, Math.max(0, (y - r.top) / r.height * 100));
+    img.style.transformOrigin = px + '% ' + py + '%';
+  };
+  let ultimoToque = 0; // para que el clic que sigue a un toque no amplíe dos veces
+  img.addEventListener('click', (e) => {
+    if (Date.now() - ultimoToque < 600) return; // en el móvil manda el gesto táctil
+    enfocar(e.clientX, e.clientY); marco.classList.toggle('ampliada');
+  });
+  img.addEventListener('mousemove', (e) => { if (marco.classList.contains('ampliada')) enfocar(e.clientX, e.clientY); });
+
+  // Móvil: zoom con dos dedos (1x–4x), arrastrar con un dedo cuando está
+  // ampliada y doble toque para ampliar / volver. Todo dentro del visor,
+  // sin que se amplíe ni se mueva la página de detrás.
+  const z = { s: 1, x: 0, y: 0 };
+  let gesto = null, tocadoAntes = 0;
+  const limite = (v, s, lado) => Math.max(-(s - 1) * lado / 2, Math.min((s - 1) * lado / 2, v));
+  const aplicar = (animar) => {
+    const r = marco.getBoundingClientRect();
+    z.x = limite(z.x, z.s, r.width); z.y = limite(z.y, z.s, r.height);
+    img.style.transition = animar ? 'transform .3s ease' : 'none';
+    img.style.transformOrigin = '50% 50%';
+    img.style.transform = z.s > 1 ? 'translate(' + z.x + 'px,' + z.y + 'px) scale(' + z.s + ')' : '';
+    marco.classList.toggle('ampliada', z.s > 1);
+  };
+  const reiniciar = () => { z.s = 1; z.x = 0; z.y = 0; img.style.transform = ''; img.style.transition = ''; marco.classList.remove('ampliada'); };
+  const dist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  const medio = (t) => ({ x: (t[0].clientX + t[1].clientX) / 2, y: (t[0].clientY + t[1].clientY) / 2 });
+  marco.addEventListener('touchstart', (e) => {
+    ultimoToque = Date.now();
+    if (e.touches.length === 2) {
+      gesto = { tipo: 'pellizco', d: dist(e.touches), m: medio(e.touches), s: z.s, x: z.x, y: z.y };
+    } else if (e.touches.length === 1) {
+      const t = e.touches[0];
+      gesto = { tipo: 'arrastre', px: t.clientX, py: t.clientY, x: z.x, y: z.y, movido: false };
+    }
+  }, { passive: true });
+  marco.addEventListener('touchmove', (e) => {
+    if (!gesto) return;
+    if (gesto.tipo === 'pellizco' && e.touches.length === 2) {
+      e.preventDefault();
+      const m = medio(e.touches);
+      z.s = Math.min(4, Math.max(1, gesto.s * dist(e.touches) / gesto.d));
+      z.x = gesto.x + (m.x - gesto.m.x); z.y = gesto.y + (m.y - gesto.m.y);
+      aplicar(false);
+    } else if (gesto.tipo === 'arrastre' && e.touches.length === 1) {
+      const t = e.touches[0];
+      if (Math.abs(t.clientX - gesto.px) + Math.abs(t.clientY - gesto.py) > 6) gesto.movido = true;
+      if (z.s > 1) {
+        e.preventDefault();
+        z.x = gesto.x + (t.clientX - gesto.px); z.y = gesto.y + (t.clientY - gesto.py);
+        aplicar(false);
+      }
+    }
+  }, { passive: false });
+  marco.addEventListener('touchend', (e) => {
+    ultimoToque = Date.now();
+    if (gesto && gesto.tipo === 'arrastre' && !gesto.movido && e.touches.length === 0) {
+      // Doble toque: amplía 2,5x donde se tocó, o vuelve a su tamaño.
+      if (Date.now() - tocadoAntes < 320) {
+        if (z.s > 1) { z.s = 1; z.x = 0; z.y = 0; }
+        else {
+          const r = marco.getBoundingClientRect(), t = e.changedTouches[0];
+          z.s = 2.5;
+          z.x = (r.left + r.width / 2 - t.clientX) * 1.5;
+          z.y = (r.top + r.height / 2 - t.clientY) * 1.5;
+        }
+        aplicar(true);
+        tocadoAntes = 0;
+      } else tocadoAntes = Date.now();
+    }
+    if (z.s < 1.03 && e.touches.length === 0) { z.s = 1; z.x = 0; z.y = 0; aplicar(true); }
+    if (e.touches.length === 0) gesto = null;
+  });
+
+  const mostrar = (n) => {
+    i = (n + fotos.length) % fotos.length;
+    marco.classList.remove('ampliada');
+    reiniciar();
+    // Sin saltos: el marco ya tiene su tamaño y la foto aparece al cargar.
+    img.classList.remove('cargada');
+    img.onload = () => img.classList.add('cargada');
+    img.src = fotos[i];
+    if (img.complete) img.classList.add('cargada');
+    img.alt = titulo + ' de cerca' + (fotos.length > 1 ? ' (' + (i + 1) + ' de ' + fotos.length + ')' : '');
+    if (contador) contador.textContent = (i + 1) + ' / ' + fotos.length;
+  };
+  const cerrar = () => {
+    document.removeEventListener('keydown', teclas);
+    visor.remove();
+    // Desbloquear el fondo y volver exactamente al mismo punto.
+    document.body.classList.remove('v2-macro-abierto');
+    Object.assign(document.body.style, { position: '', top: '', left: '', right: '', width: '' });
+    window.scrollTo({ top: posicion, left: 0, behavior: 'instant' });
+    if (origen && document.contains(origen)) origen.focus({ preventScroll: true });
+  };
+  const teclas = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); cerrar(); }
+    else if (e.key === 'ArrowLeft' && fotos.length > 1) mostrar(i - 1);
+    else if (e.key === 'ArrowRight' && fotos.length > 1) mostrar(i + 1);
+    else if (e.key === 'Tab') {
+      // El foco no sale del visor mientras está abierto.
+      const f = [...visor.querySelectorAll('button')];
+      const idx = f.indexOf(document.activeElement);
+      if (e.shiftKey && idx <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && idx === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  };
+  visor.querySelector('.v2-macro-cerrar').addEventListener('click', cerrar);
+  visor.querySelectorAll('.v2-macro-flecha').forEach((b, k) => b.addEventListener('click', () => mostrar(i + (k ? 1 : -1))));
+  // Clic fuera de la foto (en el fondo) también cierra.
+  visor.addEventListener('click', (e) => { if (e.target === visor) cerrar(); });
+  document.addEventListener('keydown', teclas);
+  mostrar(0);
+  // Bloquear el scroll de fondo (también en iPhone, donde overflow:hidden
+  // no basta): la página se fija en su sitio y se recupera al cerrar.
+  const posicion = window.scrollY;
+  document.body.append(visor);
+  document.body.classList.add('v2-macro-abierto');
+  Object.assign(document.body.style, { position: 'fixed', top: -posicion + 'px', left: '0', right: '0', width: '100%' });
+  visor.querySelector('.v2-macro-cerrar').focus({ preventScroll: true });
+}
+
+/* Acabado con el que sale cada pieza en una lista, para que haya
+   variedad: la que tiene negro, en negro; los anillos, uno de cada
+   material; el resto alterna oro y oro blanco. */
+function acabadosVariados(lista) {
+  const turnoAnillo = ['oro', 'oro_blanco', 'negro'];
+  let anillo = 0, ultimo = 'oro_blanco';
+  return lista.map(prod => {
+    const fijo = typeof ACABADO_INICIAL_HOMBRE !== 'undefined' && ACABADO_INICIAL_HOMBRE[prod.id];
+    if (fijo && prod.acabados[fijo]) { if (fijo !== 'negro') ultimo = fijo; return fijo; }
+    if (prod.tipo === 'anillos') {
+      // Uno de cada material; si el anillo no lo tiene, el que tenga.
+      const t = turnoAnillo[anillo++ % 3];
+      return prod.acabados[t] ? t : Object.keys(prod.acabados)[0];
+    }
+    if (prod.acabados.negro) return 'negro';
+    // El contrario del último oro / oro blanco mostrado; si la pieza no
+    // lo tiene, el que tenga.
+    const quiere = ultimo === 'oro' ? 'oro_blanco' : 'oro';
+    const sale = prod.acabados[quiere] ? quiere : Object.keys(prod.acabados)[0];
+    if (sale !== 'negro') ultimo = sale;
+    return sale;
+  });
+}
+
+function urlPiezaHombre(prod, clave) {
+  return 'hombre.html?id=' + encodeURIComponent(prod.id) + '&a=' + encodeURIComponent(clave);
+}
+
+/* ---------- Pieza de hombre (hombre.html?id=&a=) ----------
+   Ordenador: miniaturas a la izquierda, fotos grandes una debajo de otra
+   y la información fija a la derecha. Móvil: carrusel con puntitos y la
+   información debajo. Fotos: producto, puesto y siempre el packaging.
+   Aún sin precio ni compra (faltan precios y SKU). */
+(function () {
+  const caja = document.getElementById('v2-pieza');
+  if (!caja || typeof COLECCION_HOMBRE === 'undefined') return;
+  const params = new URLSearchParams(location.search);
+  const prod = COLECCION_HOMBRE.find(p => p.id === params.get('id'));
+  if (!prod) { location.replace('productos.html?c=men'); return; }
+  const claves = Object.keys(prod.acabados);
+  let clave = claves.includes(params.get('a')) ? params.get('a') : claves[0];
+  document.title = prod.nombre + ' · Cozumel Jewelry';
+
+  const crear = (tag, clase, texto) => {
+    const el = document.createElement(tag);
+    if (clase) el.className = clase;
+    if (texto) el.textContent = texto;
+    return el;
+  };
+
+  const miniaturas = crear('div', 'v2-pieza-minis');
+  const galeria = crear('div', 'v2-pieza-galeria');
+  const puntos = crear('div', 'v2-pieza-puntos');
+  puntos.setAttribute('aria-hidden', 'true');
+
+  const info = crear('div', 'v2-pieza-info');
+  const titulo = crear('h1', 'v2-pieza-nombre', prod.nombre);
+  const tonos = crear('div', 'v2-pieza-tonos');
+  tonos.setAttribute('role', 'group');
+  tonos.setAttribute('aria-label', 'Acabado');
+  const etiqueta = crear('p', 'v2-pieza-acabado');
+  const condiciones = crear('p', 'v2-pieza-condiciones');
+  const boton = crear('button', 'v2-pieza-boton', 'Muy pronto');
+  boton.type = 'button'; boton.disabled = true;
+
+  const desplegable = (titulo, html) => {
+    const d = crear('details', 'v2-pieza-desplegable');
+    d.append(crear('summary', '', titulo));
+    const cuerpo = crear('div', 'v2-pieza-desplegable-cuerpo');
+    cuerpo.innerHTML = html;
+    d.append(cuerpo);
+    return d;
+  };
+  const desplegables = crear('div', 'v2-pieza-desplegables');
+  desplegables.append(
+    desplegable('Envío', '<p>Envío incluido en el precio, con los impuestos de importación: no pagas nada más al recibirlo.</p>' +
+      '<p>Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21.</p>' +
+      '<p>Cada pieza va en su caja Cozumel, lista para regalar.</p>')
+  );
+  // Cadenas sin colgante: charm de regalo, justo después de Envío.
+  const ofreceCharm = llevaCharmHombre(prod);
+  let charmElegido = null; // id del charm, o null = sin charm
+  let bloqueCharm = null;  // va justo debajo del botón de compra
+  // Cadena dorada: solo charms dorados; oro blanco (y negro): plateados.
+  const colorCharm = () => clave === 'oro' ? 'dorado' : 'plateado';
+  if (ofreceCharm) {
+    const d = crear('details', 'v2-pieza-desplegable v2-charm');
+    const sum = crear('summary');
+    const tit = crear('span', 'v2-charm-titulo');
+    tit.innerHTML = 'Añade tu colgante <em class="v2-charm-gratis">Gratis</em>';
+    const elegido = crear('span', 'v2-charm-elegido');
+    sum.append(tit, elegido);
+    const cuerpo = crear('div', 'v2-pieza-desplegable-cuerpo');
+    const rejilla = crear('div', 'v2-charm-rejilla');
+    const nombreCharm = crear('p', 'v2-charm-nombre');
+    const opcion = (ch) => {
+      const bt = crear('button', 'v2-charm-opcion');
+      bt.type = 'button';
+      bt.dataset.charm = ch ? ch.id : '';
+      bt.setAttribute('aria-label', ch ? ch.nombre : 'Sin charm');
+      const circulo = crear('span', 'v2-charm-circulo');
+      if (ch && ch.fotos) { const im = crear('img'); im.alt = ''; im.loading = 'lazy'; circulo.append(im); }
+      else circulo.textContent = ch ? ch.codigo : '—';
+      bt.append(circulo);
+      bt.addEventListener('click', () => { charmElegido = ch ? ch.id : null; marcarCharm(); });
+      return bt;
+    };
+    rejilla.append(opcion(null));
+    // Cada grupo con su título; los de GRUPOS_CHARM_PLEGADOS (números,
+    // letras, circonitas) en un desplegable propio, cerrado al principio.
+    let grupo = '', destino = rejilla;
+    const plegados = typeof GRUPOS_CHARM_PLEGADOS !== 'undefined' ? GRUPOS_CHARM_PLEGADOS : [];
+    CHARMS_HOMBRE.forEach(ch => {
+      if (ch.grupo !== grupo) {
+        grupo = ch.grupo;
+        if (plegados.includes(grupo)) {
+          const g = crear('details', 'v2-charm-plegable');
+          g.dataset.grupo = grupo;
+          g.append(crear('summary', 'v2-charm-grupo', grupo));
+          destino = crear('div', 'v2-charm-sub');
+          g.append(destino);
+          rejilla.append(g);
+        } else {
+          const g = crear('span', 'v2-charm-grupo', grupo);
+          g.dataset.grupo = grupo;
+          rejilla.append(g);
+          destino = rejilla;
+        }
+      }
+      destino.append(opcion(ch));
+    });
+    // Foto grande del charm elegido: la cadena con él puesto, o el charm solo
+    // si aún no hay esa foto (en el móvil se amplía al tocarla).
+    const vista = crear('div', 'v2-charm-vista');
+    const vistaFoto = crear('figure', 'v2-pieza-foto v2-charm-foto');
+    const vistaImg = crear('img');
+    vistaImg.alt = '';
+    vistaFoto.append(vistaImg);
+    vista.append(vistaFoto);
+    vista.hidden = true;
+    cuerpo.append(rejilla, nombreCharm, vista);
+    d.append(sum, cuerpo);
+    bloqueCharm = d;
+    function marcarCharm() {
+      const color = colorCharm();
+      // Si el charm elegido no existe en el color de la nueva cadena, se quita.
+      const antes = CHARMS_HOMBRE.find(c => c.id === charmElegido);
+      if (antes && !antes.fotos[color]) charmElegido = null;
+      const ch = CHARMS_HOMBRE.find(c => c.id === charmElegido);
+      rejilla.querySelectorAll('.v2-charm-opcion').forEach(b => {
+        b.setAttribute('aria-pressed', String((b.dataset.charm || null) === charmElegido));
+        // Solo los charms del color de la cadena, con su foto
+        const c = CHARMS_HOMBRE.find(x => x.id === b.dataset.charm);
+        b.hidden = !!c && !c.fotos[color];
+        const im = b.querySelector('img');
+        if (c && im && c.fotos[color]) im.src = c.fotos[color];
+      });
+      rejilla.querySelectorAll('[data-grupo]').forEach(g => {
+        g.hidden = !CHARMS_HOMBRE.some(c => c.grupo === g.dataset.grupo && c.fotos[color]);
+      });
+      elegido.textContent = ch ? ch.nombre : '';
+      vista.hidden = !ch;
+      if (ch) {
+        // La cadena con ese charm puesto si hay foto; si no, el charm solo.
+        const puesta = fotosCharmHombre(prod, clave).find(x => x.charm === ch.id);
+        const src = puesta ? puesta.foto : ch.fotos[color];
+        if (vistaImg.getAttribute('src') !== src) {
+          if (vista.reiniciarZoom) vista.reiniciarZoom();
+          vistaImg.style.transform = '';
+          vistaFoto.classList.remove('ampliada');
+          vistaImg.src = src;
+          vistaImg.alt = ch.nombre;
+        }
+      }
+      nombreCharm.textContent = ch ? ch.nombre + ' · ' + color : 'Sin charm';
+    }
+    marcarCharm();
+    // Al cambiar el color de la cadena, el charm cambia de color con ella.
+    tonos.addEventListener('click', () => setTimeout(marcarCharm));
+  }
+  desplegables.append(
+    desplegable('Devoluciones', '<p>Consulta las condiciones en <a href="faq.html#devoluciones">FAQ</a>.</p>')
+  );
+  // Materiales y cuidados según el acabado elegido (se rellenan en pintar()).
+  // Oro y oro blanco de 18 K; las pocas piezas del catálogo de 14 K, en
+  // ORO_14K_HOMBRE (hombre.js).
+  const kilates = typeof ORO_14K_HOMBRE !== 'undefined' && ORO_14K_HOMBRE.includes(prod.id) ? '14 K' : '18 K';
+  const MATERIAL = {
+    oro: ['Baño de oro de ' + kilates, 'Acero inoxidable de alta calidad con baño de oro de ' + kilates + ': el brillo del oro sobre una base resistente, pensada para llevarse a diario.'],
+    oro_blanco: ['Baño de oro blanco de ' + kilates, 'Acero inoxidable de alta calidad con baño de oro blanco de ' + kilates + ': un plateado luminoso que no amarillea, sobre una base resistente.'],
+    plata: ['Acero inoxidable', 'Acero inoxidable de alta calidad, resistente y duradero, con un acabado plateado limpio y atemporal.'],
+    negro: ['Acabado negro IP', 'Acero inoxidable de alta calidad con acabado negro IP (depósito iónico), más resistente al roce que una pintura o un baño normal.'],
+  };
+  const CUIDADOS_BANO = '<p>Para conservar el brillo del baño durante más tiempo:</p><ul>' +
+    '<li>Evita el contacto directo con perfumes, cremas, aceites y otros cosméticos.</li>' +
+    '<li>No la expongas durante largos periodos al agua, al cloro o al agua de mar.</li>' +
+    '<li>Quítatela antes de ducharte, bañarte o hacer deporte.</li>' +
+    '<li>Guárdala en un lugar seco, mejor en su caja, cuando no la lleves.</li>' +
+    '<li>Para limpiarla, usa un paño suave y seco, sin productos abrasivos ni químicos.</li></ul>' +
+    '<p>El baño es un acabado delicado que puede presentar desgaste natural con el uso y el paso del tiempo.</p>';
+  const CUIDADOS_ACERO = '<p>El acero inoxidable es resistente y está pensado para el uso diario. Para que mantenga su aspecto:</p><ul>' +
+    '<li>Evita el contacto prolongado con perfumes, cremas y productos químicos.</li>' +
+    '<li>Si se moja, sécala con un paño suave.</li>' +
+    '<li>Evita el cloro y los productos de limpieza.</li>' +
+    '<li>Guárdala en un lugar seco cuando no la lleves.</li>' +
+    '<li>Para recuperar el brillo, límpiala con un paño de microfibra.</li></ul>';
+  const materiales = desplegable('Detalles · ' + prod.nombre, '');
+  const cuidados = desplegable('Cuidados', '');
+  desplegables.prepend(materiales);
+  desplegables.append(cuidados);
+  const pintarMaterial = () => {
+    const [corto, largo] = MATERIAL[clave] || MATERIAL.plata;
+    materiales.querySelector('.v2-pieza-desplegable-cuerpo').innerHTML = '<p><strong>' + corto + '.</strong> ' + largo.replace(/^[^:]+: /, '') + '</p>';
+    cuidados.querySelector('.v2-pieza-desplegable-cuerpo').innerHTML =
+      (clave === 'oro' || clave === 'oro_blanco') ? CUIDADOS_BANO : CUIDADOS_ACERO;
+    condiciones.textContent = corto + ' · Envío incluido';
+  };
+
+  claves.forEach(c => {
+    // Cada acabado se elige con la foto de la pieza en ese color (como Hanley).
+    const bt = crear('button', 'v2-tono v2-variante');
+    bt.type = 'button';
+    bt.dataset.tono = c;
+    bt.setAttribute('aria-label', NOMBRE_ACABADO_HOMBRE[c]);
+    bt.appendChild(miniaturaAcabado(prod, c));
+    bt.addEventListener('click', () => { clave = c; pintar(); history.replaceState(null, '', urlPiezaHombre(prod, c)); });
+    tonos.appendChild(bt);
+  });
+  // Talla / largo / grosor / ancho, si la pieza tiene varias (hombre.js).
+  // Una pieza puede tener más de una (Xcaret: ancho y talla).
+  const opciones = [].concat((typeof OPCIONES_HOMBRE !== 'undefined' && OPCIONES_HOMBRE[prod.id]) || []);
+  const medidas = crear('div', 'v2-pieza-medidas');
+  const elegidas = {};
+  opciones.forEach(opcion => {
+    const cab = crear('p', 'v2-pieza-opcion-titulo');
+    const nombreOp = crear('span', '', opcion.nombre);
+    const elegidaOp = crear('span', 'v2-pieza-opcion-elegida', 'Elige ' + opcion.nombre.toLowerCase());
+    cab.append(nombreOp, elegidaOp);
+    const fila = crear('div', 'v2-pieza-opciones');
+    fila.setAttribute('role', 'group');
+    fila.setAttribute('aria-label', opcion.nombre);
+    opcion.valores.forEach(v => {
+      const bt = crear('button', 'v2-pieza-opcion');
+      bt.type = 'button';
+      bt.dataset.valor = v.id;
+      bt.setAttribute('aria-pressed', 'false');
+      bt.append(crear('span', '', v.texto));
+      if (v.sub) bt.append(crear('small', '', v.sub));
+      bt.addEventListener('click', () => {
+        fila.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === bt)));
+        elegidaOp.textContent = v.texto + (v.sub ? ' · ' + v.sub : '');
+        elegidas[opcion.nombre] = v;
+      });
+      fila.append(bt);
+    });
+    const bloque = crear('div', 'v2-pieza-opcion-bloque');
+    bloque.append(cab, fila);
+    if (opcion.nota) bloque.append(crear('p', 'v2-pieza-medida', opcion.nota));
+    medidas.append(bloque);
+  });
+  const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
+  if (fija) medidas.append(crear('p', 'v2-pieza-medida', fija));
+  const precioPieza = crear('p', 'v2-pieza-precio');
+  pintarPrecioHombre(precioPieza, prod);
+  // Bajo el precio, el material del acabado elegido y el envío incluido.
+  info.append(titulo);
+  if (precioPieza.textContent) info.append(precioPieza);
+  info.append(condiciones);
+  info.append(tonos, etiqueta);
+  if (medidas.childElementCount) info.append(medidas);
+  info.append(boton, desplegables);
+  if (bloqueCharm) boton.after(bloqueCharm);
+  const fotos = crear('div', 'v2-pieza-fotos');
+  const lupa = crear('span', 'v2-pieza-lupa');
+  lupa.setAttribute('aria-hidden', 'true');
+  lupa.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4M11 8.5v5M8.5 11h5"/></svg>';
+  fotos.append(galeria, puntos, lupa);
+  caja.append(miniaturas, fotos, info);
+
+  const marcar = () => {
+    const i = Math.round(galeria.scrollLeft / (galeria.clientWidth || 1));
+    [...puntos.children].forEach((p, j) => p.classList.toggle('activo', i === j));
+  };
+  galeria.addEventListener('scroll', marcar, { passive: true });
+
+  function pintar() {
+    // Siempre 5 fotos: la pieza entera, de cerca (la forma), dos con
+    // modelo y la caja. La cadena con charm sale abajo, al elegir el charm.
+    const [a, ...puestas] = prod.acabados[clave];
+    const cerca = (typeof CERCA_HOMBRE !== 'undefined' && CERCA_HOMBRE[prod.id] && CERCA_HOMBRE[prod.id][clave]) || [];
+    const lista = [
+      [a, prod.nombre + ' en ' + NOMBRE_ACABADO_HOMBRE[clave].toLowerCase()],
+      ...cerca.slice(0, 1).map(src => [src, prod.nombre + ' de cerca']),
+      ...puestas.slice(0, 2).map(src => [src, prod.nombre + ' puesto']),
+      ['img/hombre/packaging.png', 'Packaging Cozumel'],
+    ];
+    galeria.textContent = ''; miniaturas.textContent = ''; puntos.textContent = '';
+    lista.forEach(([src, alt], i) => {
+      const fig = crear('figure', 'v2-pieza-foto');
+      fig.id = 'v2-pieza-foto-' + i;
+      const im = crear('img');
+      im.src = src; im.alt = alt;
+      if (i) im.loading = 'lazy';
+      fig.append(im);
+      galeria.append(fig);
+      const mini = crear('button', 'v2-pieza-mini');
+      mini.type = 'button';
+      mini.setAttribute('aria-label', 'Ver foto ' + (i + 1));
+      const mi = crear('img');
+      mi.src = src; mi.alt = '';
+      mini.append(mi);
+      mini.addEventListener('click', () => {
+        fig.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        miniaturas.querySelectorAll('button').forEach(m => m.classList.toggle('activo', m === mini));
+      });
+      if (!i) mini.classList.add('activo');
+      miniaturas.append(mini);
+      puntos.append(crear('span'));
+    });
+    galeria.scrollLeft = 0;
+    marcar();
+    pintarMaterial();
+    etiqueta.textContent = NOMBRE_ACABADO_HOMBRE[clave];
+    tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
+  }
+  pintar();
+
+  // Debajo: scroll horizontal con las otras piezas del mismo tipo
+  // (si abres un collar, salen los demás collares).
+  const otras = COLECCION_HOMBRE.filter(p => p.tipo === prod.tipo && p.id !== prod.id);
+  if (otras.length) {
+    const seccion = crear('section', 'v2-pieza-mas');
+    seccion.setAttribute('aria-label', 'Más piezas');
+    const fila = crear('div', 'v2-pieza-mas-fila');
+    const acabados = acabadosVariados(otras);
+    otras.forEach((p, i) => fila.appendChild(tarjetaHombre(p, acabados[i])));
+    seccion.append(fila);
+    caja.after(seccion);
+  }
+})();
+
+/* ---------- Shop nuevo: rejilla de la colección (10/2026) ----------
+   Foto (la segunda al pasar el ratón), nombre y precio. Incluye el Kit a
+   tu gusto, que lleva a su propia página. */
+(function () {
+  const rejilla = document.getElementById('v2-grid');
+  if (!rejilla || typeof PRODUCTOS === 'undefined') return;
+
+  // Colección activa (MEN por defecto). Todavía no hay piezas de hombre,
+  // así que las dos enseñan lo mismo; cuando existan, filtrar aquí por
+  // prod.coleccion.
+  const coleccion = new URLSearchParams(location.search).get('c') === 'woman' ? 'woman' : 'men';
+  document.querySelectorAll('.v2-colecciones a').forEach(a => {
+    if (a.dataset.coleccion === coleccion) a.setAttribute('aria-current', 'page');
+  });
+
+  // MEN: las piezas de hombre (hombre.js), con circulitos de acabado y,
+  // encima, el tipo de pieza (?t=colgantes por defecto).
+  if (coleccion === 'men' && typeof COLECCION_HOMBRE !== 'undefined') {
+    const pedido = new URLSearchParams(location.search).get('t');
+    const tipo = TIPOS_HOMBRE.some(t => t.clave === pedido) ? pedido : TIPOS_HOMBRE[0].clave;
+    const tipos = document.createElement('nav');
+    tipos.className = 'v2-tipos';
+    tipos.setAttribute('aria-label', 'Tipo de pieza');
+    TIPOS_HOMBRE.forEach(t => {
+      const a = document.createElement('a');
+      a.href = '?c=men&t=' + t.clave;
+      a.textContent = t.nombre;
+      if (t.clave === tipo) a.setAttribute('aria-current', 'page');
+      tipos.appendChild(a);
+    });
+    rejilla.before(tipos);
+    const banner = bannerPromoHombre();
+    if (banner) tipos.before(banner);
+    const piezas = COLECCION_HOMBRE.filter(p => p.tipo === tipo);
+    const acabados = acabadosVariados(piezas);
+    piezas.forEach((prod, i) => rejilla.appendChild(tarjetaHombre(prod, acabados[i])));
+    if (!piezas.length) {
+      const vacio = document.createElement('p');
+      vacio.className = 'v2-grid-vacio';
+      vacio.textContent = 'Muy pronto';
+      rejilla.appendChild(vacio);
+    }
+    return;
+  }
+  PRODUCTOS.forEach(prod => {
+    const esKitLibre = prod.id === 'kit_personalizado';
+    if (prod.oculto && !esKitLibre) return;
+    const fotos = FOTOS_TARJETA_V2[prod.id] || fotosDe(prod, 'oro').map(f => normFoto(f).src);
+    const a = document.createElement('a');
+    a.className = 'v2-card';
+    a.href = esKitLibre ? 'arma-tu-kit.html' : 'personalizar.html?p=' + encodeURIComponent(prod.slug);
+    const media = document.createElement('span');
+    media.className = 'v2-card-media';
+    const img = document.createElement('img');
+    img.src = fotos[0] || ''; img.alt = prod.nombre; img.loading = 'lazy';
+    media.appendChild(img);
+    if (fotos[1]) {
+      const img2 = document.createElement('img');
+      img2.src = fotos[1]; img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+      media.appendChild(img2);
+    }
+    const nombre = document.createElement('span');
+    nombre.className = 'v2-card-nombre';
+    nombre.textContent = prod.nombre;
+    const precio = document.createElement('span');
+    precio.className = 'v2-card-precio';
+    precio.textContent = precioTexto(prod) || '';
+    a.append(media, nombre, precio);
+    rejilla.appendChild(a);
+  });
+})();
+
+/* ---------- Stories: visor de fotos a pantalla completa (10/2026) ----------
+   Al pulsar una foto de la tira se abre en grande; se pasa con las
+   flechas (pantalla o teclado) o deslizando en el móvil. Esc cierra. */
+(function () {
+  const tira = document.getElementById('v2-stories');
+  if (!tira) return;
+  const fotos = [...tira.querySelectorAll('.v2-story img')].map(img => img.getAttribute('src'));
+  if (!fotos.length) return;
+
+  const visor = document.createElement('div');
+  visor.className = 'v2-visor';
+  visor.hidden = true;
+  visor.setAttribute('role', 'dialog');
+  visor.setAttribute('aria-modal', 'true');
+  visor.setAttribute('aria-label', 'Cozumel stories');
+  visor.innerHTML =
+    '<img alt="">' +
+    '<button type="button" class="v2-visor-cerrar" aria-label="Cerrar">×</button>' +
+    '<button type="button" class="v2-visor-ant" aria-label="Foto anterior">‹</button>' +
+    '<button type="button" class="v2-visor-sig" aria-label="Foto siguiente">›</button>' +
+    '<p class="v2-visor-contador"></p>';
+  document.body.appendChild(visor);
+  const img = visor.querySelector('img');
+  const contador = visor.querySelector('.v2-visor-contador');
+  let actual = 0, origen = null;
+
+  const mostrar = (i) => {
+    actual = (i + fotos.length) % fotos.length;
+    img.src = fotos[actual];
+    contador.textContent = (actual + 1) + ' / ' + fotos.length;
+  };
+  const abrir = (i, boton) => {
+    origen = boton;
+    mostrar(i);
+    visor.hidden = false;
+    document.body.classList.add('v2-visor-abierto');
+    visor.querySelector('.v2-visor-cerrar').focus();
+  };
+  const cerrar = () => {
+    visor.hidden = true;
+    document.body.classList.remove('v2-visor-abierto');
+    if (origen) origen.focus();
+  };
+
+  tira.querySelectorAll('.v2-story').forEach(b => {
+    b.addEventListener('click', () => abrir(Number(b.dataset.i) || 0, b));
+  });
+  visor.querySelector('.v2-visor-cerrar').addEventListener('click', cerrar);
+  visor.querySelector('.v2-visor-ant').addEventListener('click', () => mostrar(actual - 1));
+  visor.querySelector('.v2-visor-sig').addEventListener('click', () => mostrar(actual + 1));
+  visor.addEventListener('click', (e) => { if (e.target === visor) cerrar(); });
+  document.addEventListener('keydown', (e) => {
+    if (visor.hidden) return;
+    if (e.key === 'Escape') cerrar();
+    else if (e.key === 'ArrowLeft') mostrar(actual - 1);
+    else if (e.key === 'ArrowRight') mostrar(actual + 1);
+  });
+  let x0 = null;
+  visor.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  visor.addEventListener('touchend', (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) mostrar(actual + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+})();
+
 const grid = document.getElementById('producto-grid');
 const gridKits = document.getElementById('producto-grid-kits');
 if (grid && typeof PRODUCTOS !== 'undefined') {
@@ -1386,6 +2233,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 (function () {
   const YA_CERRADO = 'popupPreventaCerrado';
   if (CURRENT_PAGE !== 'productos') return;
+  if (document.body.classList.contains('v2')) return; // rediseño: sin popup
 
   // 01/10: una vez por SESIÓN. Sale al entrar en la colección; si se ve
   // una vez, no vuelve a salir al ir al carrito y volver. Al cerrar el
@@ -1664,8 +2512,15 @@ if (navToggle && menuMovil) {
 
 /* ---------- Marcar el enlace de la página activa ---------- */
 const currentFile = location.pathname.split('/').pop() || 'index.html';
+// FOR MEN / FOR WOMAN van los dos a productos.html: se marca el de la
+// colección abierta (?c=, MEN por defecto); las piezas de hombre, FOR MEN.
+const coleccionActual = currentFile === 'hombre.html' ? 'men'
+  : new URLSearchParams(location.search).get('c') === 'woman' ? 'woman' : 'men';
 document.querySelectorAll('.nav a, .footer-nav a, .menu-movil-nav a').forEach(a => {
-  if (a.getAttribute('href') === currentFile) a.setAttribute('aria-current', 'page');
+  const [archivo, query] = (a.getAttribute('href') || '').split('?');
+  const c = new URLSearchParams(query || '').get('c');
+  const enColeccion = c && (currentFile === 'productos.html' || currentFile === 'hombre.html') && c === coleccionActual;
+  if ((!c && archivo === currentFile) || enColeccion) a.setAttribute('aria-current', 'page');
 });
 
 
@@ -3160,3 +4015,160 @@ if (contactForm) {
     }
   });
 }
+
+/* ---------- Newsletter de la portada (rediseño 10/2026) ----------
+   Guarda el email en lista_espera con fuente "newsletter". Necesita la
+   migración v32 (la política de inserción solo admitía "cuenta_atras"). */
+(function () {
+  const form = document.getElementById('v2-news-form');
+  if (!form) return;
+  const aviso = document.getElementById('v2-news-aviso');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      aviso.textContent = 'Escribe un email válido';
+      form.email.focus();
+      return;
+    }
+    if (typeof SUPABASE_URL === 'undefined') return;
+    const boton = form.querySelector('button');
+    boton.disabled = true;
+    aviso.textContent = 'Guardando…';
+    try {
+      const resp = await fetch(SUPABASE_URL + '/rest/v1/lista_espera', {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: 'Bearer ' + SUPABASE_ANON_KEY,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({ email, consentimiento: true, fuente: 'newsletter' }),
+      });
+      // 409 = ya estaba apuntado: para quien se apunta, es lo mismo.
+      if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
+      form.querySelector('.v2-news-campo').remove();
+      aviso.textContent = 'Gracias. Te enviaremos tu código por email.';
+    } catch (err) {
+      console.error('Newsletter:', err);
+      aviso.textContent = 'No se ha podido guardar. Inténtalo de nuevo en un momento';
+      boton.disabled = false;
+    }
+  });
+})();
+
+/* ---------- Flechas en los carruseles (solo ordenador) ----------
+   Portada y "más piezas": una flecha a cada lado que pasa casi una
+   pantalla. En el móvil se desliza con el dedo y no salen. */
+(function () {
+  const flecha = (dir) =>
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' +
+    (dir < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>';
+  function montar(pista) {
+    const caja = document.createElement('div');
+    caja.className = 'v2-carrusel-caja';
+    pista.before(caja);
+    caja.appendChild(pista);
+    [-1, 1].forEach(dir => {
+      const bt = document.createElement('button');
+      bt.type = 'button';
+      bt.className = 'v2-flecha ' + (dir < 0 ? 'v2-flecha--izq' : 'v2-flecha--der');
+      bt.setAttribute('aria-label', dir < 0 ? 'Anteriores' : 'Siguientes');
+      bt.innerHTML = flecha(dir);
+      bt.addEventListener('click', () => pista.scrollBy({ left: dir * pista.clientWidth * 0.8, behavior: 'smooth' }));
+      caja.appendChild(bt);
+    });
+    const actualizar = () => {
+      const max = pista.scrollWidth - pista.clientWidth - 2;
+      caja.querySelector('.v2-flecha--izq').hidden = pista.scrollLeft <= 2;
+      caja.querySelector('.v2-flecha--der').hidden = pista.scrollLeft >= max;
+    };
+    pista.addEventListener('scroll', actualizar, { passive: true });
+    window.addEventListener('resize', actualizar);
+    actualizar();
+  }
+  // Las pistas se rellenan en otros bloques: esperar a que tengan piezas.
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.v2-drop-pista, .v2-pieza-mas-fila').forEach(montar);
+  });
+})();
+
+/* ---------- Zoom de las fotos de la pieza (móvil) ----------
+   En la propia foto, sin abrir nada: al tocarla se amplía en ese punto
+   y se recorre moviendo el dedo; otro toque la devuelve a su tamaño.
+   Mientras está ampliada, el dedo mueve la foto en vez de pasar a la
+   siguiente. */
+// Se usa en la galería de la pieza y en la foto grande del charm elegido.
+function zoomEnFotos(galeria) {
+  if (!galeria) return;
+  const movil = () => window.matchMedia('(max-width:899px)').matches;
+  const ESCALA = 2.5;
+  let activa = null; // { foto, img, tx, ty }
+  let toque = null;  // { x, y, tx, ty, movido }
+
+  const limitar = (v, max) => Math.max(-max, Math.min(max, v));
+  function aplicar() {
+    const r = activa.foto.getBoundingClientRect();
+    activa.tx = limitar(activa.tx, (ESCALA - 1) * r.width / 2);
+    activa.ty = limitar(activa.ty, (ESCALA - 1) * r.height / 2);
+    activa.img.style.transform = 'translate(' + activa.tx + 'px,' + activa.ty + 'px) scale(' + ESCALA + ')';
+  }
+  function ampliar(foto, x, y) {
+    const img = foto.querySelector('img');
+    const r = foto.getBoundingClientRect();
+    // El punto tocado se queda bajo el dedo al ampliar.
+    const dx = x - (r.left + r.width / 2), dy = y - (r.top + r.height / 2);
+    activa = { foto, img, tx: dx * (1 - ESCALA), ty: dy * (1 - ESCALA) };
+    foto.classList.add('ampliada');
+    galeria.classList.add('con-zoom');
+    img.style.transition = 'transform .3s ease';
+    aplicar();
+  }
+  function reducir() {
+    if (!activa) return;
+    activa.img.style.transition = 'transform .3s ease';
+    activa.img.style.transform = '';
+    activa.foto.classList.remove('ampliada');
+    galeria.classList.remove('con-zoom');
+    activa = null;
+  }
+
+  galeria.addEventListener('click', (e) => {
+    const foto = e.target.closest('.v2-pieza-foto');
+    if (!foto || !movil()) return;
+    if (toque && toque.movido) return; // fue un arrastre, no un toque
+    if (activa) reducir(); else ampliar(foto, e.clientX, e.clientY);
+  });
+  galeria.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    toque = { x: t.clientX, y: t.clientY, tx: activa ? activa.tx : 0, ty: activa ? activa.ty : 0, movido: false };
+  }, { passive: true });
+  galeria.addEventListener('touchmove', (e) => {
+    if (!toque) return;
+    const t = e.touches[0];
+    const mx = t.clientX - toque.x, my = t.clientY - toque.y;
+    if (Math.abs(mx) > 6 || Math.abs(my) > 6) toque.movido = true;
+    if (!activa) return;
+    e.preventDefault(); // ampliada: el dedo mueve la foto
+    activa.img.style.transition = 'none';
+    activa.tx = toque.tx + mx;
+    activa.ty = toque.ty + my;
+    aplicar();
+  }, { passive: false });
+  // Al cambiar de acabado (o de charm) se repintan las fotos: sin zoom.
+  galeria.reiniciarZoom = () => { activa = null; galeria.classList.remove('con-zoom'); };
+  document.querySelectorAll('.v2-pieza-tonos .v2-tono').forEach(bt => bt.addEventListener('click', galeria.reiniciarZoom));
+}
+zoomEnFotos(document.querySelector('.v2-pieza-galeria'));
+zoomEnFotos(document.querySelector('.v2-charm-vista'));
+
+/* Ficha de mujer con el diseño nuevo: el selector de acabado pasa de
+   debajo de las fotos a la columna de información, bajo el nombre (como
+   en la ficha de hombre). Mismo elemento y mismo id: la lógica no cambia. */
+(function () {
+  const acabado = document.getElementById('acabado-contenedor');
+  const cabecera = document.querySelector('.producto-col-info .producto-cabecera');
+  if (!acabado || !cabecera || !document.body.classList.contains('v2')) return;
+  cabecera.after(acabado);
+})();
