@@ -847,8 +847,8 @@ function fotosCharmHombre(prod, clave) {
 function miniaturaAcabado(prod, clave, mas = 1) {
   const mini = document.createElement('img');
   mini.alt = ''; mini.loading = 'lazy'; mini.decoding = 'async';
-  // Los círculos van detrás de las fotos grandes en la cola de descarga.
-  mini.fetchPriority = 'low';
+  // Sin prioridad baja: el círculo comparte archivo con la foto grande de
+  // la tarjeta y la arrastraba al final de la cola (más lenta).
   // Si la pieza tiene foto propia para el círculo, esa, sin zoom.
   const propia = typeof MINIATURAS_HOMBRE !== 'undefined' && MINIATURAS_HOMBRE[prod.id] && MINIATURAS_HOMBRE[prod.id][clave];
   if (propia) {
