@@ -1649,3 +1649,19 @@ en: USA
 # ---------- Rediseño 10/2026 ----------
 es: Ver más
 en: See more
+
+# ---------- Pantalla de web cerrada (cierre.js) ----------
+es: Muy pronto
+en: Coming soon
+
+es: Suscríbete y, con tu primera compra, entrarás en el sorteo de <strong>5 videollamadas con Adri</strong>
+en: Subscribe and, with your first purchase, you'll enter the giveaway for <strong>5 video calls with Adri</strong>
+
+es: Avisadme
+en: Notify me
+
+es: Acepto que Cozumel guarde mi email para avisarme. <a href="privacidad.html">Privacidad</a>
+en: I agree that Cozumel may store my email to notify me. <a href="privacidad.html">Privacy</a>
+
+es: ¡Listo! Te avisaremos en cuanto abramos.
+en: Done! We'll let you know as soon as we open.

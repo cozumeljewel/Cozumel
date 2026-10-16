@@ -536,7 +536,12 @@ COZUMEL_EN_CARGADO({
  "Pulsera": "Bracelet",
  "El CUIT o CUIL tiene 11 dígitos": "The CUIT or CUIL has 11 digits",
  "EE. UU.": "USA",
- "Ver más": "See more"
+ "Ver más": "See more",
+ "Muy pronto": "Coming soon",
+ "Suscríbete y, con tu primera compra, entrarás en el sorteo de <strong>5 videollamadas con Adri</strong>": "Subscribe and, with your first purchase, you'll enter the giveaway for <strong>5 video calls with Adri</strong>",
+ "Avisadme": "Notify me",
+ "Acepto que Cozumel guarde mi email para avisarme. <a href=\"privacidad.html\">Privacidad</a>": "I agree that Cozumel may store my email to notify me. <a href=\"privacidad.html\">Privacy</a>",
+ "¡Listo! Te avisaremos en cuanto abramos.": "Done! We'll let you know as soon as we open."
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
