@@ -38,8 +38,9 @@
      producción, no empezaba a pedirla hasta los 330 ms. Con este preload
      arranca a la vez que el CSS. Solo va en el inicio: es la única página
      con hero, y precargar de más quita ancho de banda a lo que sí urge. -->
-<link rel="preload" as="image" href="img/portada-movil.png" media="(max-width: 899px)" fetchpriority="high">
-<link rel="preload" as="image" href="img/portada-web.png" media="(min-width: 900px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/w/full/portada-movil.png.webp" media="(max-width: 899px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/w/full/portada-web.png.webp" media="(min-width: 900px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/w/full/stories-bodegon-5.png.webp" media="(min-width: 900px)">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="supabase-config.js" defer></script>
 <script src="mercados.js" defer></script>
@@ -56,9 +57,12 @@
   <section class="hero-v2">
     <div class="hero-v2-fotos">
       <!-- Móvil: portada-movil. Ordenador: díptico portada-web + jalapeños abiertos (stories-bodegon-5). -->
-      <img class="hero-v2-foto hero-v2-solo-movil" src="img/portada-movil.png" alt="Cozumel, colección de hombre" width="1025" height="1534" fetchpriority="high">
-      <img class="hero-v2-foto hero-v2-solo-web" src="img/portada-web.png" alt="Cozumel, colección de hombre" width="1024" height="1536" loading="lazy">
-      <img class="hero-v2-foto hero-v2-foto-2" src="img/stories-bodegon-5.png" alt="" width="1024" height="1536" loading="lazy">
+      <!-- Versiones web (img/w/full, scripts/fotos-web.py), mismo tamaño en píxeles
+           que el original. La del móvil va "lazy": en el ordenador está oculta y
+           así no se descarga; en el móvil llega igual de pronto por el preload. -->
+      <img class="hero-v2-foto hero-v2-solo-movil" src="img/w/full/portada-movil.png.webp" alt="Cozumel, colección de hombre" width="1025" height="1534" loading="lazy" fetchpriority="high">
+      <img class="hero-v2-foto hero-v2-solo-web" src="img/w/full/portada-web.png.webp" alt="Cozumel, colección de hombre" width="1024" height="1536" loading="lazy" fetchpriority="high">
+      <img class="hero-v2-foto hero-v2-foto-2" src="img/w/full/stories-bodegon-5.png.webp" alt="" width="1024" height="1536" loading="lazy">
     </div>
     <div class="hero-v2-copy">
       <h1 class="hero-v2-titulo">New drop</h1>

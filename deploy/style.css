@@ -3048,7 +3048,7 @@ body.v2 .menu-movil-nav a{
 .hero-v2-fotos{position:absolute; inset:0; display:grid; grid-template-columns:1fr;}
 .hero-v2-foto{
   display:block; width:100%; height:100%; object-fit:cover; object-position:center 35%;
-  animation:heroMediaFade 1.2s ease-out both;
+  animation:heroMediaFade .6s ease-out both;
 }
 .hero-v2-foto-2{display:none;}
 /* Velo solo abajo, donde va el texto: la foto se ve limpia */

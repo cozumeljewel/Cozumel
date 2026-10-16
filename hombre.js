@@ -488,6 +488,8 @@ const MEDIDAS_HOMBRE = {
 const PORTADA_CHARM_HOMBRE = {
   hombre_collar_3: { oro: 'cruz_2', oro_blanco: 'cruz_1' },  // Mezcal, con cruz
   hombre_collar_6: { oro: 'cruz_3', oro_blanco: 'cruz_1' },  // Cacao, con cruz
+  hombre_collar_4: { oro: 'simbolo_d', oro_blanco: 'charm_3' },  // Guajillo: mano / placa ovalada
+  hombre_collar_8: { oro: 'simbolo_a', oro_blanco: 'charm_2' },  // Obsidiana: triángulo / placa rectangular
 };
 
 // Piezas que ya llevan colgante: no se les ofrece charm.

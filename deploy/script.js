@@ -1,3 +1,48 @@
+/* ---------- Versiones web de las fotos (scripts/fotos-web.py) ----------
+   Los originales (PNG/JPG de 1-3 MB) no se tocan. La web usa versiones
+   preparadas en img/w/ (archivos normales, llegan al momento):
+     · '300' / '600' / '900': miniaturas (tarjetas, círculos, stories)
+     · 'full': fotos grandes (portada, galería, lupa, visores), al MISMO
+       tamaño en píxeles que el original, WebP calidad 95. Solo de los
+       PNG: los JPG ya son ligeros y se usan tal cual.
+   Si una versión no existe (foto nueva sin pasar el script), el aviso
+   de error de abajo pone el original: nunca queda una foto rota.
+   Van al principio del archivo y como funciones, para que cualquier
+   parte las pueda usar sin depender del orden. */
+function fotoWeb(src, tam) {
+  if (!src || typeof src !== 'string') return src;
+  const ruta = src.replace(/^(\.\/|\/)/, '');
+  if (!/^img\//.test(ruta) || /^img\/w\//.test(ruta)) return src;
+  if (tam === 'full' && !/\.png$/i.test(ruta)) return src;
+  return 'img/w/' + tam + '/' + ruta.slice(4) + '.webp';
+}
+// Miniatura según el ancho en pantalla que se necesita
+function imgPeq(src, ancho) {
+  return fotoWeb(src, ancho <= 300 ? '300' : ancho <= 600 ? '600' : '900');
+}
+// Tarjeta: 600 px en el móvil, 900 en el ordenador (el navegador elige)
+function fotoTarjeta(img, src, tamanos) {
+  img.removeAttribute('data-sin-web');
+  img.src = fotoWeb(src, '900');
+  if (fotoWeb(src, '600') !== src) {
+    img.srcset = fotoWeb(src, '600') + ' 600w, ' + fotoWeb(src, '900') + ' 900w';
+    // (66vw en el móvil: en los carruseles la tarjeta ocupa ~2/3 de pantalla)
+    img.sizes = tamanos || '(min-width: 900px) 25vw, 66vw';
+  } else img.removeAttribute('srcset');
+}
+// Plan B: si falla una versión de img/w/, se pone el original
+document.addEventListener('error', (e) => {
+  const t = e.target;
+  if (!t || t.tagName !== 'IMG' || t.dataset.sinWeb) return;
+  const url = t.currentSrc || t.getAttribute('src') || '';
+  const m = url.match(/img\/w\/[^/]+\/(.+?)\.webp(?:[?#].*)?$/);
+  if (!m) return;
+  t.dataset.sinWeb = '1';
+  t.removeAttribute('srcset');
+  t.removeAttribute('sizes');
+  t.src = 'img/' + decodeURIComponent(m[1]);
+}, true);
+
 /* ---------- Página actual (nav activo + qué trackear) ---------- */
 const CURRENT_PAGE = document.body.dataset.page || '';
 
@@ -568,7 +613,7 @@ function crearTarjetaProducto(prod) {
     fotos.forEach(src => {
       const foto = document.createElement('div');
       foto.className = 'producto-foto';
-      foto.style.backgroundImage = `url('${src}')`;
+      foto.style.backgroundImage = `url('${imgPeq(src, 600)}')`;
       tira.appendChild(foto);
     });
     media.appendChild(tira);
@@ -684,7 +729,7 @@ const FOTOS_TARJETA_V2 = {
     const media = document.createElement('span');
     media.className = 'v2-card-media v2-drop-media';
     const img = document.createElement('img');
-    img.src = imgPeq(fotos[0] || '', 900); img.alt = prod.nombre; img.loading = 'lazy';
+    fotoTarjeta(img, fotos[0] || ''); img.alt = prod.nombre; img.loading = 'lazy';
     media.appendChild(img);
     if (fotos[1]) {
       const img2 = document.createElement('img');
@@ -702,21 +747,6 @@ const FOTOS_TARJETA_V2 = {
     pista.appendChild(a);
   });
 })();
-
-/* Copia a tamaño de tarjeta de una foto (Image CDN de Netlify): el archivo
-   original no se toca; Netlify lo sirve reducido al ancho pedido y en el
-   formato más ligero que acepte el navegador (AVIF/WebP), con calidad alta.
-   Solo para tarjetas, círculos, miniaturas y stories: la ficha, la
-   galería, la lupa y la portada usan siempre la foto original.
-   En local (sin Netlify) devuelve la original. */
-// (Se calcula dentro de la función, no en una constante de fuera: la
-// portada la llama antes de llegar a esta línea del archivo, y una
-// constante aún sin crear rompía todo script.js en esa página.)
-function imgPeq(src, ancho) {
-  const cdn = location.protocol === 'https:' && !/^(localhost|127\.|192\.168\.|10\.|\[::1\])/.test(location.hostname);
-  if (!src || !cdn || !/^img\//.test(src)) return src;
-  return '/.netlify/images?url=' + encodeURIComponent('/' + src) + '&w=' + ancho + '&q=88';
-}
 
 /* Foto de "al pasar el ratón" de las tarjetas: no se descarga hasta que el
    ratón entra en la tarjeta (en el móvil no hay hover y no se descarga
@@ -779,7 +809,7 @@ function tarjetaHombre(prod, inicial) {
     const conCharm = fotosCharmHombre(prod, clave);
     const quiere = typeof PORTADA_CHARM_HOMBRE !== 'undefined' && PORTADA_CHARM_HOMBRE[prod.id] && PORTADA_CHARM_HOMBRE[prod.id][clave];
     const portada = conCharm.find(x => x.charm === quiere) || conCharm[0];
-    img.src = imgPeq(portada ? portada.foto : a, 900);
+    fotoTarjeta(img, portada ? portada.foto : a);
     fotoAlPasar(img2, imgPeq(b || a, 900), card);
     media.href = nombre.href = urlPiezaHombre(prod, clave);
     claveActual = clave;
@@ -1011,7 +1041,7 @@ function abrirMacroHombre(fotos, titulo, origen) {
     // Sin saltos: el marco ya tiene su tamaño y la foto aparece al cargar.
     img.classList.remove('cargada');
     img.onload = () => img.classList.add('cargada');
-    img.src = fotos[i];
+    img.src = fotoWeb(fotos[i], 'full');
     if (img.complete) img.classList.add('cargada');
     img.alt = titulo + ' de cerca' + (fotos.length > 1 ? ' (' + (i + 1) + ' de ' + fotos.length + ')' : '');
     if (contador) contador.textContent = (i + 1) + ' / ' + fotos.length;
@@ -1222,7 +1252,7 @@ function urlPiezaHombre(prod, clave) {
           if (vista.reiniciarZoom) vista.reiniciarZoom();
           vistaImg.style.transform = '';
           vistaFoto.classList.remove('ampliada');
-          vistaImg.src = src;
+          vistaImg.src = fotoWeb(src, 'full');
           vistaImg.alt = ch.nombre;
         }
       }
@@ -1353,8 +1383,11 @@ function urlPiezaHombre(prod, clave) {
       const fig = crear('figure', 'v2-pieza-foto');
       fig.id = 'v2-pieza-foto-' + i;
       const im = crear('img');
-      im.src = src; im.alt = alt; im.decoding = 'async';
-      if (i) im.loading = 'lazy';
+      im.src = fotoWeb(src, 'full'); im.alt = alt; im.decoding = 'async';
+      // La primera, cuanto antes; la segunda detrás (es la siguiente al
+      // deslizar); el resto, cuando se acercan.
+      if (!i) im.fetchPriority = 'high';
+      else if (i > 1) im.loading = 'lazy';
       fig.append(im);
       galeria.append(fig);
       const mini = crear('button', 'v2-pieza-mini');
@@ -1447,7 +1480,7 @@ function urlPiezaHombre(prod, clave) {
     const media = document.createElement('span');
     media.className = 'v2-card-media';
     const img = document.createElement('img');
-    img.src = imgPeq(fotos[0] || '', 900); img.alt = prod.nombre; img.loading = 'lazy';
+    fotoTarjeta(img, fotos[0] || ''); img.alt = prod.nombre; img.loading = 'lazy';
     media.appendChild(img);
     if (fotos[1]) {
       const img2 = document.createElement('img');
@@ -1469,7 +1502,7 @@ function urlPiezaHombre(prod, clave) {
 /* Stories: en la tira, la copia a su tamaño; la original queda en
    data-original para el visor a pantalla completa. */
 document.querySelectorAll('.v2-story img[data-original]').forEach(img => {
-  img.src = imgPeq(img.dataset.original, 800);
+  fotoTarjeta(img, img.dataset.original, '(min-width: 900px) 17vw, 50vw');
 });
 
 /* ---------- Stories: visor de fotos a pantalla completa (10/2026) ----------
@@ -1479,7 +1512,7 @@ document.querySelectorAll('.v2-story img[data-original]').forEach(img => {
   const tira = document.getElementById('v2-stories');
   if (!tira) return;
   // Las stories se ven en pequeño con una copia; el visor, con la original.
-  const fotos = [...tira.querySelectorAll('.v2-story img')].map(img => img.dataset.original || img.getAttribute('src'));
+  const fotos = [...tira.querySelectorAll('.v2-story img')].map(img => fotoWeb(img.dataset.original || img.getAttribute('src'), 'full'));
   if (!fotos.length) return;
 
   const visor = document.createElement('div');
@@ -1686,7 +1719,7 @@ function pintarGaleria(prod, acabado) {
     card.className = 'galeria-foto con-foto';
     // Va como variable CSS: el degradado de respaldo sigue debajo, así que
     // si el archivo no existe no queda un hueco roto.
-    card.style.setProperty('--foto', `url('${src}')`);
+    card.style.setProperty('--foto', `url('${fotoWeb(src, 'full')}')`);
     if (pos) card.style.setProperty('--foto-pos', pos);
     const etiqueta = `${prod.nombre}, imagen ${i + 1} de ${fotos.length}`;
     // role="button" y no "img": ya no es solo ilustrativa, se puede
@@ -1715,7 +1748,7 @@ function pintarGaleria(prod, acabado) {
       const p = document.createElement('button');
       p.type = 'button';
       p.className = 'galeria-punto' + (i === 0 ? ' activo' : '');
-      p.style.backgroundImage = `url('${src}')`;
+      p.style.backgroundImage = `url('${fotoWeb(src, '300')}')`;
       if (pos) p.style.backgroundPosition = pos;
       p.setAttribute('aria-label', `Ver imagen ${i + 1} de ${fotos.length}`);
       p.addEventListener('click', () => {
@@ -1778,7 +1811,7 @@ function abrirZoomFoto(src, etiqueta) {
 
   const img = document.createElement('img');
   img.className = 'foto-zoom-img';
-  img.src = src;
+  img.src = fotoWeb(src, 'full');
   img.alt = etiqueta || '';
   img.draggable = false;
 
@@ -2709,7 +2742,7 @@ if (ctaReservar) {
       if (!capaA || !capaB) return;
       const entra = capaVisible === capaA ? capaB : capaA;
       if (!conFundido) {
-        capaVisible.src = foto.src;
+        capaVisible.src = imgPeq(foto.src, 900);
         capaVisible.alt = foto.alt;
         return;
       }
@@ -2718,7 +2751,7 @@ if (ctaReservar) {
       // quedaba sin foto.
       capaA.onload = null;
       capaB.onload = null;
-      entra.src = foto.src;
+      entra.src = imgPeq(foto.src, 900);
       entra.alt = foto.alt;
       const mostrar = () => {
         entra.classList.add('visible');
@@ -2844,7 +2877,7 @@ if (ctaReservar) {
       const [a, b] = capasResumen(caja);
       const visible = a.classList.contains('visible') ? a : b;
       const pintar = (capa) => {
-        capa.style.backgroundImage = f ? `url('${f.src}')` : '';
+        capa.style.backgroundImage = f ? `url('${imgPeq(f.src, 600)}')` : '';
         capa.style.backgroundPosition = (f && f.pos) || '';
       };
       if (!conFundido || !f) { pintar(visible); return; }
@@ -2855,7 +2888,7 @@ if (ctaReservar) {
         entra.classList.add('visible');
         visible.classList.remove('visible');
       };
-      img.src = f.src;
+      img.src = imgPeq(f.src, 600);
     };
     setInterval(() => {
       if (document.hidden || sinMovimiento.matches) return;
@@ -2944,7 +2977,7 @@ if (ctaReservar) {
         const foto = document.createElement('span');
         foto.className = 'kit-opcion-foto';
         const src = fotoDe(prod, material[tipo]);
-        if (src) foto.style.backgroundImage = `url('${src}')`;
+        if (src) foto.style.backgroundImage = `url('${imgPeq(src, 600)}')`;
         b._prod = prod;
         const nombre = document.createElement('span');
         nombre.className = 'kit-opcion-nombre';
@@ -2991,7 +3024,7 @@ if (ctaReservar) {
         pintarResumen();
         caja.querySelectorAll('.kit-opcion').forEach(o => {
           const src = fotoDe(o._prod, material[tipo]);
-          if (src) o.querySelector('.kit-opcion-foto').style.backgroundImage = `url('${src}')`;
+          if (src) o.querySelector('.kit-opcion-foto').style.backgroundImage = `url('${imgPeq(src, 600)}')`;
         });
         refrescar();
       }));
