@@ -5,11 +5,11 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 # Las fotos se reemplazan a menudo conservando el mismo nombre de
-# archivo (img/mi-cielo-oro-1.jpg y compañía), y el móvil se quedaba
-# enseñando la versión vieja durante horas. Con esto el navegador puede
-# seguir guardándolas, pero tiene que preguntar al servidor si han
-# cambiado antes de usarlas: si no han cambiado el servidor responde
-# "sigue igual" y no se descarga nada, y si han cambiado se ve al
-# instante.
+# archivo (img/mi-cielo-oro-1.jpg y compañía). Antes cada foto se
+# preguntaba al servidor en cada visita (max-age=0) y la web iba lenta.
+# Ahora el navegador usa la que tiene guardada al momento y, por detrás,
+# comprueba si ha cambiado (stale-while-revalidate): una foto nueva se ve
+# como mucho en la visita siguiente, y si la de guardada tiene menos de
+# 10 minutos ni siquiera pregunta.
 /img/*
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: public, max-age=600, stale-while-revalidate=2592000

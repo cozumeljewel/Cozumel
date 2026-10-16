@@ -688,7 +688,8 @@ const FOTOS_TARJETA_V2 = {
     media.appendChild(img);
     if (fotos[1]) {
       const img2 = document.createElement('img');
-      img2.src = fotos[1]; img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+      img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+      fotoAlPasar(img2, fotos[1], a);
       media.appendChild(img2);
     }
     const nombre = document.createElement('span');
@@ -702,6 +703,22 @@ const FOTOS_TARJETA_V2 = {
   });
 })();
 
+/* Foto de "al pasar el ratón" de las tarjetas: no se descarga hasta que el
+   ratón entra en la tarjeta (en el móvil no hay hover y no se descarga
+   nunca). Así la página baja solo las fotos que se ven, sin tocar su
+   calidad. */
+function fotoAlPasar(img, src, tarjeta) {
+  img.dataset.src = src;
+  if (tarjeta.dataset.vista === '1') { img.src = src; return; }
+  if (tarjeta.dataset.esperaHover) return;
+  tarjeta.dataset.esperaHover = '1';
+  tarjeta.addEventListener('pointerenter', (e) => {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    tarjeta.dataset.vista = '1';
+    tarjeta.querySelectorAll('img[data-src]').forEach(i => { if (i.getAttribute('src') !== i.dataset.src) i.src = i.dataset.src; });
+  });
+}
+
 /* Tarjeta de la colección MEN: foto de producto (y puesto al pasar el
    cursor en el ordenador), nombre y circulitos de acabado debajo. Foto y nombre llevan a la pieza (hombre.html), donde
    se ven todas las fotos. */
@@ -713,9 +730,9 @@ function tarjetaHombre(prod, inicial) {
   // Los colgantes salen de cerca; pulseras y brazaletes ya llenan la foto.
   media.className = 'v2-card-media' + (prod.tipo === 'colgantes' ? ' v2-card-media--cerca' : '');
   const img = document.createElement('img');
-  img.alt = prod.nombre; img.loading = 'lazy';
+  img.alt = prod.nombre; img.loading = 'lazy'; img.decoding = 'async';
   const img2 = document.createElement('img');
-  img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+  img2.alt = ''; img2.loading = 'lazy'; img2.decoding = 'async'; img2.className = 'v2-card-hover';
   media.append(img, img2);
   // Lupa para ver la foto macro del material elegido (fuera del enlace de
   // la foto: abre el visor, no la ficha). Solo si hay macro de ese color.
@@ -748,7 +765,7 @@ function tarjetaHombre(prod, inicial) {
     const quiere = typeof PORTADA_CHARM_HOMBRE !== 'undefined' && PORTADA_CHARM_HOMBRE[prod.id] && PORTADA_CHARM_HOMBRE[prod.id][clave];
     const portada = conCharm.find(x => x.charm === quiere) || conCharm[0];
     img.src = portada ? portada.foto : a;
-    img2.src = b || a;
+    fotoAlPasar(img2, b || a, card);
     media.href = nombre.href = urlPiezaHombre(prod, clave);
     claveActual = clave;
     lupa.hidden = !macrosHombre(prod, clave).length;
@@ -829,7 +846,9 @@ function fotosCharmHombre(prod, clave) {
    el color. Sin tocar la foto. Se usa en tarjetas y fichas. */
 function miniaturaAcabado(prod, clave, mas = 1) {
   const mini = document.createElement('img');
-  mini.alt = ''; mini.loading = 'lazy';
+  mini.alt = ''; mini.loading = 'lazy'; mini.decoding = 'async';
+  // Los círculos van detrás de las fotos grandes en la cola de descarga.
+  mini.fetchPriority = 'low';
   // Si la pieza tiene foto propia para el círculo, esa, sin zoom.
   const propia = typeof MINIATURAS_HOMBRE !== 'undefined' && MINIATURAS_HOMBRE[prod.id] && MINIATURAS_HOMBRE[prod.id][clave];
   if (propia) {
@@ -1416,7 +1435,8 @@ function urlPiezaHombre(prod, clave) {
     media.appendChild(img);
     if (fotos[1]) {
       const img2 = document.createElement('img');
-      img2.src = fotos[1]; img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+      img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
+      fotoAlPasar(img2, fotos[1], a);
       media.appendChild(img2);
     }
     const nombre = document.createElement('span');
