@@ -4143,3 +4143,10 @@ body.v2 .v2-precio-antes{font-size:.92em; color:var(--c-texto-2); text-decoratio
 body.v2 .v2-precio-rebajado{color:#9A2B1E; font-weight:500;}
 body.v2 .v2-card--hombre .v2-card-precio.con-promo{display:flex; flex-direction:column; align-items:center; gap:2px;}
 .v2-promo + .v2-tipos{margin-top:28px;}
+
+/* Fluidez al hacer scroll: las tarjetas que están fuera de la pantalla no
+   se pintan hasta que se acercan (el navegador se ahorra decodificar y
+   mezclar fotos grandes que no se ven). Sin tocar las fotos. */
+body.v2 .v2-grid .v2-card--hombre,
+body.v2 .v2-grid .v2-card{content-visibility:auto; contain-intrinsic-size:auto 420px;}
+body.v2 .v2-pieza-foto{content-visibility:auto; contain-intrinsic-size:auto 600px;}

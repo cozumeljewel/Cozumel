@@ -1337,7 +1337,7 @@ function urlPiezaHombre(prod, clave) {
       const fig = crear('figure', 'v2-pieza-foto');
       fig.id = 'v2-pieza-foto-' + i;
       const im = crear('img');
-      im.src = src; im.alt = alt;
+      im.src = src; im.alt = alt; im.decoding = 'async';
       if (i) im.loading = 'lazy';
       fig.append(im);
       galeria.append(fig);
@@ -1345,7 +1345,7 @@ function urlPiezaHombre(prod, clave) {
       mini.type = 'button';
       mini.setAttribute('aria-label', 'Ver foto ' + (i + 1));
       const mi = crear('img');
-      mi.src = src; mi.alt = '';
+      mi.src = src; mi.alt = ''; mi.loading = 'lazy'; mi.decoding = 'async';
       mini.append(mi);
       mini.addEventListener('click', () => {
         fig.scrollIntoView({ behavior: 'smooth', block: 'start' });
