@@ -24,11 +24,42 @@
 (function () {
   const CLAVE = 'cozumel_idioma';
   const params = new URLSearchParams(location.search);
+  // Si la persona no ha elegido idioma, se decide por su país (la IP, vía
+  // /api/geo, la misma función que usa mercados.js para la moneda): en los
+  // de habla inglesa, inglés; en el resto, español. Lo que elija a mano en
+  // el selector (o con ?lang=) manda siempre sobre esto.
+  const CLAVE_AUTO = 'cozumel_idioma_auto';
+  const PAISES_EN = ['US', 'GB', 'IE', 'CA', 'AU', 'NZ', 'ZA', 'SG', 'MT', 'JM', 'BS', 'BB', 'TT', 'GY',
+    'AG', 'DM', 'GD', 'KN', 'LC', 'VC', 'BM', 'KY', 'VG', 'VI', 'GU', 'PR', 'IN', 'PH', 'NG', 'GH', 'KE'];
   let idioma = 'es';
+  let elegido = null;
   try {
     const pedido = params.get('lang');
     if (pedido === 'en' || pedido === 'es') localStorage.setItem(CLAVE, pedido);
-    idioma = localStorage.getItem(CLAVE) === 'en' ? 'en' : 'es';
+    elegido = localStorage.getItem(CLAVE);
+    if (elegido === 'en' || elegido === 'es') idioma = elegido;
+    else {
+      elegido = null;
+      let pais = null;
+      try { pais = (JSON.parse(localStorage.getItem('cozumel_mercado_geo')) || {}).pais || null; } catch (_) {}
+      const auto = pais ? (PAISES_EN.includes(String(pais).toUpperCase()) ? 'en' : 'es') : localStorage.getItem(CLAVE_AUTO);
+      if (auto) localStorage.setItem(CLAVE_AUTO, auto);
+      if (auto === 'en') idioma = 'en';
+      // Primera visita: aún no se sabe el país. Se pregunta y, si es de
+      // habla inglesa, se recarga una vez ya en inglés.
+      if (!auto) {
+        fetch('/api/geo', { headers: { Accept: 'application/json' } })
+          .then(r => (r.ok ? r.json() : null))
+          .then(d => {
+            const p = d && typeof d.country === 'string' ? d.country.toUpperCase() : null;
+            if (!p) return;
+            const decidido = PAISES_EN.includes(p) ? 'en' : 'es';
+            try { localStorage.setItem(CLAVE_AUTO, decidido); } catch (_) {}
+            if (decidido === 'en') location.reload();
+          })
+          .catch(() => {});
+      }
+    }
   } catch (_) {
     if (params.get('lang') === 'en') idioma = 'en';
   }
