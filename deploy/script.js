@@ -709,9 +709,12 @@ const FOTOS_TARJETA_V2 = {
    Solo para tarjetas, círculos, miniaturas y stories: la ficha, la
    galería, la lupa y la portada usan siempre la foto original.
    En local (sin Netlify) devuelve la original. */
-const CDN_IMAGENES = !/^(localhost|127\.|192\.168\.|10\.|\[::1\])/.test(location.hostname) && location.protocol === 'https:';
+// (Se calcula dentro de la función, no en una constante de fuera: la
+// portada la llama antes de llegar a esta línea del archivo, y una
+// constante aún sin crear rompía todo script.js en esa página.)
 function imgPeq(src, ancho) {
-  if (!src || !CDN_IMAGENES || !/^img\//.test(src)) return src;
+  const cdn = location.protocol === 'https:' && !/^(localhost|127\.|192\.168\.|10\.|\[::1\])/.test(location.hostname);
+  if (!src || !cdn || !/^img\//.test(src)) return src;
   return '/.netlify/images?url=' + encodeURIComponent('/' + src) + '&w=' + ancho + '&q=88';
 }
 
