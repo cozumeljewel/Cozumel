@@ -80,7 +80,7 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
         <h1 class="wc-logo" id="wc-titulo">Cozumel<span>Jewelry</span></h1>
         <p class="wc-muy-pronto">Muy pronto</p>
         <p class="wc-texto">Estamos preparando la nueva colección. Déjanos tu email y te avisamos el primero.</p>
-        <p class="wc-sorteo">✦ Entre quienes se apunten y hagan un pedido sortearemos <strong>5 videollamadas privadas con Adri</strong> ✦ <a href="terminos.html#sorteo-videollamadas">Bases</a></p>
+        <p class="wc-sorteo">Suscríbete y, con tu primera compra, entrarás en el sorteo de <strong>5 videollamadas con Adri</strong></p>
         <form class="wc-form" novalidate>
           <div class="wc-fila">
             <label class="wc-oculto" for="wc-email">Tu email</label>
