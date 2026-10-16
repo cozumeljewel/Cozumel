@@ -684,12 +684,12 @@ const FOTOS_TARJETA_V2 = {
     const media = document.createElement('span');
     media.className = 'v2-card-media v2-drop-media';
     const img = document.createElement('img');
-    img.src = fotos[0] || ''; img.alt = prod.nombre; img.loading = 'lazy';
+    img.src = imgPeq(fotos[0] || '', 900); img.alt = prod.nombre; img.loading = 'lazy';
     media.appendChild(img);
     if (fotos[1]) {
       const img2 = document.createElement('img');
       img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
-      fotoAlPasar(img2, fotos[1], a);
+      fotoAlPasar(img2, imgPeq(fotos[1], 900), a);
       media.appendChild(img2);
     }
     const nombre = document.createElement('span');
@@ -702,6 +702,18 @@ const FOTOS_TARJETA_V2 = {
     pista.appendChild(a);
   });
 })();
+
+/* Copia a tamaño de tarjeta de una foto (Image CDN de Netlify): el archivo
+   original no se toca; Netlify lo sirve reducido al ancho pedido y en el
+   formato más ligero que acepte el navegador (AVIF/WebP), con calidad alta.
+   Solo para tarjetas, círculos, miniaturas y stories: la ficha, la
+   galería, la lupa y la portada usan siempre la foto original.
+   En local (sin Netlify) devuelve la original. */
+const CDN_IMAGENES = !/^(localhost|127\.|192\.168\.|10\.|\[::1\])/.test(location.hostname) && location.protocol === 'https:';
+function imgPeq(src, ancho) {
+  if (!src || !CDN_IMAGENES || !/^img\//.test(src)) return src;
+  return '/.netlify/images?url=' + encodeURIComponent('/' + src) + '&w=' + ancho + '&q=88';
+}
 
 /* Foto de "al pasar el ratón" de las tarjetas: no se descarga hasta que el
    ratón entra en la tarjeta (en el móvil no hay hover y no se descarga
@@ -764,8 +776,8 @@ function tarjetaHombre(prod, inicial) {
     const conCharm = fotosCharmHombre(prod, clave);
     const quiere = typeof PORTADA_CHARM_HOMBRE !== 'undefined' && PORTADA_CHARM_HOMBRE[prod.id] && PORTADA_CHARM_HOMBRE[prod.id][clave];
     const portada = conCharm.find(x => x.charm === quiere) || conCharm[0];
-    img.src = portada ? portada.foto : a;
-    fotoAlPasar(img2, b || a, card);
+    img.src = imgPeq(portada ? portada.foto : a, 900);
+    fotoAlPasar(img2, imgPeq(b || a, 900), card);
     media.href = nombre.href = urlPiezaHombre(prod, clave);
     claveActual = clave;
     lupa.hidden = !macrosHombre(prod, clave).length;
@@ -852,11 +864,12 @@ function miniaturaAcabado(prod, clave, mas = 1) {
   // Si la pieza tiene foto propia para el círculo, esa, sin zoom.
   const propia = typeof MINIATURAS_HOMBRE !== 'undefined' && MINIATURAS_HOMBRE[prod.id] && MINIATURAS_HOMBRE[prod.id][clave];
   if (propia) {
-    mini.src = propia;
+    mini.src = imgPeq(propia, 300);
     Object.assign(mini.style, { width: '100%', height: '100%', objectFit: 'cover', transform: 'none' });
     return mini;
   }
-  mini.src = prod.acabados[clave][0];
+  // El círculo enseña un trozo de la foto muy ampliado: copia más grande.
+  mini.src = imgPeq(prod.acabados[clave][0], mas > 1 ? 900 : 1100);
   const foco = typeof FOCOS_HOMBRE !== 'undefined' && FOCOS_HOMBRE[prod.acabados[clave][0]];
   if (foco) {
     // mas: zoom extra para los círculos pequeños de las tarjetas
@@ -1191,7 +1204,7 @@ function urlPiezaHombre(prod, clave) {
         const c = CHARMS_HOMBRE.find(x => x.id === b.dataset.charm);
         b.hidden = !!c && !c.fotos[color];
         const im = b.querySelector('img');
-        if (c && im && c.fotos[color]) im.src = c.fotos[color];
+        if (c && im && c.fotos[color]) im.src = imgPeq(c.fotos[color], 300);
       });
       rejilla.querySelectorAll('[data-grupo]').forEach(g => {
         g.hidden = !CHARMS_HOMBRE.some(c => c.grupo === g.dataset.grupo && c.fotos[color]);
@@ -1345,7 +1358,7 @@ function urlPiezaHombre(prod, clave) {
       mini.type = 'button';
       mini.setAttribute('aria-label', 'Ver foto ' + (i + 1));
       const mi = crear('img');
-      mi.src = src; mi.alt = ''; mi.loading = 'lazy'; mi.decoding = 'async';
+      mi.src = imgPeq(src, 200); mi.alt = ''; mi.loading = 'lazy'; mi.decoding = 'async';
       mini.append(mi);
       mini.addEventListener('click', () => {
         fig.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1431,12 +1444,12 @@ function urlPiezaHombre(prod, clave) {
     const media = document.createElement('span');
     media.className = 'v2-card-media';
     const img = document.createElement('img');
-    img.src = fotos[0] || ''; img.alt = prod.nombre; img.loading = 'lazy';
+    img.src = imgPeq(fotos[0] || '', 900); img.alt = prod.nombre; img.loading = 'lazy';
     media.appendChild(img);
     if (fotos[1]) {
       const img2 = document.createElement('img');
       img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
-      fotoAlPasar(img2, fotos[1], a);
+      fotoAlPasar(img2, imgPeq(fotos[1], 900), a);
       media.appendChild(img2);
     }
     const nombre = document.createElement('span');
@@ -1450,13 +1463,20 @@ function urlPiezaHombre(prod, clave) {
   });
 })();
 
+/* Stories: en la tira, la copia a su tamaño; la original queda en
+   data-original para el visor a pantalla completa. */
+document.querySelectorAll('.v2-story img[data-original]').forEach(img => {
+  img.src = imgPeq(img.dataset.original, 800);
+});
+
 /* ---------- Stories: visor de fotos a pantalla completa (10/2026) ----------
    Al pulsar una foto de la tira se abre en grande; se pasa con las
    flechas (pantalla o teclado) o deslizando en el móvil. Esc cierra. */
 (function () {
   const tira = document.getElementById('v2-stories');
   if (!tira) return;
-  const fotos = [...tira.querySelectorAll('.v2-story img')].map(img => img.getAttribute('src'));
+  // Las stories se ven en pequeño con una copia; el visor, con la original.
+  const fotos = [...tira.querySelectorAll('.v2-story img')].map(img => img.dataset.original || img.getAttribute('src'));
   if (!fotos.length) return;
 
   const visor = document.createElement('div');
