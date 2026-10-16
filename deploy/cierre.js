@@ -44,7 +44,7 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
   letter-spacing:.14em; text-transform:uppercase; line-height:1;}
 #web-cerrada .wc-logo span{display:block; margin-top:10px; font-family:'Inter', system-ui, sans-serif; font-size:10px;
   font-weight:500; letter-spacing:.42em;}
-#web-cerrada .wc-muy-pronto{margin:44px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:12px; font-weight:500;
+#web-cerrada .wc-coleccion{margin:22px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-size:20px; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:#173634;} #web-cerrada .wc-muy-pronto{margin:36px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:12px; font-weight:500;
   letter-spacing:.32em; text-transform:uppercase; color:#C4A15A;}
 #web-cerrada .wc-texto{margin:14px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:14px; line-height:1.6; color:#62625F;}
 #web-cerrada .wc-sorteo{margin:22px auto 0; max-width:380px; font-family:'Inter', system-ui, sans-serif; font-size:16px; line-height:1.55; color:#173634;} #web-cerrada .wc-sorteo strong{font-weight:600;} #web-cerrada .wc-sorteo a{color:#62625F; font-size:12px; margin-left:4px;} #web-cerrada .wc-form{margin-top:28px;}
@@ -78,6 +78,7 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
     pantalla.innerHTML = `
       <div class="wc-contenido">
         <h1 class="wc-logo" id="wc-titulo">Cozumel<span>Jewelry</span></h1>
+        <p class="wc-coleccion">Men’s collection</p>
         <p class="wc-muy-pronto">Muy pronto</p>
         <p class="wc-sorteo">Suscríbete y, con tu primera compra, entrarás en el sorteo de <strong>5 videollamadas con Adri</strong></p>
         <form class="wc-form" novalidate>
