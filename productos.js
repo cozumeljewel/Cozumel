@@ -196,7 +196,7 @@ const PRODUCTOS = [
       'Doble cadena: fina + placa grabable',
       'Grabado de alta calidad, personalizable con lo que quieras: un nombre, una fecha o una frase',
     ],
-    cierre: 'Para que lleve puesto un pedacito de ti',
+    cierre: 'Para que lleve puesto algo tuyo',
     // Precio maestro en pesos mexicanos. El resto de mercados se
     // calculan solos (mercados.js). Para fijar un precio manual de un
     // país, se añade aquí su código: US: 24.99, ES: 23.90, CO: 84900...
@@ -345,7 +345,7 @@ const PRODUCTOS = [
     slug: 'kit-mi-consentida',
     nombre: 'Kit Mi Consentida',
     resumen: 'Collar Destino + Pulsera Mi Cielo',
-    descripcion: 'Hay una mujer que te lo dio todo sin pedir nada a cambio, o una que llegó y te cambió el rumbo. No importa si es tu mamá, tu hermana, tu novia o esa amiga que ya es familia: hay alguien que merece llevar puesto un pedacito de lo que sientes, aunque nunca se lo hayas dicho en voz alta',
+    descripcion: 'Hay una mujer que te lo dio todo sin pedir nada a cambio, o una que llegó y te cambió el rumbo. No importa si es tu mamá, tu hermana, tu novia o esa amiga que ya es familia: hay alguien que merece llevar puesto algo de lo que sientes, aunque nunca se lo hayas dicho en voz alta',
     parrafos: [
       'Collar Destino, con su piedra y su flor, elegidas por el mes en que llegó al mundo, porque ella también tiene su propio cielo. Pulsera Mi Cielo, grabada con lo que quieras decirle: una fecha, un lugar, una frase que solo ustedes entienden',
     ],

@@ -62,7 +62,7 @@
       <div class="ca-fondo" role="img" aria-label="Adriana llevando piezas de Cozumel Jewelry"></div>
       <div class="ca-contenido">
         <h1 class="ca-logo" id="ca-titulo"><img src="img/hero-logo-texto-1.png" alt="Cozumel Jewelry" width="1000" height="312"></h1>
-        <p class="ca-edicion">Un Pedacito <em>de ti</em></p>
+        <p class="ca-edicion">Cozumel Jewelry</p>
         <p class="ca-fecha" data-no-traducir>${diaMexico}<br><span>${horaMexico} ${EN ? 'Mexico time' : 'hora de México'}</span></p>
         <div class="ca-reloj" aria-live="off">
           <div><span data-u="d">00</span><small>días</small></div>

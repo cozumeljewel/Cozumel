@@ -506,9 +506,6 @@ en: With these simple steps your jewelry will stay clean, shiny and beautiful fo
 es: Ya solo falta regalarlo
 en: All that's left is to give it
 
-es: Regálale un pedacito de ti
-en: Give them a little piece of you
-
 es: Añadir al carrito
 en: Add to cart
 
@@ -603,8 +600,8 @@ en: Double chain: fine + engravable plate
 es: Grabado de alta calidad, personalizable con lo que quieras: un nombre, una fecha o una frase
 en: High-quality engraving, personalized with whatever you want: a name, a date or a phrase
 
-es: Para que lleve puesto un pedacito de ti
-en: So she can wear a little piece of you
+es: Para que lleve puesto algo tuyo
+en: So she can wear something of yours
 
 # ---------- Collar Destino ----------
 es: Su mes, su piedra
@@ -829,7 +826,7 @@ es: Porque el amor también se lleva puesto
 en: Because love is something you wear too
 
 # ---------- Kit Mi Consentida ----------
-es: Hay una mujer que te lo dio todo sin pedir nada a cambio, o una que llegó y te cambió el rumbo. No importa si es tu mamá, tu hermana, tu novia o esa amiga que ya es familia: hay alguien que merece llevar puesto un pedacito de lo que sientes, aunque nunca se lo hayas dicho en voz alta
+es: Hay una mujer que te lo dio todo sin pedir nada a cambio, o una que llegó y te cambió el rumbo. No importa si es tu mamá, tu hermana, tu novia o esa amiga que ya es familia: hay alguien que merece llevar puesto algo de lo que sientes, aunque nunca se lo hayas dicho en voz alta
 en: There's a woman who gave you everything without asking for anything in return, or one who showed up and changed your course. It doesn't matter if she's your mom, your sister, your girlfriend or that friend who's already family: someone deserves to wear a little piece of what you feel, even if you've never said it out loud
 
 es: Collar Destino, con su piedra y su flor, elegidas por el mes en que llegó al mundo, porque ella también tiene su propio cielo. Pulsera Mi Cielo, grabada con lo que quieras decirle: una fecha, un lugar, una frase que solo ustedes entienden
@@ -899,8 +896,8 @@ en: Each one is personalized separately — her name, her date, her message
 es: Envío en caja especial de regalo
 en: Shipped in a special gift box
 
-es: Porque no hay una sola forma de regalar un pedacito de ti.
-en: Because there's more than one way to give a little piece of you.
+es: Porque no hay una sola forma de regalar.
+en: Because there's more than one way to give.
 
 es: Una pulsera y un colgante, a tu elección
 en: A bracelet and a pendant, your choice
@@ -1066,8 +1063,8 @@ en: Hands holding a Cozumel flower necklace over the worktable, with pearls and 
 es: No todo se puede decir en voz alta
 en: Not everything can be said out loud
 
-es: Por eso lo grabamos. Un <strong>pedacito</strong> de ti, en algo que se lleva puesto todos los días.
-en: That's why we engrave it. A little <strong>piece</strong> of you, in something worn every day.
+es: Por eso lo grabamos. <strong>Algo tuyo</strong>, en algo que se lleva puesto todos los días.
+en: That's why we engrave it. <strong>Something of yours</strong>, in something worn every day.
 
 es: Cuaderno con los bocetos del collar de flor junto a la pieza terminada en dorado
 en: Notebook with sketches of the flower necklace next to the finished gold piece
@@ -1081,8 +1078,8 @@ en: You choose what to tell
 es: Tu nombre. Tu fecha. Tu mensaje. Personalizada con un grabado de calidad, solo para quien se la des.
 en: Your name. Your date. Your message. Personalized with a quality engraving, just for the person you give it to.
 
-es: No es una joya más. Es un pedacito de ti.
-en: It's not just another piece of jewelry. It's a little piece of you.
+es: No es una joya más. Es algo tuyo.
+en: It's not just another piece of jewelry. It's something of yours.
 
 es: Elige tu pieza →
 en: Choose your piece →
@@ -1586,8 +1583,8 @@ en: Always include your order number when you write to us.
 es: Ventajas del lanzamiento
 en: Launch perks
 
-es: <strong>Vídeo de Adri por completar la colección.</strong> Quien compre las cinco piezas de la colección <em>Un Pedacito de ti</em> (Pulsera Dos Almas, Pulsera Mi Cielo, Brazalete Eterno, Collar Esencia y Collar Destino) recibe un vídeo personal grabado por Adriana. Cuentan las piezas compradas sueltas o dentro de un kit, en uno o en varios pedidos, siempre con el mismo email. El vídeo se envía por email en los días siguientes a completar la colección. Si se devuelve alguna pieza, la colección deja de contar como completa.
-en: <strong>A video from Adri for completing the collection.</strong> Anyone who buys all five pieces in the <em>Un Pedacito de ti</em> collection (Dos Almas Bracelet, Mi Cielo Bracelet, Eterno Cuff, Esencia Necklace and Destino Necklace) gets a personal video recorded by Adriana. Pieces bought individually or in a kit count, in one or several orders, as long as they use the same email. The video is sent by email in the days after the collection is completed. If any piece is returned, the collection no longer counts as complete.
+es: <strong>Vídeo de Adri por completar la colección.</strong> Quien compre las cinco piezas de la colección de mujer (Pulsera Dos Almas, Pulsera Mi Cielo, Brazalete Eterno, Collar Esencia y Collar Destino) recibe un vídeo personal grabado por Adriana. Cuentan las piezas compradas sueltas o dentro de un kit, en uno o en varios pedidos, siempre con el mismo email. El vídeo se envía por email en los días siguientes a completar la colección. Si se devuelve alguna pieza, la colección deja de contar como completa.
+en: <strong>A video from Adri for completing the collection.</strong> Anyone who buys all five pieces in the women's collection (Dos Almas Bracelet, Mi Cielo Bracelet, Eterno Cuff, Esencia Necklace and Destino Necklace) gets a personal video recorded by Adriana. Pieces bought individually or in a kit count, in one or several orders, as long as they use the same email. The video is sent by email in the days after the collection is completed. If any piece is returned, the collection no longer counts as complete.
 
 es: <strong>Sorteo de 5 videollamadas con Adri.</strong> Participan las 100 primeras compras pagadas desde el lanzamiento (2 de octubre de 2026, a las 21:00 hora de México). Cada compra es una participación, tenga las piezas que tenga. Cozumel Jewelry elegirá 5 ganadores entre esas 100 compras y les avisará por el email con el que compraron; el día y la hora de cada videollamada se acuerdan con cada ganador. El premio es personal e intransferible y no se puede cambiar por dinero. Una compra cancelada o devuelta deja de participar. Para participar hay que ser mayor de edad.
 en: <strong>Raffle of 5 video calls with Adri.</strong> The first 100 paid orders from launch (October 2, 2026, at 9:00 PM Mexico time) take part. Each order is one entry, however many pieces it has. Cozumel Jewelry will choose 5 winners among those 100 orders and notify them at the email they used to buy; the day and time of each video call are arranged with each winner. The prize is personal, non-transferable and can't be exchanged for cash. A canceled or returned order no longer takes part. You must be of legal age to take part.
@@ -1665,3 +1662,9 @@ en: I agree that Cozumel may store my email to notify me. <a href="privacidad.ht
 
 es: ¡Listo! Te avisaremos en cuanto abramos.
 en: Done! We'll let you know as soon as we open.
+
+es: Joyería para mujer personalizable
+en: Personalized jewelry for women
+
+es: Joyería para mujer personalizable.
+en: Personalized jewelry for women.

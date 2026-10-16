@@ -2311,7 +2311,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   const titulo = document.createElement('h2');
   titulo.className = 'popup-titulo';
   titulo.id = 'popup-titulo';
-  titulo.textContent = 'Un Pedacito de Ti';
+  titulo.textContent = 'Cozumel Jewelry';
 
   // 01/10: texto corto, para leerse de un vistazo (texto del cliente).
   const p1 = document.createElement('p');
@@ -2335,7 +2335,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
 
   const cierre = document.createElement('p');
   cierre.className = 'popup-cierre';
-  cierre.textContent = 'Regala un pedacito de ti.';
+  cierre.textContent = 'Joyería para mujer personalizable.';
 
   caja.append(cerrar, olas, eyebrow, titulo, p1, edicion, badge, cta, cierre);
   capa.appendChild(caja);
