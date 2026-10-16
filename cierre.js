@@ -47,7 +47,7 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
 #web-cerrada .wc-muy-pronto{margin:44px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:12px; font-weight:500;
   letter-spacing:.32em; text-transform:uppercase; color:#C4A15A;}
 #web-cerrada .wc-texto{margin:14px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:14px; line-height:1.6; color:#62625F;}
-#web-cerrada .wc-form{margin-top:28px;}
+#web-cerrada .wc-sorteo{margin:18px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:13px; line-height:1.6; color:#173634;} #web-cerrada .wc-sorteo strong{font-weight:600;} #web-cerrada .wc-sorteo a{color:#62625F; font-size:12px; margin-left:4px;} #web-cerrada .wc-form{margin-top:28px;}
 #web-cerrada .wc-fila{display:flex; border-bottom:1px solid #173634;}
 #web-cerrada .wc-fila input{flex:1; min-width:0; padding:12px 0; border:0; background:transparent;
   font-family:'Inter', system-ui, sans-serif; font-size:15px; color:#173634; outline:none;}
@@ -80,6 +80,7 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
         <h1 class="wc-logo" id="wc-titulo">Cozumel<span>Jewelry</span></h1>
         <p class="wc-muy-pronto">Muy pronto</p>
         <p class="wc-texto">Estamos preparando la nueva colección. Déjanos tu email y te avisamos el primero.</p>
+        <p class="wc-sorteo">✦ Entre quienes se apunten y hagan un pedido sortearemos <strong>5 videollamadas privadas con Adri</strong> ✦ <a href="terminos.html#sorteo-videollamadas">Bases</a></p>
         <form class="wc-form" novalidate>
           <div class="wc-fila">
             <label class="wc-oculto" for="wc-email">Tu email</label>
