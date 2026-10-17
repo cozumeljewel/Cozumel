@@ -548,6 +548,14 @@ function productoPorDefecto() {
 /* OBSOLETA: la daba en euros fijos. El precio de verdad, en la moneda del
    mercado activo, lo da precioTexto(prod) de mercados.js. Se deja porque
    alguna página antigua podría llamarla. */
+/* Promoción de lanzamiento de mujer (17/10/2026, decisión del dueño):
+   lo que se paga es el precio de siempre; el tachado de encima es ese
+   precio / 0,85 redondeado (script.js, pintarPrecioPromo). Se apaga sola
+   al pasar "hasta". null = sin promoción. */
+// 17/10/2026: el dueño decide que NO haya promo en mujer, solo en hombre.
+// Para activarla: { descuento: 15, hasta: '...', modo: 'tachado', texto: '...' }
+const PROMO_MUJER = null;
+
 function formatearPrecio(precio) {
   if (precio === null || precio === undefined) return null;
   if (typeof formatearImporte === 'function' && typeof getMoneda === 'function') {

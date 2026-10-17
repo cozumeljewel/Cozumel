@@ -660,11 +660,13 @@ function crearTarjetaProducto(prod) {
   precio.className = 'producto-precio';
   // Precio del mercado activo (mercados.js): la misma fuente que usan la
   // ficha, el carrito y el checkout.
-  precio.textContent = precioTexto(prod) || 'Precio pendiente';
+  pintarPrecioPromo(precio, prod);
+  if (!precio.textContent) precio.textContent = 'Precio pendiente';
 
   // Kits: el precio de las piezas por separado tachado delante y el
   // ahorro debajo, para que se vea de un vistazo sin entrar en la ficha.
-  const ahorroTarjeta = (prod.piezas && prod.piezas.length) ? ahorroKit(prod, prod.piezas) : null;
+  // Con la promo de lanzamiento puesta, solo el tachado de la promo.
+  const ahorroTarjeta = (prod.piezas && prod.piezas.length && !promoActiva(promoDe(prod))) ? ahorroKit(prod, prod.piezas) : null;
   if (ahorroTarjeta) {
     const antes = document.createElement('s');
     antes.className = 'precio-antes';
@@ -742,7 +744,7 @@ const FOTOS_TARJETA_V2 = {
     nombre.textContent = prod.nombre;
     const precio = document.createElement('span');
     precio.className = 'v2-drop-precio';
-    precio.textContent = precioTexto(prod) || '';
+    pintarPrecioPromo(precio, prod);
     a.append(media, nombre, precio);
     pista.appendChild(a);
   });
@@ -847,18 +849,55 @@ function llevaCharmHombre(prod) {
 
 /* Fotos de la cadena con un charm puesto (FOTOS_CHARM_HOMBRE, hombre.js)
    para ese acabado, en orden de variación. */
-/* Precio de hombre con la promoción de lanzamiento (PROMO_HOMBRE): el de
-   siempre tachado y, debajo, el rebajado. Sin promo, solo el precio. */
-function pintarPrecioHombre(el, prod) {
+/* Promociones de lanzamiento (PROMO_HOMBRE en hombre.js, PROMO_MUJER en
+   productos.js). Se apagan solas al pasar promo.hasta.
+   · Hombre: descuento real; tachado el precio de siempre y debajo el
+     rebajado.
+   · Mujer (modo 'tachado'): se paga el precio de siempre; el tachado es
+     ese precio / 0,85 redondeado a un precio "redondo" cuyo descuento
+     sigue siendo un 15 %. El checkout no cambia. */
+function promoActiva(promo) {
+  return !!(promo && promo.descuento && (!promo.hasta || Date.now() <= Date.parse(promo.hasta)));
+}
+function promoDe(prod) {
+  if (prod && String(prod.id).startsWith('hombre_')) return typeof PROMO_HOMBRE !== 'undefined' ? PROMO_HOMBRE : null;
+  return typeof PROMO_MUJER !== 'undefined' ? PROMO_MUJER : null;
+}
+function tachadoRedondo(importe, moneda, descuento) {
+  const bruto = importe / (1 - descuento / 100);
+  // De más redondo a menos: [paso, lo que se resta al múltiplo siguiente]
+  const niveles = moneda === 'MXN' ? [[10, 1], [1, 0]]
+    : SIN_DECIMALES.includes(moneda) ? [[1000, 10], [100, 10], [10, 0]]
+    : [[1, 0.1], [0.1, 0]];
+  for (const [paso, fin] of niveles) {
+    let mejor = null;
+    for (let k = Math.floor(bruto / paso) - 3; k <= Math.floor(bruto / paso) + 3; k++) {
+      const c = Math.round(((k + 1) * paso - fin) * 100) / 100;
+      if (c <= importe || Math.round((1 - importe / c) * 100) !== descuento) continue;
+      if (mejor === null || Math.abs(c - bruto) < Math.abs(mejor - bruto)) mejor = c;
+    }
+    if (mejor !== null) return mejor;
+  }
+  return Math.round(bruto * 100) / 100;
+}
+function pintarPrecioPromo(el, prod) {
   if (typeof precioDe !== 'function') return;
   const p = precioDe(prod);
   if (!p) { el.textContent = ''; return; }
-  const promo = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.descuento;
-  const antes = formatearImporte(p.importe, p.moneda);
-  if (!promo) { el.textContent = antes; return; }
-  let rebajado = p.importe * (1 - promo / 100);
-  rebajado = (SIN_DECIMALES.includes(p.moneda) || p.moneda === 'MXN') ? Math.round(rebajado) : Math.round(rebajado * 100) / 100;
-  const ahora = formatearImporte(rebajado, p.moneda);
+  const promo = promoDe(prod);
+  const normal = formatearImporte(p.importe, p.moneda);
+  if (!promoActiva(promo)) { el.textContent = normal; el.classList.remove('con-promo'); return; }
+  let antesImp, ahoraImp;
+  if (promo.modo === 'tachado') {
+    antesImp = tachadoRedondo(p.importe, p.moneda, promo.descuento);
+    ahoraImp = p.importe;
+  } else {
+    antesImp = p.importe;
+    ahoraImp = p.importe * (1 - promo.descuento / 100);
+    ahoraImp = (SIN_DECIMALES.includes(p.moneda) || p.moneda === 'MXN') ? Math.round(ahoraImp) : Math.round(ahoraImp * 100) / 100;
+  }
+  const antes = formatearImporte(antesImp, p.moneda);
+  const ahora = formatearImporte(ahoraImp, p.moneda);
   el.textContent = '';
   const s = document.createElement('s');
   s.className = 'v2-precio-antes';
@@ -867,19 +906,21 @@ function pintarPrecioHombre(el, prod) {
   const r = document.createElement('span');
   r.className = 'v2-precio-rebajado';
   r.textContent = ahora;
-  r.setAttribute('aria-label', 'Ahora ' + ahora + ', ' + promo + ' % de descuento');
+  r.setAttribute('aria-label', 'Ahora ' + ahora + ', ' + promo.descuento + ' % de descuento');
   el.append(s, r);
   el.classList.add('con-promo');
 }
+function pintarPrecioHombre(el, prod) { pintarPrecioPromo(el, prod); }
 
-/* Banner de la promoción de lanzamiento de hombre. */
-function bannerPromoHombre() {
-  if (typeof PROMO_HOMBRE === 'undefined' || !PROMO_HOMBRE) return null;
+/* Banner de la promoción (hombre o mujer). */
+function bannerPromo(promo) {
+  if (!promoActiva(promo)) return null;
   const b = document.createElement('p');
   b.className = 'v2-promo';
-  b.textContent = PROMO_HOMBRE.texto;
+  b.textContent = promo.texto;
   return b;
 }
+function bannerPromoHombre() { return bannerPromo(typeof PROMO_HOMBRE !== 'undefined' ? PROMO_HOMBRE : null); }
 
 function fotosCharmHombre(prod, clave) {
   if (!llevaCharmHombre(prod)) return [];
@@ -1470,6 +1511,8 @@ function urlPiezaHombre(prod, clave) {
     }
     return;
   }
+  const bannerMujer = bannerPromo(typeof PROMO_MUJER !== 'undefined' ? PROMO_MUJER : null);
+  if (bannerMujer) rejilla.before(bannerMujer);
   PRODUCTOS.forEach(prod => {
     const esKitLibre = prod.id === 'kit_personalizado';
     if (prod.oculto && !esKitLibre) return;
@@ -1493,7 +1536,7 @@ function urlPiezaHombre(prod, clave) {
     nombre.textContent = prod.nombre;
     const precio = document.createElement('span');
     precio.className = 'v2-card-precio';
-    precio.textContent = precioTexto(prod) || '';
+    pintarPrecioPromo(precio, prod);
     a.append(media, nombre, precio);
     rejilla.appendChild(a);
   });
@@ -1998,9 +2041,9 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
   const precioTxt = precioTexto(prod);
   const resPrecio = document.getElementById('resumen-precio');
   const resNota = document.getElementById('resumen-precio-nota');
-  if (resPrecio) resPrecio.textContent = precioTxt || '—';
+  if (resPrecio) { pintarPrecioPromo(resPrecio, prod); if (!resPrecio.textContent) resPrecio.textContent = precioTxt || '—'; }
   const resAhorro = document.getElementById('resumen-ahorro');
-  const ahorroResumen = (prod.piezas && prod.piezas.length) ? ahorroKit(prod, prod.piezas) : null;
+  const ahorroResumen = (prod.piezas && prod.piezas.length && !promoActiva(promoDe(prod))) ? ahorroKit(prod, prod.piezas) : null;
   if (resAhorro) {
     resAhorro.hidden = !ahorroResumen;
     if (ahorroResumen) {

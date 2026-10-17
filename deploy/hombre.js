@@ -226,7 +226,8 @@ COLECCION_HOMBRE.forEach(p => { if (ESCALON_HOMBRE[p.id]) p.precios = ESCALONES_
 const ORO_14K_HOMBRE = ['hombre_pulsera_7', 'hombre_pulsera_8', 'hombre_anillo_7', 'hombre_anillo_10', 'hombre_anillo_13'];
 // Promoción de lanzamiento (descuento REAL sobre los precios de arriba:
 // el tachado es el precio de siempre). null = sin promoción.
-const PROMO_HOMBRE = { descuento: 15, texto: 'Lanzamiento colección de hombre · −15 % en todas las piezas' };
+// hasta: se apaga sola al pasar esa fecha (fin del 31/10 en México).
+const PROMO_HOMBRE = { descuento: 15, hasta: '2026-10-31T23:59:59-06:00', texto: 'Lanzamiento colección de hombre · −15 % en todas las piezas hasta el 31 de octubre' };
 
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 
