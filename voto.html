@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Gracias por tu voto · Cozumel Jewelry</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<!--
+  Página de llegada de la votación del email "Men's collection · Muy pronto"
+  (emails/hombre-muy-pronto.html, 17/10/2026). Se ve aunque la web esté
+  cerrada: NO carga cierre.js. Guarda el voto en la tabla eventos de Supabase
+  (evento 'voto_email', fuente 'email', producto = la pieza; migración v34).
+  Un voto por pieza y navegador (cozumel_voto_<pieza>).
+-->
+<script src="analitica.js"></script>
+<style>
+  :root { --fondo:#F8F6F1; --texto:#173634; --suave:#5E6B6A; --oro:#B08A45; --linea:#DCD8D1; --foto:#F1F1EF; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px 16px;
+    background:var(--fondo); color:var(--texto); font-family:'Inter', system-ui, sans-serif; text-align:center; }
+  main { width:100%; max-width:420px; }
+  .logo { margin:0; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:34px; letter-spacing:.18em; line-height:1; }
+  .logo span { display:block; margin-top:6px; font-family:'Inter', system-ui, sans-serif; font-size:11px; letter-spacing:.42em; }
+  .eyebrow { margin:28px 0 0; font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:var(--oro); }
+  h1 { margin:8px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:40px; line-height:1.1; }
+  .foto { width:240px; max-width:70vw; aspect-ratio:1; margin:24px auto 0; background:var(--foto); border-radius:3px; overflow:hidden; }
+  .foto img { width:100%; height:100%; object-fit:cover; display:block; }
+  .pieza { margin:14px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-size:24px; }
+  .tipo { margin:2px 0 0; font-size:13px; color:var(--suave); }
+  .texto { margin:22px 0 0; font-size:15px; line-height:1.6; }
+  .sorteo { margin:22px 0 0; padding:14px 16px; border:1px solid #C6A664; border-radius:4px; background:#F8F3E9; color:#7A5F2A; font-size:14px; line-height:1.55; }
+  .firma { margin:26px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-size:22px; }
+</style>
+</head>
+<body data-page="voto">
+<main>
+  <p class="logo">COZUMEL<span>JEWELRY</span></p>
+  <p class="eyebrow">Men’s collection</p>
+  <h1>¡Gracias por tu voto!</h1>
+  <div class="foto" hidden><img alt=""></div>
+  <p class="pieza" hidden></p>
+  <p class="tipo" hidden></p>
+  <p class="texto">Te avisaremos por email el día que salga la colección. Tú la verás antes que nadie.</p>
+  <p class="sorteo">Con tu primera compra entrarás en el sorteo de <strong>5 videollamadas con Adri</strong>.</p>
+  <p class="firma">Adri 🤍</p>
+</main>
+<script>
+(function () {
+  const PIEZAS = {
+    mezcal: { nombre: 'Mezcal', tipo: 'Collar con cruz · oro',       id: 'hombre_collar_3' },
+    copal:  { nombre: 'Copal',  tipo: 'Cadena · plata',     id: 'hombre_collar_7' },
+    uxmal:  { nombre: 'Uxmal',  tipo: 'Pulsera · plata',    id: 'hombre_pulsera_10' },
+    tulum:  { nombre: 'Tulum',  tipo: 'Pulsera · oro',      id: 'hombre_pulsera_3' },
+    ocaso:  { nombre: 'Ocaso',  tipo: 'Anillo sello · oro', id: 'hombre_anillo_1' },
+    charro: { nombre: 'Charro', tipo: 'Anillo · plata',     id: 'hombre_anillo_11' },
+  };
+  const clave = (new URLSearchParams(location.search).get('p') || '').toLowerCase();
+  const pieza = PIEZAS[clave];
+  if (!pieza) return;
+
+  const foto = document.querySelector('.foto');
+  foto.querySelector('img').src = 'img/email-voto-' + clave + '.jpg';
+  foto.querySelector('img').alt = pieza.nombre + ' · ' + pieza.tipo;
+  foto.hidden = false;
+  const nombre = document.querySelector('.pieza');
+  nombre.textContent = pieza.nombre; nombre.hidden = false;
+  const tipo = document.querySelector('.tipo');
+  tipo.textContent = pieza.tipo; tipo.hidden = false;
+  if (typeof window.clarity === 'function') window.clarity('event', 'voto_' + clave);
+
+  // Un voto por pieza y navegador
+  const YA = 'cozumel_voto_' + clave;
+  try { if (localStorage.getItem(YA)) return; } catch (_) {}
+  const SUPABASE = {
+    url: 'https://qesyjtqxbouodgldvbtq.supabase.co',
+    clave: 'sb_publishable_lmFNgpMEy4Axi6dYQ9E1UA_b63xSwJ6',
+  };
+  const id = (crypto.randomUUID && crypto.randomUUID()) ||
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+  fetch(SUPABASE.url + '/rest/v1/eventos', {
+    method: 'POST',
+    headers: { apikey: SUPABASE.clave, Authorization: 'Bearer ' + SUPABASE.clave, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+    body: JSON.stringify({ evento: 'voto_email', session_id: id, fuente: 'email', producto: pieza.id }),
+  }).then(r => { if (r.ok) { try { localStorage.setItem(YA, '1'); } catch (_) {} } })
+    .catch(() => {});
+})();
+</script>
+</body>
+</html>

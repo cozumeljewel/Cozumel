@@ -20,7 +20,7 @@ import shutil
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(RAIZ)
 D = 'deploy'
-NUEVOS = ['hombre.html', 'hombre.js', 'hombre-focos.js', 'cierre.js', 'analitica.js']
+NUEVOS = ['hombre.html', 'hombre.js', 'hombre-focos.js', 'cierre.js', 'analitica.js', 'voto.html']
 NO_TOCAR = {'README.md', 'netlify.toml', '_headers', 'robots.txt', 'sitemap.xml'}
 PATRON = re.compile(r"img/[^'\"\)\s>,|`]+\.(?:png|jpe?g|webp|avif|svg|gif)", re.I)
 
@@ -47,6 +47,8 @@ def main():
         m = re.match(r'img/w/[^/]+/(.+)\.webp$', r)
         if m:
             refs.add('img/' + m.group(1))
+    # Fotos de los emails (emails/*.html las piden con URL absoluta) y de voto.html
+    refs |= {f.replace(os.sep, '/') for f in glob.glob('img/email-*')}
     fotos = 0
     for r in sorted(refs):
         if '{' in r or '$' in r or not os.path.isfile(r):
