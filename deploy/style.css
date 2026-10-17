@@ -4150,3 +4150,6 @@ body.v2 .v2-card--hombre .v2-card-precio.con-promo{display:flex; flex-direction:
 body.v2 .v2-grid .v2-card--hombre,
 body.v2 .v2-grid .v2-card{content-visibility:auto; contain-intrinsic-size:auto 420px;}
 body.v2 .v2-pieza-foto{content-visibility:auto; contain-intrinsic-size:auto 600px;}
+
+/* cookies.html: botón "No quiero que se mida mi visita" con aspecto de enlace (analitica.js) */
+.link-analitica{font:inherit; color:inherit; background:none; border:0; padding:0; text-decoration:underline; cursor:pointer;}

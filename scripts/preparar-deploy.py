@@ -20,7 +20,7 @@ import shutil
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(RAIZ)
 D = 'deploy'
-NUEVOS = ['hombre.html', 'hombre.js', 'hombre-focos.js', 'cierre.js']
+NUEVOS = ['hombre.html', 'hombre.js', 'hombre-focos.js', 'cierre.js', 'analitica.js']
 NO_TOCAR = {'README.md', 'netlify.toml', '_headers', 'robots.txt', 'sitemap.xml'}
 PATRON = re.compile(r"img/[^'\"\)\s>,|`]+\.(?:png|jpe?g|webp|avif|svg|gif)", re.I)
 

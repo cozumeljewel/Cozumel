@@ -99,9 +99,43 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
     const form = pantalla.querySelector('.wc-form');
     const aviso = pantalla.querySelector('.wc-aviso');
     const boton = pantalla.querySelector('.wc-boton');
+    // País y grupo de precios (como cuenta-atras.js): mercados.js los
+    // guarda al detectarlos; si aún no, se pregunta a /api/geo (máx. 3 s).
+    const leerGeo = () => {
+      try { return JSON.parse(localStorage.getItem('cozumel_mercado_geo')) || null; } catch (_) { return null; }
+    };
+    const paisReal = async () => {
+      const geo = leerGeo();
+      if (geo && typeof geo.pais === 'string') return geo.pais.toUpperCase();
+      try {
+        const control = new AbortController();
+        const corte = setTimeout(() => control.abort(), 3000);
+        const resp = await fetch('/api/geo', { headers: { Accept: 'application/json' }, signal: control.signal });
+        clearTimeout(corte);
+        if (!resp.ok) return null;
+        const datos = await resp.json();
+        return datos && typeof datos.country === 'string' ? datos.country.toUpperCase() : null;
+      } catch (_) { return null; }
+    };
+    // Erratas típicas del dominio (gmial.com, hotmal.com, icloud.comq...)
+    const DOMINIOS = { gmail: 'gmail.com', hotmail: 'hotmail.com', icloud: 'icloud.com', outlook: 'outlook.com', yahoo: 'yahoo.com' };
+    const ERRATAS = {
+      gmail: /^(gmial|gamil|gmal|gmai|gmall|gnail|hmail|gmaill|gmali|gmil|gemail|gmsil|gmaio)\.|^gmail\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+      hotmail: /^(hotmal|hotmial|hotmai|hormail|hotmaill|htmail|hotnail|homail|hotamil)\.|^hotmail\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+      icloud: /^(iclod|icoud|iclou|icluod|igloud|icloid|iclould)\.|^icloud\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+      outlook: /^(outlok|outllok|otlook|outloo)\.|^outlook\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+      yahoo: /^(yaho|yahooo|yhoo)\.com$|^yahoo\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+    };
+    const corregirEmail = (email) => {
+      const i = email.lastIndexOf('@');
+      const dom = email.slice(i + 1).toLowerCase();
+      for (const k in ERRATAS) if (ERRATAS[k].test(dom)) return email.slice(0, i + 1) + DOMINIOS[k];
+      return email;
+    };
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = form.email.value.trim();
+      const email = corregirEmail(form.email.value.trim());
       aviso.className = 'wc-aviso';
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
         aviso.textContent = 'Escribe un email válido';
@@ -117,6 +151,10 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
       boton.disabled = true;
       aviso.textContent = 'Guardando…';
       try {
+        const pais = await paisReal();
+        let mercado = null;
+        try { mercado = (JSON.parse(localStorage.getItem('cozumel_mercado_manual')) || (leerGeo() || {}).mercado) || null; } catch (_) {}
+        if (!mercado && pais && typeof mercadoDePais === 'function') mercado = mercadoDePais(pais);
         const resp = await fetch(SUPABASE.url + '/rest/v1/lista_espera', {
           method: 'POST',
           headers: {
@@ -125,13 +163,14 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
             'Content-Type': 'application/json',
             Prefer: 'return=minimal',
           },
-          body: JSON.stringify({ email, consentimiento: true, fuente: 'newsletter' }),
+          body: JSON.stringify({ email, pais, mercado, consentimiento: true, fuente: 'newsletter' }),
         });
         // 409 = ya estaba apuntado: para quien se apunta, es lo mismo.
         if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
         form.querySelector('.wc-fila').remove();
         form.querySelector('.wc-consent').remove();
         aviso.textContent = '¡Listo! Te avisaremos en cuanto abramos.';
+        if (typeof window.clarity === 'function') window.clarity('event', 'suscripcion');
         aviso.classList.add('wc-ok');
       } catch (err) {
         console.error('Lista de espera:', err);

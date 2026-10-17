@@ -1373,8 +1373,8 @@ en: Last updated: August 29, 2026
 es: Qué usamos
 en: What we use
 
-es: Cozumel Jewelry usa únicamente almacenamiento técnico, necesario para que el sitio funcione — nada de publicidad ni de analítica de terceros:
-en: Cozumel Jewelry only uses technical storage needed for the site to work — no advertising and no third-party analytics:
+es: Cozumel Jewelry no usa cookies de publicidad. Usamos almacenamiento técnico, necesario para que el sitio funcione, y una herramienta de analítica para mejorar la web:
+en: Cozumel Jewelry uses no advertising cookies. We use technical storage needed for the site to work, and one analytics tool to improve the site:
 
 es: <strong>Un identificador de sesión anónimo</strong>, guardado en tu navegador (no es una cookie, es almacenamiento local), para medir de forma interna qué páginas se visitan antes de una reserva.
 en: <strong>An anonymous session identifier</strong>, saved in your browser (it's not a cookie, it's local storage), to measure internally which pages are visited before an order.
@@ -1385,11 +1385,11 @@ en: <strong>An anonymous Supabase session</strong>, saved in your browser (local
 es: Cuando pagas, sales de nuestro sitio hacia la página de pago de Stripe (un dominio distinto), que gestiona sus propias cookies bajo su propia política. Cozumel Jewelry no tiene acceso a esas cookies ni a tus datos de tarjeta.
 en: When you pay, you leave our site for Stripe's payment page (a different domain), which manages its own cookies under its own policy. Cozumel Jewelry has no access to those cookies or to your card details.
 
-es: Por qué no hay un banner de aceptar cookies
-en: Why there's no cookie consent banner
+es: Analítica (Microsoft Clarity) y por qué no hay un banner de cookies
+en: Analytics (Microsoft Clarity) and why there's no cookie banner
 
-es: La normativa española solo exige pedir tu consentimiento para cookies no esenciales (publicitarias o de analítica). Como las únicas que usamos son estrictamente necesarias para que el sitio y el inicio de sesión funcionen, no hace falta ese aviso.
-en: Spanish law only requires asking for your consent for non-essential cookies (advertising or analytics). Since the only ones we use are strictly necessary for the site and sign-in to work, that notice isn't needed.
+es: Usamos Microsoft Clarity para ver, de forma anónima, cómo se navega por la web (en qué se hace clic, hasta dónde se baja, desde qué tipo de dispositivo) y así mejorarla. Clarity oculta lo que escribes en los formularios y no lo usamos para publicidad. Si visitas la web desde la Unión Europea, el Espacio Económico Europeo, el Reino Unido o Suiza, Clarity funciona <strong>sin cookies</strong> y sin guardar nada en tu navegador, por eso no te pedimos consentimiento con un banner. Desde otros países, Clarity puede usar sus cookies de analítica (_clck, _clsk) para reconocer una misma visita. Si prefieres que no midamos tu visita, pulsa aquí: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Hecho: no mediremos tus visitas'">No quiero que se mida mi visita</button>
+en: We use Microsoft Clarity to see anonymously how people browse the site (what they click, how far they scroll, which type of device) so we can improve it. Clarity masks what you type in forms and we don't use it for advertising. If you visit from the European Union, the European Economic Area, the United Kingdom or Switzerland, Clarity runs <strong>without cookies</strong> and stores nothing in your browser, which is why we don't ask for consent with a banner. From other countries, Clarity may use its analytics cookies (_clck, _clsk) to recognise the same visit. If you'd rather we didn't measure your visit, click here: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Done: we won't measure your visits'">Don't measure my visit</button>
 
 es: Cómo gestionar las cookies
 en: How to manage cookies
@@ -1501,8 +1501,8 @@ en: <strong>Stripe</strong>: processes the payment. Cozumel Jewelry doesn't stor
 es: <strong>Supabase</strong>: aloja la base de datos donde se guardan los pedidos.
 en: <strong>Supabase</strong>: hosts the database where orders are stored.
 
-es: No usamos herramientas de analítica de terceros (como Google Analytics o Meta Pixel) ni vendemos tus datos a nadie.
-en: We don't use third-party analytics tools (such as Google Analytics or Meta Pixel) and we don't sell your data to anyone.
+es: Para mejorar la web usamos Microsoft Clarity, que mide de forma anónima cómo se navega (los detalles y cómo desactivarlo, en la <a href="cookies.html">política de cookies</a>). No usamos herramientas de publicidad (como Meta Pixel) ni vendemos tus datos a nadie.
+en: To improve the site we use Microsoft Clarity, which measures anonymously how people browse (details and how to turn it off in the <a href="cookies.html">cookie policy</a>). We don't use advertising tools (such as Meta Pixel) and we never sell your data.
 
 es: Cuánto tiempo los guardamos
 en: How long we keep it
@@ -1668,3 +1668,6 @@ en: Personalized jewelry for women
 
 es: Joyería para mujer personalizable.
 en: Personalized jewelry for women.
+
+es: Última actualización: 17 de octubre de 2026
+en: Last updated: October 17, 2026
