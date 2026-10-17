@@ -1385,11 +1385,11 @@ en: <strong>An anonymous Supabase session</strong>, saved in your browser (local
 es: Cuando pagas, sales de nuestro sitio hacia la página de pago de Stripe (un dominio distinto), que gestiona sus propias cookies bajo su propia política. Cozumel Jewelry no tiene acceso a esas cookies ni a tus datos de tarjeta.
 en: When you pay, you leave our site for Stripe's payment page (a different domain), which manages its own cookies under its own policy. Cozumel Jewelry has no access to those cookies or to your card details.
 
-es: Analítica (Microsoft Clarity) y por qué no hay un banner de cookies
-en: Analytics (Microsoft Clarity) and why there's no cookie banner
+es: Analítica y por qué no hay un banner de cookies
+en: Analytics and why there's no cookie banner
 
-es: Usamos Microsoft Clarity para ver, de forma anónima, cómo se navega por la web (en qué se hace clic, hasta dónde se baja, desde qué tipo de dispositivo) y así mejorarla. Clarity oculta lo que escribes en los formularios y no lo usamos para publicidad. Si visitas la web desde la Unión Europea, el Espacio Económico Europeo, el Reino Unido o Suiza, Clarity funciona <strong>sin cookies</strong> y sin guardar nada en tu navegador, por eso no te pedimos consentimiento con un banner. Desde otros países, Clarity puede usar sus cookies de analítica (_clck, _clsk) para reconocer una misma visita. Si prefieres que no midamos tu visita, pulsa aquí: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Hecho: no mediremos tus visitas'">No quiero que se mida mi visita</button>
-en: We use Microsoft Clarity to see anonymously how people browse the site (what they click, how far they scroll, which type of device) so we can improve it. Clarity masks what you type in forms and we don't use it for advertising. If you visit from the European Union, the European Economic Area, the United Kingdom or Switzerland, Clarity runs <strong>without cookies</strong> and stores nothing in your browser, which is why we don't ask for consent with a banner. From other countries, Clarity may use its analytics cookies (_clck, _clsk) to recognise the same visit. If you'd rather we didn't measure your visit, click here: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Done: we won't measure your visits'">Don't measure my visit</button>
+es: Usamos una herramienta de analítica para ver, de forma anónima, cómo se navega por la web (en qué se hace clic, hasta dónde se baja, desde qué tipo de dispositivo) y así mejorarla. No guarda lo que escribes en los formularios ni se usa para publicidad. Si visitas la web desde la Unión Europea, el Espacio Económico Europeo, el Reino Unido o Suiza, funciona <strong>sin cookies</strong> y sin guardar nada en tu navegador, por eso no te pedimos consentimiento con un banner. Si prefieres que no midamos tu visita, pulsa aquí: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Hecho: no mediremos tus visitas'">No quiero que se mida mi visita</button>
+en: We use an analytics tool to see anonymously how people browse the site (what they click, how far they scroll, which type of device) so we can improve it. It doesn't store what you type in forms and isn't used for advertising. If you visit from the European Union, the European Economic Area, the United Kingdom or Switzerland, it runs <strong>without cookies</strong> and stores nothing in your browser, which is why we don't ask for consent with a banner. If you'd rather we didn't measure your visit, click here: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Done: we won't measure your visits'">Don't measure my visit</button>
 
 es: Cómo gestionar las cookies
 en: How to manage cookies
@@ -1501,8 +1501,8 @@ en: <strong>Stripe</strong>: processes the payment. Cozumel Jewelry doesn't stor
 es: <strong>Supabase</strong>: aloja la base de datos donde se guardan los pedidos.
 en: <strong>Supabase</strong>: hosts the database where orders are stored.
 
-es: Para mejorar la web usamos Microsoft Clarity, que mide de forma anónima cómo se navega (los detalles y cómo desactivarlo, en la <a href="cookies.html">política de cookies</a>). No usamos herramientas de publicidad (como Meta Pixel) ni vendemos tus datos a nadie.
-en: To improve the site we use Microsoft Clarity, which measures anonymously how people browse (details and how to turn it off in the <a href="cookies.html">cookie policy</a>). We don't use advertising tools (such as Meta Pixel) and we never sell your data.
+es: Para mejorar la web usamos una herramienta de analítica que mide de forma anónima cómo se navega (los detalles y cómo desactivarla, en la <a href="cookies.html">política de cookies</a>). No usamos herramientas de publicidad (como Meta Pixel) ni vendemos tus datos a nadie.
+en: To improve the site we use an analytics tool that measures anonymously how people browse (details and how to turn it off in the <a href="cookies.html">cookie policy</a>). We don't use advertising tools (such as Meta Pixel) and we never sell your data.
 
 es: Cuánto tiempo los guardamos
 en: How long we keep it
