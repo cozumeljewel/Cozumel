@@ -118,14 +118,14 @@
 </head>
 <body data-page="votar">
 <main>
-  <p class="logo">COZUMEL<span>JEWELRY</span></p>
+  <p class="logo"><a href="./?utm_source=instagram&amp;utm_medium=historia&amp;utm_campaign=votacion" style="color:inherit; text-decoration:none">COZUMEL<span>JEWELRY</span></a></p>
   <p class="eyebrow">Men’s collection</p>
   <h1>¿Cuál te gusta más?</h1>
   <p class="sub">Toca la foto para verla de cerca y vota tu favorita.<br>Lanzamiento: <strong>1 de noviembre · 9:00 PM</strong> (México)</p>
 
   <div class="rejilla"></div>
 
-  <p class="resumen" hidden><span class="resumen-texto"></span><br><button type="button" class="abrir-hoja">Entrar en el sorteo</button></p>
+  <p class="resumen" hidden><span class="resumen-texto"></span><br><button type="button" class="abrir-hoja">Ver resultados</button></p>
 
   <p class="firma">Adri 🤍</p>
 </main>
@@ -136,16 +136,16 @@
     <div class="mini-elegida"><img alt=""></div>
     <h2>¡Gracias por tu voto!</h2>
     <p>Has votado por <strong class="votada"></strong>.</p>
-    <p class="sorteo"><strong>Entra en el sorteo de 5 videollamadas con Adri</strong>Deja tu email: te avisamos el 1 de noviembre, cuando salga la colección, y con tu primera compra entras en el sorteo.</p>
+    <p class="sorteo"><strong>¿Quieres ver cómo va la votación?</strong>Deja tu email y te enseñamos los resultados. Además, te avisamos el 1 de noviembre y, con tu primera compra, entras en el sorteo de 5 videollamadas con Adri.</p>
     <form novalidate>
       <div class="fila">
         <input type="email" name="email" placeholder="Tu email" autocomplete="email" inputmode="email" required aria-label="Tu email">
-        <button type="submit">Apuntarme</button>
+        <button type="submit">Ver resultados</button>
       </div>
       <label class="consent"><input type="checkbox" name="consent" required> <span>Acepto recibir el aviso del lanzamiento y la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</span></label>
       <p class="aviso"></p>
     </form>
-    <button type="button" class="ahora-no">Ahora no, ver resultados</button>
+    <button type="button" class="ahora-no">Ver resultados sin dejar mi email</button>
   </section>
 </div>
 
@@ -287,15 +287,25 @@
     requestAnimationFrame(() => capa.classList.add('abierta'));
     document.body.style.overflow = 'hidden';
   }
+  // Los resultados se enseñan al dejar el email o al pulsar "sin email"
+  const puedeVer = () => !!(leer('cozumel_votar_email') || leer('cozumel_votar_ver'));
+  function avisoVer() {
+    resumen.querySelector('.resumen-texto').textContent = '¿Quieres ver cómo va la votación?';
+    resumen.hidden = false;
+  }
   function cerrarHoja() {
     capa.classList.remove('abierta');
     document.body.style.overflow = '';
     setTimeout(() => { capa.hidden = true; }, 250);
-    pintarResultados();
+    if (puedeVer()) pintarResultados(); else avisoVer();
   }
   capa.addEventListener('click', (e) => { if (e.target === capa) cerrarHoja(); });
   gracias.querySelector('.cerrar-hoja').addEventListener('click', cerrarHoja);
-  gracias.querySelector('.ahora-no').addEventListener('click', cerrarHoja);
+  gracias.querySelector('.ahora-no').addEventListener('click', () => {
+    guardar('cozumel_votar_ver', '1');
+    evento('resultados_sin_email');
+    cerrarHoja();
+  });
   resumen.querySelector('.abrir-hoja').addEventListener('click', abrirHoja);
 
   // % de cada pieza (función resultados_votacion, v36: solo recuentos)
@@ -322,6 +332,8 @@
       });
       rejilla.classList.add('con-resultados');
       resumen.querySelector('.resumen-texto').textContent = PIEZAS[lider.k].nombre + ' va ganando con el ' + lider.pct + ' %';
+      const b = resumen.querySelector('.abrir-hoja');
+      if (b) b.textContent = 'Entrar en el sorteo';
       resumen.hidden = false;
     }).catch(() => {}).finally(() => { pidiendo = null; });
     return pidiendo;
@@ -344,11 +356,11 @@
     marcar(k);
     evento('votar_' + k);
     insertar('eventos', { evento: 'voto_historia', session_id: uuid(), fuente: 'instagram', producto: PIEZAS[k].id })
-      .catch(() => {}).finally(() => pintarResultados());
+      .catch(() => {}).finally(() => { if (puedeVer()) pintarResultados(); });
     if (!leer('cozumel_votar_email')) abrirHoja();
   }
   const previo = leer(CLAVE_VOTO);
-  if (previo && PIEZAS[previo]) { marcar(previo); pintarResultados(); }
+  if (previo && PIEZAS[previo]) { marcar(previo); if (puedeVer()) pintarResultados(); else avisoVer(); }
 
   /* ---------- Email ---------- */
   const form = gracias.querySelector('form');
@@ -406,11 +418,11 @@
       if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
       guardar('cozumel_votar_email', '1');
       form.querySelector('.fila').remove(); form.querySelector('.consent').remove();
-      aviso.textContent = '¡Listo! Ya estás en el sorteo. Te avisaremos en cuanto abramos.'; aviso.className = 'aviso ok';
+      aviso.textContent = '¡Listo! Ahora verás los resultados. Te avisaremos el 1 de noviembre.'; aviso.className = 'aviso ok';
       evento('suscripcion_votacion');
       const boton2 = resumen.querySelector('.abrir-hoja'); if (boton2) boton2.remove();
-      gracias.querySelector('.ahora-no').textContent = 'Ver resultados';
-      setTimeout(cerrarHoja, 1800);
+      gracias.querySelector('.ahora-no').remove();
+      setTimeout(cerrarHoja, 1500);
     } catch (err) {
       console.error('Lista de espera:', err);
       aviso.textContent = 'No se ha podido guardar. Inténtalo de nuevo en un momento'; aviso.className = 'aviso error';
