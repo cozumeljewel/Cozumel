@@ -267,7 +267,7 @@
     const div = document.createElement('div');
     div.className = 'pieza';
     div.dataset.pieza = k;
-    div.innerHTML = '<button type="button" class="ver"><img alt=""><span class="lupa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg></span></button><b></b><small></small><button type="button" class="votar">Votar</button><div class="resultado"><div class="barra"><i></i></div><div class="cifra"><b>0 %</b><span></span></div></div>';
+    div.innerHTML = '<button type="button" class="ver"><img alt=""><span class="lupa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg></span></button><b></b><small></small><button type="button" class="votar">Votar</button><div class="resultado"><div class="barra"><i></i></div><div class="cifra"><b>0 %</b></div></div>';
     const img = div.querySelector('img');
     img.src = 'img/email-voto-' + k + '.jpg';
     img.alt = p.nombre + ' · ' + p.tipo;
@@ -318,11 +318,10 @@
         const div = rejilla.querySelector('[data-pieza="' + k + '"]');
         div.querySelector('.resultado i').style.width = pct + '%';
         div.querySelector('.cifra b').textContent = pct + ' %';
-        div.querySelector('.cifra span').textContent = n === 1 ? '1 voto' : n + ' votos';
         if (!lider || n > lider.n) lider = { k, n, pct };
       });
       rejilla.classList.add('con-resultados');
-      resumen.querySelector('.resumen-texto').textContent = PIEZAS[lider.k].nombre + ' va ganando con el ' + lider.pct + ' % · ' + total + ' votos';
+      resumen.querySelector('.resumen-texto').textContent = PIEZAS[lider.k].nombre + ' va ganando con el ' + lider.pct + ' %';
       resumen.hidden = false;
     }).catch(() => {}).finally(() => { pidiendo = null; });
     return pidiendo;
