@@ -1672,8 +1672,24 @@ en: Personalized jewelry for women.
 es: Última actualización: 17 de octubre de 2026
 en: Last updated: October 17, 2026
 
-es: Lanzamiento colección de hombre · −15 % en todas las piezas hasta el 31 de octubre
-en: Men’s collection launch · −15% on every piece until October 31
 
 es: Lanzamiento · −15 % en todas las piezas hasta el 31 de octubre
 en: Launch offer · −15% on every piece until October 31
+
+es: Semana de lanzamiento · −15 % en todas las piezas hasta el 8 de noviembre
+en: Launch week · −15% on every piece until November 8
+
+es: Lanzamiento
+en: Launch
+
+es: 1 de noviembre · 9:00 PM
+en: November 1 · 9:00 PM
+
+es: Hora de México
+en: Mexico time
+
+
+
+
+es: ¡Ya casi!
+en: Almost here!

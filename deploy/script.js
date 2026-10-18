@@ -709,6 +709,17 @@ const FOTOS_TARJETA_V2 = {
   kit_personalizado:     ['img/arma-tu-kit-oro-1.jpg',    'img/collar-esencia-oro-2.jpg'],
 };
 
+/* Círculos de color de mujer (18/10/2026): la foto de cerca de cada pieza
+   en oro y en plata, como los de hombre. id de la pieza -> nombre base. */
+const CERCA_MUJER = {
+  pulsera_vinculo: 'dos-almas', pulsera_nombre: 'mi-cielo', brazalete_mensaje: 'brazalete-eterno',
+  collar_esencial: 'collar-esencia', collar_flor_natal: 'collar-destino',
+};
+function miniMujer(id, color) {
+  return CERCA_MUJER[id] ? 'img/' + CERCA_MUJER[id] + '-' + color + '-cerca.png' : null;
+}
+const NOMBRE_COLOR_MUJER = { oro: 'Bañado en oro', plata: 'Plateado' };
+
 /* ---------- Portada nueva: productos en scroll horizontal (10/2026) ----------
    Foto, nombre y precio del mercado activo. Cada tarjeta lleva a su ficha. */
 (function () {
@@ -1516,29 +1527,65 @@ function urlPiezaHombre(prod, clave) {
   PRODUCTOS.forEach(prod => {
     const esKitLibre = prod.id === 'kit_personalizado';
     if (prod.oculto && !esKitLibre) return;
-    const fotos = FOTOS_TARJETA_V2[prod.id] || fotosDe(prod, 'oro').map(f => normFoto(f).src);
-    const a = document.createElement('a');
-    a.className = 'v2-card';
-    a.href = esKitLibre ? 'arma-tu-kit.html' : 'personalizar.html?p=' + encodeURIComponent(prod.slug);
-    const media = document.createElement('span');
+    // Pieza de los círculos: la pieza suelta o, en los kits, la primera del kit
+    const grupo0 = (prod.acabados && prod.acabados[0] && prod.acabados[0].campo) || '';
+    const idMini = grupo0.includes('__') ? grupo0.split('__')[1] : prod.id;
+    const colores = esKitLibre ? [] : ['oro', 'plata'].filter(c => miniMujer(idMini, c));
+    const fotosColor = (color) => {
+      if (color === 'oro' && FOTOS_TARJETA_V2[prod.id]) return FOTOS_TARJETA_V2[prod.id];
+      const lista = fotosDe(prod, color).map(f => normFoto(f).src);
+      const puesta = lista.find((f, i) => i > 0 && !/cerca|estudio/.test(f));
+      return [lista[0], puesta || lista[1]].filter(Boolean);
+    };
+    const url = (color) => esKitLibre ? 'arma-tu-kit.html'
+      : 'personalizar.html?p=' + encodeURIComponent(prod.slug) + (color && color !== 'oro' ? '&acabado=' + color : '');
+    const card = document.createElement('div');
+    card.className = 'v2-card v2-card--hombre v2-card--mujer';
+    const marco = document.createElement('div');
+    marco.className = 'v2-card-marco';
+    const media = document.createElement('a');
     media.className = 'v2-card-media';
     const img = document.createElement('img');
-    fotoTarjeta(img, fotos[0] || ''); img.alt = prod.nombre; img.loading = 'lazy';
-    media.appendChild(img);
-    if (fotos[1]) {
-      const img2 = document.createElement('img');
-      img2.alt = ''; img2.loading = 'lazy'; img2.className = 'v2-card-hover';
-      fotoAlPasar(img2, imgPeq(fotos[1], 900), a);
-      media.appendChild(img2);
-    }
-    const nombre = document.createElement('span');
+    img.alt = prod.nombre; img.loading = 'lazy'; img.decoding = 'async';
+    const img2 = document.createElement('img');
+    img2.alt = ''; img2.loading = 'lazy'; img2.decoding = 'async'; img2.className = 'v2-card-hover';
+    media.append(img, img2);
+    marco.append(media);
+    const nombre = document.createElement('a');
     nombre.className = 'v2-card-nombre';
     nombre.textContent = prod.nombre;
     const precio = document.createElement('span');
     precio.className = 'v2-card-precio';
     pintarPrecioPromo(precio, prod);
-    a.append(media, nombre, precio);
-    rejilla.appendChild(a);
+    const tonos = document.createElement('div');
+    tonos.className = 'v2-tonos';
+    tonos.setAttribute('role', 'group');
+    tonos.setAttribute('aria-label', 'Acabado');
+    const poner = (color) => {
+      const fotos = fotosColor(color);
+      fotoTarjeta(img, fotos[0] || '');
+      if (fotos[1]) { img2.hidden = false; fotoAlPasar(img2, imgPeq(fotos[1], 900), card); } else img2.hidden = true;
+      media.href = nombre.href = url(color);
+      tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === color)));
+    };
+    colores.forEach(color => {
+      const bt = document.createElement('button');
+      bt.type = 'button';
+      bt.className = 'v2-tono v2-variante';
+      bt.dataset.tono = color;
+      bt.setAttribute('aria-label', NOMBRE_COLOR_MUJER[color]);
+      const mini = document.createElement('img');
+      mini.alt = ''; mini.loading = 'lazy'; mini.decoding = 'async';
+      mini.src = imgPeq(miniMujer(idMini, color), 300);
+      mini.style.cssText = 'width:100%;height:100%;object-fit:cover;transform:scale(1.6)';
+      bt.appendChild(mini);
+      bt.addEventListener('click', () => poner(color));
+      tonos.appendChild(bt);
+    });
+    card.append(marco, nombre, precio);
+    if (colores.length) card.append(tonos);
+    poner('oro');
+    rejilla.appendChild(card);
   });
 })();
 
@@ -2253,7 +2300,9 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
       opciones.setAttribute('role', 'radiogroup');
       opciones.setAttribute('aria-labelledby', idLabel);
 
-      const estadoAcabado = { value: datos[grupo.campo] || 'oro' };
+      const pedidoUrl = new URLSearchParams(location.search).get('acabado');
+      const estadoAcabado = { value: (i === 0 && (pedidoUrl === 'oro' || pedidoUrl === 'plata')) ? pedidoUrl : (datos[grupo.campo] || 'oro') };
+      const idMini = grupo.campo.includes('__') ? grupo.campo.split('__')[1] : prod.id;
       entradas[grupo.campo] = estadoAcabado;
       datosIniciales[grupo.campo] = estadoAcabado.value;
 
@@ -2273,7 +2322,22 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
         dot.className = 'acabado-dot ' + def.clase;
         dot.setAttribute('aria-hidden', 'true');
 
-        btn.append(dot, document.createTextNode(def.texto));
+        // Con foto de cerca de esa pieza: círculo con la foto, como en
+        // hombre (el texto queda solo para lectores de pantalla).
+        const mini = miniMujer(idMini, def.valor);
+        if (mini) {
+          btn.classList.add('acabado-op--foto');
+          btn.setAttribute('aria-label', def.texto);
+          const im = document.createElement('img');
+          im.alt = ''; im.decoding = 'async';
+          im.src = imgPeq(mini, 300);
+          const txt = document.createElement('span');
+          txt.className = 'acabado-op-texto';
+          txt.textContent = def.texto;
+          btn.append(im, txt);
+        } else {
+          btn.append(dot, document.createTextNode(def.texto));
+        }
         opciones.appendChild(btn);
         return btn;
       });
@@ -2286,6 +2350,12 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
         });
       };
       marcarAcabado();
+      // Llegando desde la tarjeta con otro color (?acabado=plata): se
+      // "pulsa" ese círculo para que la galería y el pedido lo sigan.
+      if (i === 0 && pedidoUrl && pedidoUrl === estadoAcabado.value) {
+        const b = botones.find(x => x.dataset.acabado === pedidoUrl);
+        if (b) setTimeout(() => b.click(), 0);
+      }
 
       botones.forEach(btn => {
         btn.addEventListener('click', () => {

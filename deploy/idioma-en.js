@@ -544,8 +544,12 @@ COZUMEL_EN_CARGADO({
  "Joyería para mujer personalizable": "Personalized jewelry for women",
  "Joyería para mujer personalizable.": "Personalized jewelry for women.",
  "Última actualización: 17 de octubre de 2026": "Last updated: October 17, 2026",
- "Lanzamiento colección de hombre · −15 % en todas las piezas hasta el 31 de octubre": "Men’s collection launch · −15% on every piece until October 31",
- "Lanzamiento · −15 % en todas las piezas hasta el 31 de octubre": "Launch offer · −15% on every piece until October 31"
+ "Lanzamiento · −15 % en todas las piezas hasta el 31 de octubre": "Launch offer · −15% on every piece until October 31",
+ "Semana de lanzamiento · −15 % en todas las piezas hasta el 8 de noviembre": "Launch week · −15% on every piece until November 8",
+ "Lanzamiento": "Launch",
+ "1 de noviembre · 9:00 PM": "November 1 · 9:00 PM",
+ "Hora de México": "Mexico time",
+ "¡Ya casi!": "Almost here!"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

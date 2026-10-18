@@ -19,6 +19,10 @@
   const CERRADA = true;
   const CLAVE_ACCESO = 'cozumel-26122c';
   const CLAVE_VER = 'cozumel_acceso_web';
+  // Lanzamiento de la colección de hombre: 1 de noviembre, 21:00 de México.
+  // La pantalla enseña la cuenta atrás; abrir la web sigue siendo a mano
+  // (CERRADA = false).
+  const LANZAMIENTO = new Date('2026-11-01T21:00:00-06:00').getTime();
 
   const params = new URLSearchParams(location.search);
   try {
@@ -46,6 +50,12 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
   font-weight:500; letter-spacing:.42em;}
 #web-cerrada .wc-coleccion{margin:22px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-size:20px; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:#173634;} #web-cerrada .wc-muy-pronto{margin:36px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:12px; font-weight:500;
   letter-spacing:.32em; text-transform:uppercase; color:#C4A15A;}
+#web-cerrada .wc-fecha{margin:10px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-size:24px; font-weight:500; color:#173634;}
+#web-cerrada .wc-cuenta{display:flex; justify-content:center; gap:10px; margin:18px 0 0;}
+#web-cerrada .wc-cuenta div{min-width:64px; padding:10px 4px 8px; border:1px solid #DCD8D1; border-radius:4px; background:#fff;}
+#web-cerrada .wc-cuenta b{display:block; font-family:'Cormorant Garamond', Georgia, serif; font-size:34px; font-weight:500; line-height:1; color:#173634; font-variant-numeric:tabular-nums;}
+#web-cerrada .wc-cuenta small{display:block; margin-top:6px; font-family:'Inter', system-ui, sans-serif; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#62625F;}
+#web-cerrada .wc-local{margin:10px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:12px; color:#62625F;}
 #web-cerrada .wc-texto{margin:14px 0 0; font-family:'Inter', system-ui, sans-serif; font-size:14px; line-height:1.6; color:#62625F;}
 #web-cerrada .wc-sorteo{margin:22px auto 0; max-width:380px; font-family:'Inter', system-ui, sans-serif; font-size:16px; line-height:1.55; color:#173634;} #web-cerrada .wc-sorteo strong{font-weight:600;} #web-cerrada .wc-sorteo a{color:#62625F; font-size:12px; margin-left:4px;} #web-cerrada .wc-form{margin-top:28px;}
 #web-cerrada .wc-fila{display:flex; border-bottom:1px solid #173634;}
@@ -79,7 +89,16 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
       <div class="wc-contenido">
         <h1 class="wc-logo" id="wc-titulo">Cozumel<span>Jewelry</span></h1>
         <p class="wc-coleccion">Men’s collection</p>
-        <p class="wc-muy-pronto">Muy pronto</p>
+        <p class="wc-muy-pronto">Lanzamiento</p>
+        <p class="wc-fecha">1 de noviembre · 9:00 PM</p>
+        <p class="wc-local wc-mx" style="margin-top:4px">Hora de México</p>
+        <div class="wc-cuenta" aria-live="off">
+          <div><b data-u="d">--</b><small>días</small></div>
+          <div><b data-u="h">--</b><small>horas</small></div>
+          <div><b data-u="m">--</b><small>min</small></div>
+          <div><b data-u="s">--</b><small>seg</small></div>
+        </div>
+        <p class="wc-local" data-no-traducir></p>
         <p class="wc-sorteo">Suscríbete y, con tu primera compra, entrarás en el sorteo de <strong>5 videollamadas con Adri</strong></p>
         <form class="wc-form" novalidate>
           <div class="wc-fila">
@@ -95,6 +114,32 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
         </form>
       </div>`;
     document.body.appendChild(pantalla);
+
+    // Cuenta atrás (se actualiza cada segundo) y la hora del lanzamiento en
+    // la zona del visitante, si no es México.
+    const cifras = {};
+    pantalla.querySelectorAll('.wc-cuenta b').forEach(b => { cifras[b.dataset.u] = b; });
+    const dos = (n) => String(n).padStart(2, '0');
+    const pintar = () => {
+      const falta = Math.max(0, LANZAMIENTO - Date.now());
+      const t = Math.floor(falta / 1000);
+      cifras.d.textContent = dos(Math.floor(t / 86400));
+      cifras.h.textContent = dos(Math.floor(t / 3600) % 24);
+      cifras.m.textContent = dos(Math.floor(t / 60) % 60);
+      cifras.s.textContent = dos(t % 60);
+      if (!falta) { pantalla.querySelector('.wc-muy-pronto').textContent = '¡Ya casi!'; clearInterval(reloj); }
+    };
+    const reloj = setInterval(pintar, 1000);
+    pintar();
+    try {
+      const zona = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      const mexico = /^America\/(Mexico_City|Monterrey|Merida|Chihuahua|Matamoros|Bahia_Banderas|Ojinaga|Ciudad_Juarez)$/.test(zona);
+      if (zona && !mexico) {
+        const ingles = document.documentElement.lang === 'en';
+        const txt = new Intl.DateTimeFormat(ingles ? 'en-GB' : 'es-ES', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).format(LANZAMIENTO);
+        pantalla.querySelector('.wc-local:not(.wc-mx)').textContent = (ingles ? 'Your time: ' : 'En tu hora: ') + txt;
+      }
+    } catch (_) {}
 
     const form = pantalla.querySelector('.wc-form');
     const aviso = pantalla.querySelector('.wc-aviso');
