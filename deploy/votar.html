@@ -51,8 +51,35 @@
   .pieza.elegida .votar { background:var(--oro); border-color:var(--oro); color:#fff; cursor:default; }
   .ya-votado .pieza:not(.elegida) .votar { visibility:hidden; }
 
-  .gracias { margin-top:30px; padding:24px 18px; border:1px solid var(--linea); border-radius:4px; background:#fff; }
-  .gracias[hidden] { display:none; }
+  /* Tras votar: hoja que sube desde abajo, encima de todo, con el email */
+  .capa { position:fixed; inset:0; z-index:40; display:flex; align-items:flex-end; justify-content:center; background:rgba(23,54,52,.45);
+    opacity:0; transition:opacity .25s; }
+  .capa.abierta { opacity:1; }
+  .capa[hidden] { display:none; }
+  .gracias { position:relative; width:100%; max-width:520px; max-height:92vh; overflow-y:auto; padding:28px 20px calc(24px + env(safe-area-inset-bottom));
+    border-radius:16px 16px 0 0; background:#fff; transform:translateY(30px); transition:transform .25s; }
+  .capa.abierta .gracias { transform:none; }
+  .gracias .cerrar-hoja { position:absolute; top:10px; right:10px; width:36px; height:36px; border:0; border-radius:50%; background:var(--fondo);
+    color:var(--texto); font-size:20px; line-height:1; cursor:pointer; }
+  .gracias .mini-elegida { width:96px; height:96px; margin:0 auto 12px; border-radius:4px; overflow:hidden; background:var(--foto); }
+  .gracias .mini-elegida img { width:100%; height:100%; object-fit:cover; display:block; }
+  .gracias .ahora-no { margin-top:6px; padding:8px; border:0; background:none; color:var(--suave); font:400 13px 'Inter', system-ui, sans-serif;
+    text-decoration:underline; cursor:pointer; }
+  .gracias .sorteo { font-size:15px; }
+  .gracias .sorteo strong { display:block; font-size:17px; margin-bottom:2px; }
+  /* Resultado en % debajo de cada pieza (después de votar) */
+  .resultado { display:none; margin-top:8px; text-align:left; }
+  .con-resultados .resultado { display:block; }
+  .con-resultados .pieza:not(.elegida) .votar { display:none; }
+  .resultado .barra { height:6px; border-radius:3px; background:var(--linea); overflow:hidden; }
+  .resultado .barra i { display:block; height:100%; width:0; background:var(--texto); transition:width .6s ease; }
+  .pieza.elegida .resultado .barra i { background:var(--oro); }
+  .resultado .cifra { display:flex; justify-content:space-between; margin-top:4px; font-size:12px; color:var(--suave); }
+  .resultado .cifra b { font-family:'Inter', system-ui, sans-serif; font-size:13px; font-weight:500; color:var(--texto); margin:0; }
+  .resumen { margin:22px 0 0; font-size:14px; }
+  .resumen[hidden] { display:none; }
+  .resumen button { margin-top:10px; padding:12px 18px; border:0; border-radius:2px; background:var(--texto); color:var(--fondo);
+    font:500 12px 'Inter', system-ui, sans-serif; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; }
   .gracias h2 { margin:0; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:30px; }
   .gracias p { margin:8px 0 0; font-size:14px; line-height:1.55; }
   .sorteo { margin:16px 0 0; padding:12px 14px; border:1px solid #C6A664; border-radius:4px; background:#F8F3E9; color:#7A5F2A; font-size:14px; line-height:1.5; }
@@ -98,22 +125,29 @@
 
   <div class="rejilla"></div>
 
-  <section class="gracias" hidden aria-live="polite">
+  <p class="resumen" hidden><span class="resumen-texto"></span><br><button type="button" class="abrir-hoja">Entrar en el sorteo</button></p>
+
+  <p class="firma">Adri 🤍</p>
+</main>
+
+<div class="capa" hidden>
+  <section class="gracias" role="dialog" aria-modal="true" aria-label="Gracias por tu voto">
+    <button type="button" class="cerrar-hoja" aria-label="Cerrar">×</button>
+    <div class="mini-elegida"><img alt=""></div>
     <h2>¡Gracias por tu voto!</h2>
-    <p>Has votado por <strong class="votada"></strong>. Déjanos tu email y te avisamos el día que salga la colección: la verás antes que nadie.</p>
-    <p class="sorteo">Con tu primera compra entrarás en el sorteo de <strong>5 videollamadas con Adri</strong>.</p>
+    <p>Has votado por <strong class="votada"></strong>.</p>
+    <p class="sorteo"><strong>Entra en el sorteo de 5 videollamadas con Adri</strong>Deja tu email: te avisamos el día que salga la colección y, con tu primera compra, entras en el sorteo.</p>
     <form novalidate>
       <div class="fila">
         <input type="email" name="email" placeholder="Tu email" autocomplete="email" inputmode="email" required aria-label="Tu email">
-        <button type="submit">Avísame</button>
+        <button type="submit">Apuntarme</button>
       </div>
       <label class="consent"><input type="checkbox" name="consent" required> <span>Acepto recibir el aviso del lanzamiento y la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</span></label>
       <p class="aviso"></p>
     </form>
+    <button type="button" class="ahora-no">Ahora no, ver resultados</button>
   </section>
-
-  <p class="firma">Adri 🤍</p>
-</main>
+</div>
 
 <div class="visor" hidden role="dialog" aria-modal="true" aria-label="Pieza ampliada">
   <div class="visor-zona"><img alt=""><span class="visor-ayuda">Toca para ampliar</span></div>
@@ -228,13 +262,12 @@
 
   /* ---------- Rejilla y voto ---------- */
   const rejilla = document.querySelector('.rejilla');
-  const gracias = document.querySelector('.gracias');
   ORDEN.forEach(k => {
     const p = PIEZAS[k];
     const div = document.createElement('div');
     div.className = 'pieza';
     div.dataset.pieza = k;
-    div.innerHTML = '<button type="button" class="ver"><img alt=""><span class="lupa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg></span></button><b></b><small></small><button type="button" class="votar">Votar</button>';
+    div.innerHTML = '<button type="button" class="ver"><img alt=""><span class="lupa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg></span></button><b></b><small></small><button type="button" class="votar">Votar</button><div class="resultado"><div class="barra"><i></i></div><div class="cifra"><b>0 %</b><span></span></div></div>';
     const img = div.querySelector('img');
     img.src = 'img/email-voto-' + k + '.jpg';
     img.alt = p.nombre + ' · ' + p.tipo;
@@ -246,6 +279,55 @@
     rejilla.append(div);
   });
 
+  const capa = document.querySelector('.capa');
+  const gracias = capa.querySelector('.gracias');
+  const resumen = document.querySelector('.resumen');
+  function abrirHoja() {
+    capa.hidden = false;
+    requestAnimationFrame(() => capa.classList.add('abierta'));
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrarHoja() {
+    capa.classList.remove('abierta');
+    document.body.style.overflow = '';
+    setTimeout(() => { capa.hidden = true; }, 250);
+    pintarResultados();
+  }
+  capa.addEventListener('click', (e) => { if (e.target === capa) cerrarHoja(); });
+  gracias.querySelector('.cerrar-hoja').addEventListener('click', cerrarHoja);
+  gracias.querySelector('.ahora-no').addEventListener('click', cerrarHoja);
+  resumen.querySelector('.abrir-hoja').addEventListener('click', abrirHoja);
+
+  // % de cada pieza (función resultados_votacion, v36: solo recuentos)
+  let pidiendo = null;
+  function pintarResultados() {
+    if (pidiendo) return pidiendo;
+    pidiendo = fetch(SUPABASE.url + '/rest/v1/rpc/resultados_votacion', {
+      method: 'POST',
+      headers: { apikey: SUPABASE.clave, Authorization: 'Bearer ' + SUPABASE.clave, 'Content-Type': 'application/json' },
+      body: '{}',
+    }).then(r => r.ok ? r.json() : []).then(filas => {
+      const porId = {};
+      (filas || []).forEach(f => { porId[f.producto] = Number(f.votos) || 0; });
+      const total = Object.values(porId).reduce((x, y) => x + y, 0);
+      if (!total) return;
+      let lider = null;
+      ORDEN.forEach(k => {
+        const n = porId[PIEZAS[k].id] || 0;
+        const pct = Math.round(n / total * 100);
+        const div = rejilla.querySelector('[data-pieza="' + k + '"]');
+        div.querySelector('.resultado i').style.width = pct + '%';
+        div.querySelector('.cifra b').textContent = pct + ' %';
+        div.querySelector('.cifra span').textContent = n === 1 ? '1 voto' : n + ' votos';
+        if (!lider || n > lider.n) lider = { k, n, pct };
+      });
+      rejilla.classList.add('con-resultados');
+      resumen.querySelector('.resumen-texto').textContent = PIEZAS[lider.k].nombre + ' va ganando con el ' + lider.pct + ' % · ' + total + ' votos';
+      resumen.hidden = false;
+    }).catch(() => {}).finally(() => { pidiendo = null; });
+    return pidiendo;
+  }
+
   function marcar(k) {
     rejilla.classList.add('ya-votado');
     rejilla.querySelectorAll('.pieza').forEach(d => {
@@ -254,24 +336,27 @@
       d.querySelector('.votar').textContent = es ? 'Tu voto ✓' : 'Votar';
     });
     gracias.querySelector('.votada').textContent = PIEZAS[k].nombre;
-    gracias.hidden = false;
+    const mini = gracias.querySelector('.mini-elegida img');
+    mini.src = 'img/email-voto-' + k + '.jpg'; mini.alt = PIEZAS[k].nombre;
   }
   function votar(k) {
     if (leer(CLAVE_VOTO)) return;
     guardar(CLAVE_VOTO, k);
     marcar(k);
     evento('votar_' + k);
-    insertar('eventos', { evento: 'voto_historia', session_id: uuid(), fuente: 'instagram', producto: PIEZAS[k].id }).catch(() => {});
-    setTimeout(() => gracias.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+    insertar('eventos', { evento: 'voto_historia', session_id: uuid(), fuente: 'instagram', producto: PIEZAS[k].id })
+      .catch(() => {}).finally(() => pintarResultados());
+    if (!leer('cozumel_votar_email')) abrirHoja();
   }
   const previo = leer(CLAVE_VOTO);
-  if (previo && PIEZAS[previo]) marcar(previo);
+  if (previo && PIEZAS[previo]) { marcar(previo); pintarResultados(); }
 
   /* ---------- Email ---------- */
   const form = gracias.querySelector('form');
   const aviso = form.querySelector('.aviso');
   const boton = form.querySelector('button[type=submit]');
   if (leer('cozumel_votar_email')) {
+    resumen.querySelector('.abrir-hoja').remove();
     form.querySelector('.fila').remove(); form.querySelector('.consent').remove();
     aviso.textContent = '¡Ya estás en la lista! Te avisaremos en cuanto abramos.'; aviso.className = 'aviso ok';
   }
@@ -322,8 +407,11 @@
       if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
       guardar('cozumel_votar_email', '1');
       form.querySelector('.fila').remove(); form.querySelector('.consent').remove();
-      aviso.textContent = '¡Listo! Te avisaremos en cuanto abramos.'; aviso.className = 'aviso ok';
+      aviso.textContent = '¡Listo! Ya estás en el sorteo. Te avisaremos en cuanto abramos.'; aviso.className = 'aviso ok';
       evento('suscripcion_votacion');
+      const boton2 = resumen.querySelector('.abrir-hoja'); if (boton2) boton2.remove();
+      gracias.querySelector('.ahora-no').textContent = 'Ver resultados';
+      setTimeout(cerrarHoja, 1800);
     } catch (err) {
       console.error('Lista de espera:', err);
       aviso.textContent = 'No se ha podido guardar. Inténtalo de nuevo en un momento'; aviso.className = 'aviso error';
