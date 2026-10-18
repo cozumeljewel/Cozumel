@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>¿Cuál te gusta más? · Cozumel Jewelry</title>
+<meta property="og:title" content="¿Cuál te gusta más? · Cozumel Jewelry">
+<meta property="og:description" content="Vota tu pieza favorita de nuestra colección para hombre">
+<meta property="og:image" content="https://cozumeljewelry.es/img/email-voto-mezcal.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='12' fill='%2314454A'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='31' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Cpath d='M26,50 C36,36 64,36 74,50 C64,64 36,64 26,50 Z' fill='none' stroke='%23C6A664' stroke-width='5'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%23C6A664'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<!--
+  Votación para la historia de Instagram (18/10/2026). Se ve aunque la web
+  esté cerrada: NO carga cierre.js.
+  · Toca "Votar" en una pieza → se guarda en eventos (evento
+    'voto_historia', fuente 'instagram'; migración v35). Un voto por
+    navegador (cozumel_votar).
+  · Después, formulario para dejar el email → lista_espera (fuente
+    'votacion'), con país y mercado como cierre.js.
+  · Tocar la foto la abre a pantalla completa con zoom.
+  · Clarity: eventos votar_<pieza>, zoom_<pieza>, suscripcion_votacion.
+-->
+<script src="analitica.js"></script>
+<style>
+  :root { --fondo:#F8F6F1; --texto:#173634; --suave:#5E6B6A; --oro:#B08A45; --linea:#DCD8D1; --foto:#F1F1EF; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--fondo); color:var(--texto); font-family:'Inter', system-ui, sans-serif; text-align:center; }
+  main { width:100%; max-width:520px; margin:0 auto; padding:36px 16px 48px; }
+  .logo { margin:0; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:32px; letter-spacing:.18em; margin-right:-.18em; line-height:1; }
+  .logo span { display:block; margin-top:6px; font-family:'Inter', system-ui, sans-serif; font-size:10px; letter-spacing:.42em; margin-right:-.42em; }
+  .eyebrow { margin:26px 0 0; font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:var(--oro); }
+  h1 { margin:8px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:40px; line-height:1.1; }
+  .sub { margin:8px 0 0; font-size:14px; color:var(--suave); }
+  .rejilla { display:grid; grid-template-columns:repeat(2, 1fr); gap:14px 12px; margin-top:24px; }
+  .pieza { position:relative; }
+  .pieza button.ver { position:relative; display:block; width:100%; aspect-ratio:1; padding:0; border:2px solid transparent; border-radius:4px;
+    background:var(--foto); overflow:hidden; cursor:zoom-in; }
+  .pieza.elegida button.ver { border-color:var(--oro); }
+  .pieza img { width:100%; height:100%; object-fit:cover; display:block; }
+  .lupa { position:absolute; right:6px; bottom:6px; width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+    border-radius:50%; background:rgba(248,246,241,.92); color:var(--texto); }
+  .lupa svg { width:14px; height:14px; }
+  .pieza b { display:block; margin-top:8px; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:21px; }
+  .pieza small { display:block; font-size:12px; color:var(--suave); }
+  .votar { margin-top:8px; padding:9px 18px; border:1px solid var(--texto); border-radius:2px; background:transparent; color:var(--texto);
+    font:500 12px 'Inter', system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; cursor:pointer; }
+  .votar:hover { background:var(--texto); color:var(--fondo); }
+  .pieza.elegida .votar { background:var(--oro); border-color:var(--oro); color:#fff; cursor:default; }
+  .ya-votado .pieza:not(.elegida) .votar { visibility:hidden; }
+
+  .gracias { margin-top:30px; padding:24px 18px; border:1px solid var(--linea); border-radius:4px; background:#fff; }
+  .gracias[hidden] { display:none; }
+  .gracias h2 { margin:0; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:30px; }
+  .gracias p { margin:8px 0 0; font-size:14px; line-height:1.55; }
+  .sorteo { margin:16px 0 0; padding:12px 14px; border:1px solid #C6A664; border-radius:4px; background:#F8F3E9; color:#7A5F2A; font-size:14px; line-height:1.5; }
+  form { margin-top:16px; }
+  .fila { display:flex; gap:8px; }
+  .fila input { flex:1; min-width:0; padding:13px 12px; border:1px solid var(--linea); border-radius:2px; background:var(--fondo);
+    font:400 16px 'Inter', system-ui, sans-serif; color:var(--texto); }
+  .fila button { padding:0 16px; border:0; border-radius:2px; background:var(--texto); color:var(--fondo);
+    font:500 12px 'Inter', system-ui, sans-serif; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; }
+  .fila button:disabled { opacity:.6; }
+  .consent { display:flex; gap:8px; align-items:flex-start; margin-top:12px; text-align:left; font-size:12px; line-height:1.45; color:var(--suave); }
+  .consent a { color:inherit; }
+  .aviso { min-height:1.4em; margin:10px 0 0; font-size:13px; }
+  .aviso.error { color:#9A2B1E; } .aviso.ok { color:var(--texto); font-weight:500; }
+  .firma { margin:32px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-size:22px; }
+
+  /* Visor a pantalla completa con zoom (igual que voto.html) */
+  .visor { position:fixed; inset:0; z-index:50; display:flex; flex-direction:column; background:var(--foto); }
+  .visor[hidden] { display:none; }
+  .visor-zona { position:relative; flex:1; overflow:hidden; touch-action:none; cursor:zoom-in; }
+  .visor-zona.ampliada { cursor:zoom-out; }
+  .visor-zona img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply;
+    transition:transform .25s ease; user-select:none; -webkit-user-drag:none; }
+  .visor-zona.moviendo img { transition:none; }
+  .visor-pie { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+    background:var(--fondo); border-top:1px solid var(--linea); }
+  .visor-pie .nombre { flex:1; margin:0; font-family:'Cormorant Garamond', Georgia, serif; font-size:22px; line-height:1.1; }
+  .visor-pie .nombre small { display:block; font-family:'Inter', system-ui, sans-serif; font-size:12px; color:var(--suave); }
+  .visor button.flecha, .visor button.cerrar { width:44px; height:44px; flex:0 0 44px; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--linea); border-radius:50%; background:var(--fondo); color:var(--texto); cursor:pointer; }
+  .visor button.cerrar { position:absolute; top:calc(12px + env(safe-area-inset-top)); right:12px; z-index:2; }
+  .visor svg { width:18px; height:18px; }
+  .visor-ayuda { position:absolute; left:50%; bottom:14px; transform:translateX(-50%); padding:6px 12px; border-radius:20px;
+    background:rgba(248,246,241,.92); font-size:12px; pointer-events:none; transition:opacity .3s; white-space:nowrap; }
+</style>
+</head>
+<body data-page="votar">
+<main>
+  <p class="logo">COZUMEL<span>JEWELRY</span></p>
+  <p class="eyebrow">Men’s collection</p>
+  <h1>¿Cuál te gusta más?</h1>
+  <p class="sub">Toca la foto para verla de cerca y vota tu favorita.</p>
+
+  <div class="rejilla"></div>
+
+  <section class="gracias" hidden aria-live="polite">
+    <h2>¡Gracias por tu voto!</h2>
+    <p>Has votado por <strong class="votada"></strong>. Déjanos tu email y te avisamos el día que salga la colección: la verás antes que nadie.</p>
+    <p class="sorteo">Con tu primera compra entrarás en el sorteo de <strong>5 videollamadas con Adri</strong>.</p>
+    <form novalidate>
+      <div class="fila">
+        <input type="email" name="email" placeholder="Tu email" autocomplete="email" inputmode="email" required aria-label="Tu email">
+        <button type="submit">Avísame</button>
+      </div>
+      <label class="consent"><input type="checkbox" name="consent" required> <span>Acepto recibir el aviso del lanzamiento y la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</span></label>
+      <p class="aviso"></p>
+    </form>
+  </section>
+
+  <p class="firma">Adri 🤍</p>
+</main>
+
+<div class="visor" hidden role="dialog" aria-modal="true" aria-label="Pieza ampliada">
+  <div class="visor-zona"><img alt=""><span class="visor-ayuda">Toca para ampliar</span></div>
+  <button type="button" class="cerrar" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="visor-pie">
+    <button type="button" class="flecha anterior" aria-label="Pieza anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <p class="nombre"></p>
+    <button type="button" class="flecha siguiente" aria-label="Pieza siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+
+<script src="mercados.js" defer></script>
+<script>
+(function () {
+  const PIEZAS = {
+    mezcal: { nombre: 'Mezcal', tipo: 'Collar con cruz · oro', id: 'hombre_collar_3',   grande: 'img/w/full/hombre/collar-3-oro-charm-cruz-2.png.webp' },
+    copal:  { nombre: 'Copal',  tipo: 'Cadena · plata',        id: 'hombre_collar_7',   grande: 'img/w/full/hombre/collar-7-oro-blanco-producto.png.webp' },
+    uxmal:  { nombre: 'Uxmal',  tipo: 'Pulsera · plata',       id: 'hombre_pulsera_10', grande: 'img/w/full/hombre/pulsera-10-plata-producto.png.webp' },
+    tulum:  { nombre: 'Tulum',  tipo: 'Pulsera · oro',         id: 'hombre_pulsera_3',  grande: 'img/hombre/pulsera-3-oro-producto.jpg' },
+    ocaso:  { nombre: 'Ocaso',  tipo: 'Anillo sello · oro',    id: 'hombre_anillo_1',   grande: 'img/w/full/hombre/anillo-1-oro-producto.png.webp' },
+    charro: { nombre: 'Charro', tipo: 'Anillo · plata',        id: 'hombre_anillo_11',  grande: 'img/w/full/hombre/anillo-11-plata-producto.png.webp' },
+  };
+  const ORDEN = Object.keys(PIEZAS);
+  const SUPABASE = {
+    url: 'https://qesyjtqxbouodgldvbtq.supabase.co',
+    clave: 'sb_publishable_lmFNgpMEy4Axi6dYQ9E1UA_b63xSwJ6',
+  };
+  const CLAVE_VOTO = 'cozumel_votar';
+  const evento = (n) => { if (typeof window.clarity === 'function') window.clarity('event', n); };
+  const original = (src) => { const m = src.match(/^img\/w\/[^/]+\/(.+)\.webp$/); return m ? 'img/' + m[1] : src; };
+  const leer = (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } };
+  const guardar = (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} };
+  const insertar = (tabla, fila) => fetch(SUPABASE.url + '/rest/v1/' + tabla, {
+    method: 'POST',
+    headers: { apikey: SUPABASE.clave, Authorization: 'Bearer ' + SUPABASE.clave, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+    body: JSON.stringify(fila),
+  });
+  const uuid = () => (crypto.randomUUID && crypto.randomUUID()) ||
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+
+  /* ---------- Visor con zoom ---------- */
+  const visor = document.querySelector('.visor');
+  const zona = visor.querySelector('.visor-zona');
+  const grande = zona.querySelector('img');
+  const ayuda = zona.querySelector('.visor-ayuda');
+  const nombreVisor = visor.querySelector('.nombre');
+  const ZOOM = 2.6;
+  let actual = null, ampliada = false, ox = 50, oy = 50, arrastre = null;
+  grande.addEventListener('error', () => {
+    const o = original(grande.getAttribute('src'));
+    if (o !== grande.getAttribute('src')) grande.src = o;
+  });
+  function pintarZoom() {
+    zona.classList.toggle('ampliada', ampliada);
+    grande.style.transformOrigin = ox + '% ' + oy + '%';
+    grande.style.transform = ampliada ? 'scale(' + ZOOM + ')' : 'none';
+  }
+  function abrir(k) {
+    actual = k;
+    const p = PIEZAS[k];
+    grande.src = p.grande;
+    grande.alt = p.nombre + ' · ' + p.tipo;
+    nombreVisor.textContent = p.nombre;
+    const s = document.createElement('small'); s.textContent = p.tipo; nombreVisor.append(s);
+    ampliada = false; ox = oy = 50; pintarZoom();
+    ayuda.style.opacity = '1';
+    if (visor.hidden) { visor.hidden = false; document.body.style.overflow = 'hidden'; }
+    evento('zoom_' + k);
+  }
+  function cerrar() { visor.hidden = true; document.body.style.overflow = ''; }
+  function mover(paso) { abrir(ORDEN[(ORDEN.indexOf(actual) + paso + ORDEN.length) % ORDEN.length]); }
+  function puntoEnZona(e) {
+    const r = zona.getBoundingClientRect();
+    return [Math.min(100, Math.max(0, (e.clientX - r.left) / r.width * 100)), Math.min(100, Math.max(0, (e.clientY - r.top) / r.height * 100))];
+  }
+  zona.addEventListener('pointerdown', (e) => { arrastre = { x: e.clientX, y: e.clientY, ox, oy, movido: false }; zona.setPointerCapture(e.pointerId); });
+  zona.addEventListener('pointermove', (e) => {
+    if (!ampliada) return;
+    if (arrastre) {
+      const r = zona.getBoundingClientRect();
+      const dx = e.clientX - arrastre.x, dy = e.clientY - arrastre.y;
+      if (Math.abs(dx) + Math.abs(dy) > 6) arrastre.movido = true;
+      if (!arrastre.movido) return;
+      zona.classList.add('moviendo');
+      ox = Math.min(100, Math.max(0, arrastre.ox - dx / r.width * 100 * ZOOM / (ZOOM - 1)));
+      oy = Math.min(100, Math.max(0, arrastre.oy - dy / r.height * 100 * ZOOM / (ZOOM - 1)));
+      pintarZoom();
+    } else if (e.pointerType === 'mouse') {
+      zona.classList.add('moviendo');
+      [ox, oy] = puntoEnZona(e); pintarZoom();
+    }
+  });
+  zona.addEventListener('pointerup', (e) => {
+    const movido = arrastre && arrastre.movido;
+    arrastre = null; zona.classList.remove('moviendo');
+    if (movido) return;
+    ayuda.style.opacity = '0';
+    if (!ampliada) { [ox, oy] = puntoEnZona(e); ampliada = true; evento('zoom_ampliado_' + actual); }
+    else ampliada = false;
+    pintarZoom();
+  });
+  zona.addEventListener('pointercancel', () => { arrastre = null; zona.classList.remove('moviendo'); });
+  visor.querySelector('.cerrar').addEventListener('click', cerrar);
+  visor.querySelector('.anterior').addEventListener('click', () => mover(-1));
+  visor.querySelector('.siguiente').addEventListener('click', () => mover(1));
+  document.addEventListener('keydown', (e) => {
+    if (visor.hidden) return;
+    if (e.key === 'Escape') cerrar();
+    if (e.key === 'ArrowLeft') mover(-1);
+    if (e.key === 'ArrowRight') mover(1);
+  });
+
+  /* ---------- Rejilla y voto ---------- */
+  const rejilla = document.querySelector('.rejilla');
+  const gracias = document.querySelector('.gracias');
+  ORDEN.forEach(k => {
+    const p = PIEZAS[k];
+    const div = document.createElement('div');
+    div.className = 'pieza';
+    div.dataset.pieza = k;
+    div.innerHTML = '<button type="button" class="ver"><img alt=""><span class="lupa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg></span></button><b></b><small></small><button type="button" class="votar">Votar</button>';
+    const img = div.querySelector('img');
+    img.src = 'img/email-voto-' + k + '.jpg';
+    img.alt = p.nombre + ' · ' + p.tipo;
+    div.querySelector('.ver').setAttribute('aria-label', 'Ver ' + p.nombre + ' de cerca');
+    div.querySelector('b').textContent = p.nombre;
+    div.querySelector('small').textContent = p.tipo;
+    div.querySelector('.ver').addEventListener('click', () => abrir(k));
+    div.querySelector('.votar').addEventListener('click', () => votar(k));
+    rejilla.append(div);
+  });
+
+  function marcar(k) {
+    rejilla.classList.add('ya-votado');
+    rejilla.querySelectorAll('.pieza').forEach(d => {
+      const es = d.dataset.pieza === k;
+      d.classList.toggle('elegida', es);
+      d.querySelector('.votar').textContent = es ? 'Tu voto ✓' : 'Votar';
+    });
+    gracias.querySelector('.votada').textContent = PIEZAS[k].nombre;
+    gracias.hidden = false;
+  }
+  function votar(k) {
+    if (leer(CLAVE_VOTO)) return;
+    guardar(CLAVE_VOTO, k);
+    marcar(k);
+    evento('votar_' + k);
+    insertar('eventos', { evento: 'voto_historia', session_id: uuid(), fuente: 'instagram', producto: PIEZAS[k].id }).catch(() => {});
+    setTimeout(() => gracias.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+  }
+  const previo = leer(CLAVE_VOTO);
+  if (previo && PIEZAS[previo]) marcar(previo);
+
+  /* ---------- Email ---------- */
+  const form = gracias.querySelector('form');
+  const aviso = form.querySelector('.aviso');
+  const boton = form.querySelector('button[type=submit]');
+  if (leer('cozumel_votar_email')) {
+    form.querySelector('.fila').remove(); form.querySelector('.consent').remove();
+    aviso.textContent = '¡Ya estás en la lista! Te avisaremos en cuanto abramos.'; aviso.className = 'aviso ok';
+  }
+  const leerGeo = () => { try { return JSON.parse(localStorage.getItem('cozumel_mercado_geo')) || null; } catch (_) { return null; } };
+  const paisReal = async () => {
+    const geo = leerGeo();
+    if (geo && typeof geo.pais === 'string') return geo.pais.toUpperCase();
+    try {
+      const control = new AbortController();
+      const corte = setTimeout(() => control.abort(), 3000);
+      const resp = await fetch('/api/geo', { headers: { Accept: 'application/json' }, signal: control.signal });
+      clearTimeout(corte);
+      if (!resp.ok) return null;
+      const datos = await resp.json();
+      return datos && typeof datos.country === 'string' ? datos.country.toUpperCase() : null;
+    } catch (_) { return null; }
+  };
+  // Erratas típicas del dominio (igual que cierre.js)
+  const DOMINIOS = { gmail: 'gmail.com', hotmail: 'hotmail.com', icloud: 'icloud.com', outlook: 'outlook.com', yahoo: 'yahoo.com' };
+  const ERRATAS = {
+    gmail: /^(gmial|gamil|gmal|gmai|gmall|gnail|hmail|gmaill|gmali|gmil|gemail|gmsil|gmaio)\.|^gmail\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+    hotmail: /^(hotmal|hotmial|hotmai|hormail|hotmaill|htmail|hotnail|homail|hotamil)\.|^hotmail\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+    icloud: /^(iclod|icoud|iclou|icluod|igloud|icloid|iclould)\.|^icloud\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+    outlook: /^(outlok|outllok|otlook|outloo)\.|^outlook\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+    yahoo: /^(yaho|yahooo|yhoo)\.com$|^yahoo\.(co|con|cm|om|coms|comm|cpm|clm|vom|xom|comq|ocm)$/,
+  };
+  const corregirEmail = (email) => {
+    const i = email.lastIndexOf('@');
+    const dom = email.slice(i + 1).toLowerCase();
+    for (const k in ERRATAS) if (ERRATAS[k].test(dom)) return email.slice(0, i + 1) + DOMINIOS[k];
+    return email;
+  };
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = corregirEmail(form.email.value.trim());
+    aviso.className = 'aviso';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { aviso.textContent = 'Escribe un email válido'; aviso.classList.add('error'); form.email.focus(); return; }
+    if (!form.consent.checked) { aviso.textContent = 'Marca la casilla para poder avisarte'; aviso.classList.add('error'); return; }
+    boton.disabled = true;
+    aviso.textContent = 'Guardando…';
+    try {
+      const pais = await paisReal();
+      let mercado = null;
+      try { mercado = (JSON.parse(localStorage.getItem('cozumel_mercado_manual')) || (leerGeo() || {}).mercado) || null; } catch (_) {}
+      if (!mercado && pais && typeof mercadoDePais === 'function') mercado = mercadoDePais(pais);
+      const resp = await insertar('lista_espera', { email, pais, mercado, consentimiento: true, fuente: 'votacion' });
+      // 409 = ya estaba apuntado: para quien se apunta, es lo mismo.
+      if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
+      guardar('cozumel_votar_email', '1');
+      form.querySelector('.fila').remove(); form.querySelector('.consent').remove();
+      aviso.textContent = '¡Listo! Te avisaremos en cuanto abramos.'; aviso.className = 'aviso ok';
+      evento('suscripcion_votacion');
+    } catch (err) {
+      console.error('Lista de espera:', err);
+      aviso.textContent = 'No se ha podido guardar. Inténtalo de nuevo en un momento'; aviso.className = 'aviso error';
+      boton.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
