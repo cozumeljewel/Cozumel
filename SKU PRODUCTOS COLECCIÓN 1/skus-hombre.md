@@ -187,6 +187,6 @@ Cada referencia es una medida fija. W0 no es la talla: es la única variante.
 | Cuadrada | XP49972D0W0 | XP49972A0W0 | 6×6 mm |
 | Marquesa | XP49973D0W0 | XP49973A0W0 | 10×5 mm |
 | Ovalada | XP49974D0W0 | XP49974A0W0 | 8×6 mm |
-| Redonda | XP49975D0W0 | XP49975A0W0 | 4×4 mm (la más pequeña) |
+| Redonda | HZNP014-Gold Color | HZNP014-Silver Color | 6×6 mm (antes XP49975, de 4×4: muy pequeña) |
 
 Otras de la misma ficha, no usadas: redonda HZNP014 (6×6, plata), corazón HZNP013 (6×6, plata), rectangular XP49466 (6×4, oro).
