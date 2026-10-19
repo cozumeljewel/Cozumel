@@ -1693,3 +1693,9 @@ en: Mexico time
 
 es: ¡Ya casi!
 en: Almost here!
+
+es: <strong>Elige tu collar y añade tu colgante gratis</strong>
+en: <strong>Choose your necklace and add a free pendant</strong>
+
+es: + colgante gratis
+en: + free pendant

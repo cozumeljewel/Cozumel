@@ -780,6 +780,12 @@ function fotoAlPasar(img, src, tarjeta) {
 /* Tarjeta de la colección MEN: foto de producto (y puesto al pasar el
    cursor en el ordenador), nombre y circulitos de acabado debajo. Foto y nombre llevan a la pieza (hombre.html), donde
    se ven todas las fotos. */
+function crearEtiquetaRegalo() {
+  const e = document.createElement('span');
+  e.className = 'v2-card-regalo';
+  e.textContent = '+ colgante gratis';
+  return e;
+}
 function tarjetaHombre(prod, inicial) {
   const claves = Object.keys(prod.acabados);
   const card = document.createElement('div');
@@ -845,7 +851,9 @@ function tarjetaHombre(prod, inicial) {
   const precio = document.createElement('span');
   precio.className = 'v2-card-precio';
   pintarPrecioHombre(precio, prod);
-  card.append(marco, nombre, precio, tonos);
+  card.append(marco, nombre, precio);
+  if (llevaCharmHombre(prod)) card.append(crearEtiquetaRegalo());
+  card.append(tonos);
   poner(claves.includes(inicial) ? inicial : claves[0]);
   return card;
 }
@@ -1246,7 +1254,9 @@ function urlPiezaHombre(prod, clave) {
     // letras, circonitas) en un desplegable propio, cerrado al principio.
     let grupo = '', destino = rejilla;
     const plegados = typeof GRUPOS_CHARM_PLEGADOS !== 'undefined' ? GRUPOS_CHARM_PLEGADOS : [];
-    CHARMS_HOMBRE.forEach(ch => {
+    const ordenGrupos = typeof ORDEN_GRUPOS_CHARM !== 'undefined' ? ORDEN_GRUPOS_CHARM : [];
+    const puesto = (g) => { const i = ordenGrupos.indexOf(g); return i < 0 ? 99 : i; };
+    [...CHARMS_HOMBRE].sort((a, b) => puesto(a.grupo) - puesto(b.grupo)).forEach(ch => {
       if (ch.grupo !== grupo) {
         grupo = ch.grupo;
         if (plegados.includes(grupo)) {
@@ -1296,6 +1306,12 @@ function urlPiezaHombre(prod, clave) {
       });
       elegido.textContent = ch ? ch.nombre : '';
       vista.hidden = !ch;
+      // La foto del charm elegido va justo debajo de su grupo (Cruces,
+      // Circonitas...), para no tener que bajar hasta el final.
+      const btElegido = ch && rejilla.querySelector('.v2-charm-opcion[data-charm="' + ch.id + '"]');
+      const grupoAbierto = btElegido && btElegido.closest('details.v2-charm-plegable');
+      if (grupoAbierto) { if (nombreCharm.parentNode !== grupoAbierto) grupoAbierto.append(nombreCharm, vista); }
+      else if (vista.parentNode !== cuerpo) cuerpo.append(nombreCharm, vista);
       if (ch) {
         // La cadena con ese charm puesto si hay foto; si no, el charm solo.
         const puesta = fotosCharmHombre(prod, clave).find(x => x.charm === ch.id);
@@ -1511,6 +1527,14 @@ function urlPiezaHombre(prod, clave) {
     rejilla.before(tipos);
     const banner = bannerPromoHombre();
     if (banner) tipos.before(banner);
+    // Colgantes: aviso del colgante de regalo (solo lo llevan los collares
+    // con charm; sus tarjetas tienen además la etiqueta "+ colgante gratis").
+    if (tipo === 'colgantes') {
+      const aviso = document.createElement('p');
+      aviso.className = 'v2-aviso-colgante';
+      aviso.innerHTML = '<strong>Elige tu collar y añade tu colgante gratis</strong>';
+      rejilla.before(aviso);
+    }
     const piezas = COLECCION_HOMBRE.filter(p => p.tipo === tipo);
     const acabados = acabadosVariados(piezas);
     piezas.forEach((prod, i) => rejilla.appendChild(tarjetaHombre(prod, acabados[i])));

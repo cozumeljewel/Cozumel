@@ -375,6 +375,9 @@ const CHARMS_HOMBRE = [
 ];
 // Grupos de charms: todos plegados (se abren al tocar el título).
 const GRUPOS_CHARM_PLEGADOS = ['Placas', 'Cruces', 'Símbolos', 'Números', 'Letras', 'Circonitas'];
+// Orden de los grupos en la ficha (19/10/2026): cruces, símbolos, circonitas,
+// placas y el resto. Un grupo que no esté aquí va al final.
+const ORDEN_GRUPOS_CHARM = ['Cruces', 'Símbolos', 'Circonitas', 'Placas', 'Números', 'Letras'];
 // FOTOS_CHARM (generado por scripts/charms-hombre.py)
 // Cadena con el charm puesto, por acabado y en orden de variación.
 const FOTOS_CHARM_HOMBRE = {
@@ -399,7 +402,7 @@ const FOTOS_CHARM_HOMBRE = {
 
 // Color con el que sale la pieza en el Shop, la portada y "más piezas"
 // si no es el que tocaría por turno.
-const ACABADO_INICIAL_HOMBRE = { hombre_collar_7: 'oro_blanco' };
+const ACABADO_INICIAL_HOMBRE = { hombre_collar_7: 'oro_blanco', hombre_collar_3: 'oro', hombre_collar_6: 'oro', hombre_collar_8: 'oro_blanco' };
 
 // Opciones que el cliente escoge en la ficha (talla, largo, grosor, ancho),
 // con la referencia del proveedor de cada una (skus-hombre.md), y la
@@ -490,7 +493,7 @@ const MEDIDAS_HOMBRE = {
 const PORTADA_CHARM_HOMBRE = {
   hombre_collar_3: { oro: 'cruz_2', oro_blanco: 'cruz_1' },  // Mezcal, con cruz
   hombre_collar_6: { oro: 'cruz_3', oro_blanco: 'cruz_1' },  // Cacao, con cruz
-  hombre_collar_4: { oro: 'simbolo_d', oro_blanco: 'charm_3' },  // Guajillo: mano / placa ovalada
+  hombre_collar_4: { oro: 'circonita_ovalada', oro_blanco: 'circonita_ovalada' },  // Guajillo: circonita ovalada
   hombre_collar_8: { oro: 'simbolo_a', oro_blanco: 'cruz_1' },  // Obsidiana: triángulo / cruz plateada
 };
 

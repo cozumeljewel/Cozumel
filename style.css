@@ -4167,3 +4167,13 @@ body.v2 .acabado-op--foto:hover{border:0; box-shadow:0 0 0 2px var(--c-fondo), 0
 body.v2 .acabado-op--foto.activo:hover{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3px var(--c-texto);}
 body.v2 .acabado-op-texto{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
 @media (min-width:900px){ body.v2 .acabado-op.acabado-op--foto{width:56px; height:56px;} }
+
+/* 19/10/2026 · La foto del charm elegido, justo debajo de su grupo */
+body.v2 .v2-charm-plegable > .v2-charm-vista{margin-bottom:18px;}
+
+/* 19/10/2026 · Colgante de regalo: aviso en la pestaña Colgantes y etiqueta en sus tarjetas */
+body.v2 .v2-aviso-colgante{display:flex; flex-wrap:wrap; justify-content:center; align-items:baseline; gap:4px 14px; margin:0 0 28px;
+  padding:12px 16px; border:1px solid var(--c-oro); border-radius:2px; background:#F8F3E9; text-align:center;}
+body.v2 .v2-aviso-colgante strong{font-family:var(--font-sans); font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .v2-aviso-colgante span{font-family:var(--font-serif); font-style:italic; font-size:15px; color:#7A5F2A;}
+body.v2 .v2-card-regalo{display:block; margin-top:4px; font-family:var(--font-sans); font-size:11px; letter-spacing:.08em; color:#7A5F2A;}

@@ -549,7 +549,9 @@ COZUMEL_EN_CARGADO({
  "Lanzamiento": "Launch",
  "1 de noviembre · 9:00 PM": "November 1 · 9:00 PM",
  "Hora de México": "Mexico time",
- "¡Ya casi!": "Almost here!"
+ "¡Ya casi!": "Almost here!",
+ "<strong>Elige tu collar y añade tu colgante gratis</strong>": "<strong>Choose your necklace and add a free pendant</strong>",
+ "+ colgante gratis": "+ free pendant"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
