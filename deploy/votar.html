@@ -125,7 +125,7 @@
 
   <div class="rejilla"></div>
 
-  <p class="resumen" hidden><span class="resumen-texto"></span><br><button type="button" class="abrir-hoja">Ver resultados</button></p>
+  <p class="resumen" hidden><span class="resumen-texto"></span><br><button type="button" class="abrir-hoja">Entrar en el sorteo</button></p>
 
   <p class="firma">Adri 🤍</p>
 </main>
@@ -136,16 +136,16 @@
     <div class="mini-elegida"><img alt=""></div>
     <h2>¡Gracias por tu voto!</h2>
     <p>Has votado por <strong class="votada"></strong>.</p>
-    <p class="sorteo"><strong>¿Quieres ver cómo va la votación?</strong>Deja tu email y te enseñamos los resultados. Además, te avisamos el 1 de noviembre y, con tu primera compra, entras en el sorteo de 5 videollamadas con Adri.</p>
+    <p class="sorteo"><strong>Entra en el sorteo de 5 videollamadas con Adri</strong>Deja tu email: te avisamos el 1 de noviembre, cuando salga la colección, y con tu primera compra entras en el sorteo.</p>
     <form novalidate>
       <div class="fila">
         <input type="email" name="email" placeholder="Tu email" autocomplete="email" inputmode="email" required aria-label="Tu email">
-        <button type="submit">Ver resultados</button>
+        <button type="submit">Apuntarme</button>
       </div>
       <label class="consent"><input type="checkbox" name="consent" required> <span>Acepto recibir el aviso del lanzamiento y la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</span></label>
       <p class="aviso"></p>
     </form>
-    <button type="button" class="ahora-no">Ver resultados sin dejar mi email</button>
+    <button type="button" class="ahora-no">Ahora no, ver resultados</button>
   </section>
 </div>
 
@@ -288,7 +288,8 @@
     document.body.style.overflow = 'hidden';
   }
   // Los resultados se enseñan al dejar el email o al pulsar "sin email"
-  const puedeVer = () => !!(leer('cozumel_votar_email') || leer('cozumel_votar_ver'));
+  // 19/10: se vuelve a enseñar siempre (pedir el email para verlos no subía los emails)
+  const puedeVer = () => true;
   function avisoVer() {
     resumen.querySelector('.resumen-texto').textContent = '¿Quieres ver cómo va la votación?';
     resumen.hidden = false;
@@ -303,7 +304,6 @@
   gracias.querySelector('.cerrar-hoja').addEventListener('click', cerrarHoja);
   gracias.querySelector('.ahora-no').addEventListener('click', () => {
     guardar('cozumel_votar_ver', '1');
-    evento('resultados_sin_email');
     cerrarHoja();
   });
   resumen.querySelector('.abrir-hoja').addEventListener('click', abrirHoja);
@@ -418,7 +418,7 @@
       if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
       guardar('cozumel_votar_email', '1');
       form.querySelector('.fila').remove(); form.querySelector('.consent').remove();
-      aviso.textContent = '¡Listo! Ahora verás los resultados. Te avisaremos el 1 de noviembre.'; aviso.className = 'aviso ok';
+      aviso.textContent = '¡Listo! Ya estás en el sorteo. Te avisaremos el 1 de noviembre.'; aviso.className = 'aviso ok';
       evento('suscripcion_votacion');
       const boton2 = resumen.querySelector('.abrir-hoja'); if (boton2) boton2.remove();
       gracias.querySelector('.ahora-no').remove();
