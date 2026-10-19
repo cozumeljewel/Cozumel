@@ -175,3 +175,18 @@ Precio catálogo = "Wholesale Price" del Excel. Stock = unidades en el proveedor
 | Charro (Anillo 11) | TR24149 | plata | 7–11 | herradura, 21 mm | 1,76 |
 | Catedral (Anillo 12) | TR24167 | plata | 7–10 | cruz gótica, 19 mm | 1,96 |
 | Nahual (Anillo 13) | TR24174 | oro 14K · plata | 7–11 | lobo, 16 mm | 2,16 oro · 1,96 plata |
+
+### Circonitas (medidas según la tienda del proveedor, 19/10/2026)
+
+Cada referencia es una medida fija. W0 no es la talla: es la única variante.
+
+| Charm | Dorado | Plateado | Medida |
+|---|---|---|---|
+| Gota | XP49970D0W0 | XP49970A0W0 | 8×6 mm |
+| Rectangular | XP49971D0W0 | XP49971A0W0 | 8×6 mm |
+| Cuadrada | XP49972D0W0 | XP49972A0W0 | 6×6 mm |
+| Marquesa | XP49973D0W0 | XP49973A0W0 | 10×5 mm |
+| Ovalada | XP49974D0W0 | XP49974A0W0 | 8×6 mm |
+| Redonda | XP49975D0W0 | XP49975A0W0 | 4×4 mm (la más pequeña) |
+
+Otras de la misma ficha, no usadas: redonda HZNP014 (6×6, plata), corazón HZNP013 (6×6, plata), rectangular XP49466 (6×4, oro).
