@@ -6,7 +6,8 @@
 # copia cada foto, tal cual, a img/hombre/<pieza>-<acabado>-charm-<id del charm>.<ext>
 # y reescribe el bloque FOTOS_CHARM_HOMBRE de hombre.js.
 # Códigos: 1/2/3 = placa dorada, 1A/2A/3A = placa plateada, CRUZ 4 = cruz 1
-# plateada, CRUZ n = cruz n, A-F = símbolos.
+# plateada, CRUZ n = cruz n, A-F = símbolos, CIRCONITA <FORMA> = circonita
+# (del color de la cadena).
 # Uso (desde la raíz): python scripts/charms-hombre.py
 import glob, os, re, shutil, hashlib, unicodedata
 
@@ -27,6 +28,9 @@ def charm(codigo):
         return ('cruz_1', 'plateado') if m[1] == '4' else (f'cruz_{m[1]}', 'dorado')
     if re.fullmatch(r'[A-F]', c):
         return f'simbolo_{c.lower()}', 'dorado'
+    # CIRCONITA GOTA, CIRCONITA OVALADA...: el color sigue al de la cadena
+    if m := re.fullmatch(r'CIRCONITA\s*([A-ZÁÉÍÓÚ]+)', codigo.upper().strip()):
+        return 'circonita_' + norm(m[1]), None
     raise ValueError(codigo)
 
 
@@ -48,7 +52,7 @@ for f in fotos:
     if (pid, fin, cid) in vistos:
         continue
     vistos.add((pid, fin, cid))
-    if (fin == 'oro') != (color == 'dorado'):
+    if color and (fin == 'oro') != (color == 'dorado'):
         print('OJO, color de charm distinto al de la cadena:', f)
     ext = os.path.splitext(f)[1].lower().replace('jpeg', 'jpg')
     destino = f"img/hombre/{pid.replace('hombre_', '').replace('_', '-')}-{fin.replace('_', '-')}-charm-{cid.replace('_', '-')}{ext}"
