@@ -84,7 +84,7 @@ const TASAS = {
 const ENVIO_USD = {
   MX: 6.50,
   US: 8.50,
-  ES: 11.00,  // 6 envío + 3,5 aranceles + 1,5 IVA (UE)
+  ES: 16.80,  // 11 $ de envío + 5,8 $ de tasa de aduana de la UE (desde el 1/11/2026)  // 6 envío + 3,5 aranceles + 1,5 IVA (UE)
   CL: 9.50,   // 7 envío + 2,5 impuestos
   PE: 7.00,
   AR: 14.00,  // sin impuestos: el IVA de importación lo paga el cliente al recibir

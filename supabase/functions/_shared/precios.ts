@@ -28,14 +28,14 @@ export const PRECIOS_MXN: Record<string, number | null> = {
 // Si un producto tiene precio fijado a mano para un país, manda sobre la
 // conversión. Mismo criterio que "precios: { US: 24.99 }" en productos.js.
 export const PRECIOS_MANUALES: Record<string, Record<string, number>> = {
-  pulsera_nombre: { ES: 24.90, US: 29.90, CL: 24990, PE: 79.90 , AR: 30.90},
-  brazalete_mensaje: { ES: 27.90, US: 32.90, CL: 27990, PE: 89.90 , AR: 33.90},
-  pulsera_vinculo: { ES: 29.90, US: 34.90, CL: 29990, PE: 99.90 , AR: 35.90},
-  collar_esencial: { ES: 29.90, US: 34.90, CL: 29990, PE: 99.90 , AR: 35.90},
-  collar_flor_natal: { ES: 34.90, US: 39.90, CL: 34990, PE: 119.90 , AR: 40.90},
-  kit_pedacito_nosotros: { ES: 49.90, US: 59.90, CL: 54990, PE: 179.90 , AR: 60.90},
-  kit_mi_consentida: { ES: 49.90, US: 59.90, CL: 54990, PE: 179.90 , AR: 60.90},
-  kit_personalizado: { ES: 49.90, US: 59.90, CL: 54990, PE: 179.90 , AR: 60.90},
+  pulsera_nombre: { ES: 29.90, US: 29.90, CL: 24990, PE: 79.90 , AR: 30.90},
+  brazalete_mensaje: { ES: 32.90, US: 32.90, CL: 27990, PE: 89.90 , AR: 33.90},
+  pulsera_vinculo: { ES: 34.90, US: 34.90, CL: 29990, PE: 99.90 , AR: 35.90},
+  collar_esencial: { ES: 34.90, US: 34.90, CL: 29990, PE: 99.90 , AR: 35.90},
+  collar_flor_natal: { ES: 39.90, US: 39.90, CL: 34990, PE: 119.90 , AR: 40.90},
+  kit_pedacito_nosotros: { ES: 54.90, US: 59.90, CL: 54990, PE: 179.90 , AR: 60.90},
+  kit_mi_consentida: { ES: 54.90, US: 59.90, CL: 54990, PE: 179.90 , AR: 60.90},
+  kit_personalizado: { ES: 54.90, US: 59.90, CL: 54990, PE: 179.90 , AR: 60.90},
 };
 
 // Colombia (COP) y Argentina (ARS): la cuenta de Stripe no admite cobrar
@@ -69,7 +69,7 @@ export const TASAS: Record<string, number> = {
 export const ENVIO_USD: Record<string, number> = {
   MX: 6.50,
   US: 8.50,
-  ES: 11.00,
+  ES: 16.80,  // 11 $ de envío + 5,8 $ de tasa de aduana de la UE (desde el 1/11/2026)
   CL: 9.50,
   PE: 7.00,
   AR: 14.00,

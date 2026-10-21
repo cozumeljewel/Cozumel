@@ -192,29 +192,31 @@ const COLECCION_HOMBRE = [
    en España, el país más justo, nada baja de ~9 $ por pieza). Precio
    final con envío incluido; MX es el maestro y el resto de países van
    fijados a mano, igual que en productos.js. */
+// 21/10/2026: España y zona euro +5 € por la tasa de aduana de la UE
+// (5,8 $ por pedido desde el 1/11/2026, la cobra el proveedor).
 const ESCALONES_HOMBRE = {
-  A: { MX: 349, ES: 24.90, US: 29.90, CL: 24990, PE: 79.90, AR: 30.90 },
-  B: { MX: 399, ES: 27.90, US: 32.90, CL: 27990, PE: 89.90, AR: 33.90 },
-  C: { MX: 449, ES: 29.90, US: 34.90, CL: 29990, PE: 99.90, AR: 35.90 },
-  D: { MX: 499, ES: 34.90, US: 39.90, CL: 34990, PE: 119.90, AR: 40.90 },
-  E: { MX: 549, ES: 39.90, US: 44.90, CL: 39990, PE: 139.90, AR: 45.90 },
+  A: { MX: 349, ES: 29.90, US: 29.90, CL: 24990, PE: 79.90, AR: 30.90 },
+  B: { MX: 399, ES: 32.90, US: 32.90, CL: 27990, PE: 89.90, AR: 33.90 },
+  C: { MX: 449, ES: 34.90, US: 34.90, CL: 29990, PE: 99.90, AR: 35.90 },
+  D: { MX: 499, ES: 39.90, US: 39.90, CL: 34990, PE: 119.90, AR: 40.90 },
+  E: { MX: 549, ES: 44.90, US: 44.90, CL: 39990, PE: 139.90, AR: 45.90 },
 };
 const ESCALON_HOMBRE = {
-  // 24,90 €: precio de entrada, anillos lisos finos
+  // 29,90 € (antes 24,90): precio de entrada, anillos lisos finos
   hombre_anillo_2: 'A', hombre_anillo_3: 'A', hombre_anillo_4: 'A',
-  // 27,90 €: pulseras finas con chapa y pulseras de eslabón finas
+  // 32,90 € (antes 27,90): pulseras finas con chapa y pulseras de eslabón finas
   hombre_pulsera_1: 'B', hombre_pulsera_2: 'B', hombre_pulsera_3: 'B', hombre_pulsera_4: 'B', hombre_pulsera_5: 'B', hombre_pulsera_6: 'B',
   hombre_pulsera_9: 'B', hombre_pulsera_10: 'B', hombre_pulsera_15: 'B', hombre_pulsera_18: 'B',
-  // 29,90 €: anillos de sello y con relieve, brazaletes y Pulque (cadena sin charm)
+  // 34,90 € (antes 29,90): anillos de sello y con relieve, brazaletes y Pulque (cadena sin charm)
   hombre_anillo_1: 'C', hombre_anillo_5: 'C', hombre_anillo_6: 'C', hombre_anillo_7: 'C', hombre_anillo_8: 'C',
   hombre_anillo_9: 'C', hombre_anillo_10: 'C', hombre_anillo_11: 'C', hombre_anillo_12: 'C', hombre_anillo_13: 'C',
   hombre_brazalete_1: 'C', hombre_brazalete_2: 'C', hombre_brazalete_3: 'C',
   hombre_collar_2: 'C',
-  // 34,90 €: collares con charm de regalo, colgantes de barra y pulseras de eslabón medias
+  // 39,90 € (antes 34,90): collares con charm de regalo, colgantes de barra y pulseras de eslabón medias
   hombre_collar_3: 'D', hombre_collar_4: 'D', hombre_collar_6: 'D', hombre_collar_8: 'D',
   hombre_colgante_1: 'D', hombre_colgante_2: 'D', hombre_colgante_3: 'D',
   hombre_pulsera_7: 'D', hombre_pulsera_8: 'D', hombre_pulsera_14: 'D', hombre_pulsera_16: 'D', hombre_pulsera_17: 'D', hombre_pulsera_19: 'D',
-  // 39,90 €: cadenas gruesas, pulseras gruesas y Ajolote
+  // 44,90 € (antes 39,90): cadenas gruesas, pulseras gruesas y Ajolote
   hombre_collar_1: 'E', hombre_collar_7: 'E',
   hombre_pulsera_11: 'E', hombre_pulsera_12: 'E', hombre_pulsera_13: 'E',
   hombre_brazalete_4: 'E',
