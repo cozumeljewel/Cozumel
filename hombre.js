@@ -121,9 +121,7 @@ const COLECCION_HOMBRE = [
   { id: 'hombre_pulsera_9', tipo: 'pulseras', nombre: 'Henequén', acabados: {
       plata:      ['img/hombre/pulsera-9-plata-producto-fondo.png', 'img/hombre/pulsera-9-plata-puesto.png', 'img/hombre/pulsera-9-plata-puesto-2.png'],
   } },
-  { id: 'hombre_pulsera_10', tipo: 'pulseras', nombre: 'Uxmal', acabados: {
-      plata:      ['img/hombre/pulsera-10-plata-producto-fondo.png', 'img/hombre/pulsera-10-plata-puesto.png', 'img/hombre/pulsera-10-plata-puesto-2.png'],
-  } },
+  // Uxmal (hombre_pulsera_10, NS92067): retirada el 21/10/2026, el proveedor ya no la fabrica.
   { id: 'hombre_pulsera_11', tipo: 'pulseras', nombre: 'Izamal', acabados: {
       plata:      ['img/hombre/pulsera-11-plata-producto-fondo.png', 'img/hombre/pulsera-11-plata-puesto.png', 'img/hombre/pulsera-11-plata-puesto-2.png'],
   } },
