@@ -963,6 +963,18 @@ function miniaturaAcabado(prod, clave, mas = 1) {
   }
   // El círculo enseña un trozo de la foto muy ampliado: copia más grande.
   mini.src = imgPeq(prod.acabados[clave][0], mas > 1 ? 900 : 1100);
+  // Pulseras, brazaletes y anillos: la pieza entera, centrada en el círculo
+  // (ENCUADRE_HOMBRE, hombre-focos.js: centro y zoom calculados por foto).
+  const enc = prod.tipo !== 'colgantes' && typeof ENCUADRE_HOMBRE !== 'undefined' && ENCUADRE_HOMBRE[prod.acabados[clave][0]];
+  if (enc) {
+    const [cx, cy, k] = enc;
+    Object.assign(mini.style, {
+      position: 'absolute', width: k * 100 + '%', height: k * 100 + '%', maxWidth: 'none', objectFit: 'cover',
+      // (sin salirse de la foto: el círculo nunca enseña borde vacío)
+      left: Math.min(0, Math.max(100 - 100 * k, 50 - cx * k)) + '%', top: Math.min(0, Math.max(100 - 100 * k, 50 - cy * k)) + '%', transform: 'none',
+    });
+    return mini;
+  }
   const foco = typeof FOCOS_HOMBRE !== 'undefined' && FOCOS_HOMBRE[prod.acabados[clave][0]];
   if (foco) {
     // mas: zoom extra para los círculos pequeños de las tarjetas
