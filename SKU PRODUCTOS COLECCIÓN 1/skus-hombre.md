@@ -68,11 +68,13 @@ plateado (ovalados).
 
 | Charm | Forma | Color | Referencia proveedor | Medida | Coste | Notas |
 |---|---|---|---|---|---|---|
-| Cruz 1 | cruz con circonitas | Dorado (14K) | AP43158-Gold Color | 15×10 mm | 1,20 € | solo quedaban 2 unidades |
+| Cruz 1 | cruz con circonitas | Dorado (14K) | AP43158-Gold Color | 15×10 mm | 1,20 € | solo quedaban 2 unidades · **no se puede grabar** (proveedor, 22/10) |
 | Cruz 2 | cruz con circonitas, grande | Dorado (14K) | JP40788-Gold Color | 34×19 mm | 1,94 € | |
 | Cruz 3 | cruz con perlas | Dorado (14K) | AP40919-Gold Color | 31×23 mm | 1,69 € | |
-| Cruz 4 | cruz con circonitas (= Cruz 1 en plata) | Plateado | AP43158-Silver Color | 15×10 mm | 1,10 € | solo quedaban 2 unidades |
+| Cruz 4 | cruz con circonitas (= Cruz 1 en plata) | Plateado | AP43158-Silver Color | 15×10 mm | 1,10 € | solo quedaban 2 unidades · **no se puede grabar** (proveedor, 22/10) |
 | Cruz 5 | cruz lisa | Dorado (14K) | YP2877-Gold Color | 18×10 mm | 0,57 € | |
+
+Grabado (proveedor, 22/10/2026): las placas YP23728, YP23732/YP23731 y XP49649 sí se pueden grabar; la cruz AP43158 no.
 
 Ojo: el cuadrado tiene la misma referencia en los dos colores (YP23728); el
 rectangular cambia de referencia según el color (YP23732 dorado, YP23731

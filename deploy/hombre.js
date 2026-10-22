@@ -112,43 +112,19 @@ const COLECCION_HOMBRE = [
   { id: 'hombre_pulsera_6', tipo: 'pulseras', nombre: 'Sayulita', acabados: {
       oro_blanco: ['img/hombre/pulsera-6-oro-blanco-producto-fondo.png', 'img/hombre/pulsera-6-oro-blanco-puesto.png', 'img/hombre/pulsera-6-oro-blanco-puesto-2.png'],
   } },
-  { id: 'hombre_pulsera_7', tipo: 'pulseras', nombre: 'Tequila', acabados: {
-      oro:        ['img/hombre/pulsera-7-oro-producto-fondo.png', 'img/hombre/pulsera-7-oro-puesto.png', 'img/hombre/pulsera-7-oro-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_8', tipo: 'pulseras', nombre: 'Oaxaca', acabados: {
-      oro:        ['img/hombre/pulsera-8-oro-producto-fondo.png', 'img/hombre/pulsera-8-oro-puesto.png', 'img/hombre/pulsera-8-oro-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_9', tipo: 'pulseras', nombre: 'Henequén', acabados: {
-      plata:      ['img/hombre/pulsera-9-plata-producto-fondo.png', 'img/hombre/pulsera-9-plata-puesto.png', 'img/hombre/pulsera-9-plata-puesto-2.png'],
-  } },
+  // Tequila (hombre_pulsera_7, NS92055): retirada el 22/10/2026, el proveedor la va a discontinuar.
+  // Oaxaca (hombre_pulsera_8, NS92059): retirada el 22/10/2026, el proveedor la va a discontinuar.
+  // Henequén (hombre_pulsera_9, NS92062): retirada el 22/10/2026, el proveedor la va a discontinuar.
   // Uxmal (hombre_pulsera_10, NS92067): retirada el 21/10/2026, el proveedor ya no la fabrica.
-  { id: 'hombre_pulsera_11', tipo: 'pulseras', nombre: 'Izamal', acabados: {
-      plata:      ['img/hombre/pulsera-11-plata-producto-fondo.png', 'img/hombre/pulsera-11-plata-puesto.png', 'img/hombre/pulsera-11-plata-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_12', tipo: 'pulseras', nombre: 'Sonora', acabados: {
-      plata:      ['img/hombre/pulsera-12-plata-producto-fondo.png', 'img/hombre/pulsera-12-plata-puesto.png', 'img/hombre/pulsera-12-plata-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_13', tipo: 'pulseras', nombre: 'Durango', acabados: {
-      plata:      ['img/hombre/pulsera-13-plata-producto-fondo.png', 'img/hombre/pulsera-13-plata-puesto.png', 'img/hombre/pulsera-13-plata-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_14', tipo: 'pulseras', nombre: 'Huasteca', acabados: {
-      plata:      ['img/hombre/pulsera-14-plata-producto-fondo.png', 'img/hombre/pulsera-14-plata-puesto.png', 'img/hombre/pulsera-14-plata-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_15', tipo: 'pulseras', nombre: 'Celestún', acabados: {
-      plata:      ['img/hombre/pulsera-15-plata-producto-fondo.png', 'img/hombre/pulsera-15-plata-puesto.png', 'img/hombre/pulsera-15-plata-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_16', tipo: 'pulseras', nombre: 'Volcán', acabados: {
-      negro:      ['img/hombre/pulsera-16-negro-producto-fondo.png', 'img/hombre/pulsera-16-negro-puesto.png', 'img/hombre/pulsera-16-negro-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_17', tipo: 'pulseras', nombre: 'Xibalbá', acabados: {
-      negro:      ['img/hombre/pulsera-17-negro-producto-fondo.png', 'img/hombre/pulsera-17-negro-puesto.png', 'img/hombre/pulsera-17-negro-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_18', tipo: 'pulseras', nombre: 'Tezontle', acabados: {
-      negro:      ['img/hombre/pulsera-18-negro-producto-fondo.png', 'img/hombre/pulsera-18-negro-puesto.png', 'img/hombre/pulsera-18-negro-puesto-2.png'],
-  } },
-  { id: 'hombre_pulsera_19', tipo: 'pulseras', nombre: 'Chamula', acabados: {
-      negro:      ['img/hombre/pulsera-19-negro-producto-fondo.png', 'img/hombre/pulsera-19-negro-puesto.png', 'img/hombre/pulsera-19-negro-puesto-2.png'],
-  } },
+  // Izamal (hombre_pulsera_11, NS92075): retirada el 22/10/2026, el proveedor la va a discontinuar.
+  // Sonora (hombre_pulsera_12, NS92076): retirada el 22/10/2026, el proveedor la va a discontinuar.
+  // Durango (hombre_pulsera_13, NS92077): retirada el 22/10/2026, el proveedor la va a discontinuar.
+  // Huasteca (hombre_pulsera_14, NS92079): retirada el 22/10/2026, el proveedor la va a discontinuar.
+  // Celestún (hombre_pulsera_15, NS92085): retirada el 22/10/2026, el proveedor la va a discontinuar.
+  // Volcán (hombre_pulsera_16, NS92090): retirada el 22/10/2026, sin stock en el proveedor.
+  // Xibalbá (hombre_pulsera_17, NS92091): retirada el 22/10/2026, sin stock en el proveedor.
+  // Tezontle (hombre_pulsera_18, NS92093): retirada el 22/10/2026, el proveedor la va a discontinuar.
+  // Chamula (hombre_pulsera_19, NS92096): retirada el 22/10/2026, el proveedor la va a discontinuar.
   { id: 'hombre_anillo_4', tipo: 'anillos', nombre: 'Xcaret', acabados: {
       oro:        ['img/hombre/anillo-4-oro-producto-fondo.png', 'img/hombre/anillo-4-oro-puesto.png', 'img/hombre/anillo-4-oro-puesto-2.png'],
   } },
