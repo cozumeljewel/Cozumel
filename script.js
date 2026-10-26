@@ -1422,13 +1422,18 @@ function urlPiezaHombre(prod, clave) {
     function pintarVentana() {
       const ch = enVentana, color = colorCharm(), cat = catDe(ch);
       const puesta = fotosCharmHombre(prod, clave).find(x => x.charm === ch.id);
-      const fotos = [puesta && puesta.foto, ch.fotos[color], (prod.acabados[clave] || [])[1]].filter(Boolean);
+      // 28/10: el collar con el colgante, de cerca el patrón de la cadena
+      // (la misma foto que la lupa de la portada) y el colgante solo.
+      const fotos = [puesta && puesta.foto, macrosHombre(prod, clave)[0], ch.fotos[color]].filter(Boolean);
       ventana.textContent = '';
       const x = crear('button', 'v2-colg-cerrar', '×');
       x.type = 'button'; x.setAttribute('aria-label', 'Cerrar');
       x.addEventListener('click', cerrarVentana);
       const carrusel = crear('div', 'v2-colg-carrusel');
       const im = crear('img'); im.alt = ch.nombre; im.src = fotoWeb(fotos[fotoN], 'full');
+      // Al tocar la foto se abre a pantalla completa con zoom
+      im.classList.add('v2-colg-zoom');
+      im.addEventListener('click', () => abrirZoomFoto(fotoWeb(fotos[fotoN], 'full'), ch.nombre));
       carrusel.append(im);
       if (fotos.length > 1) {
         const ant = crear('button', 'v2-colg-flecha ant', '‹'); ant.type = 'button'; ant.setAttribute('aria-label', 'Foto anterior');

@@ -4409,3 +4409,6 @@ body.v2 .v2-card-marco .v2-card-regalo{position:absolute; top:10px; left:10px; z
    ocupa el 72 % centrada y a los lados sigue su mismo fondo beige. */
 .v2-stories-pista .v2-story--pantera{background:#EFDFD0;}
 .v2-stories-pista .v2-story--pantera img{left:14%; right:auto; width:72%;}
+
+/* 28/10/2026 · Ventana del colgante: la foto se amplía al tocarla */
+.v2-colg-carrusel img.v2-colg-zoom{cursor:zoom-in;}
