@@ -1768,3 +1768,63 @@ en: Necklaces
 
 es: Brazaletes
 en: Bracelets
+
+es: Tu pedido
+en: Your order
+
+es: Contacto
+en: Contact
+
+es: Entrega
+en: Delivery
+
+es: Envío
+en: Shipping
+
+es: Pago
+en: Payment
+
+es: Envío incluido en el precio
+en: Shipping included in the price
+
+es: Todas las transacciones son seguras y están encriptadas. Pagarás con tarjeta o PayPal en la página segura de Stripe.
+en: All transactions are secure and encrypted. You will pay by card or PayPal on Stripe’s secure page.
+
+es: Descuento de lanzamiento
+en: Launch discount
+
+es: Incluido
+en: Included
+
+es: Impuestos incluidos
+en: Taxes included
+
+es: Correo electrónico
+en: Email
+
+es: Apellidos
+en: Last name
+
+es: Calle, número, ciudad y código postal
+en: Street, number, city and postcode
+
+es: Teléfono
+en: Phone
+
+es: País / Región
+en: Country / Region
+
+es: Dirección
+en: Address
+
+es: Teléfono (WhatsApp)
+en: Phone (WhatsApp)
+
+es: Colgante de regalo
+en: Gift pendant
+
+es: Gratis
+en: Free
+
+es: Quitar
+en: Remove

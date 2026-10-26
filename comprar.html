@@ -83,100 +83,106 @@
   </div>
 
   <!-- ===== RESERVA (formulario real → Supabase) ===== -->
-  <section class="reserva">
-    <div class="reserva-content" id="reserva-content">
-      <p class="eyebrow">Último paso</p>
-      <h2>Finaliza tu compra</h2>
-      <p class="reserva-sub">Pago seguro con tarjeta o PayPal, a través de Stripe. Envío e impuestos incluidos</p>
+  <!-- 28/10/2026: estilo checkout de tienda (como Hanley). Ordenador: el
+       formulario a la izquierda y el resumen del pedido a la derecha, en
+       gris. Móvil: primero el resumen y debajo el formulario. Los id son
+       los de siempre: script.js no cambia. -->
+  <section class="reserva checkout">
+    <div class="reserva-content checkout-grid" id="reserva-content">
+      <aside class="checkout-resumen" aria-label="Resumen del pedido">
+        <h2 class="checkout-resumen-titulo">Tu pedido</h2>
+        <!-- Lista del carrito: script.js la rellena entera, con la foto, el
+             total y los botones de quitar. -->
+        <div class="carrito-lista" id="carrito-lista"></div>
+        <a href="productos.html" class="carrito-anadir-mas">+ Añadir otra pieza</a>
+        <p class="reserva-config-warning" id="sin-pieza" hidden>
+          Todavía no has añadido ninguna pieza. Entra en <a href="productos.html">la colección</a> y elige la tuya
+        </p>
+        <p class="coleccion-sorteo compra-sorteo">✦ Tu compra entra en el <strong>sorteo de 5 videollamadas con Adri</strong>. Solo para las 100 primeras compras: aún estás a tiempo ✦</p>
+      </aside>
 
-      <!-- Lista del carrito: script.js la rellena entera (una pieza puede
-           ser más de una fila si es un kit con dos acabados). El total y
-           cada botón "Quitar" también los pinta y engancha script.js. -->
-      <div class="carrito-lista" id="carrito-lista"></div>
-      <a href="productos.html" class="carrito-anadir-mas">+ Añadir otra pieza</a>
-
-      <!-- Gancho junto al precio (03/10): el momento de dudar es este. -->
-      <p class="coleccion-sorteo compra-sorteo">✦ Tu compra entra en el <strong>sorteo de 5 videollamadas con Adri</strong>. Solo para las 100 primeras compras: aún estás a tiempo ✦</p>
-
-      <p class="reserva-config-warning" id="sin-pieza" hidden>
-        Todavía no has añadido ninguna pieza. Entra en <a href="productos.html">la colección</a> y elige la tuya
-      </p>
-
-      <p class="reserva-config-warning" id="reserva-config-warning" hidden>
-        Supabase no está conectado todavía: rellena <code>supabase-config.js</code> para activar las reservas
-      </p>
-
-      <form id="reserva-form">
-        <div class="field">
-          <label for="r-nombre">Nombre</label>
-          <input id="r-nombre" name="nombre" type="text" required placeholder="Tu nombre">
-        </div>
-        <div class="field">
-          <label for="r-apellidos">Apellidos</label>
-          <input id="r-apellidos" name="apellidos" type="text" required placeholder="Tus apellidos">
-        </div>
-        <div class="field">
-          <label for="r-email">Email</label>
-          <input id="r-email" name="email" type="email" required placeholder="tucorreo@email.com">
-        </div>
-        <div class="field">
-          <label for="r-whatsapp">WhatsApp</label>
-          <div class="field-tel">
-            <!-- El botón, el panel y la lista los rellena script.js desde
-                 PAISES_TELEFONO. El valor real vive en el input oculto:
-                 el resto del formulario lo lee igual que antes leía el
-                 <select>. -->
-            <div class="tel-combo" id="tel-combo">
-              <button type="button" class="tel-combo-toggle" id="tel-combo-toggle"
-                      aria-haspopup="listbox" aria-expanded="false" aria-controls="tel-combo-lista">
-                <img class="tel-combo-bandera" id="tel-combo-bandera" alt="" width="20" height="15">
-                <span id="tel-combo-codigo"></span>
-              </button>
-              <div class="tel-combo-panel" id="tel-combo-panel" hidden>
-                <ul class="tel-combo-lista" id="tel-combo-lista" role="listbox" aria-label="Países"></ul>
-              </div>
-            </div>
-            <input type="hidden" id="r-whatsapp-prefijo" value="+52">
-            <input id="r-whatsapp" name="whatsapp" type="tel" required placeholder="Tu número">
+      <div class="checkout-form">
+        <h1 class="checkout-titulo">Finaliza tu compra</h1>
+        <p class="reserva-config-warning" id="reserva-config-warning" hidden>
+          Supabase no está conectado todavía: rellena <code>supabase-config.js</code> para activar las reservas
+        </p>
+        <form id="reserva-form">
+          <h2 class="checkout-seccion">Contacto</h2>
+          <div class="field">
+            <label for="r-email">Correo electrónico</label>
+            <input id="r-email" name="email" type="email" required placeholder="Correo electrónico" autocomplete="email">
           </div>
-        </div>
-        <div class="field">
-          <label for="r-pais">País</label>
-          <!-- Solo los países ACTIVOS de la tabla paises_envio (Supabase):
-               script.js rellena el desplegable. Pausar o abrir un país se
-               hace desde el panel de Supabase, sin publicar la web. -->
-          <select id="r-pais" name="pais" required>
-            <option value="" disabled selected>Elige el país de envío</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="r-direccion">Dirección de envío</label>
-          <input id="r-direccion" name="direccion_envio" type="text" required placeholder="Calle, número, ciudad, código postal">
-        </div>
-        <!-- Solo en Chile y Perú: script.js lo enseña y lo hace obligatorio. -->
-        <div class="field" id="campo-documento" hidden>
-          <label for="r-documento" id="r-documento-label">RUT</label>
-          <input id="r-documento" name="documento" type="text" autocomplete="off">
-        </div>
-        <!-- Solo al elegir Argentina: sus condiciones de envío (el taller
-             no hace envío con impuestos incluidos allí). -->
-        <p class="aviso-pais" id="aviso-argentina" hidden>
-          <strong>Envíos a Argentina:</strong> el precio incluye el envío, pero no el IVA de importación, que se paga al recibir el paquete.
-          Para que la aduana lo libere tienes que estar dado de alta en el Domicilio Fiscal Electrónico (DFE) de ARCA.
-          Si el paquete no se puede entregar (dirección incorrecta, ausencia…), se pierde y no hay devolución.
-        </p>
 
-        <label class="consent">
-          <input type="checkbox" id="r-consent" required>
-          <span>Acepto que guarden estos datos para contactarme sobre esta reserva</span>
-        </label>
+          <h2 class="checkout-seccion">Entrega</h2>
+          <div class="field">
+            <label for="r-pais">País / Región</label>
+            <!-- Solo los países ACTIVOS de la tabla paises_envio (Supabase):
+                 script.js rellena el desplegable. -->
+            <select id="r-pais" name="pais" required>
+              <option value="" disabled selected>Elige el país de envío</option>
+            </select>
+          </div>
+          <div class="checkout-fila">
+            <div class="field">
+              <label for="r-nombre">Nombre</label>
+              <input id="r-nombre" name="nombre" type="text" required placeholder="Nombre" autocomplete="given-name">
+            </div>
+            <div class="field">
+              <label for="r-apellidos">Apellidos</label>
+              <input id="r-apellidos" name="apellidos" type="text" required placeholder="Apellidos" autocomplete="family-name">
+            </div>
+          </div>
+          <div class="field">
+            <label for="r-direccion">Dirección</label>
+            <input id="r-direccion" name="direccion_envio" type="text" required placeholder="Calle, número, ciudad y código postal" autocomplete="street-address">
+          </div>
+          <!-- Solo en Chile y Perú: script.js lo enseña y lo hace obligatorio. -->
+          <div class="field" id="campo-documento" hidden>
+            <label for="r-documento" id="r-documento-label">RUT</label>
+            <input id="r-documento" name="documento" type="text" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="r-whatsapp">Teléfono (WhatsApp)</label>
+            <div class="field-tel">
+              <!-- El botón, el panel y la lista los rellena script.js desde
+                   PAISES_TELEFONO. -->
+              <div class="tel-combo" id="tel-combo">
+                <button type="button" class="tel-combo-toggle" id="tel-combo-toggle"
+                        aria-haspopup="listbox" aria-expanded="false" aria-controls="tel-combo-lista">
+                  <img class="tel-combo-bandera" id="tel-combo-bandera" alt="" width="20" height="15">
+                  <span id="tel-combo-codigo"></span>
+                </button>
+                <div class="tel-combo-panel" id="tel-combo-panel" hidden>
+                  <ul class="tel-combo-lista" id="tel-combo-lista" role="listbox" aria-label="Países"></ul>
+                </div>
+              </div>
+              <input type="hidden" id="r-whatsapp-prefijo" value="+52">
+              <input id="r-whatsapp" name="whatsapp" type="tel" required placeholder="Teléfono" autocomplete="tel-national">
+            </div>
+          </div>
+          <!-- Solo al elegir Argentina: sus condiciones de envío. -->
+          <p class="aviso-pais" id="aviso-argentina" hidden>
+            <strong>Envíos a Argentina:</strong> el precio incluye el envío, pero no el IVA de importación, que se paga al recibir el paquete.
+            Para que la aduana lo libere tienes que estar dado de alta en el Domicilio Fiscal Electrónico (DFE) de ARCA.
+            Si el paquete no se puede entregar (dirección incorrecta, ausencia…), se pierde y no hay devolución.
+          </p>
 
-        <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Pagar y comprar</button>
-        <p class="reserva-config-warning" id="sin-precio" hidden>
-          Precio pendiente de confirmar
-        </p>
-      </form>
-      <p class="reserva-error" id="reserva-error" role="status" aria-live="polite" hidden></p>
+          <h2 class="checkout-seccion">Envío</h2>
+          <p class="checkout-caja">Envío incluido en el precio</p>
+
+          <h2 class="checkout-seccion">Pago</h2>
+          <p class="checkout-nota">Todas las transacciones son seguras y están encriptadas. Pagarás con tarjeta o PayPal en la página segura de Stripe.</p>
+          <label class="consent">
+            <input type="checkbox" id="r-consent" required>
+            <span>Acepto que guarden estos datos para contactarme sobre esta reserva</span>
+          </label>
+          <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Pagar y comprar</button>
+          <p class="reserva-config-warning" id="sin-precio" hidden>
+            Precio pendiente de confirmar
+          </p>
+        </form>
+        <p class="reserva-error" id="reserva-error" role="status" aria-live="polite" hidden></p>
+      </div>
     </div>
 
     <div class="reserva-done" id="reserva-done" hidden>

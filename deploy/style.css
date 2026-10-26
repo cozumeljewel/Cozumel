@@ -4412,3 +4412,79 @@ body.v2 .v2-card-marco .v2-card-regalo{position:absolute; top:10px; left:10px; z
 
 /* 28/10/2026 · Ventana del colgante: la foto se amplía al tocarla */
 .v2-colg-carrusel img.v2-colg-zoom{cursor:zoom-in;}
+
+/* ===== 28/10/2026 · Carrito como checkout de tienda (estilo Hanley) =====
+   Ordenador: formulario a la izquierda (blanco) y resumen a la derecha
+   (gris), cada uno a media pantalla. Móvil: resumen arriba y formulario. */
+body.v2 .reserva.checkout{padding:0; border:0; background:#fff;}
+body.v2 .checkout-grid{display:flex; flex-direction:column; max-width:none; margin:0;}
+body.v2 .checkout-resumen{background:#F5F4F1; padding:24px 20px 28px; border-bottom:1px solid #E6E3DD;}
+body.v2 .checkout-form{padding:28px 20px 48px; text-align:left;}
+@media (min-width:900px){
+  body.v2 .checkout-grid{flex-direction:row-reverse; min-height:calc(100vh - 80px);}
+  body.v2 .checkout-resumen{flex:1 1 50%; padding:48px max(32px, calc(50vw - 560px)) 48px 40px; border-bottom:0; border-left:1px solid #E6E3DD;}
+  body.v2 .checkout-form{flex:1 1 50%; padding:48px 40px 64px max(32px, calc(50vw - 560px));}
+  body.v2 .checkout-resumen > *, body.v2 .checkout-form > *{max-width:420px;}
+  body.v2 .checkout-form > *{margin-left:auto;}
+  body.v2 .checkout-resumen{position:relative;}
+}
+body.v2 .checkout-titulo{margin:0 0 6px; font-family:var(--font-serif); font-weight:400; font-size:28px; color:var(--c-texto); text-align:left;}
+body.v2 .checkout-resumen-titulo{margin:0 0 14px; font-family:var(--font-sans); font-size:12px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:var(--c-texto-2); text-align:left;}
+body.v2 .checkout-seccion{margin:28px 0 12px; font-family:var(--font-sans); font-size:18px; font-weight:600; letter-spacing:0; color:#1F1F1F; text-align:left;}
+body.v2 .checkout-fila{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+body.v2 .checkout #reserva-form{display:flex; flex-direction:column; gap:12px; margin:0; max-width:none;}
+body.v2 .checkout #reserva-form .field{margin:0;}
+/* Etiquetas solo para lectores de pantalla: el texto va en el campo */
+body.v2 .checkout .field label{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+body.v2 .checkout .field input, body.v2 .checkout .field select{height:50px; padding:0 14px; border:1px solid #D9D9D9; border-radius:5px; background:#fff; font-size:15px; color:#1F1F1F;}
+body.v2 .checkout .field input:focus, body.v2 .checkout .field select:focus{border-color:#1F1F1F; box-shadow:0 0 0 1px #1F1F1F;}
+body.v2 .checkout .tel-combo-toggle{height:50px; border-radius:5px; border-color:#D9D9D9; background:#fff;}
+body.v2 .checkout-caja{margin:0; padding:16px; border:1px solid #D9D9D9; border-radius:5px; background:#F5F4F1; font-size:14px; color:#1F1F1F;}
+body.v2 .checkout-nota{margin:-4px 0 4px; font-size:13px; color:#707070;}
+body.v2 .checkout .consent{margin:4px 0 0; text-align:left;}
+body.v2 .checkout #reserva-submit{width:100%; height:56px; margin-top:8px; border-radius:5px;}
+/* Resumen: cada pieza con su foto, la cantidad encima y el precio a la derecha */
+body.v2 .checkout .carrito-lista{max-width:none; margin:0; gap:16px;}
+body.v2 .checkout .carrito-item{display:grid; grid-template-columns:64px 1fr auto; column-gap:14px; align-items:center; padding:0 26px 0 0; border:0; background:none;}
+body.v2 .checkout .carrito-item > :not(.carrito-item-foto):not(.carrito-item-precio):not(.carrito-item-quitar){grid-column:2;}
+body.v2 .carrito-item-foto{grid-column:1; grid-row:1 / span 4; position:relative; width:64px; height:64px; border:1px solid #E1DED8; border-radius:8px; background:#fff;}
+body.v2 .carrito-item-foto img{width:100%; height:100%; object-fit:cover; border-radius:7px;}
+body.v2 .carrito-item-cantidad{position:absolute; top:-8px; right:-8px; min-width:20px; height:20px; padding:0 5px; border-radius:10px; background:#1F1F1F; color:#fff; font-size:11px; font-weight:600; line-height:20px; text-align:center;}
+body.v2 .checkout .carrito-item-nombre{margin:0; font-family:var(--font-sans); font-size:14px; font-weight:500; color:#1F1F1F;}
+body.v2 .checkout .carrito-item-linea{margin:2px 0 0; font-family:var(--font-sans); font-style:normal; font-size:12px; color:#707070;}
+body.v2 .checkout .carrito-item-acabado{margin:2px 0 0; font-size:12px; color:#707070;}
+body.v2 .checkout .carrito-item-precio{grid-column:3; grid-row:1 / span 4; margin:0; font-size:14px; font-weight:500; white-space:nowrap;}
+body.v2 .checkout .carrito-item-precio.con-promo{flex-direction:column; align-items:flex-end; gap:0;}
+body.v2 .checkout .carrito-item-quitar{top:50%; right:-4px; transform:translateY(-50%);}
+body.v2 .checkout .carrito-anadir-mas{display:block; max-width:none; margin:18px 0 0; padding:12px; border:1px solid #D9D9D9; border-radius:5px; background:#fff; text-align:center; font-size:14px;}
+body.v2 .checkout .carrito-total{max-width:none; margin:20px 0 0; padding:0; border:0; display:block;}
+body.v2 .carrito-total-fila{display:flex; justify-content:space-between; align-items:baseline; margin:0 0 8px; font-size:14px; color:#1F1F1F;}
+body.v2 .carrito-total-descuento span:last-child{color:#9A2B1E;}
+body.v2 .carrito-total-final{margin-top:14px; font-size:18px; font-weight:600;}
+body.v2 .carrito-total-final small{font-size:12px; font-weight:400; color:#707070;}
+body.v2 .carrito-total-final strong{font-size:22px;}
+body.v2 .carrito-total-nota{margin:-4px 0 0; font-size:13px; color:#707070;}
+body.v2 .checkout .compra-sorteo{max-width:none; margin:22px 0 0;}
+body.v2 .reserva.checkout{margin-top:0; border-top:1px solid #E6E3DD;}
+body.v2 .reserva.checkout::before, body.v2 .reserva.checkout::after{display:none;}
+body.v2 .checkout h1::after, body.v2 .checkout h2::after, body.v2 .checkout h1::before, body.v2 .checkout h2::before{display:none; content:none;}
+/* Checkout a todo el ancho de la pantalla (la .page tiene 1400 px como
+   máximo) y cada columna con su contenido de hasta 520 px junto al centro */
+body[data-page="comprar"] .page{max-width:none;}
+@media (min-width:900px){
+  body.v2 .checkout-form{padding:48px 56px 64px 32px;}
+  body.v2 .checkout-resumen{padding:48px 32px 48px 56px;}
+  body.v2 .checkout-resumen > *, body.v2 .checkout-form > *,
+  body.v2 .checkout .checkout-form > #reserva-form, body.v2 .checkout .checkout-resumen > .carrito-lista,
+  body.v2 .checkout .checkout-resumen > .carrito-anadir-mas, body.v2 .checkout .checkout-resumen > .carrito-total,
+  body.v2 .checkout .checkout-resumen > .compra-sorteo{max-width:520px;}
+}
+@media (min-width:900px){ body.v2 .checkout .checkout-form > #reserva-form{margin-left:auto;} }
+@media (min-width:900px){ body.v2 .checkout .checkout-form > *{margin-left:auto; margin-right:0;} }
+body.v2 .checkout .carrito-item--regalo .carrito-item-foto{width:48px; height:48px; margin-left:16px;}
+body.v2 .checkout .carrito-item--regalo{grid-template-columns:64px 1fr auto; margin-top:-6px;}
+/* Cuadrado: fotos del mismo tamaño en la misma columna, precios alineados
+   a la derecha con los totales y "Quitar" como enlace bajo el material */
+body.v2 .checkout .carrito-item, body.v2 .checkout .carrito-item--regalo{grid-template-columns:64px 1fr auto; padding:0; margin-top:0;}
+body.v2 .checkout .carrito-item--regalo .carrito-item-foto{width:64px; height:64px; margin-left:0;}
+body.v2 .checkout .carrito-item-quitar{position:static; transform:none; grid-column:2; width:auto; height:auto; justify-content:flex-start; margin-top:4px; padding:0; font-size:12px; color:#707070; text-decoration:underline;}

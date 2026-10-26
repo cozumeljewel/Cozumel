@@ -4017,11 +4017,43 @@ if (reservaForm) {
     }).join(' · ');
   }
 
+  /* Material en el carrito (hombre): solo el baño, sin el colgante */
+  const MATERIAL_CARRITO = { oro: 'Oro 18K', oro_blanco: 'Oro blanco 18K', plata: 'Acero inoxidable', negro: 'Negro IP' };
+  /* Valor del colgante de regalo en el carrito: entre 4 y 7 € según el
+     colgante (siempre el mismo para cada uno), pasado a la moneda del país
+     con las tasas fijas de mercados.js. Se suma al subtotal y se descuenta
+     entero: el cliente no paga nada por él. */
+  function valorColgante(id, moneda) {
+    const VALORES = [4.9, 5.5, 5.9, 6.5, 6.9, 4.5];
+    let h = 0;
+    for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    const eur = VALORES[h % VALORES.length];
+    if (!moneda || moneda === 'EUR' || typeof TASAS === 'undefined' || !TASAS[moneda]) return eur;
+    const v = eur / TASAS.EUR * TASAS[moneda];
+    return SIN_DECIMALES.includes(moneda) ? Math.round(v / 100) * 100 : moneda === 'MXN' ? Math.round(v / 10) * 10 : Math.round(v * 10) / 10;
+  }
+
+  /* Foto del carrito: hombre, la pieza en su color (con el colgante
+     elegido si lleva); mujer, la primera foto de su acabado. */
+  function fotoCarrito(prod, datos) {
+    try {
+      if (esPiezaHombre(prod)) {
+        const clave = datos.acabado && prod.acabados[datos.acabado] ? datos.acabado : Object.keys(prod.acabados)[0];
+        const conCharm = datos.charm ? fotosCharmHombre(prod, clave).find(x => x.charm === datos.charm) : null;
+        return conCharm ? conCharm.foto : prod.acabados[clave][0];
+      }
+      const valores = Object.values(datos);
+      const color = valores.includes('plata') ? 'plata' : 'oro';
+      const f = fotosDe(prod, color)[0];
+      return f ? normFoto(f).src : '';
+    } catch (e) { return ''; }
+  }
+
   /* Hombre: "Talla US 9 · Colgante de regalo: Cruz grande · dorado" */
   function resumenHombre(datos) {
     const d = datos || {};
     return Object.keys(d)
-      .filter(k => !['acabado', 'color', 'sku', 'sku_colgante', 'charm'].includes(k) && d[k])
+      .filter(k => !['acabado', 'color', 'sku', 'sku_colgante', 'charm', 'colgante', 'grabado'].includes(k) && d[k])
       .map(k => k === 'colgante' ? 'Colgante de regalo: ' + d[k] : k === 'grabado' ? 'Grabado: «' + d[k] + '»' : k.charAt(0).toUpperCase() + k.slice(1) + ' ' + d[k])
       .join(' · ');
   }
@@ -4035,7 +4067,7 @@ if (reservaForm) {
     const items = getCarrito();
     carritoLista.textContent = '';
 
-    let total = 0;
+    let total = 0, totalSinPromo = 0, totalRegalos = 0;
     let huboPiezaSinPrecio = false;
 
     items.forEach((item, indice) => {
@@ -4046,10 +4078,29 @@ if (reservaForm) {
       // añadir: si se cambió de país, el carrito se recalcula solo.
       const precioItem = precioCobro(prod);
       if (!precioItem) huboPiezaSinPrecio = true;
-      else total += precioItem.importe;
+      else {
+        total += precioItem.importe;
+        const normal = typeof precioDe === 'function' ? precioDe(prod) : null;
+        totalSinPromo += normal ? normal.importe : precioItem.importe;
+      }
 
       const tarjeta = document.createElement('div');
       tarjeta.className = 'carrito-item';
+
+      // Foto de la pieza (con su colgante, si lleva) y la cantidad encima
+      const fotoSrc = fotoCarrito(prod, item.personalizacion || {});
+      if (fotoSrc) {
+        const caja = document.createElement('span');
+        caja.className = 'carrito-item-foto';
+        const im = document.createElement('img');
+        im.alt = ''; im.loading = 'lazy'; im.decoding = 'async';
+        im.src = imgPeq(fotoSrc, 300);
+        const n = document.createElement('span');
+        n.className = 'carrito-item-cantidad';
+        n.textContent = String(item.cantidad || 1);
+        caja.append(im, n);
+        tarjeta.appendChild(caja);
+      }
 
       const nombre = document.createElement('p');
       nombre.className = 'carrito-item-nombre';
@@ -4068,22 +4119,24 @@ if (reservaForm) {
       const acabado = document.createElement('p');
       acabado.className = 'carrito-item-acabado';
       acabado.textContent = esPiezaHombre(prod)
-        ? (NOMBRE_ACABADO_HOMBRE[item.personalizacion.acabado] || '')
+        ? (MATERIAL_CARRITO[item.personalizacion.acabado] || NOMBRE_ACABADO_HOMBRE[item.personalizacion.acabado] || '')
         : resumenAcabado(prod, item.personalizacion);
       tarjeta.appendChild(acabado);
 
       const precio = document.createElement('p');
       precio.className = 'carrito-item-precio';
       precio.textContent = precioItem ? formatearImporte(precioItem.importe, precioItem.moneda) : 'Precio pendiente de confirmar';
-      // Con la promoción: el de siempre tachado y al lado el rebajado
-      if (precioItem && promoActiva(promoDe(prod))) pintarPrecioPromo(precio, prod);
+      // 28/10: en cada pieza su precio de siempre; los descuentos (colgante
+      // de regalo y promoción) se restan abajo, en los totales.
+      const precioNormal = precioItem && typeof precioDe === 'function' ? precioDe(prod) : null;
+      if (precioNormal) precio.textContent = formatearImporte(precioNormal.importe, precioNormal.moneda);
       tarjeta.appendChild(precio);
 
       const quitar = document.createElement('button');
       quitar.type = 'button';
       quitar.className = 'carrito-item-quitar';
       quitar.setAttribute('aria-label', `Quitar ${prod.nombre} del carrito`);
-      quitar.textContent = '×';
+      quitar.textContent = 'Quitar';
       quitar.addEventListener('click', () => {
         quitarDelCarrito(indice);
         pintarCarrito();
@@ -4091,15 +4144,69 @@ if (reservaForm) {
       tarjeta.appendChild(quitar);
 
       carritoLista.appendChild(tarjeta);
+
+      // Colgante de regalo: su propia fila, con su valor tachado y "Gratis";
+      // el valor se suma al subtotal y se descuenta como regalo.
+      const datos = item.personalizacion || {};
+      const ch = esPiezaHombre(prod) && datos.charm && typeof CHARMS_HOMBRE !== 'undefined' && CHARMS_HOMBRE.find(c => c.id === datos.charm);
+      if (ch && precioItem) {
+        const valor = valorColgante(ch.id, precioItem.moneda);
+        totalRegalos += valor;
+        const fila = document.createElement('div');
+        fila.className = 'carrito-item carrito-item--regalo';
+        const fotoCh = ch.fotos[datos.acabado === 'oro' ? 'dorado' : 'plateado'] || Object.values(ch.fotos)[0];
+        if (fotoCh) {
+          const caja = document.createElement('span');
+          caja.className = 'carrito-item-foto';
+          const im = document.createElement('img');
+          im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.src = imgPeq(fotoCh, 300);
+          caja.append(im);
+          fila.appendChild(caja);
+        }
+        const n = document.createElement('p');
+        n.className = 'carrito-item-nombre';
+        n.textContent = ch.nombre + (datos.grabado ? ' · «' + datos.grabado + '»' : '');
+        const sub = document.createElement('p');
+        sub.className = 'carrito-item-acabado';
+        sub.textContent = 'Colgante de regalo · ' + (MATERIAL_CARRITO[datos.acabado] || '');
+        const pr = document.createElement('p');
+        pr.className = 'carrito-item-precio';
+        pr.textContent = formatearImporte(valor, precioItem.moneda);
+        fila.append(n, sub, pr);
+        carritoLista.appendChild(fila);
+      }
     });
 
     let totalEl = document.querySelector('.carrito-total');
     if (totalEl) totalEl.remove();
     if (items.length) {
+      // Subtotal (precio de siempre), descuento de la promo, envío y total
       totalEl = document.createElement('div');
       totalEl.className = 'carrito-total';
-      totalEl.innerHTML = '<span>Total</span><strong></strong>';
-      totalEl.querySelector('strong').textContent = formatearImporte(total, getMoneda()) || '—';
+      const moneda = getMoneda();
+      const fila = (txt, valor, clase) => {
+        const p = document.createElement('p');
+        p.className = 'carrito-total-fila' + (clase ? ' ' + clase : '');
+        const a = document.createElement('span'); a.textContent = txt;
+        const b = document.createElement('span'); b.textContent = valor;
+        p.append(a, b);
+        totalEl.appendChild(p);
+        return p;
+      };
+      fila('Subtotal', formatearImporte(totalSinPromo + totalRegalos, moneda) || '—');
+      if (totalRegalos > 0) fila('Colgante de regalo', '−' + formatearImporte(totalRegalos, moneda), 'carrito-total-descuento');
+      const ahorro = Math.round((totalSinPromo - total) * 100) / 100;
+      const promoTxt = (() => { const p = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE; return p && p.descuento ? ' (−' + p.descuento + ' %)' : ''; })();
+      if (ahorro > 0) fila('Descuento de lanzamiento' + promoTxt, '−' + formatearImporte(ahorro, moneda), 'carrito-total-descuento');
+      fila('Envío', 'Incluido');
+      const fin = fila('Total', '', 'carrito-total-final');
+      fin.lastChild.innerHTML = '<small></small> <strong></strong>';
+      fin.querySelector('small').textContent = moneda || '';
+      fin.querySelector('strong').textContent = formatearImporte(total, moneda) || '—';
+      const imp = document.createElement('p');
+      imp.className = 'carrito-total-nota';
+      imp.textContent = 'Impuestos incluidos';
+      totalEl.appendChild(imp);
       carritoLista.insertAdjacentElement('afterend', totalEl);
     }
 
