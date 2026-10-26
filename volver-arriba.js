@@ -3,6 +3,8 @@
    está oculto por defecto en el HTML (atributo "hidden"): si este script
    no llega a cargar, simplemente no aparece nunca, no rompe nada. */
 (function () {
+  // 28/10/2026: quitado a petición; el botón se queda oculto (hidden).
+  return;
   const boton = document.getElementById('volver-arriba');
   if (!boton) return;
 

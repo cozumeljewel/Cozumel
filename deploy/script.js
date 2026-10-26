@@ -1279,8 +1279,11 @@ function urlPiezaHombre(prod, clave) {
     const colorTexto = () => clave === 'oro' ? 'Oro' : 'Oro blanco';
     let catAbierta = CATS[0];
 
+    // 28/10: "Añade tu colgante" es un desplegable (cerrado al entrar);
+    // el colgante elegido se ve debajo aunque esté cerrado.
     const d = crear('section', 'v2-colg');
-    const cab = crear('div', 'v2-colg-cab');
+    const despl = crear('details', 'v2-colg-despl');
+    const cab = crear('summary', 'v2-colg-cab');
     // Título y, debajo, "Gratis" (27/10: sin subtítulo ni desplegables)
     cab.append(crear('h2', 'v2-colg-titulo', 'Añade tu colgante'), crear('span', 'v2-colg-gratis', 'Gratis'));
     const cats = crear('div', 'v2-colg-cats');
@@ -1307,7 +1310,9 @@ function urlPiezaHombre(prod, clave) {
     cats.addEventListener('scroll', flechasCat, { passive: true });
     window.addEventListener('resize', flechasCat);
     if ('ResizeObserver' in window) new ResizeObserver(flechasCat).observe(cats);
-    d.append(cab, carril, listas, elegidoBar);
+    despl.append(cab, carril, listas);
+    despl.addEventListener('toggle', flechasCat);
+    d.append(despl, elegidoBar);
     bloqueCharm = d;
 
     const tarjeta = (ch, pequeña) => {
@@ -1547,7 +1552,17 @@ function urlPiezaHombre(prod, clave) {
     medidas.append(bloque);
   });
   const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
-  if (fija) medidas.append(crear('p', 'v2-pieza-medida', fija));
+  // Especificaciones: en el último desplegable, "Detalles de <pieza>".
+  const detalles = desplegable('Detalles de ' + prod.nombre, '');
+  desplegables.append(detalles);
+  const pintarDetalles = () => {
+    const cuerpo = detalles.querySelector('.v2-pieza-desplegable-cuerpo');
+    cuerpo.textContent = '';
+    cuerpo.append(crear('p', '', 'Material: ' + (ETIQUETA_MATERIAL[clave] || ETIQUETA_MATERIAL.plata)));
+    if (fija) fija.split(' · ').forEach(t => cuerpo.append(crear('p', '', t.charAt(0).toUpperCase() + t.slice(1))));
+  };
+  pintarDetalles();
+  tonos.addEventListener('click', () => setTimeout(pintarDetalles));
   const precioPieza = crear('p', 'v2-pieza-precio');
   pintarPrecioHombre(precioPieza, prod);
   // Bajo el precio, el material del acabado elegido y el envío incluido.
