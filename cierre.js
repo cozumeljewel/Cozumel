@@ -20,9 +20,12 @@
   const CLAVE_ACCESO = 'cozumel-26122c';
   const CLAVE_VER = 'cozumel_acceso_web';
   // Lanzamiento de la colección de hombre: 1 de noviembre, 21:00 de México.
-  // La pantalla enseña la cuenta atrás; abrir la web sigue siendo a mano
-  // (CERRADA = false).
+  // La pantalla enseña la cuenta atrás y, con ABRE_SOLA, la web se abre
+  // sola a esa hora (quien la tenga abierta ve la tienda al llegar a cero).
+  // Para cerrarla de nuevo pase lo que pase: ABRE_SOLA = false.
   const LANZAMIENTO = new Date('2026-11-01T21:00:00-06:00').getTime();
+  const ABRE_SOLA = true;
+  const lanzada = () => ABRE_SOLA && Date.now() >= LANZAMIENTO;
 
   const params = new URLSearchParams(location.search);
   try {
@@ -32,7 +35,7 @@
 
   let ver = false;
   try { ver = localStorage.getItem(CLAVE_VER) === '1'; } catch (_) {}
-  if (!CERRADA || ver) return;
+  if (!CERRADA || ver || lanzada()) return;
 
   // Se tapa todo YA, antes de que se pinte la página de debajo.
   document.documentElement.classList.add('web-cerrada');
@@ -127,7 +130,12 @@ html.web-cerrada body > *:not(#web-cerrada){display:none !important;}
       cifras.h.textContent = dos(Math.floor(t / 3600) % 24);
       cifras.m.textContent = dos(Math.floor(t / 60) % 60);
       cifras.s.textContent = dos(t % 60);
-      if (!falta) { pantalla.querySelector('.wc-muy-pronto').textContent = '¡Ya casi!'; clearInterval(reloj); }
+      if (!falta) {
+        pantalla.querySelector('.wc-muy-pronto').textContent = '¡Ya está aquí!';
+        clearInterval(reloj);
+        // Abre la tienda (un pequeño margen al azar para no llegar todos a la vez)
+        if (ABRE_SOLA) setTimeout(() => location.reload(), 1500 + Math.random() * 2500);
+      }
     };
     const reloj = setInterval(pintar, 1000);
     pintar();

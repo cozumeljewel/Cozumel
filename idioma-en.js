@@ -563,7 +563,8 @@ COZUMEL_EN_CARGADO({
  "Oro blanco 18K": "18K White Gold",
  "Envío gratis": "Free shipping",
  "Acero inoxidable": "Stainless steel",
- "Negro IP": "IP Black"
+ "Negro IP": "IP Black",
+ "¡Ya está aquí!": "It's here!"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
