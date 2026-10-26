@@ -1738,3 +1738,15 @@ en: IP Black
 
 es: ¡Ya está aquí!
 en: It's here!
+
+es: Oro blanco
+en: White gold
+
+es: Otros
+en: Others
+
+es: modelos
+en: designs
+
+es: modelo
+en: design

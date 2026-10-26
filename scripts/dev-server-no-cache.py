@@ -18,6 +18,9 @@ import threading
 
 puerto = int(sys.argv[1]) if len(sys.argv) > 1 else 8099
 directorio = sys.argv[2] if len(sys.argv) > 2 else "."
+# Tercer argumento opcional: dirección IPv4 (0.0.0.0 = abierta a la wifi,
+# para probar en el móvil). Por defecto solo este ordenador.
+direccion = sys.argv[3] if len(sys.argv) > 3 else "127.0.0.1"
 
 
 class HandlerSinCache(http.server.SimpleHTTPRequestHandler):
@@ -65,7 +68,7 @@ if __name__ == "__main__":
     except OSError as e:
         print(f"Aviso: no se pudo escuchar en IPv6 (::1): {e}")
 
-    s4 = http.server.ThreadingHTTPServer(("127.0.0.1", puerto), HandlerSinCache)
+    s4 = http.server.ThreadingHTTPServer((direccion, puerto), HandlerSinCache)
     servidores.append(s4)
     familias = "IPv4 + IPv6" if len(servidores) == 2 else "solo IPv4"
     print(f"Sirviendo {directorio} en http://localhost:{puerto} ({familias}, sin caché)")

@@ -1258,107 +1258,211 @@ function urlPiezaHombre(prod, clave) {
   let bloqueCharm = null;  // va justo debajo del botón de compra
   // Cadena dorada: solo charms dorados; oro blanco (y negro): plateados.
   const colorCharm = () => clave === 'oro' ? 'dorado' : 'plateado';
+  let grabadoColgante = ''; // placas: texto grabado (opcional)
+  // Placas grabables (proveedor, 22/10/2026). El resto no se graba.
+  const GRABABLES = ['charm_1', 'charm_2', 'charm_3'];
+  const MAX_GRABADO = 10;
   if (ofreceCharm) {
-    const d = crear('details', 'v2-pieza-desplegable v2-charm');
-    const sum = crear('summary');
-    const tit = crear('span', 'v2-charm-titulo');
-    tit.innerHTML = 'Añade tu colgante <em class="v2-charm-gratis">Gratis</em>';
-    const elegido = crear('span', 'v2-charm-elegido');
-    sum.append(tit, elegido);
-    const cuerpo = crear('div', 'v2-pieza-desplegable-cuerpo');
-    const rejilla = crear('div', 'v2-charm-rejilla');
-    const nombreCharm = crear('p', 'v2-charm-nombre');
-    const opcion = (ch) => {
-      const bt = crear('button', 'v2-charm-opcion');
+    /* Colgante de regalo (27/10/2026): categorías en círculos, la abierta
+       con sus modelos en tarjetas, y al tocar un modelo una ventana con el
+       collar con ese colgante puesto, las otras opciones y "Añadir al
+       carrito". Debajo, el colgante elegido con "Cambiar". */
+    const CATS = [
+      { id: 'cruces', nombre: 'Cruces', grupos: ['Cruces'] },
+      { id: 'simbolos', nombre: 'Símbolos', grupos: ['Símbolos'] },
+      { id: 'circonitas', nombre: 'Circonitas', grupos: ['Circonitas'] },
+      { id: 'placas', nombre: 'Placas', grupos: ['Placas'] },
+      { id: 'letras', nombre: 'Otros', grupos: ['Letras', 'Números'] },
+    ];
+    const catDe = (ch) => CATS.find(c => c.grupos.includes(ch.grupo));
+    const deColor = (cat) => CHARMS_HOMBRE.filter(c => cat.grupos.includes(c.grupo) && c.fotos[colorCharm()]);
+    const colorTexto = () => clave === 'oro' ? 'Oro' : 'Oro blanco';
+    let catAbierta = CATS[0];
+
+    const d = crear('section', 'v2-colg');
+    const cab = crear('div', 'v2-colg-cab');
+    // Título y, debajo, "Gratis" (27/10: sin subtítulo ni desplegables)
+    cab.append(crear('h2', 'v2-colg-titulo', 'Añade tu colgante'), crear('span', 'v2-colg-gratis', 'Gratis'));
+    const cats = crear('div', 'v2-colg-cats');
+    const listas = crear('div', 'v2-colg-listas');
+    const elegidoBar = crear('div', 'v2-colg-elegido');
+    elegidoBar.hidden = true;
+    // Ordenador: flechas para pasar los círculos si no caben todos
+    const carril = crear('div', 'v2-colg-carril');
+    const flechaCat = (dir) => {
+      const b = crear('button', 'v2-colg-cat-flecha ' + (dir < 0 ? 'ant' : 'sig'), dir < 0 ? '‹' : '›');
+      b.type = 'button';
+      b.setAttribute('aria-label', dir < 0 ? 'Anteriores' : 'Siguientes');
+      b.hidden = true;
+      b.addEventListener('click', () => cats.scrollBy({ left: dir * cats.clientWidth * 0.8, behavior: 'smooth' }));
+      return b;
+    };
+    const catAnt = flechaCat(-1), catSig = flechaCat(1);
+    carril.append(catAnt, cats, catSig);
+    const flechasCat = () => {
+      const hay = cats.scrollWidth > cats.clientWidth + 2;
+      catAnt.hidden = !hay || cats.scrollLeft <= 2;
+      catSig.hidden = !hay || cats.scrollLeft + cats.clientWidth >= cats.scrollWidth - 2;
+    };
+    cats.addEventListener('scroll', flechasCat, { passive: true });
+    window.addEventListener('resize', flechasCat);
+    if ('ResizeObserver' in window) new ResizeObserver(flechasCat).observe(cats);
+    d.append(cab, carril, listas, elegidoBar);
+    bloqueCharm = d;
+
+    const tarjeta = (ch, pequeña) => {
+      const bt = crear('button', 'v2-colg-card' + (pequeña ? ' v2-colg-card--mini' : ''));
       bt.type = 'button';
-      bt.dataset.charm = ch ? ch.id : '';
-      bt.setAttribute('aria-label', ch ? ch.nombre : 'Sin charm');
-      const circulo = crear('span', 'v2-charm-circulo');
-      if (ch && ch.fotos) { const im = crear('img'); im.alt = ''; im.loading = 'lazy'; circulo.append(im); }
-      else circulo.textContent = ch ? ch.codigo : '—';
-      bt.append(circulo);
-      bt.addEventListener('click', () => { charmElegido = ch ? ch.id : null; marcarCharm(); });
+      bt.dataset.charm = ch.id;
+      const f = crear('span', 'v2-colg-card-foto');
+      const im = crear('img'); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async';
+      im.src = imgPeq(ch.fotos[colorCharm()], 300);
+      f.append(im);
+      bt.append(f, crear('span', 'v2-colg-card-nombre', ch.nombre));
       return bt;
     };
-    rejilla.append(opcion(null));
-    // Cada grupo con su título; los de GRUPOS_CHARM_PLEGADOS (números,
-    // letras, circonitas) en un desplegable propio, cerrado al principio.
-    let grupo = '', destino = rejilla;
-    const plegados = typeof GRUPOS_CHARM_PLEGADOS !== 'undefined' ? GRUPOS_CHARM_PLEGADOS : [];
-    const ordenGrupos = typeof ORDEN_GRUPOS_CHARM !== 'undefined' ? ORDEN_GRUPOS_CHARM : [];
-    const puesto = (g) => { const i = ordenGrupos.indexOf(g); return i < 0 ? 99 : i; };
-    [...CHARMS_HOMBRE].sort((a, b) => puesto(a.grupo) - puesto(b.grupo)).forEach(ch => {
-      if (ch.grupo !== grupo) {
-        grupo = ch.grupo;
-        if (plegados.includes(grupo)) {
-          const g = crear('details', 'v2-charm-plegable');
-          g.dataset.grupo = grupo;
-          g.append(crear('summary', 'v2-charm-grupo', grupo));
-          destino = crear('div', 'v2-charm-sub');
-          g.append(destino);
-          rejilla.append(g);
-        } else {
-          const g = crear('span', 'v2-charm-grupo', grupo);
-          g.dataset.grupo = grupo;
-          rejilla.append(g);
-          destino = rejilla;
+
+    function pintarColgantes() {
+      cats.textContent = ''; listas.textContent = '';
+      const visibles = CATS.filter(c => deColor(c).length);
+      if (!catAbierta || !visibles.includes(catAbierta)) catAbierta = visibles[0] || null;
+      visibles.forEach(cat => {
+        const lista = deColor(cat);
+        // Círculo de la categoría (con la foto de su primer modelo)
+        const b = crear('button', 'v2-colg-cat');
+        b.type = 'button';
+        b.setAttribute('aria-pressed', String(cat === catAbierta));
+        const c = crear('span', 'v2-colg-cat-foto');
+        const im = crear('img'); im.alt = ''; im.loading = 'lazy';
+        im.src = imgPeq(lista[0].fotos[colorCharm()], 300);
+        c.append(im);
+        b.append(c, crear('span', 'v2-colg-cat-nombre', cat.nombre));
+        b.addEventListener('click', () => { catAbierta = cat; pintarColgantes(); });
+        cats.append(b);
+        // Solo los modelos de la categoría elegida, en su panel bajo los círculos
+        if (cat === catAbierta) {
+          const panelCab = crear('div', 'v2-colg-panel-cab');
+          panelCab.append(crear('span', 'v2-colg-panel-nombre', cat.nombre), crear('span', 'v2-colg-panel-n', lista.length + (lista.length === 1 ? ' modelo' : ' modelos')));
+          listas.append(panelCab);
+          const rej = crear('div', 'v2-colg-rejilla');
+          lista.forEach(ch => {
+            const t = tarjeta(ch);
+            t.setAttribute('aria-pressed', String(ch.id === charmElegido));
+            t.addEventListener('click', () => abrirColgante(ch));
+            rej.append(t);
+          });
+          listas.append(rej);
         }
-      }
-      destino.append(opcion(ch));
-    });
-    // Foto grande del charm elegido: la cadena con él puesto, o el charm solo
-    // si aún no hay esa foto (en el móvil se amplía al tocarla).
-    const vista = crear('div', 'v2-charm-vista');
-    const vistaFoto = crear('figure', 'v2-pieza-foto v2-charm-foto');
-    const vistaImg = crear('img');
-    vistaImg.alt = '';
-    vistaFoto.append(vistaImg);
-    vista.append(vistaFoto);
-    vista.hidden = true;
-    cuerpo.append(rejilla, nombreCharm, vista);
-    d.append(sum, cuerpo);
-    bloqueCharm = d;
-    function marcarCharm() {
-      const color = colorCharm();
-      // Si el charm elegido no existe en el color de la nueva cadena, se quita.
-      const antes = CHARMS_HOMBRE.find(c => c.id === charmElegido);
-      if (antes && !antes.fotos[color]) charmElegido = null;
-      const ch = CHARMS_HOMBRE.find(c => c.id === charmElegido);
-      rejilla.querySelectorAll('.v2-charm-opcion').forEach(b => {
-        b.setAttribute('aria-pressed', String((b.dataset.charm || null) === charmElegido));
-        // Solo los charms del color de la cadena, con su foto
-        const c = CHARMS_HOMBRE.find(x => x.id === b.dataset.charm);
-        b.hidden = !!c && !c.fotos[color];
-        const im = b.querySelector('img');
-        if (c && im && c.fotos[color]) im.src = imgPeq(c.fotos[color], 300);
       });
-      rejilla.querySelectorAll('[data-grupo]').forEach(g => {
-        g.hidden = !CHARMS_HOMBRE.some(c => c.grupo === g.dataset.grupo && c.fotos[color]);
-      });
-      elegido.textContent = ch ? ch.nombre : '';
-      vista.hidden = !ch;
-      // La foto del charm elegido va justo debajo de su grupo (Cruces,
-      // Circonitas...), para no tener que bajar hasta el final.
-      const btElegido = ch && rejilla.querySelector('.v2-charm-opcion[data-charm="' + ch.id + '"]');
-      const grupoAbierto = btElegido && btElegido.closest('details.v2-charm-plegable');
-      if (grupoAbierto) { if (nombreCharm.parentNode !== grupoAbierto) grupoAbierto.append(nombreCharm, vista); }
-      else if (vista.parentNode !== cuerpo) cuerpo.append(nombreCharm, vista);
+      requestAnimationFrame(flechasCat);
+      // El colgante elegido, con "Cambiar"
+      const ch = charmElegido && CHARMS_HOMBRE.find(c => c.id === charmElegido);
+      elegidoBar.hidden = !ch;
+      elegidoBar.textContent = '';
       if (ch) {
-        // La cadena con ese charm puesto si hay foto; si no, el charm solo.
-        const puesta = fotosCharmHombre(prod, clave).find(x => x.charm === ch.id);
-        const src = puesta ? puesta.foto : ch.fotos[color];
-        if (vistaImg.getAttribute('src') !== src) {
-          if (vista.reiniciarZoom) vista.reiniciarZoom();
-          vistaImg.style.transform = '';
-          vistaFoto.classList.remove('ampliada');
-          vistaImg.src = fotoWeb(src, 'full');
-          vistaImg.alt = ch.nombre;
-        }
+        const f = crear('span', 'v2-colg-card-foto');
+        const im = crear('img'); im.alt = ''; im.src = imgPeq(ch.fotos[colorCharm()], 300);
+        f.append(im);
+        const txt = crear('span', 'v2-colg-elegido-txt');
+        txt.append(crear('strong', '', ch.nombre),
+          crear('span', '', colorTexto() + ' · Gratis' + (grabadoColgante ? ' · «' + grabadoColgante + '»' : '')));
+        const cambiar = crear('button', 'v2-colg-cambiar', 'Cambiar');
+        cambiar.type = 'button';
+        cambiar.addEventListener('click', () => abrirColgante(ch));
+        const quitar = crear('button', 'v2-colg-quitar', '×');
+        quitar.type = 'button';
+        quitar.setAttribute('aria-label', 'Quitar el colgante');
+        quitar.addEventListener('click', () => { charmElegido = null; grabadoColgante = ''; pintarColgantes(); });
+        elegidoBar.append(f, txt, cambiar, quitar);
       }
-      nombreCharm.textContent = ch ? ch.nombre + ' · ' + color : 'Sin charm';
+    }
+
+    /* ---- Ventana del colgante ---- */
+    const capa = crear('div', 'v2-colg-capa');
+    capa.hidden = true;
+    const ventana = crear('div', 'v2-colg-ventana');
+    ventana.setAttribute('role', 'dialog');
+    ventana.setAttribute('aria-modal', 'true');
+    capa.append(ventana);
+    document.body.append(capa);
+    let enVentana = null, fotoN = 0;
+    const cerrarVentana = () => { capa.hidden = true; document.body.classList.remove('v2-colg-abierta'); };
+    capa.addEventListener('click', (e) => { if (e.target === capa) cerrarVentana(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !capa.hidden) cerrarVentana(); });
+
+    function abrirColgante(ch) {
+      enVentana = ch; fotoN = 0;
+      pintarVentana();
+      capa.hidden = false;
+      document.body.classList.add('v2-colg-abierta');
+      if (typeof window.clarity === 'function') window.clarity('event', 'colgante_' + ch.id);
+    }
+    function pintarVentana() {
+      const ch = enVentana, color = colorCharm(), cat = catDe(ch);
+      const puesta = fotosCharmHombre(prod, clave).find(x => x.charm === ch.id);
+      const fotos = [puesta && puesta.foto, ch.fotos[color], (prod.acabados[clave] || [])[1]].filter(Boolean);
+      ventana.textContent = '';
+      const x = crear('button', 'v2-colg-cerrar', '×');
+      x.type = 'button'; x.setAttribute('aria-label', 'Cerrar');
+      x.addEventListener('click', cerrarVentana);
+      const carrusel = crear('div', 'v2-colg-carrusel');
+      const im = crear('img'); im.alt = ch.nombre; im.src = fotoWeb(fotos[fotoN], 'full');
+      carrusel.append(im);
+      if (fotos.length > 1) {
+        const ant = crear('button', 'v2-colg-flecha ant', '‹'); ant.type = 'button'; ant.setAttribute('aria-label', 'Foto anterior');
+        const sig = crear('button', 'v2-colg-flecha sig', '›'); sig.type = 'button'; sig.setAttribute('aria-label', 'Foto siguiente');
+        ant.addEventListener('click', () => { fotoN = (fotoN - 1 + fotos.length) % fotos.length; pintarVentana(); });
+        sig.addEventListener('click', () => { fotoN = (fotoN + 1) % fotos.length; pintarVentana(); });
+        const puntos = crear('div', 'v2-colg-puntos');
+        fotos.forEach((_, i) => puntos.append(crear('span', i === fotoN ? 'activo' : '')));
+        carrusel.append(ant, sig, puntos);
+      }
+      const info = crear('div', 'v2-colg-ventana-info');
+      info.append(crear('h3', 'v2-colg-ventana-nombre', ch.nombre),
+        crear('p', 'v2-colg-ventana-sub', colorTexto() + ' · Gratis'));
+      let campo = null;
+      if (GRABABLES.includes(ch.id)) {
+        const g = crear('label', 'v2-colg-grabado');
+        g.append(crear('span', '', 'Grabado (opcional)'));
+        campo = crear('input');
+        campo.type = 'text'; campo.maxLength = MAX_GRABADO; campo.placeholder = 'Ej. tu inicial o una fecha';
+        campo.value = charmElegido === ch.id ? grabadoColgante : '';
+        campo.addEventListener('input', () => { campo.value = campo.value.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .\-&♥]/g, ''); });
+        g.append(campo, crear('small', '', 'Hasta ' + MAX_GRABADO + ' caracteres · sin coste'));
+        info.append(g);
+      }
+      const otras = deColor(cat).filter(c => c.id !== ch.id);
+      if (otras.length) {
+        info.append(crear('p', 'v2-colg-otras-tit', 'Otras opciones en ' + cat.nombre.toLowerCase()));
+        const rej = crear('div', 'v2-colg-rejilla v2-colg-rejilla--mini');
+        otras.forEach(o => { const t = tarjeta(o, true); t.addEventListener('click', () => { enVentana = o; fotoN = 0; pintarVentana(); }); rej.append(t); });
+        info.append(rej);
+      }
+      const elegir = () => {
+        charmElegido = ch.id;
+        grabadoColgante = campo ? campo.value.trim() : '';
+        catAbierta = cat;
+        pintarColgantes();
+      };
+      const add = crear('button', 'v2-pieza-boton v2-colg-add', 'Añadir al carrito');
+      add.type = 'button';
+      add.addEventListener('click', () => { elegir(); cerrarVentana(); boton.click(); });
+      const solo = crear('button', 'v2-colg-solo', 'Elegir este colgante y seguir mirando');
+      solo.type = 'button';
+      solo.addEventListener('click', () => { elegir(); cerrarVentana(); });
+      // El botón va fijo abajo de la ventana: siempre a la vista
+      const pie = crear('div', 'v2-colg-ventana-pie');
+      pie.append(add, solo);
+      ventana.append(x, carrusel, info, pie);
+    }
+    function marcarCharm() {
+      // Si el colgante elegido no existe en el color de la cadena, se quita.
+      const antes = CHARMS_HOMBRE.find(c => c.id === charmElegido);
+      if (antes && !antes.fotos[colorCharm()]) { charmElegido = null; grabadoColgante = ''; }
+      pintarColgantes();
     }
     marcarCharm();
-    // Al cambiar el color de la cadena, el charm cambia de color con ella.
+    // Al cambiar el color de la cadena, el colgante cambia de color con ella.
     tonos.addEventListener('click', () => setTimeout(marcarCharm));
   }
   desplegables.append(
@@ -1453,7 +1557,23 @@ function urlPiezaHombre(prod, clave) {
   info.append(tonos, etiqueta);
   if (medidas.childElementCount) info.append(medidas);
   info.append(boton, avisoCompra, desplegables);
-  if (bloqueCharm) avisoCompra.after(bloqueCharm);
+  if (bloqueCharm) boton.before(bloqueCharm);
+  // Móvil: barra fija abajo con "Añadir al carrito", siempre visible (salvo
+  // con la ventana del colgante abierta); el botón de la ficha se esconde.
+  if (bloqueCharm) {
+    const barra = crear('div', 'v2-barra-compra');
+    const bb = crear('button', 'v2-pieza-boton', 'Añadir al carrito');
+    bb.type = 'button';
+    bb.addEventListener('click', () => {
+      boton.click();
+      // Si falta algo por elegir, el aviso de la ficha se enseña
+      if (!avisoCompra.hidden) avisoCompra.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    barra.append(bb);
+    document.body.append(barra);
+    document.body.classList.add('con-barra-compra');
+    boton.classList.add('v2-pieza-boton--con-barra');
+  }
   // Añadir al carrito: color, opciones elegidas, colgante de regalo y SKU
   // del proveedor (skuHombre, hombre.js). El precio que se cobra lo vuelve
   // a calcular el servidor (crear-sesion-pago); aquí es solo informativo.
@@ -1478,8 +1598,9 @@ function urlPiezaHombre(prod, clave) {
     opciones.forEach(op => { const v = elegidas[op.nombre]; pers[op.nombre.toLowerCase()] = v.texto + (v.sub ? ' (' + v.sub + ')' : ''); });
     const ch = charmElegido && CHARMS_HOMBRE.find(c => c.id === charmElegido);
     if (ch) {
-      pers.colgante = ch.nombre + ' · ' + (clave === 'oro' ? 'dorado' : 'plateado');
+      pers.colgante = ch.nombre + ' · ' + (clave === 'oro' ? 'oro' : 'oro blanco');
       pers.charm = ch.id;
+      if (grabadoColgante) pers.grabado = grabadoColgante;
       const skuCh = skuCharmHombre(ch.id, clave);
       if (skuCh) pers.sku_colgante = skuCh;
     }
@@ -2407,8 +2528,8 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
       datosIniciales[grupo.campo] = estadoAcabado.value;
 
       const defs = [
-        { valor: 'oro', clase: 'acabado-dot--oro', texto: 'Bañado en oro' },
-        { valor: 'plata', clase: 'acabado-dot--plata', texto: 'Plateado' },
+        { valor: 'oro', clase: 'acabado-dot--oro' },
+        { valor: 'plata', clase: 'acabado-dot--plata' },
       ];
       const botones = defs.map(def => {
         const btn = document.createElement('button');
@@ -3211,8 +3332,8 @@ if (ctaReservar) {
       const tipo = grupo.dataset.tipo;
       const caja = document.getElementById('kit-opciones-' + tipo);
       const botones = [
-        { valor: 'oro', clase: 'acabado-dot--oro', texto: 'Oro' },
-        { valor: 'plata', clase: 'acabado-dot--plata', texto: 'Plata' },
+        { valor: 'oro', clase: 'acabado-dot--oro' },
+        { valor: 'plata', clase: 'acabado-dot--plata' },
       ].map(def => {
         const b = document.createElement('button');
         b.type = 'button';
@@ -3843,7 +3964,7 @@ if (reservaForm) {
     const d = datos || {};
     return Object.keys(d)
       .filter(k => !['acabado', 'color', 'sku', 'sku_colgante', 'charm'].includes(k) && d[k])
-      .map(k => k === 'colgante' ? 'Colgante de regalo: ' + d[k] : k.charAt(0).toUpperCase() + k.slice(1) + ' ' + d[k])
+      .map(k => k === 'colgante' ? 'Colgante de regalo: ' + d[k] : k === 'grabado' ? 'Grabado: «' + d[k] + '»' : k.charAt(0).toUpperCase() + k.slice(1) + ' ' + d[k])
       .join(' · ');
   }
 

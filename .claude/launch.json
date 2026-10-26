@@ -25,10 +25,9 @@
       "name": "cozumel-movil",
       "runtimeExecutable": "python",
       "runtimeArgs": [
-        "-m",
-        "http.server",
+        "scripts/dev-server-no-cache.py",
         "8125",
-        "--bind",
+        ".",
         "0.0.0.0"
       ],
       "port": 8125

@@ -4188,3 +4188,161 @@ body.v2 .v2-pieza-etiqueta{display:inline-block; padding:7px 14px; border:1px so
   font-family:var(--font-sans); font-size:11.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
 @media (max-width:899px){ body.v2 .v2-pieza-tonos{justify-content:center;} }
 @media (min-width:900px){ body.v2 .v2-pieza-condiciones{justify-content:flex-start;} }
+
+/* ===== 27/10/2026 · Colgante de regalo (collares con charm) =====
+   Categorías en círculos, la abierta con tarjetas, el elegido en una barra,
+   ventana del colgante y barra fija de compra en el móvil. */
+body.v2 .v2-colg{margin:26px 0 18px; text-align:left;}
+body.v2 .v2-colg-titulo{display:flex; align-items:center; gap:12px; margin:0; font-family:var(--font-serif); font-weight:500; font-size:22px; letter-spacing:.12em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .v2-colg-gratis{display:inline-block; padding:4px 10px; border-radius:2px; background:var(--c-oro); color:#fff; font-family:var(--font-sans); font-size:11px; font-weight:500; letter-spacing:.18em;}
+body.v2 .v2-colg-sub{margin:6px 0 0; font-size:14px; color:var(--c-texto-2);}
+body.v2 .v2-colg-cats{display:flex; gap:10px; margin:18px 0 0; overflow-x:auto; scrollbar-width:none; padding:3px 2px 4px;}
+body.v2 .v2-colg-cats::-webkit-scrollbar{display:none;}
+body.v2 .v2-colg-cat{flex:0 0 auto; width:76px; padding:0; border:0; background:none; cursor:pointer; text-align:center; color:var(--c-texto);}
+body.v2 .v2-colg-cat-foto{display:block; width:68px; height:68px; margin:0 auto; border-radius:50%; overflow:hidden; background:var(--c-foto); transition:box-shadow .2s;}
+body.v2 .v2-colg-cat-foto img{width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply; transform:scale(1.15);}
+body.v2 .v2-colg-cat[aria-pressed="true"] .v2-colg-cat-foto{box-shadow:0 0 0 2px var(--c-fondo), 0 0 0 3.5px var(--c-oro);}
+body.v2 .v2-colg-cat-nombre{display:block; margin-top:8px; font-size:12px; line-height:1.3;}
+body.v2 .v2-colg-listas{margin-top:14px; border-top:1px solid var(--c-linea);}
+body.v2 .v2-colg-fila{border-bottom:1px solid var(--c-linea);}
+body.v2 .v2-colg-fila-cab{display:flex; width:100%; justify-content:space-between; align-items:center; padding:15px 2px; border:0; background:none; cursor:pointer; color:var(--c-texto);}
+body.v2 .v2-colg-fila-nombre{font-size:12px; letter-spacing:.2em; text-transform:uppercase;}
+body.v2 .v2-colg-fila.abierta .v2-colg-fila-nombre{font-family:var(--font-serif); font-size:18px; letter-spacing:.12em;}
+body.v2 .v2-colg-fila-n{font-size:12px; color:var(--c-texto-2);}
+body.v2 .v2-colg-fila:not(.abierta) .v2-colg-fila-n{font-size:17px; color:var(--c-texto);}
+body.v2 .v2-colg-rejilla{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px; padding:0 0 16px;}
+body.v2 .v2-colg-card{padding:0; border:0; background:none; cursor:pointer; text-align:center; color:var(--c-texto); min-width:0;}
+body.v2 .v2-colg-card-foto{display:block; aspect-ratio:1; border:1.5px solid transparent; border-radius:3px; background:var(--c-foto); overflow:hidden;}
+body.v2 .v2-colg-card-foto img{width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply; transform:scale(1.1);}
+body.v2 .v2-colg-card[aria-pressed="true"] .v2-colg-card-foto{border-color:var(--c-oro);}
+body.v2 .v2-colg-card-nombre{display:block; margin-top:7px; font-size:12px; line-height:1.3; overflow:hidden; text-overflow:ellipsis;}
+body.v2 .v2-colg-card-sub{display:block; font-size:11px; color:var(--c-texto-2);}
+body.v2 .v2-colg-elegido{display:flex; align-items:center; gap:12px; margin-top:16px; padding:10px 12px; border:1px solid var(--c-linea); border-radius:4px; background:#fff;}
+body.v2 .v2-colg-elegido[hidden]{display:none;}
+body.v2 .v2-colg-elegido .v2-colg-card-foto{flex:0 0 52px; width:52px;}
+body.v2 .v2-colg-elegido-txt{flex:1; min-width:0; display:flex; flex-direction:column; font-size:12px; color:var(--c-texto-2);}
+body.v2 .v2-colg-elegido-txt strong{font-family:var(--font-serif); font-weight:500; font-size:17px; color:var(--c-texto);}
+body.v2 .v2-colg-cambiar{padding:6px 4px 6px 12px; border:0; border-left:1px solid var(--c-linea); background:none; cursor:pointer; font-size:13px; text-decoration:underline; color:var(--c-texto);}
+body.v2 .v2-colg-quitar{width:28px; height:28px; border:0; background:none; font-size:18px; color:var(--c-texto-2); cursor:pointer;}
+/* Ventana del colgante */
+body.v2-colg-abierta{overflow:hidden;}
+.v2-colg-capa{position:fixed; inset:0; z-index:60; display:flex; align-items:flex-end; justify-content:center; background:rgba(23,54,52,.55);}
+.v2-colg-capa[hidden]{display:none;}
+.v2-colg-ventana{position:relative; width:100%; max-width:560px; max-height:94vh; overflow-y:auto; padding:16px 16px calc(16px + env(safe-area-inset-bottom)); border-radius:14px 14px 0 0; background:#F8F6F1; color:#173634; text-align:left; font-family:'Inter', system-ui, sans-serif;}
+@media (min-width:900px){ .v2-colg-capa{align-items:center;} .v2-colg-ventana{border-radius:6px; padding:22px;} }
+.v2-colg-cerrar{position:absolute; top:24px; right:24px; z-index:2; width:40px; height:40px; border:0; border-radius:50%; background:rgba(248,246,241,.92); font-size:24px; line-height:1; cursor:pointer; color:inherit;}
+.v2-colg-carrusel{position:relative; aspect-ratio:1; border-radius:4px; overflow:hidden; background:#F1F1EF;}
+.v2-colg-carrusel img{width:100%; height:100%; object-fit:cover; mix-blend-mode:multiply;}
+.v2-colg-flecha{position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; border:0; border-radius:50%; background:#fff; font-size:24px; line-height:1; cursor:pointer; color:inherit; box-shadow:0 1px 6px rgba(0,0,0,.08);}
+.v2-colg-flecha.ant{left:12px;}
+.v2-colg-flecha.sig{right:12px;}
+.v2-colg-puntos{position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center; gap:7px;}
+.v2-colg-puntos span{width:7px; height:7px; border-radius:50%; border:1px solid #173634; background:transparent;}
+.v2-colg-puntos span.activo{background:#173634;}
+.v2-colg-ventana-info{padding:16px 4px 0;}
+.v2-colg-ventana-nombre{margin:0; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:30px; line-height:1.1;}
+.v2-colg-ventana-sub{margin:4px 0 0; font-size:15px; color:#5E6B6A;}
+.v2-colg-ventana-texto{margin:10px 0 0; font-size:14px; line-height:1.55;}
+.v2-colg-grabado{display:block; margin-top:14px; font-size:12px; letter-spacing:.06em;}
+.v2-colg-grabado input{display:block; width:100%; margin-top:6px; padding:12px; border:1px solid #DCD8D1; border-radius:2px; background:#fff; font:400 16px 'Inter', system-ui, sans-serif; color:inherit; box-sizing:border-box;}
+.v2-colg-grabado small{display:block; margin-top:5px; color:#5E6B6A;}
+.v2-colg-otras-tit{margin:20px 0 10px; padding-top:16px; border-top:1px solid #DCD8D1; font-size:12px; letter-spacing:.2em; text-transform:uppercase;}
+.v2-colg-ventana .v2-colg-rejilla{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px;}
+.v2-colg-ventana .v2-colg-card{padding:0; border:0; background:none; cursor:pointer; text-align:center; color:inherit; min-width:0;}
+.v2-colg-ventana .v2-colg-card-foto{display:block; aspect-ratio:1; border-radius:3px; background:#F1F1EF; overflow:hidden;}
+.v2-colg-ventana .v2-colg-card-foto img{width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply;}
+.v2-colg-ventana .v2-colg-card-nombre{display:block; margin-top:6px; font-size:12px; line-height:1.3;}
+.v2-colg-ventana .v2-colg-card-sub{display:block; font-size:11px; color:#5E6B6A;}
+.v2-colg-add{width:100%; margin-top:18px;}
+.v2-colg-solo{display:block; width:100%; margin-top:8px; padding:10px; border:0; background:none; font-size:13px; text-decoration:underline; color:#5E6B6A; cursor:pointer;}
+/* Barra fija de compra (móvil) */
+.v2-barra-compra{display:none;}
+@media (max-width:899px){
+  .v2-barra-compra{display:block; position:fixed; left:0; right:0; bottom:0; z-index:40; padding:10px 16px calc(10px + env(safe-area-inset-bottom)); background:rgba(248,246,241,.96); border-top:1px solid #DCD8D1; transition:transform .25s;}
+  .v2-barra-compra .v2-pieza-boton{width:100%; margin:0;}
+  .v2-barra-compra.oculta, body.v2-colg-abierta .v2-barra-compra{transform:translateY(110%);}
+}
+
+/* 27/10/2026 · Ajustes del bloque de colgantes en el móvil */
+body.v2 .v2-colg-titulo{flex-wrap:nowrap; white-space:nowrap; font-size:19px; letter-spacing:.08em;}
+body.v2 .v2-colg-card{display:flex; flex-direction:column; justify-content:flex-start; align-items:stretch;}
+body.v2 .v2-colg-rejilla{align-items:start;}
+.v2-colg-ventana .v2-colg-card{display:flex; flex-direction:column; justify-content:flex-start; align-items:stretch;}
+.v2-colg-ventana .v2-colg-rejilla{align-items:start;}
+@media (max-width:899px){ body:has(.v2-barra-compra:not(.oculta)) #volver-arriba{bottom:92px;} }
+
+/* 27/10/2026 · Colgantes: "Gratis" debajo del título y sin desplegables */
+body.v2 .v2-colg-cab{display:flex; flex-direction:column; align-items:flex-start; gap:8px;}
+body.v2 .v2-colg-listas{margin-top:16px; border-top:0;}
+body.v2 .v2-colg-listas .v2-colg-rejilla{padding-bottom:4px;}
+
+/* 27/10/2026 · Los 5 círculos de colgante caben a la vez en el móvil */
+@media (max-width:899px){
+  body.v2 .v2-colg-cats{gap:6px; overflow:visible;}
+  body.v2 .v2-colg-cat{flex:1 1 0; width:auto; min-width:0;}
+  body.v2 .v2-colg-cat-foto{width:56px; height:56px;}
+  body.v2 .v2-colg-cat-nombre{font-size:11px;}
+}
+
+/* 27/10/2026 · Flechas para pasar los círculos de colgante (ordenador) */
+body.v2 .v2-colg-carril{position:relative;}
+body.v2 .v2-colg-cats{scroll-behavior:smooth;}
+body.v2 .v2-colg-cat-flecha{position:absolute; top:24px; z-index:2; width:34px; height:34px; border:1px solid var(--c-linea); border-radius:50%;
+  background:#fff; color:var(--c-texto); font-size:20px; line-height:1; cursor:pointer; box-shadow:0 1px 6px rgba(0,0,0,.08);}
+body.v2 .v2-colg-cat-flecha.ant{left:-6px;}
+body.v2 .v2-colg-cat-flecha.sig{right:-6px;}
+body.v2 .v2-colg-cat-flecha[hidden]{display:none;}
+@media (max-width:899px){ body.v2 .v2-colg-cat-flecha{display:none;} }
+
+/* 27/10/2026 · En el ordenador los 5 círculos también caben a la vez (las
+   flechas solo salen si en algún tamaño no cupieran) */
+@media (min-width:900px){
+  body.v2 .v2-colg-cats{gap:8px; overflow-x:auto;}
+  body.v2 .v2-colg-cat{flex:1 1 0; width:auto; min-width:58px;}
+  body.v2 .v2-colg-cat-foto{width:58px; height:58px;}
+  body.v2 .v2-colg-cat-nombre{font-size:11px;}
+}
+
+/* 27/10/2026 · Móvil: la barra fija de compra va siempre; el botón de la ficha
+   se esconde y la página deja sitio abajo para que la barra no tape nada */
+@media (max-width:899px){
+  body.v2 .v2-pieza-boton.v2-pieza-boton--con-barra{display:none;}
+  body.con-barra-compra{padding-bottom:84px;}
+  body.con-barra-compra #volver-arriba{bottom:92px;}
+}
+
+/* 27/10/2026 · Título y Gratis del colgante, centrados */
+body.v2 .v2-colg-cab{align-items:center; text-align:center;}
+body.v2 .v2-colg-titulo{justify-content:center;}
+body.v2 .v2-colg-cats{justify-content:center;}
+
+/* 27/10/2026 · Ventana del colgante: texto centrado */
+.v2-colg-ventana-info{text-align:center;}
+.v2-colg-grabado{text-align:center;}
+.v2-colg-grabado input{text-align:center;}
+.v2-colg-ventana .v2-colg-rejilla{display:flex; flex-wrap:wrap; justify-content:center;}
+.v2-colg-ventana .v2-colg-rejilla .v2-colg-card{flex:0 0 calc((100% - 30px) / 4);}
+body.v2 .v2-colg-ventana .v2-colg-rejilla{display:flex; flex-wrap:wrap; justify-content:center; gap:10px;}
+body.v2 .v2-colg-ventana .v2-colg-rejilla .v2-colg-card{flex:0 0 calc((100% - 30px) / 4);}
+
+/* 27/10/2026 · Ventana del colgante: "Añadir al carrito" fijo abajo */
+.v2-colg-ventana{padding-bottom:0;}
+.v2-colg-ventana-pie{position:sticky; bottom:0; z-index:3; margin:16px -16px 0; padding:12px 16px calc(10px + env(safe-area-inset-bottom));
+  background:#F8F6F1; border-top:1px solid #DCD8D1;}
+.v2-colg-ventana-pie .v2-colg-add{margin-top:0;}
+.v2-colg-ventana-pie .v2-colg-solo{margin-top:4px; padding:6px;}
+@media (min-width:900px){ .v2-colg-ventana-pie{margin:16px -22px 0; padding:12px 22px 14px;} }
+
+/* 27/10/2026 · Colgantes: los modelos van en un panel propio, separado de
+   las categorías; el círculo elegido tiene una pestaña que apunta al panel */
+body.v2 .v2-colg-cat{position:relative; padding-bottom:12px;}
+body.v2 .v2-colg-cat[aria-pressed="true"] .v2-colg-cat-nombre{font-weight:600; color:var(--c-texto);}
+body.v2 .v2-colg-cat[aria-pressed="true"]::after{content:""; position:absolute; left:50%; bottom:-9px; width:16px; height:16px; margin-left:-8px;
+  background:#fff; border-left:1px solid var(--c-linea); border-top:1px solid var(--c-linea); transform:rotate(45deg); z-index:2;}
+body.v2 .v2-colg-cats{overflow:visible; padding-bottom:0;}
+body.v2 .v2-colg-listas{position:relative; margin-top:8px; padding:14px 12px 12px; border:1px solid var(--c-linea); border-radius:6px; background:#fff;}
+body.v2 .v2-colg-panel-cab{display:flex; justify-content:space-between; align-items:baseline; margin:0 2px 12px; padding-bottom:10px; border-bottom:1px solid var(--c-linea);}
+body.v2 .v2-colg-panel-nombre{font-family:var(--font-serif); font-size:18px; letter-spacing:.14em; text-transform:uppercase; color:var(--c-texto);}
+body.v2 .v2-colg-panel-n{font-size:12px; color:var(--c-texto-2);}
+body.v2 .v2-colg-listas .v2-colg-card-foto{background:var(--c-foto);}
+
