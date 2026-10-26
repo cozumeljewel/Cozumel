@@ -568,7 +568,13 @@ COZUMEL_EN_CARGADO({
  "Oro blanco": "White gold",
  "Otros": "Others",
  "modelos": "designs",
- "modelo": "design"
+ "modelo": "design",
+ "Semana de lanzamiento · −15 % de descuento": "Launch week · −15% off",
+ "· Semana de lanzamiento · 15 % de descuento ·": "· Launch week · 15% off ·",
+ "Semana de lanzamiento · 15 % de descuento": "Launch week · 15% off",
+ "Colgante gratis": "Free pendant",
+ "Collares": "Necklaces",
+ "Brazaletes": "Bracelets"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

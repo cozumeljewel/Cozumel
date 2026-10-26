@@ -10,8 +10,8 @@
 // 22/10/2026: pulseras y brazaletes van juntos en la pestaña Pulseras
 // (incluye: los tipos que reúne cada pestaña).
 const TIPOS_HOMBRE = [
-  { clave: 'colgantes', nombre: 'Colgantes' },
-  { clave: 'pulseras',  nombre: 'Pulseras', incluye: ['pulseras', 'brazaletes'] },
+  { clave: 'colgantes', nombre: 'Collares' },
+  { clave: 'pulseras',  nombre: 'Brazaletes', incluye: ['pulseras', 'brazaletes'] },
   { clave: 'anillos',   nombre: 'Anillos' },
 ];
 const COLECCION_HOMBRE = [
@@ -205,7 +205,7 @@ const ORO_14K_HOMBRE = ['hombre_pulsera_7', 'hombre_pulsera_8', 'hombre_anillo_7
 // el tachado es el precio de siempre). null = sin promoción.
 // Semana de lanzamiento: del 1 al 8 de noviembre (21:00 de México).
 // hasta: se apaga sola al pasar esa fecha.
-const PROMO_HOMBRE = { descuento: 15, hasta: '2026-11-08T21:00:00-06:00', texto: 'Semana de lanzamiento · −15 % en todas las piezas hasta el 8 de noviembre' };
+const PROMO_HOMBRE = { descuento: 15, hasta: '2026-11-08T21:00:00-06:00', texto: '· Semana de lanzamiento · 15 % de descuento ·' };
 
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 

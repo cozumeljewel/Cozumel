@@ -803,7 +803,7 @@ function fotoAlPasar(img, src, tarjeta) {
 function crearEtiquetaRegalo() {
   const e = document.createElement('span');
   e.className = 'v2-card-regalo';
-  e.textContent = '+ colgante gratis';
+  e.textContent = 'Colgante gratis';
   return e;
 }
 function tarjetaHombre(prod, inicial) {
@@ -872,7 +872,8 @@ function tarjetaHombre(prod, inicial) {
   precio.className = 'v2-card-precio';
   pintarPrecioHombre(precio, prod);
   card.append(marco, nombre, precio);
-  if (llevaCharmHombre(prod)) card.append(crearEtiquetaRegalo());
+  // 28/10: "Colgante gratis" como etiqueta sobre la foto (arriba a la izquierda)
+  if (llevaCharmHombre(prod)) marco.append(crearEtiquetaRegalo());
   card.append(tonos);
   poner(claves.includes(inicial) ? inicial : claves[0]);
   return card;
@@ -956,7 +957,23 @@ function bannerPromo(promo) {
   if (!promoActiva(promo)) return null;
   const b = document.createElement('p');
   b.className = 'v2-promo';
-  b.textContent = promo.texto;
+  // 28/10: el texto pasa en bucle (dos mitades iguales que se desplazan)
+  const leer = document.createElement('span');
+  leer.className = 'v2-promo-leer';
+  leer.textContent = promo.texto;
+  const pista = document.createElement('span');
+  pista.className = 'v2-promo-pista';
+  pista.setAttribute('aria-hidden', 'true');
+  for (let m = 0; m < 2; m++) {
+    const mitad = document.createElement('span');
+    for (let i = 0; i < 4; i++) {
+      const t = document.createElement('span');
+      t.textContent = promo.texto.replace(/^·\s*|\s*·$/g, '');
+      mitad.append(t);
+    }
+    pista.append(mitad);
+  }
+  b.append(leer, pista);
   return b;
 }
 function bannerPromoHombre() { return bannerPromo(typeof PROMO_HOMBRE !== 'undefined' ? PROMO_HOMBRE : null); }
@@ -1347,7 +1364,7 @@ function urlPiezaHombre(prod, clave) {
         // Solo los modelos de la categoría elegida, en su panel bajo los círculos
         if (cat === catAbierta) {
           const panelCab = crear('div', 'v2-colg-panel-cab');
-          panelCab.append(crear('span', 'v2-colg-panel-nombre', cat.nombre), crear('span', 'v2-colg-panel-n', lista.length + (lista.length === 1 ? ' modelo' : ' modelos')));
+          panelCab.append(crear('span', 'v2-colg-panel-nombre', cat.nombre));
           listas.append(panelCab);
           const rej = crear('div', 'v2-colg-rejilla');
           lista.forEach(ch => {
@@ -1436,11 +1453,17 @@ function urlPiezaHombre(prod, clave) {
         g.append(campo, crear('small', '', 'Hasta ' + MAX_GRABADO + ' caracteres · sin coste'));
         info.append(g);
       }
-      const otras = deColor(cat).filter(c => c.id !== ch.id);
-      if (otras.length) {
-        info.append(crear('p', 'v2-colg-otras-tit', 'Otras opciones en ' + cat.nombre.toLowerCase()));
+      // Todas las de la categoría (la que se ve, marcada), de 4 en 4 con scroll
+      const otras = deColor(cat);
+      if (otras.length > 1) {
+        info.append(crear('p', 'v2-colg-otras-tit', 'Opciones en ' + cat.nombre.toLowerCase()));
         const rej = crear('div', 'v2-colg-rejilla v2-colg-rejilla--mini');
-        otras.forEach(o => { const t = tarjeta(o, true); t.addEventListener('click', () => { enVentana = o; fotoN = 0; pintarVentana(); }); rej.append(t); });
+        otras.forEach(o => {
+          const t = tarjeta(o, true);
+          t.setAttribute('aria-pressed', String(o.id === ch.id));
+          t.addEventListener('click', () => { enVentana = o; fotoN = 0; pintarVentana(); });
+          rej.append(t);
+        });
         info.append(rej);
       }
       const elegir = () => {
@@ -1451,6 +1474,7 @@ function urlPiezaHombre(prod, clave) {
       };
       const add = crear('button', 'v2-pieza-boton v2-colg-add', 'Añadir al carrito');
       add.type = 'button';
+      conPrecio(add);
       add.addEventListener('click', () => { elegir(); cerrarVentana(); boton.click(); });
       const solo = crear('button', 'v2-colg-solo', 'Elegir este colgante y seguir mirando');
       solo.type = 'button';
@@ -1470,9 +1494,7 @@ function urlPiezaHombre(prod, clave) {
     // Al cambiar el color de la cadena, el colgante cambia de color con ella.
     tonos.addEventListener('click', () => setTimeout(marcarCharm));
   }
-  desplegables.append(
-    desplegable('Devoluciones', '<p>Consulta las condiciones en <a href="faq.html#devoluciones">FAQ</a>.</p>')
-  );
+  const devoluciones = desplegable('Devoluciones', '<p>Consulta las condiciones en <a href="faq.html#devoluciones">FAQ</a>.</p>');
   // Materiales y cuidados según el acabado elegido (se rellenan en pintar()).
   // Oro y oro blanco de 18 K; las pocas piezas del catálogo de 14 K, en
   // ORO_14K_HOMBRE (hombre.js).
@@ -1554,7 +1576,7 @@ function urlPiezaHombre(prod, clave) {
   const fija = typeof MEDIDAS_HOMBRE !== 'undefined' && MEDIDAS_HOMBRE[prod.id];
   // Especificaciones: en el último desplegable, "Detalles de <pieza>".
   const detalles = desplegable('Detalles de ' + prod.nombre, '');
-  desplegables.append(detalles);
+  desplegables.append(detalles, cuidados, devoluciones);
   const pintarDetalles = () => {
     const cuerpo = detalles.querySelector('.v2-pieza-desplegable-cuerpo');
     cuerpo.textContent = '';
@@ -1563,6 +1585,15 @@ function urlPiezaHombre(prod, clave) {
   };
   pintarDetalles();
   tonos.addEventListener('click', () => setTimeout(pintarDetalles));
+  // "Añadir al carrito" con el precio de la pieza (antes tachado y rebajado)
+  const conPrecio = (bt) => {
+    bt.textContent = '';
+    const p = crear('span', 'v2-boton-precio');
+    pintarPrecioHombre(p, prod);
+    bt.append(crear('span', '', 'Añadir al carrito'));
+    if (p.textContent) bt.append(crear('span', 'v2-boton-sep', '·'), p);
+  };
+  conPrecio(boton);
   const precioPieza = crear('p', 'v2-pieza-precio');
   pintarPrecioHombre(precioPieza, prod);
   // Bajo el precio, el material del acabado elegido y el envío incluido.
@@ -1579,6 +1610,7 @@ function urlPiezaHombre(prod, clave) {
     const barra = crear('div', 'v2-barra-compra');
     const bb = crear('button', 'v2-pieza-boton', 'Añadir al carrito');
     bb.type = 'button';
+    conPrecio(bb);
     bb.addEventListener('click', () => {
       boton.click();
       // Si falta algo por elegir, el aviso de la ficha se enseña
@@ -1690,13 +1722,19 @@ function urlPiezaHombre(prod, clave) {
 
   // Debajo: scroll horizontal con las otras piezas del mismo tipo
   // (si abres un collar, salen los demás collares).
-  const otras = COLECCION_HOMBRE.filter(p => p.tipo === prod.tipo && p.id !== prod.id);
+  // 28/10: las mismas piezas y en el mismo color que en su pestaña de la
+  // colección (productos.html?c=men&t=…), sin la que se está viendo.
+  const tab = TIPOS_HOMBRE.find(t => (t.incluye || [t.clave]).includes(prod.tipo));
+  const tiposTab = (tab && tab.incluye) || [prod.tipo];
+  const deLaTab = COLECCION_HOMBRE.filter(p => tiposTab.includes(p.tipo))
+    .sort((a, b) => tiposTab.indexOf(a.tipo) - tiposTab.indexOf(b.tipo));
+  const acabadosTab = acabadosVariados(deLaTab);
+  const otras = deLaTab.map((p, i) => [p, acabadosTab[i]]).filter(([p]) => p.id !== prod.id);
   if (otras.length) {
     const seccion = crear('section', 'v2-pieza-mas');
     seccion.setAttribute('aria-label', 'Más piezas');
     const fila = crear('div', 'v2-pieza-mas-fila');
-    const acabados = acabadosVariados(otras);
-    otras.forEach((p, i) => fila.appendChild(tarjetaHombre(p, acabados[i])));
+    otras.forEach(([p, a]) => fila.appendChild(tarjetaHombre(p, a)));
     seccion.append(fila);
     caja.after(seccion);
   }
@@ -4032,6 +4070,8 @@ if (reservaForm) {
       const precio = document.createElement('p');
       precio.className = 'carrito-item-precio';
       precio.textContent = precioItem ? formatearImporte(precioItem.importe, precioItem.moneda) : 'Precio pendiente de confirmar';
+      // Con la promoción: el de siempre tachado y al lado el rebajado
+      if (precioItem && promoActiva(promoDe(prod))) pintarPrecioPromo(precio, prod);
       tarjeta.appendChild(precio);
 
       const quitar = document.createElement('button');

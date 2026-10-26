@@ -4357,3 +4357,55 @@ body.v2 .v2-colg-despl > summary::-webkit-details-marker{display:none;}
 body.v2 .v2-colg-despl > summary::after{content:"+"; position:absolute; right:4px; top:50%; transform:translateY(-50%); font-size:22px; font-weight:300; color:var(--c-texto);}
 body.v2 .v2-colg-despl[open] > summary::after{content:"−";}
 body.v2 .v2-colg-despl[open]{padding-bottom:16px;}
+
+/* 28/10/2026 · Precio tachado y rebajado en la misma línea (tarjetas y ficha) */
+body.v2 .con-promo, body.v2 .v2-card--hombre .v2-card-precio.con-promo{flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:baseline; gap:4px 10px;}
+@media (min-width:900px){ body.v2 .v2-pieza-precio.con-promo{justify-content:flex-start;} }
+/* Banner de la promoción: todo el ancho y más fino */
+.v2-promo{width:100vw; margin-left:calc(50% - 50vw); padding:7px 16px; box-sizing:border-box; font-size:10.5px;}
+/* Botón con el precio */
+.v2-pieza-boton .v2-boton-precio{display:inline-flex; gap:8px; align-items:baseline;}
+.v2-pieza-boton .v2-boton-sep{margin:0 8px; opacity:.6;}
+.v2-pieza-boton .v2-precio-antes{color:inherit; opacity:.65; font-size:.92em;}
+.v2-pieza-boton .v2-precio-rebajado{color:inherit; font-weight:600;}
+/* Ventana del colgante: las otras opciones en fila, de 4 en 4, con scroll
+   lateral y la siguiente asomando para que se vea que hay más */
+body.v2 .v2-colg-ventana .v2-colg-rejilla--mini{display:flex; flex-wrap:nowrap; justify-content:flex-start; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:thin; padding-bottom:8px; -webkit-overflow-scrolling:touch;}
+body.v2 .v2-colg-ventana .v2-colg-rejilla--mini .v2-colg-card{flex:0 0 calc((100% - 30px) / 4.4); scroll-snap-align:start;}
+body.v2 .v2-colg-ventana .v2-colg-rejilla--mini > :first-child{margin-left:auto;}
+body.v2 .v2-colg-ventana .v2-colg-rejilla--mini > :last-child{margin-right:auto;}
+body.v2 .v2-pieza-boton{white-space:nowrap;}
+body.v2 .v2-pieza-boton .v2-boton-precio{letter-spacing:.04em;}
+body.v2 .v2-pieza-boton .v2-precio-antes{color:inherit; opacity:.6;}
+body.v2 .v2-pieza-boton .v2-precio-rebajado{color:inherit; font-weight:600;}
+body.v2 .v2-pieza-boton .v2-boton-sep{margin:0 6px;}
+@media (max-width:899px){ .v2-promo{letter-spacing:.1em; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;} }
+.v2-colg-ventana .v2-colg-rejilla--mini .v2-colg-card[aria-pressed="true"] .v2-colg-card-foto{box-shadow:inset 0 0 0 1.5px #B08A45;}
+body.v2 .v2-pieza-boton .v2-boton-precio.con-promo{display:inline-flex; flex-wrap:nowrap; vertical-align:baseline; gap:8px;}
+
+/* 28/10/2026 · Carrito: precio tachado y rebajado a la izquierda */
+body.v2 .carrito-item-precio.con-promo{justify-content:flex-start;}
+/* Colgantes de la categoría abierta: una sola fila con scroll lateral */
+body.v2 .v2-colg-listas .v2-colg-rejilla{display:flex; flex-wrap:nowrap; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:thin; padding-bottom:8px; -webkit-overflow-scrolling:touch;}
+body.v2 .v2-colg-listas .v2-colg-rejilla .v2-colg-card{flex:0 0 calc((100% - 30px) / 4.4); scroll-snap-align:start;}
+.v2-promo{padding:11px 16px;}
+
+/* 28/10/2026 · Banner de la promoción en movimiento */
+.v2-promo{overflow:hidden; white-space:nowrap; text-overflow:clip;}
+.v2-promo-leer{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);}
+.v2-promo-pista{display:inline-flex; animation:v2-promo-pasa 45s linear infinite;}
+.v2-promo-pista > span{display:inline-flex; flex:none;}
+.v2-promo-pista > span > span{padding:0 1.6em;}
+.v2-promo-pista > span > span::before{content:"·"; margin-right:1.6em;}
+@keyframes v2-promo-pasa{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+@media (prefers-reduced-motion: reduce){ .v2-promo-pista{animation:none;} }
+.v2-promo{position:relative;}
+
+/* 28/10/2026 · "Colgante gratis": etiqueta sobre la foto de la tarjeta */
+body.v2 .v2-card-marco .v2-card-regalo{position:absolute; top:10px; left:10px; z-index:2; margin:0; padding:5px 9px; border-radius:2px; background:var(--c-oro); color:#fff; font-family:var(--font-sans); font-size:10px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; line-height:1.2; pointer-events:none;}
+@media (max-width:599px){ body.v2 .v2-card-marco .v2-card-regalo{top:7px; left:7px; padding:4px 7px; font-size:9px; letter-spacing:.1em;} }
+
+/* 28/10/2026 · Stories: la pantera más lejos, entera con su collar. La foto
+   ocupa el 72 % centrada y a los lados sigue su mismo fondo beige. */
+.v2-stories-pista .v2-story--pantera{background:#EFDFD0;}
+.v2-stories-pista .v2-story--pantera img{left:14%; right:auto; width:72%;}

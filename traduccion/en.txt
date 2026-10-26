@@ -1750,3 +1750,21 @@ en: designs
 
 es: modelo
 en: design
+
+es: Semana de lanzamiento · −15 % de descuento
+en: Launch week · −15% off
+
+es: · Semana de lanzamiento · 15 % de descuento ·
+en: · Launch week · 15% off ·
+
+es: Semana de lanzamiento · 15 % de descuento
+en: Launch week · 15% off
+
+es: Colgante gratis
+en: Free pendant
+
+es: Collares
+en: Necklaces
+
+es: Brazaletes
+en: Bracelets
