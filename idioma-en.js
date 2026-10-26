@@ -558,7 +558,12 @@ COZUMEL_EN_CARGADO({
  "Elige largo antes de añadirlo": "Choose a length before adding it",
  "Elige grosor antes de añadirlo": "Choose a thickness before adding it",
  "Elige ancho antes de añadirlo": "Choose a width before adding it",
- "Esta combinación no está disponible ahora mismo": "This combination is not available right now"
+ "Esta combinación no está disponible ahora mismo": "This combination is not available right now",
+ "Oro 18K": "18K Gold",
+ "Oro blanco 18K": "18K White Gold",
+ "Envío gratis": "Free shipping",
+ "Acero inoxidable": "Stainless steel",
+ "Negro IP": "IP Black"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

@@ -1251,11 +1251,7 @@ function urlPiezaHombre(prod, clave) {
     return d;
   };
   const desplegables = crear('div', 'v2-pieza-desplegables');
-  desplegables.append(
-    desplegable('Envío', '<p>Envío incluido en el precio, con los impuestos de importación: no pagas nada más al recibirlo.</p>' +
-      '<p>Desde que sale del taller, en días laborables: Estados Unidos, de 6 a 12; España y Unión Europea, de 6 a 10; México, de 8 a 12; Perú, de 15 a 23; Chile y Colombia, de 19 a 21.</p>' +
-      '<p>Cada pieza va en su caja Cozumel, lista para regalar.</p>')
-  );
+  // 27/10/2026: solo Añade tu colgante, Devoluciones y Cuidados (sin Detalles ni Envío).
   // Cadenas sin colgante: charm de regalo, justo después de Envío.
   const ofreceCharm = llevaCharmHombre(prod);
   let charmElegido = null; // id del charm, o null = sin charm
@@ -1391,16 +1387,17 @@ function urlPiezaHombre(prod, clave) {
     '<li>Evita el cloro y los productos de limpieza.</li>' +
     '<li>Guárdala en un lugar seco cuando no la lleves.</li>' +
     '<li>Para recuperar el brillo, límpiala con un paño de microfibra.</li></ul>';
-  const materiales = desplegable('Detalles · ' + prod.nombre, '');
   const cuidados = desplegable('Cuidados', '');
-  desplegables.prepend(materiales);
   desplegables.append(cuidados);
+  // Bajo el precio, en dos etiquetas: el material y el envío gratis.
+  const ETIQUETA_MATERIAL = { oro: 'Oro 18K', oro_blanco: 'Oro blanco 18K', plata: 'Acero inoxidable', negro: 'Negro IP' };
   const pintarMaterial = () => {
-    const [corto, largo] = MATERIAL[clave] || MATERIAL.plata;
-    materiales.querySelector('.v2-pieza-desplegable-cuerpo').innerHTML = '<p><strong>' + corto + '.</strong> ' + largo.replace(/^[^:]+: /, '') + '</p>';
     cuidados.querySelector('.v2-pieza-desplegable-cuerpo').innerHTML =
       (clave === 'oro' || clave === 'oro_blanco') ? CUIDADOS_BANO : CUIDADOS_ACERO;
-    condiciones.textContent = corto + ' · Envío incluido';
+    condiciones.textContent = '';
+    const mat = crear('span', 'v2-pieza-etiqueta', ETIQUETA_MATERIAL[clave] || ETIQUETA_MATERIAL.plata);
+    const env = crear('span', 'v2-pieza-etiqueta', 'Envío gratis');
+    condiciones.append(mat, env);
   };
 
   claves.forEach(c => {

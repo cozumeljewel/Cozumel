@@ -1720,3 +1720,18 @@ en: Choose a width before adding it
 
 es: Esta combinación no está disponible ahora mismo
 en: This combination is not available right now
+
+es: Oro 18K
+en: 18K Gold
+
+es: Oro blanco 18K
+en: 18K White Gold
+
+es: Envío gratis
+en: Free shipping
+
+es: Acero inoxidable
+en: Stainless steel
+
+es: Negro IP
+en: IP Black
