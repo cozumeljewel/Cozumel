@@ -1440,6 +1440,18 @@ function urlPiezaHombre(prod, clave) {
         const sig = crear('button', 'v2-colg-flecha sig', '›'); sig.type = 'button'; sig.setAttribute('aria-label', 'Foto siguiente');
         ant.addEventListener('click', () => { fotoN = (fotoN - 1 + fotos.length) % fotos.length; pintarVentana(); });
         sig.addEventListener('click', () => { fotoN = (fotoN + 1) % fotos.length; pintarVentana(); });
+        // Móvil: se pasan con el dedo (las flechas solo en el ordenador)
+        let x0 = null, y0 = 0;
+        carrusel.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+        carrusel.addEventListener('touchend', (e) => {
+          if (x0 === null) return;
+          const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+          x0 = null;
+          if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+          e.preventDefault(); // que el deslizamiento no abra el zoom
+          fotoN = (fotoN + (dx < 0 ? 1 : -1) + fotos.length) % fotos.length;
+          pintarVentana();
+        });
         const puntos = crear('div', 'v2-colg-puntos');
         fotos.forEach((_, i) => puntos.append(crear('span', i === fotoN ? 'activo' : '')));
         carrusel.append(ant, sig, puntos);
