@@ -1699,3 +1699,24 @@ en: <strong>Choose your necklace and add a free pendant</strong>
 
 es: + colgante gratis
 en: + free pendant
+
+es: Finaliza tu compra
+en: Complete your order
+
+es: Pago seguro con tarjeta o PayPal, a través de Stripe. Envío e impuestos incluidos
+en: Secure payment by card or PayPal, through Stripe. Shipping and taxes included
+
+es: Elige talla antes de añadirlo
+en: Choose a size before adding it
+
+es: Elige largo antes de añadirlo
+en: Choose a length before adding it
+
+es: Elige grosor antes de añadirlo
+en: Choose a thickness before adding it
+
+es: Elige ancho antes de añadirlo
+en: Choose a width before adding it
+
+es: Esta combinación no está disponible ahora mismo
+en: This combination is not available right now

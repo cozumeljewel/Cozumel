@@ -80,6 +80,26 @@ function getProductoElegido() {
   return PRODUCTOS.find(p => p.id === id) || null;
 }
 
+/* Pieza por id, de mujer (PRODUCTOS) o de hombre (COLECCION_HOMBRE). */
+function productoPorId(id) {
+  return (typeof PRODUCTOS !== 'undefined' && PRODUCTOS.find(p => p.id === id)) ||
+    (typeof COLECCION_HOMBRE !== 'undefined' && COLECCION_HOMBRE.find(p => p.id === id)) || null;
+}
+function esPiezaHombre(prod) { return !!prod && String(prod.id).startsWith('hombre_'); }
+
+/* Lo que se COBRA por una pieza en el mercado activo: el precio de
+   siempre o, en hombre con la promoción en vigor, el rebajado (mismo
+   redondeo que pintarPrecioPromo y que crear-sesion-pago). */
+function precioCobro(prod, codigoMercado) {
+  const p = typeof precioDe === 'function' ? precioDe(prod, codigoMercado) : null;
+  if (!p || !esPiezaHombre(prod) || typeof PROMO_HOMBRE === 'undefined') return p;
+  const promo = PROMO_HOMBRE;
+  if (!(promo && promo.descuento && (!promo.hasta || Date.now() <= Date.parse(promo.hasta)))) return p;
+  let imp = p.importe * (1 - promo.descuento / 100);
+  imp = (SIN_DECIMALES.includes(p.moneda) || p.moneda === 'MXN') ? Math.round(imp) : Math.round(imp * 100) / 100;
+  return { ...p, importe: imp };
+}
+
 function setProductoElegido(prod) {
   sessionStorage.setItem('productoId', prod.id);
 }
@@ -142,13 +162,13 @@ function normalizarItemCarrito(item) {
 /* Reprecia el carrito al mercado activo. Se llama al cambiar de país: no
    se tocan ni las piezas ni sus grabados, solo mercado/moneda/precio. */
 function repreciarCarrito() {
-  if (typeof PRODUCTOS === 'undefined' || typeof precioDe !== 'function') return;
+  if (typeof precioDe !== 'function') return;
   const items = getCarrito();
   if (!items.length) return;
   let cambio = false;
   const nuevos = items.map(item => {
-    const prod = PRODUCTOS.find(p => p.id === item.producto);
-    const precio = prod ? precioDe(prod) : null;
+    const prod = productoPorId(item.producto);
+    const precio = prod ? precioCobro(prod) : null;
     if (!precio) return item;
     if (item.mercado === precio.mercado && item.precio === precio.importe) return item;
     cambio = true;
@@ -1216,8 +1236,11 @@ function urlPiezaHombre(prod, clave) {
   tonos.setAttribute('aria-label', 'Acabado');
   const etiqueta = crear('p', 'v2-pieza-acabado');
   const condiciones = crear('p', 'v2-pieza-condiciones');
-  const boton = crear('button', 'v2-pieza-boton', 'Muy pronto');
-  boton.type = 'button'; boton.disabled = true;
+  const boton = crear('button', 'v2-pieza-boton', 'Añadir al carrito');
+  boton.type = 'button';
+  const avisoCompra = crear('p', 'v2-pieza-aviso');
+  avisoCompra.setAttribute('role', 'alert');
+  avisoCompra.hidden = true;
 
   const desplegable = (titulo, html) => {
     const d = crear('details', 'v2-pieza-desplegable');
@@ -1432,8 +1455,48 @@ function urlPiezaHombre(prod, clave) {
   info.append(condiciones);
   info.append(tonos, etiqueta);
   if (medidas.childElementCount) info.append(medidas);
-  info.append(boton, desplegables);
-  if (bloqueCharm) boton.after(bloqueCharm);
+  info.append(boton, avisoCompra, desplegables);
+  if (bloqueCharm) avisoCompra.after(bloqueCharm);
+  // Añadir al carrito: color, opciones elegidas, colgante de regalo y SKU
+  // del proveedor (skuHombre, hombre.js). El precio que se cobra lo vuelve
+  // a calcular el servidor (crear-sesion-pago); aquí es solo informativo.
+  boton.addEventListener('click', () => {
+    avisoCompra.hidden = true;
+    const falta = opciones.find(op => !elegidas[op.nombre]);
+    if (falta) {
+      avisoCompra.textContent = 'Elige ' + falta.nombre.toLowerCase() + ' antes de añadirlo';
+      avisoCompra.hidden = false;
+      const bloque = [...medidas.querySelectorAll('.v2-pieza-opcion-bloque')][opciones.indexOf(falta)];
+      if (bloque) bloque.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    const sku = skuHombre(prod, clave, elegidas);
+    const precio = precioCobro(prod);
+    if (!sku || !precio) {
+      avisoCompra.textContent = 'Esta combinación no está disponible ahora mismo';
+      avisoCompra.hidden = false;
+      return;
+    }
+    const pers = { acabado: clave, color: NOMBRE_ACABADO_HOMBRE[clave] };
+    opciones.forEach(op => { const v = elegidas[op.nombre]; pers[op.nombre.toLowerCase()] = v.texto + (v.sub ? ' (' + v.sub + ')' : ''); });
+    const ch = charmElegido && CHARMS_HOMBRE.find(c => c.id === charmElegido);
+    if (ch) {
+      pers.colgante = ch.nombre + ' · ' + (clave === 'oro' ? 'dorado' : 'plateado');
+      pers.charm = ch.id;
+      const skuCh = skuCharmHombre(ch.id, clave);
+      if (skuCh) pers.sku_colgante = skuCh;
+    }
+    pers.sku = sku;
+    añadirAlCarrito(normalizarItemCarrito({
+      producto: prod.id, cantidad: 1, personalizacion: pers,
+      variante: [clave, sku, pers.charm || ''].join('|'),
+      mercado: precio.mercado, moneda: precio.moneda, precio: precio.importe,
+    }));
+    if (typeof trackEvent === 'function') trackEvent('reserva_iniciada', prod.id);
+    boton.disabled = true;
+    boton.textContent = 'Añadido · yendo al carrito…';
+    setTimeout(() => { location.href = 'comprar.html'; }, 350);
+  });
   const fotos = crear('div', 'v2-pieza-fotos');
   const lupa = crear('span', 'v2-pieza-lupa');
   lupa.setAttribute('aria-hidden', 'true');
@@ -1524,8 +1587,11 @@ function urlPiezaHombre(prod, clave) {
   // MEN: las piezas de hombre (hombre.js), con circulitos de acabado y,
   // encima, el tipo de pieza (?t=colgantes por defecto).
   if (coleccion === 'men' && typeof COLECCION_HOMBRE !== 'undefined') {
+    // ?t=brazaletes (enlaces antiguos) lleva a Pulseras, que los incluye
     const pedido = new URLSearchParams(location.search).get('t');
-    const tipo = TIPOS_HOMBRE.some(t => t.clave === pedido) ? pedido : TIPOS_HOMBRE[0].clave;
+    const tabPedida = TIPOS_HOMBRE.find(t => t.clave === pedido || (t.incluye || []).includes(pedido));
+    const tipo = tabPedida ? tabPedida.clave : TIPOS_HOMBRE[0].clave;
+    const tiposDeTab = (tabPedida || TIPOS_HOMBRE[0]).incluye || [tipo];
     const tipos = document.createElement('nav');
     tipos.className = 'v2-tipos';
     tipos.setAttribute('aria-label', 'Tipo de pieza');
@@ -1547,7 +1613,8 @@ function urlPiezaHombre(prod, clave) {
       aviso.innerHTML = '<strong>Elige tu collar y añade tu colgante gratis</strong>';
       rejilla.before(aviso);
     }
-    const piezas = COLECCION_HOMBRE.filter(p => p.tipo === tipo);
+    const piezas = COLECCION_HOMBRE.filter(p => tiposDeTab.includes(p.tipo))
+      .sort((a, b) => tiposDeTab.indexOf(a.tipo) - tiposDeTab.indexOf(b.tipo));
     const acabados = acabadosVariados(piezas);
     piezas.forEach((prod, i) => rejilla.appendChild(tarjetaHombre(prod, acabados[i])));
     if (!piezas.length) {
@@ -3774,6 +3841,15 @@ if (reservaForm) {
     }).join(' · ');
   }
 
+  /* Hombre: "Talla US 9 · Colgante de regalo: Cruz grande · dorado" */
+  function resumenHombre(datos) {
+    const d = datos || {};
+    return Object.keys(d)
+      .filter(k => !['acabado', 'color', 'sku', 'sku_colgante', 'charm'].includes(k) && d[k])
+      .map(k => k === 'colgante' ? 'Colgante de regalo: ' + d[k] : k.charAt(0).toUpperCase() + k.slice(1) + ' ' + d[k])
+      .join(' · ');
+  }
+
   /* ---------- Pintar el carrito entero ----------
      Se llama al cargar la página y cada vez que se quita una pieza. No
      hace falta llamarla al añadir: añadir siempre navega aquí desde cero
@@ -3787,12 +3863,12 @@ if (reservaForm) {
     let huboPiezaSinPrecio = false;
 
     items.forEach((item, indice) => {
-      const prod = PRODUCTOS.find(p => p.id === item.producto);
+      const prod = productoPorId(item.producto);
       if (!prod) return; // el catálogo cambió desde que se añadió: se ignora sin romper el resto
 
       // El precio se relee del mercado ACTIVO, no del que se guardó al
       // añadir: si se cambió de país, el carrito se recalcula solo.
-      const precioItem = precioDe(prod);
+      const precioItem = precioCobro(prod);
       if (!precioItem) huboPiezaSinPrecio = true;
       else total += precioItem.importe;
 
@@ -3804,7 +3880,8 @@ if (reservaForm) {
       nombre.textContent = prod.nombre;
       tarjeta.appendChild(nombre);
 
-      const resumen = resumenGrabado(prod, item.personalizacion);
+      // Hombre: color, talla/largo y colgante de regalo; mujer: el grabado.
+      const resumen = esPiezaHombre(prod) ? resumenHombre(item.personalizacion) : resumenGrabado(prod, item.personalizacion);
       if (resumen) {
         const linea = document.createElement('p');
         linea.className = 'carrito-item-linea';
@@ -3814,7 +3891,9 @@ if (reservaForm) {
 
       const acabado = document.createElement('p');
       acabado.className = 'carrito-item-acabado';
-      acabado.textContent = resumenAcabado(prod, item.personalizacion);
+      acabado.textContent = esPiezaHombre(prod)
+        ? (NOMBRE_ACABADO_HOMBRE[item.personalizacion.acabado] || '')
+        : resumenAcabado(prod, item.personalizacion);
       tarjeta.appendChild(acabado);
 
       const precio = document.createElement('p');
@@ -3913,14 +3992,14 @@ if (reservaForm) {
     // uno por pieza. Cada fila de "reservas" guarda su propio producto y
     // personalización, pero repite estos mismos datos de contacto.
     const items = getCarrito()
-      .map(item => ({ item, prod: PRODUCTOS.find(p => p.id === item.producto) }))
+      .map(item => ({ item, prod: productoPorId(item.producto) }))
       .filter(({ prod }) => prod); // el catálogo pudo cambiar desde que se añadió
 
     if (!items.length) {
       showReservaError('Tu carrito está vacío. Añade alguna pieza antes de comprar');
       return;
     }
-    if (items.some(({ prod }) => !precioDe(prod))) {
+    if (items.some(({ prod }) => !precioCobro(prod))) {
       showReservaError('Alguna pieza de tu carrito todavía no tiene precio, no se puede comprar');
       return;
     }
@@ -3982,7 +4061,7 @@ if (reservaForm) {
     // calcular el precio con ellos (crear-sesion-pago), así que lo que se
     // manda desde aquí es informativo, nunca la fuente del cobro.
     const payloads = items.map(({ item, prod }) => {
-      const precio = precioDe(prod);
+      const precio = precioCobro(prod);
       return {
         ...datosComunes,
         personalizacion: item.personalizacion,

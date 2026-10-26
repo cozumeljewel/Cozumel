@@ -551,7 +551,14 @@ COZUMEL_EN_CARGADO({
  "Hora de México": "Mexico time",
  "¡Ya casi!": "Almost here!",
  "<strong>Elige tu collar y añade tu colgante gratis</strong>": "<strong>Choose your necklace and add a free pendant</strong>",
- "+ colgante gratis": "+ free pendant"
+ "+ colgante gratis": "+ free pendant",
+ "Finaliza tu compra": "Complete your order",
+ "Pago seguro con tarjeta o PayPal, a través de Stripe. Envío e impuestos incluidos": "Secure payment by card or PayPal, through Stripe. Shipping and taxes included",
+ "Elige talla antes de añadirlo": "Choose a size before adding it",
+ "Elige largo antes de añadirlo": "Choose a length before adding it",
+ "Elige grosor antes de añadirlo": "Choose a thickness before adding it",
+ "Elige ancho antes de añadirlo": "Choose a width before adding it",
+ "Esta combinación no está disponible ahora mismo": "This combination is not available right now"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

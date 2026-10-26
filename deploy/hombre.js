@@ -7,10 +7,11 @@
    [foto de producto (portada), foto puesto, otra foto puesta]. El packaging se añade
    siempre como última foto.
    ========================================================= */
+// 22/10/2026: pulseras y brazaletes van juntos en la pestaña Pulseras
+// (incluye: los tipos que reúne cada pestaña).
 const TIPOS_HOMBRE = [
   { clave: 'colgantes', nombre: 'Colgantes' },
-  { clave: 'pulseras',  nombre: 'Pulseras' },
-  { clave: 'brazaletes', nombre: 'Brazaletes' },
+  { clave: 'pulseras',  nombre: 'Pulseras', incluye: ['pulseras', 'brazaletes'] },
   { clave: 'anillos',   nombre: 'Anillos' },
 ];
 const COLECCION_HOMBRE = [
@@ -532,3 +533,43 @@ const CERCA_HOMBRE = {
   hombre_collar_4: { oro: ['img/hombre/collar-4-oro-cerca-1.png', 'img/hombre/collar-4-oro-cerca-2.png'], oro_blanco: ['img/hombre/collar-4-oro-blanco-cerca-1.png', 'img/hombre/collar-4-oro-blanco-cerca-2.png'] },
   hombre_collar_3: { oro: ['img/hombre/collar-3-oro-cerca-1.png', 'img/hombre/collar-3-oro-cerca-2.png'], oro_blanco: ['img/hombre/collar-3-oro-blanco-cerca-1.jpg', 'img/hombre/collar-3-oro-blanco-cerca-2.png'] },
 };
+
+/* ---------- Compra: SKU del proveedor de cada pedido (26/10/2026) ----------
+   Referencia = base + color + medida (Emanco Men Jewelry Catalog 3):
+   · base: la de la opción elegida (largo, grosor, ancho: OPCIONES_HOMBRE)
+     o, si la pieza solo tiene una, REF_HOMBRE.
+   · color: B oro · I oro blanco · H negro; catálogo TR: D oro · A plata.
+   · medida: W0 sin talla; W7…W11 la talla US del anillo.
+   Ej.: YX48444B0W0 (Mezcal oro) · TR24152A0W9 (Misión plata, US 9). */
+const REF_HOMBRE = {
+  hombre_collar_1: 'YX44952', hombre_collar_2: 'YX44925', hombre_collar_3: 'YX48444',
+  hombre_collar_4: 'YX44935', hombre_collar_6: 'YX44921', hombre_collar_8: 'YX44929',
+  hombre_colgante_1: 'YX44940', hombre_colgante_2: 'YX44942', hombre_colgante_3: 'YX44941',
+  hombre_brazalete_2: 'YZ44956', hombre_brazalete_3: 'YZ44950', hombre_brazalete_4: 'YZ44949',
+};
+const COLOR_SKU_HOMBRE = { oro: 'B', oro_blanco: 'I', negro: 'H', plata: 'I' };
+const COLOR_SKU_TR = { oro: 'D', plata: 'A', oro_blanco: 'A' };
+
+/* elegidas: { 'Largo': {id, texto, ref}, 'Talla': {...} } como en la ficha.
+   Devuelve el SKU, o null si falta algo por elegir. */
+function skuHombre(prod, clave, elegidas) {
+  const ops = [].concat(OPCIONES_HOMBRE[prod.id] || []);
+  let base = REF_HOMBRE[prod.id] || null, talla = null;
+  for (const op of ops) {
+    const v = elegidas && elegidas[op.nombre];
+    if (!v) return null;
+    if (v.ref) base = v.ref;
+    if (op.nombre === 'Talla') talla = v.id;
+  }
+  if (!base) return null;
+  const color = (base.startsWith('TR') ? COLOR_SKU_TR : COLOR_SKU_HOMBRE)[clave];
+  if (!color) return null;
+  return base + color + '0W' + (talla || '0');
+}
+
+/* SKU del colgante de regalo en el color de la cadena */
+function skuCharmHombre(charmId, clave) {
+  const ch = CHARMS_HOMBRE.find(c => c.id === charmId);
+  if (!ch || !ch.colores) return null;
+  return ch.colores[clave === 'oro' ? 'dorado' : 'plateado'] || null;
+}

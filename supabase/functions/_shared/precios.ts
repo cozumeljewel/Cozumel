@@ -12,6 +12,9 @@
 // que dar exactamente el mismo número, o el cliente vería un precio y
 // Stripe cobraría otro. scripts/verificar-precios.py compara las dos.
 
+import { PRECIOS_HOMBRE, NOMBRES_HOMBRE, PROMO_HOMBRE } from "./precios-hombre.ts";
+export { NOMBRES_HOMBRE };
+
 // ---- Precio maestro: precio FINAL en México, envío incluido ----
 export const PRECIOS_MXN: Record<string, number | null> = {
   collar_esencial: 449,       // Colgante placa grabable
@@ -102,7 +105,25 @@ const REDONDEO: Record<string, (v: number) => number> = {
 // céntimos). Para estas, unit_amount va en unidades, no en céntimos.
 export const SIN_DECIMALES = ["COP", "CLP", "ARS"];
 
-export const PRODUCTOS_VALIDOS = Object.keys(PRECIOS_MXN);
+// Mujer (PRECIOS_MXN) y hombre (precios-hombre.ts, generado de hombre.js).
+export const PRODUCTOS_VALIDOS = [...Object.keys(PRECIOS_MXN), ...Object.keys(PRECIOS_HOMBRE)];
+
+/** Hombre: precio fijado por mercado y, si la promoción sigue en vigor, el
+ *  descuento con el MISMO redondeo que la web (pintarPrecioPromo en
+ *  script.js): entero en MXN y monedas sin decimales; céntimos en el resto. */
+function precioHombre(producto: string, m: string, moneda: string) {
+  const fijado = PRECIOS_HOMBRE[producto]?.[m];
+  if (typeof fijado !== "number") return null;
+  let importe = fijado;
+  const promo = PROMO_HOMBRE;
+  if (promo && promo.descuento && (!promo.hasta || Date.now() <= Date.parse(promo.hasta))) {
+    importe = fijado * (1 - promo.descuento / 100);
+    importe = (SIN_DECIMALES.includes(moneda) || moneda === "MXN")
+      ? Math.round(importe)
+      : Math.round(importe * 100) / 100;
+  }
+  return { importe: redondearSalida(importe, moneda), moneda, mercado: m };
+}
 
 export function mercadoValido(mercado: string | null | undefined): string {
   return mercado && MERCADOS[mercado] ? mercado : MERCADO_FALLBACK;
@@ -118,6 +139,8 @@ export function precioDe(
 ): { importe: number; moneda: string; mercado: string } | null {
   const m = mercadoValido(mercado);
   const moneda = MERCADOS[m].moneda;
+
+  if (PRECIOS_HOMBRE[producto]) return precioHombre(producto, m, moneda);
 
   const manual = PRECIOS_MANUALES[producto]?.[m];
   if (typeof manual === "number") {

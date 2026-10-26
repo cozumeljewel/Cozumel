@@ -27,7 +27,7 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@17";
-import { PRODUCTOS_VALIDOS, precioDe, mercadoValido, importeStripe } from "../_shared/precios.ts";
+import { PRODUCTOS_VALIDOS, precioDe, mercadoValido, importeStripe, NOMBRES_HOMBRE } from "../_shared/precios.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -313,5 +313,5 @@ function nombreProducto(id: string): string {
     kit_mi_consentida: "Kit Mi Consentida",
     kit_personalizado: "Kit a tu gusto",
   };
-  return nombres[id] ?? id;
+  return nombres[id] ?? NOMBRES_HOMBRE[id] ?? id;
 }
