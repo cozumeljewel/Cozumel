@@ -163,6 +163,20 @@ export function precioDe(
   return { importe: redondearSalida(redondear(convertido), moneda), moneda, mercado: m };
 }
 
+/** Precio de siempre, sin la promoción de lanzamiento (31/10/2026): el que
+ *  se enseña en Stripe antes del descuento. Fuera de hombre, igual que
+ *  precioDe. */
+export function precioSinPromo(
+  producto: string,
+  mercado: string,
+): { importe: number; moneda: string; mercado: string } | null {
+  const p = precioDe(producto, mercado);
+  if (!p) return null;
+  const fijado = PRECIOS_HOMBRE[producto]?.[p.mercado];
+  if (typeof fijado !== "number") return p;
+  return { ...p, importe: redondearSalida(fijado, p.moneda) };
+}
+
 function redondearSalida(valor: number, moneda: string): number {
   return SIN_DECIMALES.includes(moneda) ? Math.round(valor) : Math.round(valor * 100) / 100;
 }

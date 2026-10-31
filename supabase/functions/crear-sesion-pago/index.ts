@@ -27,7 +27,8 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@17";
-import { PRODUCTOS_VALIDOS, precioDe, mercadoValido, importeStripe, NOMBRES_HOMBRE } from "../_shared/precios.ts";
+import { PRODUCTOS_VALIDOS, precioDe, precioSinPromo, mercadoValido, importeStripe, NOMBRES_HOMBRE } from "../_shared/precios.ts";
+import { PROMO_HOMBRE } from "../_shared/precios-hombre.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -244,18 +245,41 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // las líneas comparten mercado, así que basta con la de la primera.
   const moneda = lineas[0].precio!.moneda;
 
+  // 31/10: en Stripe cada pieza sale a su precio de siempre y la promoción
+  // de lanzamiento como descuento aparte (cupón de un solo uso por la
+  // diferencia exacta), así se ve el precio normal y lo que se ahorra. Lo
+  // cobrado es igual que antes: la suma de los precios rebajados.
+  const centimosNormal = lineas.reduce((t, l) => {
+    const n = precioSinPromo(l.producto, mercado);
+    return t + importeStripe((n ?? l.precio!).importe, moneda);
+  }, 0);
+  const centimosCobro = lineas.reduce((t, l) => t + importeStripe(l.precio!.importe, moneda), 0);
+  const ahorro = centimosNormal - centimosCobro;
+  let descuentos: { coupon: string }[] | undefined;
+  if (ahorro > 0) {
+    const cupon = await stripe.coupons.create({
+      amount_off: ahorro,
+      currency: moneda.toLowerCase(),
+      duration: "once",
+      max_redemptions: 1,
+      name: `Semana de lanzamiento −${PROMO_HOMBRE?.descuento ?? 15} %`,
+    });
+    descuentos = [{ coupon: cupon.id }];
+  }
+
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
+    ...(descuentos ? { discounts: descuentos } : {}),
     line_items: lineas.map((l) => ({
       price_data: {
         currency: moneda.toLowerCase(),
         // Las monedas sin decimales (COP, CLP, ARS) van en unidades, no
         // en céntimos: si no, Stripe cobraría cien veces de más.
-        unit_amount: importeStripe(l.precio!.importe, moneda),
+        unit_amount: importeStripe((precioSinPromo(l.producto, mercado) ?? l.precio!).importe, moneda),
         // 31/10: bajo el nombre, el gancho del sorteo
         product_data: {
           name: nombreProducto(l.producto),
-          description: "✦ Con esta pieza entras en el sorteo de 5 videollamadas con Adri",
+          description: "✦ Con esta pieza entras en el sorteo de 5 videollamadas con Adri ✦",
         },
       },
       quantity: 1,
