@@ -11,3 +11,4 @@ supabase/.temp/
 # pieza, en mayúsculas) mientras decide/edita cuáles usar. Solo las
 # versiones ya procesadas (img/nombre.jpg, sin carpeta) van al repo.
 img/*/
+backups/

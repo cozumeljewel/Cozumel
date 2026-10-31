@@ -47,7 +47,10 @@
       if (auto === 'en') idioma = 'en';
       // Primera visita: aún no se sabe el país. Se pregunta y, si es de
       // habla inglesa, se recarga una vez ya en inglés.
-      if (!auto) {
+      // Buscadores: siempre en español (Google rastrea desde EE. UU. y
+      // si no saldría el resultado de búsqueda en inglés).
+      const esBuscador = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit/i.test(navigator.userAgent);
+      if (!auto && !esBuscador) {
         fetch('/api/geo', { headers: { Accept: 'application/json' } })
           .then(r => (r.ok ? r.json() : null))
           .then(d => {

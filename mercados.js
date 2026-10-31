@@ -263,7 +263,10 @@ async function resolverMercadoAutomatico() {
   marcarMercadoPendiente();
 
   let pais = null;
-  try {
+  // Buscadores (Google rastrea desde EE. UU.): siempre España, en euros,
+  // para que el resultado de búsqueda salga como la ve el público (2/11/2026).
+  if (/bot|crawl|spider|slurp|bingpreview|facebookexternalhit/i.test(navigator.userAgent)) pais = 'ES';
+  if (!pais) try {
     const resp = await fetch('/api/geo', { headers: { Accept: 'application/json' } });
     if (resp.ok) {
       const datos = await resp.json();
