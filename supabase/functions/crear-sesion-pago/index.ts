@@ -252,10 +252,20 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
         // Las monedas sin decimales (COP, CLP, ARS) van en unidades, no
         // en céntimos: si no, Stripe cobraría cien veces de más.
         unit_amount: importeStripe(l.precio!.importe, moneda),
-        product_data: { name: nombreProducto(l.producto) },
+        // 31/10: bajo el nombre, el gancho del sorteo
+        product_data: {
+          name: nombreProducto(l.producto),
+          description: "✦ Con esta pieza entras en el sorteo de 5 videollamadas con Adri",
+        },
       },
       quantity: 1,
     })),
+    // Junto al botón de pagar: el sorteo (mismo texto que en comprar.html)
+    custom_text: {
+      submit: {
+        message: "✦ Con esta compra entras en el sorteo de 5 videollamadas con Adri. Solo para las 100 primeras compras ✦",
+      },
+    },
     success_url: `${SITE_URL}/comprar.html?pago=exito&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${SITE_URL}/comprar.html?pago=cancelado`,
   });
