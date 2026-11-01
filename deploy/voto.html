@@ -39,6 +39,7 @@
   .pieza { margin:14px 0 0; font-family:'Cormorant Garamond', Georgia, serif; font-size:26px; }
   .tipo { margin:2px 0 0; font-size:13px; color:var(--suave); }
   .texto { margin:22px 0 0; font-size:15px; line-height:1.6; }
+  .comprar { display:block; margin:18px 0 0; padding:16px; border-radius:3px; background:#14454A; color:#fff; font-family:'Inter', system-ui, sans-serif; font-size:13px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; text-decoration:none; }
   .sorteo { margin:22px 0 0; padding:14px 16px; border:1px solid #C6A664; border-radius:4px; background:#F8F3E9; color:#7A5F2A; font-size:14px; line-height:1.55; }
   .otras { margin:40px 0 0; padding-top:28px; border-top:1px solid var(--linea); }
   .otras h2 { margin:0; font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; font-size:26px; }
@@ -79,8 +80,10 @@
   <button type="button" class="foto" hidden aria-label="Ver la pieza de cerca"><img alt=""><span class="lupa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg>Ver de cerca</span></button>
   <p class="pieza" hidden></p>
   <p class="tipo" hidden></p>
-  <p class="texto">Sale el <strong>1 de noviembre a las 9:00 PM</strong> (hora de México). Te avisaremos por email: tú la verás antes que nadie.</p>
-  <p class="sorteo">Con tu primera compra entrarás en el sorteo de <strong>5 videollamadas con Adri</strong>.</p>
+  <!-- 1/11/2026: ya lanzada; antes decía "Sale el 1 de noviembre a las 9:00 PM" -->
+  <p class="texto"><strong>¡Ya está disponible!</strong> Con un 15 % de descuento hasta el 8 de noviembre.</p>
+  <a class="comprar" href="productos.html?c=men">Ver la colección</a>
+  <p class="sorteo">Con tu compra entras en el sorteo de <strong>5 videollamadas con Adri</strong>.</p>
 
   <section class="otras" aria-label="Las otras piezas">
     <h2>Míralas de cerca</h2>
@@ -231,6 +234,12 @@
   nombre.textContent = pieza.nombre; nombre.hidden = false;
   const tipo = document.querySelector('.tipo');
   tipo.textContent = pieza.tipo; tipo.hidden = false;
+  // Ya a la venta: botón directo a su ficha (Uxmal se retiró: a la colección)
+  if (clave !== 'uxmal') {
+    const ir = document.querySelector('.comprar');
+    ir.href = 'hombre.html?id=' + pieza.id;
+    ir.textContent = 'Comprar ' + pieza.nombre;
+  }
   document.querySelector('.otras h2').textContent = 'Mira las otras de cerca';
   evento('voto_' + clave);
   // Precarga la grande para que el zoom se abra al momento
