@@ -16,7 +16,7 @@
      la gente no la vea, no protege nada secreto.
    ========================================================= */
 (function () {
-  const CERRADA = true;
+  const CERRADA = false; // 1/11/2026 ~14:15 México: lanzada antes de hora, a petición
   const CLAVE_ACCESO = 'cozumel-26122c';
   const CLAVE_VER = 'cozumel_acceso_web';
   // Lanzamiento de la colección de hombre: 1 de noviembre, 21:00 de México.
