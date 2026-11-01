@@ -3864,6 +3864,8 @@ async function cargarPaisesEnvio() {
     sel.appendChild(op);
   });
   sincronizarCampoDocumento();
+  // El país preseleccionado también fija el precio (ver el change de abajo)
+  if (sel.value) sel.dispatchEvent(new Event('change'));
 }
 
 function sincronizarCampoDocumento() {
@@ -4239,8 +4241,12 @@ if (reservaForm) {
   const mercadoInicial = getMercado();
   const selPaisEnvio = document.getElementById('r-pais');
   if (selPaisEnvio) {
+    // 1/11/2026: el precio lo decide SIEMPRE el país de envío (alguien con
+    // la web en pesos mexicanos compraba con envío a EE. UU. a precio de
+    // México). El servidor (crear-sesion-pago) hace lo mismo.
     selPaisEnvio.addEventListener('change', () => {
-      const destino = paisEnvioElegido() === 'AR' ? 'AR' : mercadoInicial;
+      const cc = paisEnvioElegido();
+      const destino = cc ? mercadoDePais(cc) : mercadoInicial;
       if (getMercado() !== destino) {
         setMercado(destino, { automatico: true });
         repreciarCarrito();

@@ -193,7 +193,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // manipule la página.
   const { data: paisesActivos, error: paisesError } = await sb
     .from("paises_envio")
-    .select("nombre")
+    .select("nombre, codigo")
     .eq("activo", true);
   if (paisesError || !paisesActivos) {
     return new Response(JSON.stringify({ error: "No se pudo comprobar el país de envío" }), {
@@ -219,9 +219,16 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       { status: 400, headers: jsonHeaders },
     );
   }
-  // Argentina paga siempre sus propios precios (envío de 14 $, 2026-09-30),
-  // aunque quien compra tenga elegido otro país en el selector de moneda.
-  const mercado = filas.some((f) => (f.pais ?? "").trim() === "Argentina") ? "AR" : mercados[0];
+  // 1/11/2026: el mercado (precio y moneda) lo decide SIEMPRE el país de
+  // envío, no la moneda que la persona tenga elegida en la web: alguien con
+  // la web en pesos mexicanos pagaba un envío a EE. UU. a precio de México.
+  // Mismo reparto que PAIS_A_MERCADO en mercados.js: MX, US, CL, PE y AR
+  // tienen el suyo; la eurozona, el de España; el resto, el de EE. UU.
+  const EUROZONA = ["ES","DE","FR","IT","PT","NL","BE","AT","IE","FI","GR","SK","SI","LT","LV","EE","LU","MT","CY","HR"];
+  const codigoEnvio = paisesActivos.find((p) => p.nombre === (filas[0].pais ?? "").trim())?.codigo ?? "";
+  const mercado = ["MX", "US", "CL", "PE", "AR"].includes(codigoEnvio)
+    ? codigoEnvio
+    : EUROZONA.includes(codigoEnvio) ? "ES" : mercadoValido("US");
 
   // Precio real de cada pieza, SIEMPRE recalculado aquí a partir del
   // producto y el mercado — nunca del precio que mandó el navegador. Si
