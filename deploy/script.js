@@ -1272,6 +1272,10 @@ function urlPiezaHombre(prod, clave) {
   // Cadenas sin colgante: charm de regalo, justo después de Envío.
   const ofreceCharm = llevaCharmHombre(prod);
   let charmElegido = null; // id del charm, o null = sin charm
+  // 1/11/2026: el colgante de la foto de portada va elegido de entrada (un
+  // Mezcal se vendió sin cruz porque nadie abrió "Añade tu colgante"). Si
+  // la persona elige otro o lo quita, se respeta (charmAuto = false).
+  let charmAuto = true;
   let bloqueCharm = null;  // va justo debajo del botón de compra
   // Cadena dorada: solo charms dorados; oro blanco (y negro): plateados.
   const colorCharm = () => clave === 'oro' ? 'dorado' : 'plateado';
@@ -1394,7 +1398,7 @@ function urlPiezaHombre(prod, clave) {
         const quitar = crear('button', 'v2-colg-quitar', '×');
         quitar.type = 'button';
         quitar.setAttribute('aria-label', 'Quitar el colgante');
-        quitar.addEventListener('click', () => { charmElegido = null; grabadoColgante = ''; pintarColgantes(); });
+        quitar.addEventListener('click', () => { charmElegido = null; charmAuto = false; grabadoColgante = ''; pintarColgantes(); });
         elegidoBar.append(f, txt, cambiar, quitar);
       }
     }
@@ -1484,7 +1488,7 @@ function urlPiezaHombre(prod, clave) {
         info.append(rej);
       }
       const elegir = () => {
-        charmElegido = ch.id;
+        charmElegido = ch.id; charmAuto = false;
         grabadoColgante = campo ? campo.value.trim() : '';
         catAbierta = cat;
         pintarColgantes();
@@ -1503,6 +1507,11 @@ function urlPiezaHombre(prod, clave) {
     }
     function marcarCharm() {
       // Si el colgante elegido no existe en el color de la cadena, se quita.
+      if (charmAuto) {
+        const fijo = typeof PORTADA_CHARM_HOMBRE !== 'undefined' && PORTADA_CHARM_HOMBRE[prod.id] && PORTADA_CHARM_HOMBRE[prod.id][clave];
+        const primero = fotosCharmHombre(prod, clave)[0];
+        charmElegido = fijo || (primero && primero.charm) || null;
+      }
       const antes = CHARMS_HOMBRE.find(c => c.id === charmElegido);
       if (antes && !antes.fotos[colorCharm()]) { charmElegido = null; grabadoColgante = ''; }
       pintarColgantes();
