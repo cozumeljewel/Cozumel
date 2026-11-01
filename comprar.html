@@ -89,7 +89,13 @@
        los de siempre: script.js no cambia. -->
   <section class="reserva checkout">
     <div class="reserva-content checkout-grid" id="reserva-content">
-      <aside class="checkout-resumen" aria-label="Resumen del pedido">
+      <aside class="checkout-resumen" id="checkout-resumen" aria-label="Resumen del pedido">
+        <!-- Móvil (1/11/2026): el resumen va plegado en una línea con el
+             total, para que el formulario se vea nada más llegar. -->
+        <button type="button" class="checkout-plegar" id="checkout-plegar" aria-expanded="false" aria-controls="checkout-resumen">
+          <span class="checkout-plegar-txt">Ver resumen del pedido</span>
+          <strong id="checkout-plegar-total"></strong>
+        </button>
         <h2 class="checkout-resumen-titulo">Tu pedido</h2>
         <!-- Lista del carrito: script.js la rellena entera, con la foto, el
              total y los botones de quitar. -->
@@ -171,6 +177,11 @@
           <p class="checkout-caja">Envío incluido en el precio</p>
 
           <h2 class="checkout-seccion">Pago</h2>
+          <!-- Solo en el navegador de dentro de Instagram / TikTok / Facebook -->
+          <div class="checkout-app" id="checkout-app" hidden>
+            <p>Estás en el navegador de la app. Para pagar con <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».</p>
+            <button type="button" id="checkout-app-copiar">Copiar enlace</button>
+          </div>
           <p class="checkout-nota">Todas las transacciones son seguras y están encriptadas. Pagarás con tarjeta o PayPal en la página segura de Stripe.</p>
           <label class="consent">
             <input type="checkbox" id="r-consent" required>

@@ -593,7 +593,12 @@ COZUMEL_EN_CARGADO({
  "Quitar": "Remove",
  "Semana de lanzamiento": "Launch week",
  "Con tu compra, entras en el sorteo de <strong>5 videollamadas con Adri</strong>": "With your purchase, you enter the draw for <strong>5 video calls with Adri</strong>",
- "Ver la colección": "View the collection"
+ "Ver la colección": "View the collection",
+ "Ver resumen del pedido": "Show order summary",
+ "Ocultar resumen del pedido": "Hide order summary",
+ "Copiar enlace": "Copy link",
+ "Enlace copiado": "Link copied",
+ "Estás en el navegador de la app. Para pagar con <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».": "You’re in the app’s browser. To pay with <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”."
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

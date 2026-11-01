@@ -182,6 +182,19 @@ function guardarCarrito(items) {
   actualizarBadgeCarrito();
 }
 
+/* Carrito que llega en el enlace (?carrito=…): el de "Copiar enlace" del
+   navegador de Instagram / TikTok, para seguir la compra en Safari o
+   Chrome con las mismas piezas (1/11/2026). Solo si aquí está vacío. */
+(function () {
+  try {
+    const p = new URLSearchParams(location.search).get('carrito');
+    if (!p) return;
+    const items = JSON.parse(decodeURIComponent(escape(atob(p))));
+    if (Array.isArray(items) && items.length && !getCarrito().length) guardarCarrito(items);
+    history.replaceState(null, '', location.pathname);
+  } catch (_) { /* enlace roto: se ignora */ }
+})();
+
 function añadirAlCarrito(item) {
   const items = getCarrito();
   items.push(item);
@@ -4234,6 +4247,12 @@ if (reservaForm) {
       carritoLista.insertAdjacentElement('afterend', totalEl);
     }
 
+    // Móvil: total en la línea del resumen plegado; sin piezas, abierto
+    const plegarTotal = document.getElementById('checkout-plegar-total');
+    if (plegarTotal) plegarTotal.textContent = items.length ? (formatearImporte(total, getMoneda()) || '') : '';
+    const resumenEl = document.getElementById('checkout-resumen');
+    if (resumenEl && !items.length) resumenEl.classList.add('abierto');
+
     const carritoVacio = items.length === 0;
     if (sinPiezaAviso) sinPiezaAviso.hidden = !carritoVacio;
     if (sinPrecioAviso) sinPrecioAviso.hidden = !huboPiezaSinPrecio;
@@ -4812,3 +4831,32 @@ function avisoSorteo() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrar(); }, { once: true });
   setTimeout(() => { document.body.append(capa); void capa.offsetWidth; capa.classList.add('visible'); }, 1200);
 }
+
+
+/* ---------- Carrito en el móvil (1/11/2026) ----------
+   Resumen plegable y, en el navegador de dentro de Instagram / TikTok /
+   Facebook, aviso para abrir la web en Safari o Chrome (ahí Stripe enseña
+   Apple Pay y Google Pay). */
+(function () {
+  const bt = document.getElementById('checkout-plegar');
+  const resumen = document.getElementById('checkout-resumen');
+  if (bt && resumen) {
+    bt.addEventListener('click', () => {
+      const abierto = resumen.classList.toggle('abierto');
+      bt.setAttribute('aria-expanded', String(abierto));
+      bt.querySelector('.checkout-plegar-txt').textContent = abierto ? 'Ocultar resumen del pedido' : 'Ver resumen del pedido';
+    });
+  }
+  const aviso = document.getElementById('checkout-app');
+  if (aviso && /Instagram|FBAN|FBAV|TikTok|musical_ly|Bytedance/i.test(navigator.userAgent)) {
+    aviso.hidden = false;
+    const copiar = document.getElementById('checkout-app-copiar');
+    copiar.addEventListener('click', async () => {
+      // Con el carrito dentro: en Safari / Chrome se abre con las mismas piezas
+      let url = location.origin + '/comprar.html';
+      try { url += '?carrito=' + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(getCarrito()))))); } catch (_) {}
+      try { await navigator.clipboard.writeText(url); copiar.textContent = 'Enlace copiado'; }
+      catch (_) { copiar.textContent = url; }
+    });
+  }
+})();

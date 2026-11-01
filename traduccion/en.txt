@@ -1837,3 +1837,18 @@ en: With your purchase, you enter the draw for <strong>5 video calls with Adri</
 
 es: Ver la colección
 en: View the collection
+
+es: Ver resumen del pedido
+en: Show order summary
+
+es: Ocultar resumen del pedido
+en: Hide order summary
+
+es: Copiar enlace
+en: Copy link
+
+es: Enlace copiado
+en: Link copied
+
+es: Estás en el navegador de la app. Para pagar con <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».
+en: You’re in the app’s browser. To pay with <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”.
