@@ -1828,3 +1828,12 @@ en: Free
 
 es: Quitar
 en: Remove
+
+es: Semana de lanzamiento
+en: Launch week
+
+es: Con tu compra, entras en el sorteo de <strong>5 videollamadas con Adri</strong>
+en: With your purchase, you enter the draw for <strong>5 video calls with Adri</strong>
+
+es: Ver la colección
+en: View the collection

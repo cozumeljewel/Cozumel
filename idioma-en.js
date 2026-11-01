@@ -590,7 +590,10 @@ COZUMEL_EN_CARGADO({
  "Teléfono (WhatsApp)": "Phone (WhatsApp)",
  "Colgante de regalo": "Gift pendant",
  "Gratis": "Free",
- "Quitar": "Remove"
+ "Quitar": "Remove",
+ "Semana de lanzamiento": "Launch week",
+ "Con tu compra, entras en el sorteo de <strong>5 videollamadas con Adri</strong>": "With your purchase, you enter the draw for <strong>5 video calls with Adri</strong>",
+ "Ver la colección": "View the collection"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

@@ -4489,3 +4489,14 @@ body.v2 .checkout .carrito-item, body.v2 .checkout .carrito-item--regalo{grid-te
 body.v2 .checkout .carrito-item--regalo .carrito-item-foto{width:64px; height:64px; margin-left:0;}
 body.v2 .checkout .carrito-item-quitar{position:static; transform:none; grid-column:2; width:auto; height:auto; justify-content:flex-start; margin-top:4px; padding:0; font-size:12px; color:#707070; text-decoration:underline;}
 @media (max-width:899px){ .v2-colg-flecha{display:none;} }
+
+/* 1/11/2026 · Aviso del sorteo al entrar en la colección de hombre */
+.v2-sorteo-capa{position:fixed; inset:0; z-index:90; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(23,54,52,.5); opacity:0; transition:opacity .3s;}
+.v2-sorteo-capa.visible{opacity:1;}
+.v2-sorteo{position:relative; width:100%; max-width:380px; padding:34px 26px 26px; border:1px solid #C6A664; border-radius:6px; background:#F8F3E9; text-align:center; color:#173634; box-shadow:0 12px 40px rgba(0,0,0,.18); transform:translateY(10px); transition:transform .3s;}
+.v2-sorteo-capa.visible .v2-sorteo{transform:none;}
+.v2-sorteo-cerrar{position:absolute; top:8px; right:10px; width:36px; height:36px; border:0; background:none; font-size:24px; line-height:1; color:#7A5F2A; cursor:pointer;}
+.v2-sorteo-eyebrow{margin:0 0 10px; font-family:'Inter', system-ui, sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#B08A45;}
+.v2-sorteo-txt{margin:0; font-family:'Cormorant Garamond', Georgia, serif; font-size:24px; line-height:1.3; color:#173634;}
+.v2-sorteo-txt::before, .v2-sorteo-txt::after{content:" ✦ "; color:#B08A45; font-size:.8em;}
+.v2-sorteo-ok{margin-top:22px; width:100%; height:48px; border:0; border-radius:3px; background:#173634; color:#fff; font-family:'Inter', system-ui, sans-serif; font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; cursor:pointer;}

@@ -1775,6 +1775,7 @@ function urlPiezaHombre(prod, clave) {
   // MEN: las piezas de hombre (hombre.js), con circulitos de acabado y,
   // encima, el tipo de pieza (?t=colgantes por defecto).
   if (coleccion === 'men' && typeof COLECCION_HOMBRE !== 'undefined') {
+    avisoSorteo();
     // ?t=brazaletes (enlaces antiguos) lleva a Pulseras, que los incluye
     const pedido = new URLSearchParams(location.search).get('t');
     const tabPedida = TIPOS_HOMBRE.find(t => t.clave === pedido || (t.incluye || []).includes(pedido));
@@ -4775,3 +4776,24 @@ zoomEnFotos(document.querySelector('.v2-charm-vista'));
   if (!acabado || !cabecera || !document.body.classList.contains('v2')) return;
   cabecera.after(acabado);
 })();
+
+
+/* ---------- Aviso del sorteo (colección de hombre, 1/11/2026) ----------
+   Ventana pequeña al entrar: "Con tu compra, entras en el sorteo de 5
+   videollamadas con Adri". Una vez por visita (sessionStorage). */
+function avisoSorteo() {
+  try { if (sessionStorage.getItem('cz_aviso_sorteo')) return; sessionStorage.setItem('cz_aviso_sorteo', '1'); } catch (_) {}
+  const capa = document.createElement('div');
+  capa.className = 'v2-sorteo-capa';
+  capa.innerHTML =
+    '<div class="v2-sorteo" role="dialog" aria-modal="true" aria-labelledby="v2-sorteo-txt">' +
+      '<button type="button" class="v2-sorteo-cerrar" aria-label="Cerrar">×</button>' +
+      '<p class="v2-sorteo-eyebrow">Semana de lanzamiento</p>' +
+      '<p class="v2-sorteo-txt" id="v2-sorteo-txt">Con tu compra, entras en el sorteo de <strong>5 videollamadas con Adri</strong></p>' +
+      '<button type="button" class="v2-sorteo-ok">Ver la colección</button>' +
+    '</div>';
+  const cerrar = () => { capa.classList.remove('visible'); setTimeout(() => capa.remove(), 300); };
+  capa.addEventListener('click', (e) => { if (e.target === capa || e.target.closest('.v2-sorteo-cerrar, .v2-sorteo-ok')) cerrar(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrar(); }, { once: true });
+  setTimeout(() => { document.body.append(capa); void capa.offsetWidth; capa.classList.add('visible'); }, 1200);
+}
