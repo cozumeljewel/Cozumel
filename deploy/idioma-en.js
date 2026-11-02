@@ -578,6 +578,7 @@ COZUMEL_EN_CARGADO({
  "Tu pedido": "Your order",
  "Entrega": "Delivery",
  "Envío incluido en el precio": "Shipping included in the price",
+ "Enviamos a todo el mundo": "We ship worldwide",
  "Todas las transacciones son seguras y están encriptadas. Pagarás con tarjeta o PayPal en la página segura de Stripe.": "All transactions are secure and encrypted. You will pay by card or PayPal on Stripe’s secure page.",
  "Descuento de lanzamiento": "Launch discount",
  "Incluido": "Included",

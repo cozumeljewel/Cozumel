@@ -1787,6 +1787,9 @@ en: Payment
 es: Envío incluido en el precio
 en: Shipping included in the price
 
+es: Enviamos a todo el mundo
+en: We ship worldwide
+
 es: Todas las transacciones son seguras y están encriptadas. Pagarás con tarjeta o PayPal en la página segura de Stripe.
 en: All transactions are secure and encrypted. You will pay by card or PayPal on Stripe’s secure page.
 

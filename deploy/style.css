@@ -4523,3 +4523,8 @@ body.v2 .checkout .carrito-item-quitar{position:static; transform:none; grid-col
    móvil, ciudad y estado debajo del código postal) */
 body.v2 .checkout-fila--3{grid-template-columns:1fr 1fr 1fr;}
 @media (max-width:599px){ body.v2 .checkout-fila--3{grid-template-columns:1fr 1fr;} body.v2 .checkout-fila--3 > :first-child{grid-column:1 / -1;} }
+
+/* Envío: enviamos a todo el mundo */
+body.v2 .checkout-caja--envio{display:flex; align-items:center; gap:12px;}
+body.v2 .checkout-caja--envio strong{font-size:15px;}
+body.v2 .checkout-envio-globo{font-size:24px; line-height:1;}
