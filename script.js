@@ -1413,6 +1413,10 @@ function urlPiezaHombre(prod, clave) {
         quitar.setAttribute('aria-label', 'Quitar el colgante');
         quitar.addEventListener('click', () => { charmElegido = null; charmAuto = false; grabadoColgante = ''; pintarColgantes(); });
         elegidoBar.append(f, txt, cambiar, quitar);
+        // 2/11: toda la barra abre la ventana para cambiarlo (menos la ×)
+        f.style.cursor = txt.style.cursor = 'pointer';
+        f.addEventListener('click', () => abrirColgante(ch));
+        txt.addEventListener('click', () => abrirColgante(ch));
       }
     }
 
