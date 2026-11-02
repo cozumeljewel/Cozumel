@@ -17,19 +17,41 @@
      equipo = si, para poder filtrarlas en el panel.
    · Se carga en <head>, sin defer, en todas las páginas.
    · CLARITY_ID vacío = desactivado.
+   · Píxeles de publicidad (2/11/2026): Meta (Instagram/Facebook) y TikTok,
+     para que los anuncios sepan quién compra. SOLO fuera de Europa (en la
+     UE pedirían el aviso de cookies). Id vacío = desactivado. Eventos:
+     COZUMEL_ANALITICA.evento('ViewContent' | 'AddToCart' |
+     'InitiateCheckout' | 'Purchase', { value, currency, content_ids }).
    ========================================================= */
 (function () {
   const CLARITY_ID = 'yyzhqgqqw3';
+  const META_PIXEL_ID = '';    // Administrador de eventos de Meta → píxel
+  const TIKTOK_PIXEL_ID = '';  // TikTok Ads Manager → Herramientas → Eventos
   const CLAVE_NO = 'cozumel_analitica';
   const EUROPA = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
     'PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'];
 
+  let pixelesListos = false;
+  const pendientes = [];
   window.COZUMEL_ANALITICA = {
     desactivar() {
       try { localStorage.setItem(CLAVE_NO, 'no'); } catch (_) {}
       if (typeof window.clarity === 'function') window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' });
     },
     activa() { try { return localStorage.getItem(CLAVE_NO) !== 'no'; } catch (_) { return true; } },
+    // Eventos de compra para los píxeles (si están cargados; si no, nada)
+    evento(nombre, datos) {
+      // Si los píxeles aún no han cargado (se espera al país), se guarda
+      if (!pixelesListos) { pendientes.push([nombre, datos]); return; }
+      try {
+        if (typeof window.fbq === 'function') window.fbq('track', nombre, datos || {});
+        if (window.ttq && typeof window.ttq.track === 'function') {
+          const TT = { ViewContent: 'ViewContent', AddToCart: 'AddToCart', InitiateCheckout: 'InitiateCheckout', Purchase: 'CompletePayment' };
+          const d = datos || {};
+          window.ttq.track(TT[nombre] || nombre, { value: d.value, currency: d.currency, contents: (d.content_ids || []).map(id => ({ content_id: id })) });
+        }
+      } catch (_) {}
+    },
   };
   if (!CLARITY_ID || !window.COZUMEL_ANALITICA.activa()) return;
   // En local (pruebas) no se mide nada
@@ -58,6 +80,29 @@
     try { equipo = localStorage.getItem('cozumel_acceso_web') === '1'; } catch (_) {}
     window.clarity('set', 'equipo', equipo ? 'si' : 'no');
     window.clarity('set', 'web', document.documentElement.classList.contains('web-cerrada') ? 'cerrada' : 'abierta');
+    if (conCookies && !equipo) cargarPixeles();
+  }
+
+  // Píxeles de Meta y TikTok: código oficial de cada uno (solo fuera de Europa)
+  function cargarPixeles() {
+    if (META_PIXEL_ID) {
+      /* eslint-disable */
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init', META_PIXEL_ID);
+      window.fbq('track', 'PageView');
+    }
+    if (TIKTOK_PIXEL_ID) {
+      !function (w, d, t) {
+        w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript",o.async=!0,o.src=r+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+        ttq.load(TIKTOK_PIXEL_ID);
+        ttq.page();
+      }(window, document, 'ttq');
+      /* eslint-enable */
+    }
+    pixelesListos = true;
+    pendientes.splice(0).forEach(([n, d]) => window.COZUMEL_ANALITICA.evento(n, d));
   }
 
   const pais = leerPais();

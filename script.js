@@ -1697,6 +1697,7 @@ function urlPiezaHombre(prod, clave) {
       mercado: precio.mercado, moneda: precio.moneda, precio: precio.importe,
     }));
     if (typeof trackEvent === 'function') trackEvent('reserva_iniciada', prod.id);
+    if (window.COZUMEL_ANALITICA) COZUMEL_ANALITICA.evento('AddToCart', { value: precio.importe, currency: precio.moneda, content_ids: [prod.id] });
     boton.disabled = true;
     boton.textContent = 'Añadido · yendo al carrito…';
     setTimeout(() => { location.href = 'comprar.html'; }, 350);
@@ -1758,6 +1759,11 @@ function urlPiezaHombre(prod, clave) {
     tonos.querySelectorAll('button').forEach(bt => bt.setAttribute('aria-pressed', String(bt.dataset.tono === clave)));
   }
   pintar();
+  // Píxeles de publicidad: ficha vista
+  if (window.COZUMEL_ANALITICA) {
+    const pv = precioCobro(prod);
+    COZUMEL_ANALITICA.evento('ViewContent', { value: pv ? pv.importe : undefined, currency: pv ? pv.moneda : undefined, content_ids: [prod.id] });
+  }
 
   // Debajo: scroll horizontal con las otras piezas del mismo tipo
   // (si abres un collar, salen los demás collares).
@@ -4377,6 +4383,12 @@ if (reservaForm) {
           ? `${({ CL: 'RUT', PE: 'DNI/RUC', AR: 'CUIT/CUIL' })[paisEnvioElegido()]}: ${reservaForm.documento.value.trim()}`
           : '',
       ].filter(Boolean).join(' · '),
+      // La dirección también por partes (v40), para la plantilla de Emanco
+      dir_calle: valDir('r-calle') || null,
+      dir_piso: valDir('r-piso') || null,
+      dir_cp: valDir('r-cp') || null,
+      dir_ciudad: valDir('r-ciudad') || null,
+      dir_provincia: valDir('r-provincia') || null,
       fuente: 'adri_story',
       estado: 'pendiente_pago',
       consentimiento: document.getElementById('r-consent').checked,
@@ -4487,6 +4499,10 @@ if (reservaForm) {
       }
 
       await Promise.all(items.map(({ prod }) => trackEvent('compra_iniciada', prod.id)));
+      if (window.COZUMEL_ANALITICA) {
+        const tot = items.reduce((t, { prod }) => t + ((precioCobro(prod) || {}).importe || 0), 0);
+        COZUMEL_ANALITICA.evento('InitiateCheckout', { value: tot, currency: getMoneda(), content_ids: items.map(({ prod }) => prod.id) });
+      }
       // El carrito NO se vacía aquí a propósito: si Stripe cancela y
       // vuelve a comprar.html, tiene que seguir viendo las mismas piezas
       // sin tener que volver a añadirlas. Se vacía solo cuando el pago se
@@ -4540,13 +4556,20 @@ if (reservaForm) {
       // UPDATE, así que en la práctica cambian de estado a la vez.
       const { data, error } = await sb
         .from('reservas')
-        .select('estado, producto')
+        .select('estado, producto, precio_pagado, moneda')
         .eq('stripe_session_id', sessionId);
 
       if (error) console.error(error);
 
       if (data && data.length > 0 && data.every(fila => fila.estado === 'pagado')) {
         data.forEach(fila => trackEvent('compra_completada', fila.producto));
+        // Píxeles de Meta / TikTok: la compra, una sola vez por pago
+        try {
+          if (window.COZUMEL_ANALITICA && sessionStorage.getItem('px:' + sessionId) !== '1') {
+            sessionStorage.setItem('px:' + sessionId, '1');
+            COZUMEL_ANALITICA.evento('Purchase', { value: data.reduce((t, f) => t + Number(f.precio_pagado || 0), 0), currency: data[0].moneda || 'USD', content_ids: data.map(f => f.producto) });
+          }
+        } catch (_) {}
         vaciarCarrito(); // ahora sí: el pago ya está confirmado de verdad
         // Esas filas ya están pagadas: no se pueden reutilizar nunca más.
         try { sessionStorage.removeItem('cozumel_reserva_pendiente'); } catch (_) {}
