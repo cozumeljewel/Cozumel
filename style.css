@@ -4518,3 +4518,8 @@ body.v2 .checkout .carrito-item-quitar{position:static; transform:none; grid-col
 .checkout-app{margin:0 0 4px; padding:14px 16px; border:1px solid #C6A664; border-radius:5px; background:#F8F3E9; font-size:13.5px; line-height:1.5; color:#5C4720;}
 .checkout-app p{margin:0;}
 .checkout-app button{margin-top:10px; padding:8px 14px; border:1px solid #B08A45; border-radius:4px; background:#fff; font-size:13px; color:#5C4720; cursor:pointer;}
+
+/* 2/11/2026 · Carrito: código postal, ciudad y estado en una fila (en el
+   móvil, ciudad y estado debajo del código postal) */
+body.v2 .checkout-fila--3{grid-template-columns:1fr 1fr 1fr;}
+@media (max-width:599px){ body.v2 .checkout-fila--3{grid-template-columns:1fr 1fr;} body.v2 .checkout-fila--3 > :first-child{grid-column:1 / -1;} }

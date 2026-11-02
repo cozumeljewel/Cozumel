@@ -598,7 +598,15 @@ COZUMEL_EN_CARGADO({
  "Ocultar resumen del pedido": "Hide order summary",
  "Copiar enlace": "Copy link",
  "Enlace copiado": "Link copied",
- "Estás en el navegador de la app. Para pagar con <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».": "You’re in the app’s browser. To pay with <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”."
+ "Estás en el navegador de la app. Para pagar con <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».": "You’re in the app’s browser. To pay with <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”.",
+ "Calle y número": "Street and number",
+ "Apartamento, piso, etc. (opcional)": "Apartment, suite, etc. (optional)",
+ "Código postal": "ZIP / Postal code",
+ "Ciudad": "City",
+ "Estado / Provincia": "State / Province",
+ "Escribe la calle con su número (por ejemplo: 1714 E Street)": "Enter your street and number (for example: 1714 E Street)",
+ "Escribe la ciudad": "Enter your city",
+ "Escribe el estado o la provincia": "Enter your state or province"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

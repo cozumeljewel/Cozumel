@@ -1852,3 +1852,27 @@ en: Link copied
 
 es: Estás en el navegador de la app. Para pagar con <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».
 en: You’re in the app’s browser. To pay with <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”.
+
+es: Calle y número
+en: Street and number
+
+es: Apartamento, piso, etc. (opcional)
+en: Apartment, suite, etc. (optional)
+
+es: Código postal
+en: ZIP / Postal code
+
+es: Ciudad
+en: City
+
+es: Estado / Provincia
+en: State / Province
+
+es: Escribe la calle con su número (por ejemplo: 1714 E Street)
+en: Enter your street and number (for example: 1714 E Street)
+
+es: Escribe la ciudad
+en: Enter your city
+
+es: Escribe el estado o la provincia
+en: Enter your state or province

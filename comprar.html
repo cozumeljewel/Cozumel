@@ -138,10 +138,31 @@
               <input id="r-apellidos" name="apellidos" type="text" required placeholder="Apellidos" autocomplete="family-name">
             </div>
           </div>
+          <!-- 2/11/2026: la dirección por partes (antes un solo campo) y
+               obligatoria; script.js la junta en direccion_envio. -->
           <div class="field">
-            <label for="r-direccion">Dirección</label>
-            <input id="r-direccion" name="direccion_envio" type="text" required placeholder="Calle, número, ciudad y código postal" autocomplete="street-address">
+            <label for="r-calle">Dirección</label>
+            <input id="r-calle" name="calle" type="text" required placeholder="Calle y número" autocomplete="address-line1">
           </div>
+          <div class="field">
+            <label for="r-piso">Apartamento, piso, etc. (opcional)</label>
+            <input id="r-piso" name="piso" type="text" placeholder="Apartamento, piso, etc. (opcional)" autocomplete="address-line2">
+          </div>
+          <div class="checkout-fila checkout-fila--3">
+            <div class="field">
+              <label for="r-cp">Código postal</label>
+              <input id="r-cp" name="cp" type="text" required placeholder="Código postal" autocomplete="postal-code">
+            </div>
+            <div class="field">
+              <label for="r-ciudad">Ciudad</label>
+              <input id="r-ciudad" name="ciudad" type="text" required placeholder="Ciudad" autocomplete="address-level2">
+            </div>
+            <div class="field">
+              <label for="r-provincia">Estado / Provincia</label>
+              <input id="r-provincia" name="provincia" type="text" required placeholder="Estado / Provincia" autocomplete="address-level1">
+            </div>
+          </div>
+          <input type="hidden" id="r-direccion" name="direccion_envio">
           <!-- Solo en Chile y Perú: script.js lo enseña y lo hace obligatorio. -->
           <div class="field" id="campo-documento" hidden>
             <label for="r-documento" id="r-documento-label">RUT</label>
