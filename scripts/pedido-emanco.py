@@ -16,6 +16,7 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(RAIZ)
 PLANTILLA = 'SKU PRODUCTOS COLECCIÓN 1/Purchasing Service Order Form Template.xlsx'
 CATALOGOS = ['SKU PRODUCTOS COLECCIÓN 1/Emanco Men Jewelry Catalog (3).xlsx', 'SKU PRODUCTOS COLECCIÓN 1/Emanco Charms Catalog.xlsx']
+CATALOGO_MUJER = 'SKU PRODUCTOS COLECCIÓN 1/Cozumel SKU.xls'
 PAISES = {'Estados Unidos': 'US', 'México': 'MX', 'España': 'ES', 'Guatemala': 'GT', 'Chile': 'CL', 'Perú': 'PE',
           'Argentina': 'AR', 'Colombia': 'CO', 'Costa Rica': 'CR', 'Ecuador': 'EC', 'El Salvador': 'SV'}
 ESTADOS_US = {'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR', 'california': 'CA', 'colorado': 'CO',
@@ -51,6 +52,15 @@ def precios():
                         d.setdefault(c.strip(), p if isinstance(p, (int, float)) else ultimo)
                 if isinstance(p, (int, float)):
                     ultimo = p
+    # Catálogo de mujer (.xls): ITEM, foto, SKU, color, precio
+    import xlrd
+    for sh in xlrd.open_workbook(CATALOGO_MUJER).sheets():
+        for i in range(1, sh.nrows):
+            v = sh.row_values(i)
+            if isinstance(v[4], float):
+                for k in (str(v[0]).split()[0] if v[0] else '', str(v[2]).strip()):
+                    if k:
+                        d.setdefault(k, v[4])
     return d
 
 
@@ -133,7 +143,8 @@ for r in filas:
             r['dir_cp'], r['dir_ciudad'], nombre_estado(r['pais'], r['dir_provincia']), codigo_estado(r['pais'], r['dir_provincia']),
             r['pais'], PAISES.get(r['pais'], '')]
     props = [k.capitalize() + ': ' + p[k] for k in ('grosor', 'largo', 'talla', 'ancho') if p.get(k)]
-    lineas = [(p.get('sku'), ' · '.join(props) or None)]
+    # Kits y grabados ("CDNN067-2 + diaoke"): una línea por SKU
+    lineas = [(k.strip(), ' · '.join(props) or None) for k in (p.get('sku') or r['sku'] or '').split(' + ')]
     if p.get('sku_colgante'):
         lineas.append((p['sku_colgante'], 'Colgante de regalo para ' + (r['pieza'] or '') +
                        (' · Engraving: ' + p['grabado'] if p.get('grabado') else '')))
