@@ -1880,11 +1880,11 @@ en: Enter your city
 es: Escribe el estado o la provincia
 en: Enter your state or province
 
-es: 🔒 Pago seguro con Stripe
-en: 🔒 Secure payment with Stripe
+es: Pago seguro con Stripe
+en: Secure payment with Stripe
 
-es: ✨ Si algo no te convence, lo solucionamos contigo
-en: ✨ If something isn't right, we'll sort it out with you
+es: Si algo no te convence, lo solucionamos contigo
+en: If something isn't right, we'll sort it out with you
 
 es: ¿Dudas antes de comprar?
 en: Questions before buying?
@@ -1897,3 +1897,6 @@ en: Did your bank decline the card?
 
 es: Pasa a veces con pagos internacionales. Prueba con otra tarjeta o con PayPal, o escríbenos y te ayudamos a terminar tu compra
 en: This sometimes happens with international payments. Try another card or PayPal, or message us and we'll help you complete your purchase
+
+es: Al pagar, aceptas que usemos estos datos para gestionar tu pedido y escribirte sobre él.
+en: By paying, you agree that we use this data to process your order and contact you about it.

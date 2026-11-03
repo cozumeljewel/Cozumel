@@ -4403,7 +4403,7 @@ if (reservaForm) {
       dir_provincia: valDir('r-provincia') || null,
       fuente: 'adri_story',
       estado: 'pendiente_pago',
-      consentimiento: document.getElementById('r-consent').checked,
+      consentimiento: true, // aviso bajo el botón de pago (3/11), sin casilla
       session_id: getSessionId(),
     };
 

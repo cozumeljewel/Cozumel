@@ -196,7 +196,6 @@
 
           <h2 class="checkout-seccion">Envío</h2>
           <div class="checkout-caja checkout-caja--envio">
-            <span class="checkout-envio-globo" aria-hidden="true">🌍</span>
             <span><strong>Enviamos a todo el mundo</strong><br>Envío incluido en el precio</span>
           </div>
 
@@ -207,15 +206,14 @@
             <button type="button" id="checkout-app-copiar">Copiar enlace</button>
           </div>
           <p class="checkout-nota">Todas las transacciones son seguras y están encriptadas. Pagarás con tarjeta o PayPal en la página segura de Stripe.</p>
-          <label class="consent">
-            <input type="checkbox" id="r-consent" required>
-            <span>Acepto que guarden estos datos para contactarme sobre esta reserva</span>
-          </label>
+          <!-- 3/11: sin casilla obligatoria (un paso menos antes de pagar); el
+               aviso basta para escribirle sobre su pedido -->
+          <p class="checkout-nota">Al pagar, aceptas que usemos estos datos para gestionar tu pedido y escribirte sobre él.</p>
           <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Pagar y comprar</button>
           <!-- 3/11: confianza y ayuda justo antes de pagar -->
           <ul class="checkout-confianza">
-            <li>🔒 Pago seguro con Stripe</li>
-            <li>✨ Si algo no te convence, lo solucionamos contigo</li>
+            <li>Pago seguro con Stripe</li>
+            <li>Si algo no te convence, lo solucionamos contigo</li>
           </ul>
           <a class="checkout-wa" href="https://wa.me/34604094868?text=Hola%2C%20tengo%20una%20duda%20sobre%20mi%20pedido" target="_blank" rel="noopener">¿Dudas antes de comprar? <strong>Escríbenos por WhatsApp</strong></a>
           <p class="reserva-config-warning" id="sin-precio" hidden>

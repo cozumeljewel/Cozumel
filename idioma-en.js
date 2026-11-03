@@ -608,12 +608,13 @@ COZUMEL_EN_CARGADO({
  "Escribe la calle con su número (por ejemplo: 1714 E Street)": "Enter your street and number (for example: 1714 E Street)",
  "Escribe la ciudad": "Enter your city",
  "Escribe el estado o la provincia": "Enter your state or province",
- "🔒 Pago seguro con Stripe": "🔒 Secure payment with Stripe",
- "✨ Si algo no te convence, lo solucionamos contigo": "✨ If something isn't right, we'll sort it out with you",
+ "Pago seguro con Stripe": "Secure payment with Stripe",
+ "Si algo no te convence, lo solucionamos contigo": "If something isn't right, we'll sort it out with you",
  "¿Dudas antes de comprar?": "Questions before buying?",
  "Escríbenos por WhatsApp": "Message us on WhatsApp",
  "¿Tu banco rechazó la tarjeta?": "Did your bank decline the card?",
- "Pasa a veces con pagos internacionales. Prueba con otra tarjeta o con PayPal, o escríbenos y te ayudamos a terminar tu compra": "This sometimes happens with international payments. Try another card or PayPal, or message us and we'll help you complete your purchase"
+ "Pasa a veces con pagos internacionales. Prueba con otra tarjeta o con PayPal, o escríbenos y te ayudamos a terminar tu compra": "This sometimes happens with international payments. Try another card or PayPal, or message us and we'll help you complete your purchase",
+ "Al pagar, aceptas que usemos estos datos para gestionar tu pedido y escribirte sobre él.": "By paying, you agree that we use this data to process your order and contact you about it."
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
