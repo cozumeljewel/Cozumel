@@ -4528,3 +4528,12 @@ body.v2 .checkout-fila--3{grid-template-columns:1fr 1fr 1fr;}
 body.v2 .checkout-caja--envio{display:flex; align-items:center; gap:12px;}
 body.v2 .checkout-caja--envio strong{font-size:15px;}
 body.v2 .checkout-envio-globo{font-size:24px; line-height:1;}
+
+/* Checkout: confianza y ayuda por WhatsApp antes de pagar */
+body.v2 .checkout-confianza{list-style:none; margin:12px 0 0; padding:0; display:grid; gap:4px; font-size:13px; color:#555; text-align:center;}
+body.v2 .checkout-wa{display:block; margin-top:12px; font-size:13px; color:#555; text-align:center; text-decoration:none;}
+body.v2 .checkout-wa strong{color:#1f8f4e; text-decoration:underline;}
+/* Pago cancelado o rechazado: salida por WhatsApp */
+.pago-rechazado-ayuda{margin-top:16px; font-size:14px;}
+.pago-cancelado .btn-wa{display:inline-block; margin-top:12px; margin-left:8px; background:#25d366; color:#fff; border:0;}
+@media (max-width:520px){.pago-cancelado .btn-wa{margin-left:0;}}

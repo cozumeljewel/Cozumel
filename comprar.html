@@ -212,6 +212,12 @@
             <span>Acepto que guarden estos datos para contactarme sobre esta reserva</span>
           </label>
           <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Pagar y comprar</button>
+          <!-- 3/11: confianza y ayuda justo antes de pagar -->
+          <ul class="checkout-confianza">
+            <li>🔒 Pago seguro con Stripe</li>
+            <li>✨ Si algo no te convence, lo solucionamos contigo</li>
+          </ul>
+          <a class="checkout-wa" href="https://wa.me/34604094868?text=Hola%2C%20tengo%20una%20duda%20sobre%20mi%20pedido" target="_blank" rel="noopener">¿Dudas antes de comprar? <strong>Escríbenos por WhatsApp</strong></a>
           <p class="reserva-config-warning" id="sin-precio" hidden>
             Precio pendiente de confirmar
           </p>
@@ -248,7 +254,10 @@
     <div class="pago-cancelado" id="pago-cancelado" hidden>
       <h2>Pago cancelado</h2>
       <p>No te hemos cobrado nada. Puedes intentarlo de nuevo cuando quieras</p>
+      <!-- 3/11: muchas tarjetas de fuera de España rechazan el cobro -->
+      <p class="pago-rechazado-ayuda"><strong>¿Tu banco rechazó la tarjeta?</strong><br>Pasa a veces con pagos internacionales. Prueba con otra tarjeta o con PayPal, o escríbenos y te ayudamos a terminar tu compra</p>
       <button type="button" class="btn btn-primary" id="btn-reintentar-pago">Volver a intentarlo</button>
+      <a class="btn btn-wa" href="https://wa.me/34604094868?text=Hola%2C%20no%20he%20podido%20pagar%20mi%20pedido%20en%20la%20web" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
     </div>
   </section>
 
