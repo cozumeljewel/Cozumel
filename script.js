@@ -1534,6 +1534,14 @@ function urlPiezaHombre(prod, clave) {
       pintarColgantes();
     }
     marcarCharm();
+    // 3/11: enlace de un vídeo (…&colgante=cruz_2): la pieza llega con ese
+    // colgante elegido y su ventana abierta.
+    const chUrl = CHARMS_HOMBRE.find(c => c.id === params.get('colgante'));
+    if (chUrl && chUrl.fotos[colorCharm()]) {
+      charmElegido = chUrl.id; charmAuto = false;
+      pintarColgantes();
+      setTimeout(() => abrirColgante(chUrl)); // cuando la ficha ya esté entera
+    }
     // Al cambiar el color de la cadena, el colgante cambia de color con ella.
     tonos.addEventListener('click', () => setTimeout(marcarCharm));
   }
