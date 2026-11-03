@@ -5,7 +5,7 @@ partes: calle, piso, código postal, ciudad, estado y su código.
 
 Uso (desde la raíz):
     python scripts/pedido-emanco.py                 todos los pedidos
-    python scripts/pedido-emanco.py 2026-11-02      pagados desde ese día
+    python scripts/pedido-emanco.py "2026-11-02 12:00"   pagados desde entonces (hora de España)
 Deja el Excel en el escritorio: "Pedido Emanco <fecha>.xlsx".
 """
 import datetime, json, os, re, shutil, subprocess, sys
@@ -99,15 +99,18 @@ def nombre_estado(pais, prov):
 
 
 desde = sys.argv[1] if len(sys.argv) > 1 else '2000-01-01'
-sql = ("select coalesce(stripe_session_id, id::text) ref, pagado_en, pieza, sku, personalizacion, nombre, apellidos, whatsapp, "
+# Se leen todos para que el número CZ-10xx de cada pedido sea siempre el
+# mismo; solo se escriben los pagados desde "desde" (hora de España).
+sql = ("select coalesce(stripe_session_id, id::text) ref, "
+       f"pagado_en >= '{desde}'::timestamp at time zone 'Europe/Madrid' nuevo, pagado_en, pieza, sku, personalizacion, nombre, apellidos, whatsapp, "
        "direccion_envio, pais, dir_calle, dir_piso, dir_cp, dir_ciudad, dir_provincia from pedidos "
-       f"where pagado_en >= '{desde}' order by pagado_en")
+       "order by pagado_en")
 out = subprocess.run([shutil.which('supabase') or 'supabase', 'db', 'query', '--linked', sql], capture_output=True)
 filas = json.loads(out.stdout.decode('utf-8'))['rows']
 tabla = precios()
 
 hoy = datetime.date.today().isoformat()
-dst = os.path.join(os.path.expanduser('~'), 'Desktop', f'Pedido Emanco {hoy}.xlsx')
+dst = os.path.join(os.path.expanduser('~'), 'Desktop', f'Pedido Emanco {hoy}' + (' (desde ' + desde.replace(':', 'h') + ')' if len(sys.argv) > 1 else '') + '.xlsx')
 shutil.copy(PLANTILLA, dst)
 wb = openpyxl.load_workbook(dst)
 ws = wb['Orders']
@@ -119,6 +122,8 @@ for r in filas:
     if r['ref'] not in refs:
         refs.append(r['ref'])
     num = 'CZ-%d' % (1000 + refs.index(r['ref']) + 1)
+    if not r['nuevo']:
+        continue
     p = r['personalizacion'] if isinstance(r['personalizacion'], dict) else json.loads(r['personalizacion'] or '{}')
     calle = r['dir_calle'] or r['direccion_envio']
     base = [num, None, (r['nombre'] or '').strip(), (r['apellidos'] or '').strip(), r['whatsapp'], calle, r['dir_piso'],
@@ -139,4 +144,4 @@ for r in filas:
         total += c or 0
         n += 1
 wb.save(dst)
-print(f'{dst}\n{len(refs)} pedidos, {n - 2} filas, coste {total:.2f} $' + (f' · sin coste: {sin}' if sin else ''))
+print(f'{dst}\n{len({r['ref'] for r in filas if r['nuevo']})} pedidos, {n - 2} filas, coste {total:.2f} $' + (f' · sin coste: {sin}' if sin else ''))
