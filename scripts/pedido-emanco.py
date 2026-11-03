@@ -32,7 +32,7 @@ def precios():
     d = {}
     for f in CATALOGOS:
         for ws in openpyxl.load_workbook(f, data_only=True).worksheets:
-            isku = ip = None
+            isku = ip = ultimo = None
             for row in ws.iter_rows(values_only=True):
                 if ip is None:
                     if row and any(isinstance(c, str) and 'price' in c.lower() for c in row if c):
@@ -44,17 +44,41 @@ def precios():
                 p = row[ip] if len(row) > ip else None
                 if isinstance(s, str) and isinstance(p, (int, float)):
                     d[s.strip()] = p
+                # y por el SKU entero (p. ej. YP23732D0W0), aunque la fila no traiga precio propio
+                for c in row:
+                    if isinstance(c, str) and re.match(r'^[A-Z]+\d+[A-Z]\w{3}$', c.strip()):
+                        d.setdefault(c.strip(), p if isinstance(p, (int, float)) else ultimo)
+                if isinstance(p, (int, float)):
+                    ultimo = p
     return d
 
 
 def coste(tabla, sku):
-    if sku in tabla:
+    if tabla.get(sku) is not None:
         return round(tabla[sku], 2)
-    code = sku.split('-')[0]
+    code = re.match(r'[A-Z]+\d+', sku).group()
     for k, v in tabla.items():
-        if k.startswith(code):
+        if k.startswith(code) and v is not None:
             return round(v, 2)
     return None
+
+
+def sku_completo(tabla, sku):
+    # Emanco quiere el SKU entero: "JP40788-Gold Color" -> "JP40788D2A1".
+    # Tras el código va D (dorado) o A (plateado); si el catálogo solo trae
+    # el dorado, el plateado es el mismo con A (así lo confirmó Emanco).
+    m = re.match(r'^([A-Z]+\d+)-(Gold|Silver) Color$', sku or '')
+    if not m:
+        return sku
+    code, letra = m.group(1), 'D' if m.group(2) == 'Gold' else 'A'
+    cands = [k for k in tabla if re.match(code + r'[A-Z]\w{3}$', k)]
+    for k in cands:
+        if k[len(code)] == letra:
+            return k
+    for k in cands:
+        if k[len(code)] == 'D':
+            return code + letra + k[len(code) + 1:]
+    return sku
 
 
 def codigo_estado(pais, prov):
@@ -106,6 +130,7 @@ for r in filas:
         lineas.append((p['sku_colgante'], 'Colgante de regalo para ' + (r['pieza'] or '') +
                        (' · Engraving: ' + p['grabado'] if p.get('grabado') else '')))
     for sku, prop in lineas:
+        sku = sku_completo(tabla, sku)
         c = coste(tabla, sku) if sku else None
         if c is None:
             sin.append(sku)
