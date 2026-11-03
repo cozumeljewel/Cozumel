@@ -6,6 +6,7 @@ partes: calle, piso, código postal, ciudad, estado y su código.
 Uso (desde la raíz):
     python scripts/pedido-emanco.py                 todos los pedidos
     python scripts/pedido-emanco.py "2026-11-02 12:00"   pagados desde entonces (hora de España)
+    python scripts/pedido-emanco.py 2000-01-01 "2026-11-02 12:00"   pagados hasta esa hora
 Deja el Excel en el escritorio: "Pedido Emanco <fecha>.xlsx".
 """
 import datetime, json, os, re, shutil, subprocess, sys
@@ -99,10 +100,11 @@ def nombre_estado(pais, prov):
 
 
 desde = sys.argv[1] if len(sys.argv) > 1 else '2000-01-01'
+hasta = sys.argv[2] if len(sys.argv) > 2 else '2100-01-01'
 # Se leen todos para que el número CZ-10xx de cada pedido sea siempre el
 # mismo; solo se escriben los pagados desde "desde" (hora de España).
 sql = ("select coalesce(stripe_session_id, id::text) ref, "
-       f"pagado_en >= '{desde}'::timestamp at time zone 'Europe/Madrid' nuevo, pagado_en, pieza, sku, personalizacion, nombre, apellidos, whatsapp, "
+       f"pagado_en >= '{desde}'::timestamp at time zone 'Europe/Madrid' and pagado_en < '{hasta}'::timestamp at time zone 'Europe/Madrid' nuevo, pagado_en, pieza, sku, personalizacion, nombre, apellidos, whatsapp, "
        "direccion_envio, pais, dir_calle, dir_piso, dir_cp, dir_ciudad, dir_provincia from pedidos "
        "order by pagado_en")
 out = subprocess.run([shutil.which('supabase') or 'supabase', 'db', 'query', '--linked', sql], capture_output=True)
@@ -110,7 +112,8 @@ filas = json.loads(out.stdout.decode('utf-8'))['rows']
 tabla = precios()
 
 hoy = datetime.date.today().isoformat()
-dst = os.path.join(os.path.expanduser('~'), 'Desktop', f'Pedido Emanco {hoy}' + (' (desde ' + desde.replace(':', 'h') + ')' if len(sys.argv) > 1 else '') + '.xlsx')
+dst = os.path.join(os.path.expanduser('~'), 'Desktop', f'Pedido Emanco {hoy}' + (' (desde ' + desde.replace(':', 'h') + ')' if len(sys.argv) == 2 else '')
+                   + (' (hasta ' + hasta.replace(':', 'h') + ')' if len(sys.argv) > 2 else '') + '.xlsx')
 shutil.copy(PLANTILLA, dst)
 wb = openpyxl.load_workbook(dst)
 ws = wb['Orders']
