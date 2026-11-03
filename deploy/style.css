@@ -4525,6 +4525,14 @@ body.v2 .checkout-fila--3{grid-template-columns:1fr 1fr 1fr;}
 @media (max-width:599px){ body.v2 .checkout-fila--3{grid-template-columns:1fr 1fr;} body.v2 .checkout-fila--3 > :first-child{grid-column:1 / -1;} }
 
 /* Envío: enviamos a todo el mundo */
-body.v2 .checkout-caja--envio{display:flex; align-items:center; gap:12px;}
+body.v2 .checkout-caja--envio{text-align:center;}
 body.v2 .checkout-caja--envio strong{font-size:15px;}
-body.v2 .checkout-envio-globo{font-size:24px; line-height:1;}
+
+/* Checkout: confianza y ayuda por WhatsApp antes de pagar */
+body.v2 .checkout-confianza{list-style:none; margin:16px 0 0; padding:0; display:grid; gap:4px; font-size:12px; letter-spacing:.3px; color:#707070; text-align:center;}
+body.v2 .checkout-wa{display:block; margin:14px 0 0; padding-top:14px; border-top:1px solid #e6e6e6; font-size:13px; color:#707070; text-align:center; text-decoration:none;}
+body.v2 .checkout-wa strong{color:var(--deep); font-weight:600; text-decoration:underline; text-underline-offset:3px;}
+/* Pago cancelado o rechazado: salida por WhatsApp */
+.pago-rechazado-ayuda{margin-top:16px; font-size:14px;}
+.pago-cancelado .btn-wa{display:inline-block; margin-top:12px; margin-left:8px; background:transparent; color:var(--deep); border:1px solid var(--deep);}
+@media (max-width:520px){.pago-cancelado .btn-wa{margin-left:0;}}
