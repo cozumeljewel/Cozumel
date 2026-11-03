@@ -225,6 +225,6 @@ $function$;
 revoke all on function public.email_recordatorio_carrito(text) from public, anon, authenticated;
 revoke all on function public.enviar_recordatorios_carrito() from public, anon, authenticated;
 
--- Programación (se aplica aparte, al subir)
--- create extension if not exists pg_cron with schema pg_catalog;
--- select cron.schedule('recordatorio-carrito', '*/15 * * * *', 'select public.enviar_recordatorios_carrito()');
+-- Programación (activada el 3/11 a las 21:10)
+create extension if not exists pg_cron with schema pg_catalog;
+select cron.schedule('recordatorio-carrito', '*/15 * * * *', 'select public.enviar_recordatorios_carrito()');
