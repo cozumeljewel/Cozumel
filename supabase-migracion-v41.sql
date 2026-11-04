@@ -148,7 +148,7 @@ begin
     '{{PREHEADER}}', case when en then 'We saved your pieces. Complete your order whenever you like.'
                           else 'Te hemos guardado tus piezas. Termina tu compra cuando quieras.' end),
     '{{ANTETITULO}}', case when en then 'Your cart' else 'Tu carrito' end),
-    '{{SALUDO}}', case when en then 'Hi, ' else 'Hola, ' end || coalesce(esc_html(split_part(trim(nombre), ' ', 1)), '') || '.'),
+    '{{SALUDO}}', case when en then 'Hi' else 'Hola' end || coalesce(', ' || esc_html(split_part(nullif(trim(nombre), '—'), ' ', 1)), '') || '.'),
     '{{TEXTO}}', case when en then 'Your order wasn''t completed, but we''ve saved your pieces for you. If your bank declined the card, this sometimes happens with international payments: try again with another card or with PayPal.'
                       else 'Tu pedido no llegó a completarse, pero te hemos guardado tus piezas. Si tu banco rechazó la tarjeta, a veces pasa con pagos internacionales: prueba otra vez con otra tarjeta o con PayPal.' end),
     '{{TITULO_PEDIDO}}', case when en then 'Your pieces' else 'Tus piezas' end),
