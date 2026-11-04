@@ -140,7 +140,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
 
   const { data: filas, error: filasError } = await sb
     .from("reservas")
-    .select("id, producto, estado, mercado, moneda, pais, stripe_session_id")
+    .select("id, producto, estado, mercado, moneda, pais, email, stripe_session_id")
     .in("id", idsPedidos);
 
   if (filasError) {
@@ -274,8 +274,30 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     descuentos = [{ coupon: cupon.id }];
   }
 
+  // 4/11/2026: el nombre y la dirección se piden aquí, en Stripe (con
+  // Apple Pay / Google Pay llegan ya rellenos), y no en la web. Solo del
+  // país de envío elegido, que es el que fija el precio. El webhook los
+  // copia al pedido al pagar. Chile, Perú y Argentina: su documento para
+  // la aduana, como campo propio.
+  const DOCUMENTO: Record<string, string> = { CL: "RUT", PE: "DNI o RUC", AR: "CUIT o CUIL (11 dígitos)" };
+  const email = (filas[0] as { email?: string }).email?.trim();
+
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
+    ...(email && email.includes("@") ? { customer_email: email } : {}),
+    ...(codigoEnvio ? {
+      shipping_address_collection: {
+        allowed_countries: [codigoEnvio as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry],
+      },
+    } : {}),
+    ...(DOCUMENTO[codigoEnvio] ? {
+      custom_fields: [{
+        key: "documento",
+        label: { type: "custom" as const, custom: DOCUMENTO[codigoEnvio] },
+        type: "text" as const,
+        optional: false,
+      }],
+    } : {}),
     ...(descuentos ? { discounts: descuentos } : {}),
     line_items: lineas.map((l) => ({
       price_data: {

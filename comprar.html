@@ -119,7 +119,7 @@
             <input id="r-email" name="email" type="email" required placeholder="Correo electrónico" autocomplete="email">
           </div>
 
-          <h2 class="checkout-seccion">Entrega</h2>
+          <h2 class="checkout-seccion">País de envío</h2>
           <div class="field">
             <label for="r-pais">País / Región</label>
             <!-- Solo los países ACTIVOS de la tabla paises_envio (Supabase):
@@ -128,46 +128,10 @@
               <option value="" disabled selected>Elige el país de envío</option>
             </select>
           </div>
-          <div class="checkout-fila">
-            <div class="field">
-              <label for="r-nombre">Nombre</label>
-              <input id="r-nombre" name="nombre" type="text" required placeholder="Nombre" autocomplete="given-name">
-            </div>
-            <div class="field">
-              <label for="r-apellidos">Apellidos</label>
-              <input id="r-apellidos" name="apellidos" type="text" required placeholder="Apellidos" autocomplete="family-name">
-            </div>
-          </div>
-          <!-- 2/11/2026: la dirección por partes (antes un solo campo) y
-               obligatoria; script.js la junta en direccion_envio. -->
-          <div class="field">
-            <label for="r-calle">Dirección</label>
-            <input id="r-calle" name="calle" type="text" required placeholder="Calle y número" autocomplete="address-line1">
-          </div>
-          <div class="field">
-            <label for="r-piso">Apartamento, piso, etc. (opcional)</label>
-            <input id="r-piso" name="piso" type="text" placeholder="Apartamento, piso, etc. (opcional)" autocomplete="address-line2">
-          </div>
-          <div class="checkout-fila checkout-fila--3">
-            <div class="field">
-              <label for="r-cp">Código postal</label>
-              <input id="r-cp" name="cp" type="text" required placeholder="Código postal" autocomplete="postal-code">
-            </div>
-            <div class="field">
-              <label for="r-ciudad">Ciudad</label>
-              <input id="r-ciudad" name="ciudad" type="text" required placeholder="Ciudad" autocomplete="address-level2">
-            </div>
-            <div class="field">
-              <label for="r-provincia">Estado / Provincia</label>
-              <input id="r-provincia" name="provincia" type="text" required placeholder="Estado / Provincia" autocomplete="address-level1">
-            </div>
-          </div>
-          <input type="hidden" id="r-direccion" name="direccion_envio">
-          <!-- Solo en Chile y Perú: script.js lo enseña y lo hace obligatorio. -->
-          <div class="field" id="campo-documento" hidden>
-            <label for="r-documento" id="r-documento-label">RUT</label>
-            <input id="r-documento" name="documento" type="text" autocomplete="off">
-          </div>
+          <!-- 4/11/2026: el nombre y la dirección se piden en la página de pago
+               de Stripe (con Apple Pay / Google Pay van ya rellenos); el
+               webhook los guarda en el pedido. Aquí solo email, país y
+               WhatsApp. -->
           <div class="field">
             <label for="r-whatsapp">Teléfono (WhatsApp)</label>
             <div class="field-tel">
@@ -205,11 +169,11 @@
             <p>Estás en el navegador de la app. Para pagar con <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».</p>
             <button type="button" id="checkout-app-copiar">Copiar enlace</button>
           </div>
-          <p class="checkout-nota">Todas las transacciones son seguras y están encriptadas. Pagarás con tarjeta o PayPal en la página segura de Stripe.</p>
+          <p class="checkout-nota">En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.</p>
           <!-- 3/11: sin casilla obligatoria (un paso menos antes de pagar); el
                aviso basta para escribirle sobre su pedido -->
           <p class="checkout-nota">Al pagar, aceptas que usemos estos datos para gestionar tu pedido y escribirte sobre él.</p>
-          <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Pagar y comprar</button>
+          <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Continuar al pago</button>
           <!-- 3/11: confianza y ayuda justo antes de pagar -->
           <ul class="checkout-confianza">
             <li>Pago seguro con Stripe</li>

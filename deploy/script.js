@@ -3911,13 +3911,14 @@ async function cargarPaisesEnvio() {
 function sincronizarCampoDocumento() {
   const campo = document.getElementById('campo-documento');
   const input = document.getElementById('r-documento');
-  if (!campo || !input) return;
   // Por el país de ENVÍO elegido (no por la moneda): quien paga en pesos
   // mexicanos puede mandarlo a Chile, y es Chile quien pide el RUT.
   const codigo = paisEnvioElegido();
   const doc = DOCUMENTO_ADUANA[codigo];
   const avisoAr = document.getElementById('aviso-argentina');
   if (avisoAr) avisoAr.hidden = codigo !== 'AR';
+  // 4/11: el documento ya lo pide Stripe (crear-sesion-pago)
+  if (!campo || !input) return;
   campo.hidden = !doc;
   input.required = !!doc;
   if (doc) {
@@ -4337,21 +4338,6 @@ if (reservaForm) {
     e.preventDefault();
     hideReservaError();
 
-    // Dirección completa y bien escrita antes de seguir (2/11/2026): calle
-    // con número, código postal con el formato del país, ciudad y estado.
-    const campoDir = (id) => document.getElementById(id);
-    const valDir = (id) => (campoDir(id) ? campoDir(id).value.trim() : '');
-    const ccEnvio = paisEnvioElegido();
-    const FORMATO_CP = { US: /^\d{5}(-\d{4})?$/, MX: /^\d{5}$/, ES: /^\d{5}$/, DE: /^\d{5}$/, FR: /^\d{5}$/, IT: /^\d{5}$/,
-      GT: /^\d{5}$/, PE: /^\d{5}$/, CL: /^\d{7}$/, AR: /^([A-Za-z]\d{4}[A-Za-z]{3}|\d{4})$/, PT: /^\d{4}-?\d{3}$/ };
-    const fallo = (id, msg) => { showReservaError(msg); campoDir(id).focus(); campoDir(id).scrollIntoView({ block: 'center' }); };
-    const calle = valDir('r-calle'), cp = valDir('r-cp').replace(/\s+/g, ' '), ciudad = valDir('r-ciudad'), provincia = valDir('r-provincia');
-    if (calle.length < 5 || !/\d/.test(calle) || !/[A-Za-zÀ-ÿ]/.test(calle)) return fallo('r-calle', 'Escribe la calle con su número (por ejemplo: 1714 E Street)');
-    if (!cp || (FORMATO_CP[ccEnvio] ? !FORMATO_CP[ccEnvio].test(cp) : !/^[A-Za-z0-9 -]{3,10}$/.test(cp))) return fallo('r-cp', 'Revisa el código postal: no tiene el formato de ' + (reservaForm.pais.value || 'tu país'));
-    if (ciudad.length < 2) return fallo('r-ciudad', 'Escribe la ciudad');
-    if (provincia.length < 2) return fallo('r-provincia', 'Escribe el estado o la provincia');
-    reservaForm.direccion_envio.value = [calle, valDir('r-piso'), ciudad, provincia + ' ' + cp].filter(Boolean).join(', ');
-
     // Los datos de la ficha (nombre/dirección/etc) se comparten para
     // TODAS las piezas del pedido: es un único envío a una dirección, no
     // uno por pieza. Cada fila de "reservas" guarda su propio producto y
@@ -4382,25 +4368,13 @@ if (reservaForm) {
 
     const datosComunes = {
       user_id: sesionActual.user.id,
-      nombre: reservaForm.nombre.value.trim(),
-      apellidos: reservaForm.apellidos.value.trim(),
+      // 4/11/2026: nombre y dirección los pide Stripe y los guarda el
+      // webhook al pagar. Hasta entonces el nombre va con "—" (la columna
+      // no admite vacío).
+      nombre: '—',
       email: reservaForm.email.value.trim(),
       whatsapp: `${prefijoSelect.value} ${reservaForm.whatsapp.value.trim()}`.trim(),
       pais: reservaForm.pais.value.trim(),
-      // El RUT/DNI va pegado a la dirección: es donde se mira al preparar
-      // el envío, y así no hace falta una columna nueva en la base.
-      direccion_envio: [
-        reservaForm.direccion_envio.value.trim(),
-        DOCUMENTO_ADUANA[paisEnvioElegido()] && reservaForm.documento.value.trim()
-          ? `${({ CL: 'RUT', PE: 'DNI/RUC', AR: 'CUIT/CUIL' })[paisEnvioElegido()]}: ${reservaForm.documento.value.trim()}`
-          : '',
-      ].filter(Boolean).join(' · '),
-      // La dirección también por partes (v40), para la plantilla de Emanco
-      dir_calle: valDir('r-calle') || null,
-      dir_piso: valDir('r-piso') || null,
-      dir_cp: valDir('r-cp') || null,
-      dir_ciudad: valDir('r-ciudad') || null,
-      dir_provincia: valDir('r-provincia') || null,
       fuente: 'adri_story',
       estado: 'pendiente_pago',
       consentimiento: true, // aviso bajo el botón de pago (3/11), sin casilla
@@ -4479,7 +4453,7 @@ if (reservaForm) {
     if (error || !filasCreadas || filasCreadas.length !== payloads.length) {
       console.error(error ?? `esperadas ${payloads.length} filas, llegaron ${filasCreadas?.length ?? 0}`);
       reservaSubmitBtn.disabled = false;
-      reservaSubmitBtn.textContent = 'Pagar y comprar';
+      reservaSubmitBtn.textContent = 'Continuar al pago';
       showReservaError('No se pudo guardar tu pedido. Inténtalo de nuevo');
       return;
     }
@@ -4523,7 +4497,7 @@ if (reservaForm) {
     } catch (err) {
       console.error(err);
       reservaSubmitBtn.disabled = false;
-      reservaSubmitBtn.textContent = 'Pagar y comprar';
+      reservaSubmitBtn.textContent = 'Continuar al pago';
       showReservaError('No se pudo conectar con el pago. Inténtalo de nuevo');
     }
   });

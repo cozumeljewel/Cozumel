@@ -614,7 +614,10 @@ COZUMEL_EN_CARGADO({
  "Escríbenos por WhatsApp": "Message us on WhatsApp",
  "¿Tu banco rechazó la tarjeta?": "Did your bank decline the card?",
  "Pasa a veces con pagos internacionales. Prueba con otra tarjeta o con PayPal, o escríbenos y te ayudamos a terminar tu compra": "This sometimes happens with international payments. Try another card or PayPal, or message us and we'll help you complete your purchase",
- "Al pagar, aceptas que usemos estos datos para gestionar tu pedido y escribirte sobre él.": "By paying, you agree that we use this data to process your order and contact you about it."
+ "Al pagar, aceptas que usemos estos datos para gestionar tu pedido y escribirte sobre él.": "By paying, you agree that we use this data to process your order and contact you about it.",
+ "País de envío": "Shipping country",
+ "Continuar al pago": "Continue to payment",
+ "En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.": "In the next step, on Stripe's secure page, you enter your shipping address and pay by card, Apple Pay, Google Pay or PayPal."
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

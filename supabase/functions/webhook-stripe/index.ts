@@ -65,9 +65,16 @@ Deno.serve(async (req) => {
     // Un pedido con varias piezas es varias filas que comparten este mismo
     // stripe_session_id (ver crear-sesion-pago): este UPDATE con .eq() ya
     // marca TODAS las que coincidan, no solo una.
+    // 4/11/2026: el nombre y la dirección se piden en Stripe (ver
+    // crear-sesion-pago). Se guardan en el mismo UPDATE que marca el pago,
+    // para que la copia a "pedidos" y el email de confirmación ya los
+    // lleven. Las sesiones de antes, sin dirección en Stripe, no cambian.
+    const cambios: Record<string, string | null> = { estado: pagado ? "pagado" : "pago_fallido" };
+    if (pagado) Object.assign(cambios, await datosEnvio(sesion.id));
+
     const { data, error } = await sb
       .from("reservas")
-      .update({ estado: pagado ? "pagado" : "pago_fallido" })
+      .update(cambios)
       .eq("stripe_session_id", sesion.id)
       .select("id");
 
@@ -82,3 +89,45 @@ Deno.serve(async (req) => {
 
   return new Response(JSON.stringify({ recibido: true }), { status: 200 });
 });
+
+// Estados de México: Stripe da el código y Emanco quiere el nombre.
+const ESTADOS_MX: Record<string, string> = {
+  AGU: "Aguascalientes", BCN: "Baja California", BCS: "Baja California Sur", CAM: "Campeche",
+  CHP: "Chiapas", CHH: "Chihuahua", CMX: "Ciudad de México", DIF: "Ciudad de México", DF: "Ciudad de México",
+  COA: "Coahuila", COL: "Colima", DUR: "Durango", GUA: "Guanajuato", GRO: "Guerrero", HID: "Hidalgo",
+  JAL: "Jalisco", MEX: "Estado de México", MIC: "Michoacán", MOR: "Morelos", NAY: "Nayarit",
+  NLE: "Nuevo León", OAX: "Oaxaca", PUE: "Puebla", QUE: "Querétaro", ROO: "Quintana Roo",
+  SLP: "San Luis Potosí", SIN: "Sinaloa", SON: "Sonora", TAB: "Tabasco", TAM: "Tamaulipas",
+  TLA: "Tlaxcala", VER: "Veracruz", YUC: "Yucatán", ZAC: "Zacatecas",
+};
+
+// Nombre, dirección y documento que la persona escribió en Stripe. Se
+// relee la sesión (con la versión de la API de este código) en vez de
+// fiarse del evento, que llega con la versión del endpoint.
+async function datosEnvio(id: string): Promise<Record<string, string | null>> {
+  try {
+    const s = await stripe.checkout.sessions.retrieve(id);
+    const envio = s.shipping_details;
+    const dir = envio?.address;
+    if (!dir || !dir.line1) return {};
+    const nombreCompleto = (envio?.name || s.customer_details?.name || "").trim();
+    const [nombre, ...resto] = nombreCompleto.split(/\s+/);
+    const estado = dir.country === "MX" ? (ESTADOS_MX[(dir.state ?? "").toUpperCase()] ?? dir.state) : dir.state;
+    const doc = (s.custom_fields ?? []).find((c) => c.key === "documento")?.text?.value?.trim();
+    const etiqueta = ({ CL: "RUT", PE: "DNI/RUC", AR: "CUIT/CUIL" } as Record<string, string>)[dir.country ?? ""];
+    const direccion = [dir.line1, dir.line2, dir.city, [estado, dir.postal_code].filter(Boolean).join(" ")]
+      .filter(Boolean).join(", ");
+    return {
+      ...(nombre ? { nombre: nombre.slice(0, 80), apellidos: resto.join(" ") || null } : {}),
+      direccion_envio: [direccion, doc && etiqueta ? `${etiqueta}: ${doc}` : ""].filter(Boolean).join(" · "),
+      dir_calle: dir.line1,
+      dir_piso: dir.line2 || null,
+      dir_cp: dir.postal_code || null,
+      dir_ciudad: dir.city || null,
+      dir_provincia: estado || null,
+    };
+  } catch (err) {
+    console.error("No se pudo leer la dirección de Stripe:", err);
+    return {};
+  }
+}
