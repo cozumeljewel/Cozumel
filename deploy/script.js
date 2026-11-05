@@ -3846,6 +3846,23 @@ const PAISES_TELEFONO = [
   { pais: 'Zimbabue', codigo: '+263', iso: 'zw' },
 ];
 
+/* Identificadores de Meta para la Conversions API (supabase-migracion-v42):
+   solo con las cookies aceptadas; si no, el pedido no lleva ninguno. */
+function datosMetaPedido() {
+  const acepta = !!(window.COZUMEL_ANALITICA && COZUMEL_ANALITICA.consentimiento() === true);
+  if (!acepta) return { meta_consentimiento: false };
+  const cookie = (n) => {
+    const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]).slice(0, n === '_fbc' ? 500 : 200) : null;
+  };
+  return {
+    meta_consentimiento: true,
+    meta_fbp: cookie('_fbp'),
+    meta_fbc: cookie('_fbc'),
+    meta_user_agent: (navigator.userAgent || '').slice(0, 500) || null,
+  };
+}
+
 /* ---------- Formulario de reserva (comprar.html) ---------- */
 const reservaForm = document.getElementById('reserva-form');
 
@@ -4387,6 +4404,9 @@ if (reservaForm) {
       fuente: 'adri_story',
       estado: 'pendiente_pago',
       consentimiento: true, // aviso bajo el botón de pago (3/11), sin casilla
+      // Conversions API de Meta (v42): solo si aceptó las cookies del aviso.
+      // Para que el webhook pueda mandar la compra aunque cierre la ventana.
+      ...datosMetaPedido(),
       session_id: getSessionId(),
     };
 
@@ -4558,7 +4578,11 @@ if (reservaForm) {
       if (error) console.error(error);
 
       if (data && data.length > 0 && data.every(fila => fila.estado === 'pagado')) {
-        data.forEach(fila => trackEvent('compra_completada', fila.producto));
+        // Una sola vez por pago: antes, cada recarga de esta página volvía
+        // a contar la compra en "eventos" (5/11)
+        let yaApuntada = false;
+        try { yaApuntada = localStorage.getItem('cc:' + sessionId) === '1'; localStorage.setItem('cc:' + sessionId, '1'); } catch (_) {}
+        if (!yaApuntada) data.forEach(fila => trackEvent('compra_completada', fila.producto));
         // Píxeles de Meta / TikTok: la compra, solo cuando el webhook
         // (firmado por Stripe) ya marcó todas las filas como pagadas, y una
         // sola vez por pago aunque se recargue o se abra en otra pestaña
