@@ -17,6 +17,14 @@ const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });
+
+// Conversions API de Meta (5/11/2026). Apagada mientras no exista el
+// secreto META_CAPI_TOKEN en Supabase (Edge Functions → Secrets). Con
+// META_TEST_EVENT_CODE, los eventos salen en Events Manager → Probar
+// eventos en vez de contar como compras reales.
+const META_PIXEL_ID = "1177942677989903";
+const META_CAPI_TOKEN = Deno.env.get("META_CAPI_TOKEN") ?? "";
+const META_TEST_EVENT_CODE = Deno.env.get("META_TEST_EVENT_CODE") ?? "";
 const sb = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
 Deno.serve(async (req) => {
@@ -78,6 +86,14 @@ Deno.serve(async (req) => {
       .eq("stripe_session_id", sesion.id)
       .select("id");
 
+    // Caducada o fallida sin filas: el intento ya no existe (pruebas
+    // borradas a mano, por ejemplo). No hay nada que marcar; si se
+    // contestara 500, Stripe reintentaría durante días y avisaría de que
+    // el webhook falla (5/11).
+    if (fallido && !error && data && data.length === 0) {
+      return new Response(JSON.stringify({ recibido: true, sin_filas: true }), { status: 200 });
+    }
+
     if (error || !data || data.length === 0) {
       console.error(
         pagado ? "No se pudo marcar como pagado:" : "No se pudo marcar como fallido:",
@@ -85,15 +101,72 @@ Deno.serve(async (req) => {
       );
       return new Response("Error al actualizar", { status: 500 });
     }
+
+    // La compra a Meta desde el servidor: llega aunque el cliente cierre la
+    // ventana antes de volver a la web. Nunca hace fallar el webhook.
+    if (pagado) await enviarCompraMeta(sesion.id);
   }
 
   return new Response(JSON.stringify({ recibido: true }), { status: 200 });
 });
 
+// Purchase por la Conversions API, con el mismo eventID que manda el
+// navegador ("purchase_<sesión de Stripe>", ver script.js): si llegan los
+// dos, Meta se queda con uno. Solo si quien compró aceptó las cookies
+// (meta_consentimiento, supabase-migracion-v42.sql). Sin email, teléfono ni
+// nombre: solo los identificadores de navegador de Meta, el navegador y la IP.
+async function enviarCompraMeta(sessionId: string): Promise<void> {
+  if (!META_CAPI_TOKEN) return;
+  try {
+    const { data: filas, error } = await sb
+      .from("reservas")
+      .select("producto, precio_pagado, moneda, meta_consentimiento, meta_fbp, meta_fbc, meta_user_agent, meta_ip")
+      .eq("stripe_session_id", sessionId);
+    if (error || !filas || filas.length === 0) return;
+    const f = filas[0];
+    // Meta exige el navegador en los eventos web; sin consentimiento, nada
+    if (!f.meta_consentimiento || !f.meta_user_agent) return;
+    const valor = Math.round(filas.reduce((t, x) => t + Number(x.precio_pagado || 0), 0) * 100) / 100;
+    const cuerpo = {
+      data: [{
+        event_name: "Purchase",
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: `purchase_${sessionId}`,
+        action_source: "website",
+        event_source_url: "https://cozumeljewelry.es/comprar.html",
+        user_data: {
+          client_user_agent: f.meta_user_agent,
+          ...(f.meta_ip ? { client_ip_address: f.meta_ip } : {}),
+          ...(f.meta_fbp ? { fbp: f.meta_fbp } : {}),
+          ...(f.meta_fbc ? { fbc: f.meta_fbc } : {}),
+        },
+        custom_data: {
+          currency: f.moneda || "USD",
+          value: valor,
+          content_ids: filas.map((x) => x.producto),
+          content_type: "product",
+          num_items: filas.length,
+        },
+      }],
+      ...(META_TEST_EVENT_CODE ? { test_event_code: META_TEST_EVENT_CODE } : {}),
+      access_token: META_CAPI_TOKEN,
+    };
+    const r = await fetch(`https://graph.facebook.com/v21.0/${META_PIXEL_ID}/events`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(cuerpo),
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!r.ok) console.error("Meta Conversions API:", r.status, (await r.text()).slice(0, 500));
+  } catch (err) {
+    console.error("Meta Conversions API (sin enviar):", err);
+  }
+}
+
 // Estados de México: Stripe da el código y Emanco quiere el nombre.
 const ESTADOS_MX: Record<string, string> = {
   AGU: "Aguascalientes", BCN: "Baja California", BCS: "Baja California Sur", CAM: "Campeche",
-  CHP: "Chiapas", CHH: "Chihuahua", CMX: "Ciudad de México", DIF: "Ciudad de México", DF: "Ciudad de México",
+  CHP: "Chiapas", CHH: "Chihuahua", CMX: "Ciudad de México", CDMX: "Ciudad de México", DIF: "Ciudad de México", DF: "Ciudad de México",
   COA: "Coahuila", COL: "Colima", DUR: "Durango", GUA: "Guanajuato", GRO: "Guerrero", HID: "Hidalgo",
   JAL: "Jalisco", MEX: "Estado de México", MIC: "Michoacán", MOR: "Morelos", NAY: "Nayarit",
   NLE: "Nuevo León", OAX: "Oaxaca", PUE: "Puebla", QUE: "Querétaro", ROO: "Quintana Roo",

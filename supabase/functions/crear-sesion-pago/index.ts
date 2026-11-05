@@ -140,7 +140,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
 
   const { data: filas, error: filasError } = await sb
     .from("reservas")
-    .select("id, producto, estado, mercado, moneda, pais, email, stripe_session_id")
+    .select("id, producto, estado, mercado, moneda, pais, email, stripe_session_id, meta_consentimiento")
     .in("id", idsPedidos);
 
   if (filasError) {
@@ -333,6 +333,11 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // mismo usuario, pendiente, sin pago enlazado y con el mismo producto y
   // país. Si alguien la cambió mientras se creaba la sesión, no casa, no se
   // enlaza y no se devuelve el enlace de pago.
+  // Conversions API de Meta (v42): la IP de quien paga, solo si aceptó
+  // las cookies. La da la cabecera del proxy de Supabase.
+  const ipCliente = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim().slice(0, 64) || null;
+  const conMeta = new Set(filas.filter((f) => (f as { meta_consentimiento?: boolean }).meta_consentimiento).map((f) => f.id));
+
   for (const l of lineas) {
     const { data: enlazadas, error: updateError } = await sbServicio
       .from("reservas")
@@ -341,6 +346,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
         precio_pagado: l.precio!.importe,
         mercado: l.precio!.mercado,
         moneda: l.precio!.moneda,
+        ...(conMeta.has(l.id) && ipCliente ? { meta_ip: ipCliente } : {}),
       })
       .eq("id", l.id)
       .eq("user_id", userData.user.id)
