@@ -205,7 +205,7 @@
       aviso.setAttribute('role', 'dialog');
       aviso.setAttribute('aria-label', 'Cookies');
       aviso.innerHTML =
-        '<p><strong>Cookies</strong>Usamos cookies para mejorar tu experiencia. <a href="cookies.html">Más información</a></p>' +
+        '<p><strong>Cookies</strong>Usamos cookies para mejorar tu experiencia y medir nuestros anuncios. <a href="cookies.html">Más información</a></p>' +
         '<div class="aviso-cookies-botones">' +
         '<button type="button" data-cookies="no">Rechazar</button>' +
         '<button type="button" data-cookies="si">Aceptar</button>' +

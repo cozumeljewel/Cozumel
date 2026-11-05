@@ -1911,8 +1911,8 @@ es: En el siguiente paso, en la página segura de Stripe, pones la dirección de
 en: In the next step, on Stripe's secure page, you enter your shipping address and pay by card, Apple Pay, Google Pay or PayPal.
 
 # Aviso de cookies y políticas (5/11/2026)
-es: <strong>Cookies</strong>Usamos cookies para mejorar tu experiencia. <a href="cookies.html">Más información</a>
-en: <strong>Cookies</strong>We use cookies to improve your experience. <a href="cookies.html">More information</a>
+es: <strong>Cookies</strong>Usamos cookies para mejorar tu experiencia y medir nuestros anuncios. <a href="cookies.html">Más información</a>
+en: <strong>Cookies</strong>We use cookies to improve your experience and measure our ads. <a href="cookies.html">More information</a>
 
 es: Rechazar
 en: Reject

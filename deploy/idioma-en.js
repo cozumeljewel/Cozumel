@@ -618,7 +618,7 @@ COZUMEL_EN_CARGADO({
  "País de envío": "Shipping country",
  "Continuar al pago": "Continue to payment",
  "En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.": "In the next step, on Stripe's secure page, you enter your shipping address and pay by card, Apple Pay, Google Pay or PayPal.",
- "<strong>Cookies</strong>Usamos cookies para mejorar tu experiencia. <a href=\"cookies.html\">Más información</a>": "<strong>Cookies</strong>We use cookies to improve your experience. <a href=\"cookies.html\">More information</a>",
+ "<strong>Cookies</strong>Usamos cookies para mejorar tu experiencia y medir nuestros anuncios. <a href=\"cookies.html\">Más información</a>": "<strong>Cookies</strong>We use cookies to improve your experience and measure our ads. <a href=\"cookies.html\">More information</a>",
  "Rechazar": "Reject",
  "Aceptar": "Accept",
  "Última actualización: 5 de noviembre de 2026": "Last updated: 5 November 2026",
