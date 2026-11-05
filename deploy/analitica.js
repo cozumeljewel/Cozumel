@@ -156,6 +156,13 @@
   function decidir(acepta) {
     consentimiento = acepta;
     guardarConsentimiento(acepta);
+    // Aceptar en el aviso anula un "No quiero que se mida mi visita" anterior
+    // (con él no se cargaba nada): se quita y se recarga para medir ya.
+    if (acepta && !window.COZUMEL_ANALITICA.activa()) {
+      try { localStorage.removeItem(CLAVE_NO); } catch (_) {}
+      location.reload();
+      return;
+    }
     if (typeof window.clarity === 'function') {
       window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: acepta ? 'granted' : 'denied' });
       window.clarity('set', 'cookies', acepta ? 'aceptadas' : 'rechazadas');
