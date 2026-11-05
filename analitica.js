@@ -21,22 +21,47 @@
      para que los anuncios sepan quién compra. SOLO fuera de Europa (en la
      UE pedirían el aviso de cookies). Id vacío = desactivado. Eventos:
      COZUMEL_ANALITICA.evento('ViewContent' | 'AddToCart' |
-     'InitiateCheckout' | 'Purchase', { value, currency, content_ids }).
+     'InitiateCheckout' | 'Purchase', { value, currency, content_ids,
+     event_id? }).
+   · Meta (5/11/2026, píxel 1177942677989903):
+       - Cada evento va con un eventID: el que se pase en event_id (Purchase
+         usa "purchase_<id de la sesión de Stripe>", que el servidor también
+         conoce) o uno aleatorio. Así, el día que se añada la Conversions API
+         desde el webhook de Stripe, Meta deduplica navegador y servidor.
+       - autoConfig desactivado: Meta no "adivina" eventos por su cuenta
+         (clics en botones, campos de formulario), solo los nuestros.
+       - Nada de datos personales: ni email, ni teléfono, ni nombre.
+       - Quien pulsa "No quiero que se mida mi visita" (cookies.html): se
+         revoca el consentimiento en el momento y no se vuelve a cargar.
+       - Modo prueba: ?probar_pixel=1 carga el píxel en esta pestaña aunque
+         se entre desde Europa o con la clave del equipo, para verlo en
+         Meta Events Manager → Probar eventos. ?probar_pixel=0 lo quita.
    ========================================================= */
 (function () {
   const CLARITY_ID = 'yyzhqgqqw3';
-  const META_PIXEL_ID = '1177942677989903'; // Administrador de eventos de Meta → píxel (5/11)
+  const META_PIXEL_ID = '1177942677989903'; // Administrador de eventos de Meta → píxel
   const TIKTOK_PIXEL_ID = '';  // TikTok Ads Manager → Herramientas → Eventos
   const CLAVE_NO = 'cozumel_analitica';
   const EUROPA = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
     'PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'];
 
+  // Modo prueba del píxel (solo esta pestaña), ver arriba
+  let probarPixel = false;
+  try {
+    const q = new URLSearchParams(location.search).get('probar_pixel');
+    if (q === '1') sessionStorage.setItem('cozumel_probar_pixel', '1');
+    if (q === '0') sessionStorage.removeItem('cozumel_probar_pixel');
+    probarPixel = sessionStorage.getItem('cozumel_probar_pixel') === '1';
+  } catch (_) {}
+
   let pixelesListos = false;
   const pendientes = [];
+  const idEvento = (nombre) => nombre + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
   window.COZUMEL_ANALITICA = {
     desactivar() {
       try { localStorage.setItem(CLAVE_NO, 'no'); } catch (_) {}
       if (typeof window.clarity === 'function') window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' });
+      if (typeof window.fbq === 'function') window.fbq('consent', 'revoke');
     },
     activa() { try { return localStorage.getItem(CLAVE_NO) !== 'no'; } catch (_) { return true; } },
     // Eventos de compra para los píxeles (si están cargados; si no, nada)
@@ -44,10 +69,13 @@
       // Si los píxeles aún no han cargado (se espera al país), se guarda
       if (!pixelesListos) { pendientes.push([nombre, datos]); return; }
       try {
-        if (typeof window.fbq === 'function') window.fbq('track', nombre, datos || {});
+        const { event_id, ...resto } = datos || {};
+        const meta = { ...resto, content_type: 'product' };
+        Object.keys(meta).forEach(k => meta[k] === undefined && delete meta[k]);
+        if (typeof window.fbq === 'function') window.fbq('track', nombre, meta, { eventID: event_id || idEvento(nombre) });
         if (window.ttq && typeof window.ttq.track === 'function') {
           const TT = { ViewContent: 'ViewContent', AddToCart: 'AddToCart', InitiateCheckout: 'InitiateCheckout', Purchase: 'CompletePayment' };
-          const d = datos || {};
+          const d = resto;
           window.ttq.track(TT[nombre] || nombre, { value: d.value, currency: d.currency, contents: (d.content_ids || []).map(id => ({ content_id: id })) });
         }
       } catch (_) {}
@@ -55,7 +83,7 @@
   };
   if (!CLARITY_ID || !window.COZUMEL_ANALITICA.activa()) return;
   // En local (pruebas) no se mide nada
-  if (/^(localhost|127\.|192\.168\.)/.test(location.hostname)) return;
+  if (/^(localhost|127\.|192\.168\.)/.test(location.hostname) && !probarPixel) return;
 
   // Cola de Clarity ya disponible (clarity('event', ...) funciona antes de cargar)
   window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
@@ -80,7 +108,7 @@
     try { equipo = localStorage.getItem('cozumel_acceso_web') === '1'; } catch (_) {}
     window.clarity('set', 'equipo', equipo ? 'si' : 'no');
     window.clarity('set', 'web', document.documentElement.classList.contains('web-cerrada') ? 'cerrada' : 'abierta');
-    if (conCookies && !equipo) cargarPixeles();
+    if ((conCookies && !equipo) || probarPixel) cargarPixeles();
   }
 
   // Píxeles de Meta y TikTok: código oficial de cada uno (solo fuera de Europa)
@@ -90,8 +118,9 @@
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
       if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
       t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('set', 'autoConfig', false, META_PIXEL_ID);
       window.fbq('init', META_PIXEL_ID);
-      window.fbq('track', 'PageView');
+      window.fbq('track', 'PageView', {}, { eventID: idEvento('PageView') });
     }
     if (TIKTOK_PIXEL_ID) {
       !function (w, d, t) {
