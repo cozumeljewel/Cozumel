@@ -1389,7 +1389,7 @@ es: Analítica y por qué no hay un banner de cookies
 en: Analytics and why there's no cookie banner
 
 es: Usamos una herramienta de analítica para ver, de forma anónima, cómo se navega por la web (en qué se hace clic, hasta dónde se baja, desde qué tipo de dispositivo) y así mejorarla. No guarda lo que escribes en los formularios ni se usa para publicidad. Si visitas la web desde la Unión Europea, el Espacio Económico Europeo, el Reino Unido o Suiza, funciona <strong>sin cookies</strong> y sin guardar nada en tu navegador, por eso no te pedimos consentimiento con un banner. Si prefieres que no midamos tu visita, pulsa aquí: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Hecho: no mediremos tus visitas'">No quiero que se mida mi visita</button>
-en: We use an analytics tool to see anonymously how people browse the site (what they click, how far they scroll, which type of device) so we can improve it. It doesn't store what you type in forms and isn't used for advertising. If you visit from the European Union, the European Economic Area, the United Kingdom or Switzerland, it runs <strong>without cookies</strong> and stores nothing in your browser, which is why we don't ask for consent with a banner. If you'd rather we didn't measure your visit, click here: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Done: we won't measure your visits'">Don't measure my visit</button>
+en: We use an analytics tool to see anonymously how people browse the site (what they click, how far they scroll, which type of device) so we can improve it. It doesn't store what you type in forms and isn't used for advertising. If you visit from the European Union, the European Economic Area, the United Kingdom or Switzerland, it runs <strong>without cookies</strong> and stores nothing in your browser, which is why we don't ask for consent with a banner. If you'd rather we didn't measure your visit, click here: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Done: we will not measure your visits'">Don't measure my visit</button>
 
 es: Cómo gestionar las cookies
 en: How to manage cookies
@@ -1909,3 +1909,40 @@ en: Continue to payment
 
 es: En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.
 en: In the next step, on Stripe's secure page, you enter your shipping address and pay by card, Apple Pay, Google Pay or PayPal.
+
+# Aviso de cookies y políticas (5/11/2026)
+es: <strong>Cookies</strong>Usamos cookies de analítica y de publicidad (Meta) para mejorar la web y medir nuestros anuncios. Solo se activan si las aceptas. <a href="cookies.html">Más información</a>
+en: <strong>Cookies</strong>We use analytics and advertising (Meta) cookies to improve the site and measure our ads. They are only turned on if you accept them. <a href="cookies.html">More information</a>
+
+es: Rechazar
+en: Reject
+
+es: Aceptar
+en: Accept
+
+es: Última actualización: 5 de noviembre de 2026
+en: Last updated: 5 November 2026
+
+es: Usamos almacenamiento técnico, necesario para que el sitio funcione, una herramienta de analítica y, solo si lo aceptas, cookies de publicidad de Meta:
+en: We use technical storage, needed for the site to work, an analytics tool and, only if you accept, Meta advertising cookies:
+
+es: Analítica (Microsoft Clarity)
+en: Analytics (Microsoft Clarity)
+
+es: Usamos Microsoft Clarity para ver, de forma anónima, cómo se navega por la web (en qué se hace clic, hasta dónde se baja, desde qué tipo de dispositivo) y así mejorarla. No guarda lo que escribes en los formularios. Mientras no aceptes las cookies, funciona <strong>sin cookies</strong> y sin guardar nada en tu navegador; si las aceptas, usa sus cookies (_clck y _clsk) para reconocer tus visitas siguientes. Si prefieres que no midamos tu visita en absoluto, pulsa aquí: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Hecho: no mediremos tus visitas'">No quiero que se mida mi visita</button>
+en: We use Microsoft Clarity to see, anonymously, how people browse the site (what they click, how far they scroll, which type of device) so we can improve it. It doesn't store what you type in forms. Until you accept cookies, it runs <strong>without cookies</strong> and stores nothing in your browser; if you accept, it uses its cookies (_clck and _clsk) to recognise your next visits. If you'd rather we didn't measure your visit at all, click here: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.desactivar(); this.textContent='Done: we will not measure your visits'">Don't measure my visit</button>
+
+es: Publicidad (Meta)
+en: Advertising (Meta)
+
+es: Solo si aceptas las cookies, cargamos el píxel de Meta (Meta Platforms Ireland Ltd., la empresa de Facebook e Instagram). Nos dice si alguien que vio nuestros anuncios visita la web, mira una pieza, la añade al carrito o compra, para medir y mejorar esos anuncios. No le enviamos tu nombre, email, teléfono ni dirección: solo qué pieza, su precio y la moneda. Usa las cookies _fbp y _fbc (hasta 90 días). Meta puede tratar estos datos fuera del Espacio Económico Europeo, según su propia política de privacidad.
+en: Only if you accept cookies, we load the Meta pixel (Meta Platforms Ireland Ltd., the company behind Facebook and Instagram). It tells us whether someone who saw our ads visits the site, views a piece, adds it to the cart or buys, so we can measure and improve those ads. We don't send it your name, email, phone number or address: only which piece, its price and the currency. It uses the _fbp and _fbc cookies (up to 90 days). Meta may process this data outside the European Economic Area, under its own privacy policy.
+
+es: Cambiar tu decisión
+en: Change your choice
+
+es: Puedes aceptar o rechazar las cookies de analítica y publicidad cuando quieras: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.preferencias()">Cambiar mis preferencias de cookies</button>. Si las retiras, dejamos de usarlas en ese momento y borramos las cookies de Meta.
+en: You can accept or reject analytics and advertising cookies whenever you like: <button type="button" class="link-analitica" onclick="COZUMEL_ANALITICA.preferencias()">Change my cookie preferences</button>. If you withdraw them, we stop using them straight away and delete the Meta cookies.
+
+es: Para mejorar la web usamos una herramienta de analítica que mide de forma anónima cómo se navega y, solo si aceptas las cookies, el píxel de Meta para medir nuestros anuncios en Facebook e Instagram (los detalles y cómo cambiar tu decisión, en la <a href="cookies.html">política de cookies</a>). A Meta no le enviamos tu nombre, email, teléfono ni dirección, y no vendemos tus datos a nadie.
+en: To improve the site we use an analytics tool that anonymously measures how people browse and, only if you accept cookies, the Meta pixel to measure our ads on Facebook and Instagram (details and how to change your choice in the <a href="cookies.html">cookie policy</a>). We don't send Meta your name, email, phone number or address, and we don't sell your data to anyone.
