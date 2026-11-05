@@ -23,7 +23,7 @@
    · Las visitas del equipo (con la clave ?acceso=) no cargan el píxel y en
      Clarity llevan la etiqueta equipo = si.
    · Se carga en <head>, sin defer, en todas las páginas públicas.
-   · Meta Pixel (1177942677989903). Eventos desde script.js:
+   · Meta Pixel (2134361704116564). Eventos desde script.js:
      COZUMEL_ANALITICA.evento('ViewContent' | 'AddToCart' |
      'InitiateCheckout' | 'Purchase', { value, currency, content_ids,
      num_items?, event_id? }).
@@ -42,7 +42,7 @@
    ========================================================= */
 (function () {
   const CLARITY_ID = 'yyzhqgqqw3';
-  const META_PIXEL_ID = '1177942677989903'; // Administrador de eventos de Meta → píxel
+  const META_PIXEL_ID = '2134361704116564'; // Administrador de eventos de Meta → píxel
   const CLAVE_NO = 'cozumel_analitica';     // "no" = sin Clarity (cookies.html)
   const CLAVE_CONSENTIMIENTO = 'cozumel_cookies';
   const VERSION_AVISO = 1;                  // subirla si cambia lo que se pide
