@@ -1,29 +1,32 @@
 /* =========================================================
-   COZUMEL · ANALÍTICA (Microsoft Clarity) · SIN AVISO DE COOKIES (17/10/2026)
+   COZUMEL · ANALÍTICA Y COOKIES (Microsoft Clarity + Meta Pixel)
+   Aviso de cookies desde el 5/11/2026.
 
-   · Clarity (gratis): mapas de calor, grabaciones anónimas de visitas,
-     dispositivo, país y de dónde llega la gente. Panel en
-     https://clarity.microsoft.com con la cuenta del proyecto.
-   · No hay banner de cookies:
-       - Fuera de Europa: Clarity normal (con sus cookies).
-       - Desde la UE/EEE, Reino Unido y Suiza (o si aún no se sabe el
-         país): Clarity SIN cookies (consentv2 analytics denied). Mide
-         igual las visitas, clics y mapas de calor, pero cada visita
-         cuenta como persona nueva.
-     El país sale de cozumel_mercado_geo (mercados.js) o de /api/geo.
-   · Quien no quiera ser medido: botón en cookies.html
-     (COZUMEL_ANALITICA.desactivar()) → se guarda cozumel_analitica = no.
-   · Las visitas del equipo (con la clave ?acceso=) llevan la etiqueta
-     equipo = si, para poder filtrarlas en el panel.
-   · Se carga en <head>, sin defer, en todas las páginas.
-   · CLARITY_ID vacío = desactivado.
-   · Píxeles de publicidad (2/11/2026): Meta (Instagram/Facebook) y TikTok,
-     para que los anuncios sepan quién compra. SOLO fuera de Europa (en la
-     UE pedirían el aviso de cookies). Id vacío = desactivado. Eventos:
+   · Aviso de cookies (todas las visitas, de cualquier país): "Aceptar" y
+     "Rechazar" con el mismo peso, sin casillas marcadas. La decisión se
+     guarda en este navegador (cozumel_cookies) y se puede cambiar cuando
+     se quiera desde cookies.html (COZUMEL_ANALITICA.preferencias()).
+     No se da por hecho que fuera de Europa se pueda medir sin preguntar
+     (México, EE. UU. y Latinoamérica tienen sus propias leyes): hasta que
+     la persona acepta, nada de publicidad, en ningún país.
+   · Sin aceptar (o al rechazar):
+       - Meta Pixel NO se carga: ni su script, ni cookies (_fbp, _fbc), ni
+         peticiones. No hay <noscript> con la imagen del píxel en ninguna
+         página, así que tampoco sale nada sin JavaScript.
+       - Clarity funciona SIN cookies (consentv2 analytics denied): mide
+         visitas, clics y mapas de calor de forma anónima, sin guardar nada
+         en el navegador. Quien no quiera ni eso: "No quiero que se mida mi
+         visita" en cookies.html (COZUMEL_ANALITICA.desactivar()).
+   · Al aceptar: Clarity con cookies y Meta Pixel. Al retirar el
+     consentimiento: se revoca en Meta y en Clarity en el momento y se
+     borran las cookies de Meta.
+   · Las visitas del equipo (con la clave ?acceso=) no cargan el píxel y en
+     Clarity llevan la etiqueta equipo = si.
+   · Se carga en <head>, sin defer, en todas las páginas públicas.
+   · Meta Pixel (1177942677989903). Eventos desde script.js:
      COZUMEL_ANALITICA.evento('ViewContent' | 'AddToCart' |
      'InitiateCheckout' | 'Purchase', { value, currency, content_ids,
-     event_id? }).
-   · Meta (5/11/2026, píxel 1177942677989903):
+     num_items?, event_id? }).
        - Cada evento va con un eventID: el que se pase en event_id (Purchase
          usa "purchase_<id de la sesión de Stripe>", que el servidor también
          conoce) o uno aleatorio. Así, el día que se añada la Conversions API
@@ -31,115 +34,191 @@
        - autoConfig desactivado: Meta no "adivina" eventos por su cuenta
          (clics en botones, campos de formulario), solo los nuestros.
        - Nada de datos personales: ni email, ni teléfono, ni nombre.
-       - Quien pulsa "No quiero que se mida mi visita" (cookies.html): se
-         revoca el consentimiento en el momento y no se vuelve a cargar.
-       - Modo prueba: ?probar_pixel=1 carga el píxel en esta pestaña aunque
-         se entre desde Europa o con la clave del equipo, para verlo en
-         Meta Events Manager → Probar eventos. ?probar_pixel=0 lo quita.
+       - Los eventos de antes de aceptar se descartan al recargar; los de
+         la página en la que se acepta se envían al aceptar.
+   · Pruebas en local (localhost): no se mide nada salvo con
+     ?probar_pixel=1, y aun así solo tras aceptar en el aviso. En la web
+     publicada ese parámetro no hace nada.
    ========================================================= */
 (function () {
   const CLARITY_ID = 'yyzhqgqqw3';
   const META_PIXEL_ID = '1177942677989903'; // Administrador de eventos de Meta → píxel
-  const TIKTOK_PIXEL_ID = '';  // TikTok Ads Manager → Herramientas → Eventos
-  const CLAVE_NO = 'cozumel_analitica';
-  const EUROPA = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
-    'PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'];
+  const CLAVE_NO = 'cozumel_analitica';     // "no" = sin Clarity (cookies.html)
+  const CLAVE_CONSENTIMIENTO = 'cozumel_cookies';
+  const VERSION_AVISO = 1;                  // subirla si cambia lo que se pide
 
-  // Modo prueba del píxel (solo esta pestaña), ver arriba
-  let probarPixel = false;
-  try {
-    const q = new URLSearchParams(location.search).get('probar_pixel');
-    if (q === '1') sessionStorage.setItem('cozumel_probar_pixel', '1');
-    if (q === '0') sessionStorage.removeItem('cozumel_probar_pixel');
-    probarPixel = sessionStorage.getItem('cozumel_probar_pixel') === '1';
-  } catch (_) {}
+  const esLocal = /^(localhost|127\.|192\.168\.)/.test(location.hostname);
+  let probarEnLocal = false;
+  if (esLocal) {
+    try {
+      const q = new URLSearchParams(location.search).get('probar_pixel');
+      if (q === '1') sessionStorage.setItem('cozumel_probar_pixel', '1');
+      if (q === '0') sessionStorage.removeItem('cozumel_probar_pixel');
+      probarEnLocal = sessionStorage.getItem('cozumel_probar_pixel') === '1';
+    } catch (_) {}
+  }
+
+  // ---------- Consentimiento ----------
+  // null = aún no ha decidido; true = acepta; false = rechaza
+  function leerConsentimiento() {
+    try {
+      const c = JSON.parse(localStorage.getItem(CLAVE_CONSENTIMIENTO));
+      if (c && c.v === VERSION_AVISO && typeof c.publicidad === 'boolean') return c.publicidad;
+    } catch (_) {}
+    return null;
+  }
+  function guardarConsentimiento(acepta) {
+    try {
+      localStorage.setItem(CLAVE_CONSENTIMIENTO, JSON.stringify({ v: VERSION_AVISO, publicidad: acepta, fecha: new Date().toISOString() }));
+    } catch (_) {}
+  }
+  let consentimiento = leerConsentimiento();
+
+  let equipo = false;
+  try { equipo = localStorage.getItem('cozumel_acceso_web') === '1'; } catch (_) {}
 
   let pixelesListos = false;
-  const pendientes = [];
+  let pendientes = [];
   const idEvento = (nombre) => nombre + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+
   window.COZUMEL_ANALITICA = {
     desactivar() {
       try { localStorage.setItem(CLAVE_NO, 'no'); } catch (_) {}
+      retirar();
       if (typeof window.clarity === 'function') window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' });
-      if (typeof window.fbq === 'function') window.fbq('consent', 'revoke');
     },
     activa() { try { return localStorage.getItem(CLAVE_NO) !== 'no'; } catch (_) { return true; } },
-    // Eventos de compra para los píxeles (si están cargados; si no, nada)
+    consentimiento() { return consentimiento; },
+    // Vuelve a enseñar el aviso para cambiar la decisión (cookies.html)
+    preferencias() { mostrarAviso(true); },
+    // Eventos de compra para el píxel. Sin consentimiento: nada.
     evento(nombre, datos) {
-      // Si los píxeles aún no han cargado (se espera al país), se guarda
-      if (!pixelesListos) { pendientes.push([nombre, datos]); return; }
+      if (!pixelesListos) {
+        if (consentimiento !== false) pendientes.push([nombre, datos]);
+        return;
+      }
       try {
         const { event_id, ...resto } = datos || {};
         const meta = { ...resto, content_type: 'product' };
         Object.keys(meta).forEach(k => meta[k] === undefined && delete meta[k]);
         if (typeof window.fbq === 'function') window.fbq('track', nombre, meta, { eventID: event_id || idEvento(nombre) });
-        if (window.ttq && typeof window.ttq.track === 'function') {
-          const TT = { ViewContent: 'ViewContent', AddToCart: 'AddToCart', InitiateCheckout: 'InitiateCheckout', Purchase: 'CompletePayment' };
-          const d = resto;
-          window.ttq.track(TT[nombre] || nombre, { value: d.value, currency: d.currency, contents: (d.content_ids || []).map(id => ({ content_id: id })) });
-        }
       } catch (_) {}
     },
   };
-  if (!CLARITY_ID || !window.COZUMEL_ANALITICA.activa()) return;
-  // En local (pruebas) no se mide nada
-  if (/^(localhost|127\.|192\.168\.)/.test(location.hostname) && !probarPixel) return;
 
-  // Cola de Clarity ya disponible (clarity('event', ...) funciona antes de cargar)
-  window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
+  const puedeMedir = window.COZUMEL_ANALITICA.activa() && (!esLocal || probarEnLocal);
 
-  const leerPais = () => {
-    try { const g = JSON.parse(localStorage.getItem('cozumel_mercado_geo')); return g && g.pais ? String(g.pais).toUpperCase() : null; } catch (_) { return null; }
-  };
-
-  let cargada = false;
-  function cargar(pais) {
-    if (cargada) return;
-    cargada = true;
-    const conCookies = !!pais && !EUROPA.includes(pais);
-    window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: conCookies ? 'granted' : 'denied' });
+  // ---------- Clarity: siempre sin cookies salvo que se acepte ----------
+  if (CLARITY_ID && puedeMedir) {
+    window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
+    window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: consentimiento === true ? 'granted' : 'denied' });
     const s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.clarity.ms/tag/' + CLARITY_ID;
     document.head.appendChild(s);
     const pagina = (document.body && document.body.dataset.page) || location.pathname.replace(/^\/|\.html$/g, '') || 'inicio';
     window.clarity('set', 'pagina', pagina);
-    let equipo = false;
-    try { equipo = localStorage.getItem('cozumel_acceso_web') === '1'; } catch (_) {}
     window.clarity('set', 'equipo', equipo ? 'si' : 'no');
     window.clarity('set', 'web', document.documentElement.classList.contains('web-cerrada') ? 'cerrada' : 'abierta');
-    if ((conCookies && !equipo) || probarPixel) cargarPixeles();
+    window.clarity('set', 'cookies', consentimiento === true ? 'aceptadas' : consentimiento === false ? 'rechazadas' : 'sin_decidir');
   }
 
-  // Píxeles de Meta y TikTok: código oficial de cada uno (solo fuera de Europa)
-  function cargarPixeles() {
-    if (META_PIXEL_ID) {
-      /* eslint-disable */
-      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      window.fbq('set', 'autoConfig', false, META_PIXEL_ID);
-      window.fbq('init', META_PIXEL_ID);
-      window.fbq('track', 'PageView', {}, { eventID: idEvento('PageView') });
-    }
-    if (TIKTOK_PIXEL_ID) {
-      !function (w, d, t) {
-        w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript",o.async=!0,o.src=r+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
-        ttq.load(TIKTOK_PIXEL_ID);
-        ttq.page();
-      }(window, document, 'ttq');
-      /* eslint-enable */
-    }
+  // ---------- Meta Pixel: solo con consentimiento ----------
+  function cargarPixel() {
+    if (pixelesListos || !META_PIXEL_ID || consentimiento !== true || equipo || !puedeMedir) return;
+    /* eslint-disable */
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    /* eslint-enable */
+    window.fbq('consent', 'grant');
+    window.fbq('set', 'autoConfig', false, META_PIXEL_ID);
+    window.fbq('init', META_PIXEL_ID);
+    window.fbq('track', 'PageView', {}, { eventID: idEvento('PageView') });
     pixelesListos = true;
     pendientes.splice(0).forEach(([n, d]) => window.COZUMEL_ANALITICA.evento(n, d));
   }
 
-  const pais = leerPais();
-  if (pais) { cargar(pais); return; }
-  // Primera visita: se pregunta el país (máx. 3 s); si no llega, sin cookies.
-  const corte = setTimeout(() => cargar(null), 3000);
-  fetch('/api/geo', { headers: { Accept: 'application/json' } })
-    .then(r => r.ok ? r.json() : null)
-    .then(d => { clearTimeout(corte); cargar(d && typeof d.country === 'string' ? d.country.toUpperCase() : null); })
-    .catch(() => { clearTimeout(corte); cargar(null); });
+  function borrarCookiesMeta() {
+    const dominios = ['', location.hostname, '.' + location.hostname.replace(/^www\./, '')];
+    ['_fbp', '_fbc'].forEach(nombre => dominios.forEach(d => {
+      document.cookie = nombre + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : '');
+    }));
+  }
+
+  function retirar() {
+    pendientes = [];
+    if (typeof window.fbq === 'function') window.fbq('consent', 'revoke');
+    pixelesListos = false;
+    borrarCookiesMeta();
+  }
+
+  function decidir(acepta) {
+    consentimiento = acepta;
+    guardarConsentimiento(acepta);
+    if (typeof window.clarity === 'function') {
+      window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: acepta ? 'granted' : 'denied' });
+      window.clarity('set', 'cookies', acepta ? 'aceptadas' : 'rechazadas');
+    }
+    if (acepta) {
+      // Si ya se cargó y se revocó en esta página, se vuelve a dar permiso
+      if (typeof window.fbq === 'function') { window.fbq('consent', 'grant'); pixelesListos = true; }
+      else cargarPixel();
+    } else {
+      retirar();
+    }
+    ocultarAviso();
+  }
+
+  if (consentimiento === true) cargarPixel();
+
+  // ---------- Aviso de cookies ----------
+  // Textos en español: idioma.js los traduce con su diccionario
+  // (traduccion/en.txt), como el resto de la web.
+  let aviso = null;
+  function ocultarAviso() { if (aviso) aviso.hidden = true; }
+  function mostrarAviso(forzado) {
+    if (!forzado && consentimiento !== null) return;
+    if (!document.body) { document.addEventListener('DOMContentLoaded', () => mostrarAviso(forzado)); return; }
+    if (!aviso) {
+      const estilo = document.createElement('style');
+      estilo.textContent = `
+        .aviso-cookies{position:fixed; left:16px; bottom:16px; z-index:9999; width:min(400px, calc(100% - 32px));
+          box-sizing:border-box; padding:20px 20px 18px; background:#FFFFFF; color:#2B3B3C;
+          border:1px solid #E6E0D5; border-radius:6px; box-shadow:0 10px 32px rgba(20,69,74,.14);
+          font-family:inherit; font-size:13.5px; line-height:1.55;}
+        .aviso-cookies[hidden]{display:none;}
+        .aviso-cookies p{margin:0 0 14px;}
+        .aviso-cookies strong{display:block; margin-bottom:4px; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#B08A45; font-weight:600;}
+        .aviso-cookies a{color:#14454A; text-decoration:underline; text-underline-offset:3px;}
+        .aviso-cookies-botones{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+        .aviso-cookies button{appearance:none; margin:0; height:44px; border-radius:4px; cursor:pointer;
+          font:inherit; font-size:14px; font-weight:600; letter-spacing:.3px;
+          background:#FFFFFF; color:#14454A; border:1px solid #14454A;}
+        .aviso-cookies button:hover{background:#14454A; color:#FFFFFF;}
+        .aviso-cookies button:focus-visible{outline:2px solid #B08A45; outline-offset:2px;}
+        @media (max-width:520px){ .aviso-cookies{left:16px; right:16px; bottom:16px; width:auto;} }
+      `;
+      document.head.appendChild(estilo);
+      aviso = document.createElement('div');
+      aviso.className = 'aviso-cookies';
+      aviso.setAttribute('role', 'dialog');
+      aviso.setAttribute('aria-label', 'Cookies');
+      aviso.innerHTML =
+        '<p><strong>Cookies</strong>Usamos cookies de analítica y de publicidad (Meta) para mejorar la web y medir nuestros anuncios. Solo se activan si las aceptas. <a href="cookies.html">Más información</a></p>' +
+        '<div class="aviso-cookies-botones">' +
+        '<button type="button" data-cookies="no">Rechazar</button>' +
+        '<button type="button" data-cookies="si">Aceptar</button>' +
+        '</div>';
+      aviso.addEventListener('click', (e) => {
+        const b = e.target.closest('button[data-cookies]');
+        if (b) decidir(b.dataset.cookies === 'si');
+      });
+      document.body.appendChild(aviso);
+    }
+    aviso.hidden = false;
+  }
+
+  // Quien desactivó toda medición en cookies.html no ve el aviso: ya decidió
+  if (puedeMedir) mostrarAviso(false);
 })();
