@@ -25,7 +25,7 @@
    ========================================================= */
 (function () {
   const CLARITY_ID = 'yyzhqgqqw3';
-  const META_PIXEL_ID = '';    // Administrador de eventos de Meta → píxel
+  const META_PIXEL_ID = '1177942677989903'; // Administrador de eventos de Meta → píxel (5/11)
   const TIKTOK_PIXEL_ID = '';  // TikTok Ads Manager → Herramientas → Eventos
   const CLAVE_NO = 'cozumel_analitica';
   const EUROPA = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
