@@ -22,7 +22,7 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });
 // secreto META_CAPI_TOKEN en Supabase (Edge Functions → Secrets). Con
 // META_TEST_EVENT_CODE, los eventos salen en Events Manager → Probar
 // eventos en vez de contar como compras reales.
-const META_PIXEL_ID = "1177942677989903";
+const META_PIXEL_ID = "2134361704116564";
 const META_CAPI_TOKEN = Deno.env.get("META_CAPI_TOKEN") ?? "";
 const META_TEST_EVENT_CODE = Deno.env.get("META_TEST_EVENT_CODE") ?? "";
 const sb = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
