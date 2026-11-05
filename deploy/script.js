@@ -3061,6 +3061,12 @@ document.querySelectorAll('.nav a, .footer-nav a, .menu-movil-nav a').forEach(a 
    ítem pase lo que pase con el tracking. */
 const ctaReservar = document.getElementById('cta-reservar');
 if (ctaReservar) {
+  // Píxeles de publicidad: ficha vista (5/11, como en la de hombre)
+  const prodVisto = typeof getProductoElegido === 'function' ? getProductoElegido() : null;
+  if (prodVisto && window.COZUMEL_ANALITICA) {
+    const pv = typeof precioCobro === 'function' ? precioCobro(prodVisto) : null;
+    COZUMEL_ANALITICA.evento('ViewContent', { value: pv ? pv.importe : undefined, currency: pv ? pv.moneda : undefined, content_ids: [prodVisto.id] });
+  }
   const ctaTexto = ctaReservar.querySelector('.cta-texto');
   const ponerTexto = (t) => { if (ctaTexto) ctaTexto.textContent = t; };
 
@@ -3094,6 +3100,7 @@ if (ctaReservar) {
       moneda: precioActual ? precioActual.moneda : null,
       precio: precioActual ? precioActual.importe : null,
     }));
+    if (window.COZUMEL_ANALITICA && precioActual) COZUMEL_ANALITICA.evento('AddToCart', { value: precioActual.importe, currency: precioActual.moneda, content_ids: [prod.id] });
 
     ctaReservar.classList.remove('is-error');
     ctaReservar.classList.add('is-loading');
@@ -3518,7 +3525,9 @@ if (ctaReservar) {
 
       const precio = precioDe(productoKit);
       anadirKitAlCarrito(productoKit, personalizacion, precio);
-      window.location.href = 'comprar.html';
+      if (window.COZUMEL_ANALITICA && precio) COZUMEL_ANALITICA.evento('AddToCart', { value: precio.importe, currency: precio.moneda, content_ids: [productoKit.id] });
+      // un instante para que el aviso al píxel salga antes de cambiar de página
+      setTimeout(() => { window.location.href = 'comprar.html'; }, 250);
     });
 
     function anadirKitAlCarrito(prodKit, personalizacion, precio) {
@@ -4486,8 +4495,9 @@ if (reservaForm) {
 
       await Promise.all(items.map(({ prod }) => trackEvent('compra_iniciada', prod.id)));
       if (window.COZUMEL_ANALITICA) {
-        const tot = items.reduce((t, { prod }) => t + ((precioCobro(prod) || {}).importe || 0), 0);
-        COZUMEL_ANALITICA.evento('InitiateCheckout', { value: tot, currency: getMoneda(), content_ids: items.map(({ prod }) => prod.id) });
+        // Importe y moneda del país de envío (los mismos que se mandan a cobrar)
+        const tot = payloads.reduce((t, p) => t + (Number(p.precio_pagado) || 0), 0);
+        COZUMEL_ANALITICA.evento('InitiateCheckout', { value: tot, currency: payloads[0].moneda || getMoneda(), content_ids: items.map(({ prod }) => prod.id), num_items: items.length });
       }
       // El carrito NO se vacía aquí a propósito: si Stripe cancela y
       // vuelve a comprar.html, tiene que seguir viendo las mismas piezas
@@ -4549,11 +4559,23 @@ if (reservaForm) {
 
       if (data && data.length > 0 && data.every(fila => fila.estado === 'pagado')) {
         data.forEach(fila => trackEvent('compra_completada', fila.producto));
-        // Píxeles de Meta / TikTok: la compra, una sola vez por pago
+        // Píxeles de Meta / TikTok: la compra, solo cuando el webhook
+        // (firmado por Stripe) ya marcó todas las filas como pagadas, y una
+        // sola vez por pago aunque se recargue o se abra en otra pestaña
+        // (localStorage). event_id fijo por pago: el mismo que usará la
+        // Conversions API desde el servidor, para que Meta no la cuente dos veces.
         try {
-          if (window.COZUMEL_ANALITICA && sessionStorage.getItem('px:' + sessionId) !== '1') {
-            sessionStorage.setItem('px:' + sessionId, '1');
-            COZUMEL_ANALITICA.evento('Purchase', { value: data.reduce((t, f) => t + Number(f.precio_pagado || 0), 0), currency: data[0].moneda || 'USD', content_ids: data.map(f => f.producto) });
+          let yaContada = false;
+          try { yaContada = localStorage.getItem('px:' + sessionId) === '1' || sessionStorage.getItem('px:' + sessionId) === '1'; } catch (_) {}
+          if (window.COZUMEL_ANALITICA && !yaContada) {
+            try { localStorage.setItem('px:' + sessionId, '1'); } catch (_) {}
+            COZUMEL_ANALITICA.evento('Purchase', {
+              value: Math.round(data.reduce((t, f) => t + Number(f.precio_pagado || 0), 0) * 100) / 100,
+              currency: data[0].moneda || 'USD',
+              content_ids: data.map(f => f.producto),
+              num_items: data.length,
+              event_id: 'purchase_' + sessionId,
+            });
           }
         } catch (_) {}
         vaciarCarrito(); // ahora sí: el pago ya está confirmado de verdad
