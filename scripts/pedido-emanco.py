@@ -48,7 +48,9 @@ def precios():
                     d[s.strip()] = p
                 # y por el SKU entero (p. ej. YP23732D0W0), aunque la fila no traiga precio propio
                 for c in row:
-                    if isinstance(c, str) and re.match(r'^[A-Z]+\d+[A-Z]\w{3}$', c.strip()):
+                    # también las letras sueltas (XP49461M-1), que si no cogían
+                    # el precio del juego entero (XP49461D0W0)
+                    if isinstance(c, str) and re.match(r'^[A-Z]+\d+[A-Z](\w{3}|-\d)$', c.strip()):
                         d.setdefault(c.strip(), p if isinstance(p, (int, float)) else ultimo)
                 if isinstance(p, (int, float)):
                     ultimo = p
@@ -102,6 +104,8 @@ def codigo_estado(pais, prov):
 def nombre_estado(pais, prov):
     # EE. UU.: el nombre entero del estado aunque se escribiera "NE"
     p = (prov or '').strip()
+    if PAISES.get(pais) == 'MX' and p.upper() in ('CDMX', 'CMX', 'DF', 'DIF'):
+        return 'Ciudad de México'
     if PAISES.get(pais) == 'US' and len(p) == 2:
         for nombre, cod in ESTADOS_US.items():
             if cod == p.upper():
