@@ -77,6 +77,23 @@
   let equipo = false;
   try { equipo = localStorage.getItem('cozumel_acceso_web') === '1'; } catch (_) {}
 
+  // ---------- Visitas que llegan desde un anuncio (6/11/2026) ----------
+  // ?utm_source=meta (lo lleva el enlace del anuncio) o ?fbclid (lo añade
+  // Meta al hacer clic). Se recuerda 7 días en este navegador. A esas
+  // visitas no se les enseña el sorteo con Adri (no la conocen): en su
+  // lugar, la oferta de lanzamiento y el envío gratis (script.js). La clase
+  // en <html> va ya aquí, en <head>, para que el banner del sorteo no
+  // llegue a verse ni un instante.
+  const CLAVE_ORIGEN = 'cozumel_origen_anuncio';
+  let desdeAnuncio = false;
+  try {
+    const q = new URLSearchParams(location.search);
+    if (q.get('utm_source') === 'meta' || q.has('fbclid')) localStorage.setItem(CLAVE_ORIGEN, String(Date.now()));
+    const t = Number(localStorage.getItem(CLAVE_ORIGEN));
+    desdeAnuncio = t > 0 && Date.now() - t < 7 * 24 * 3600 * 1000;
+  } catch (_) {}
+  if (desdeAnuncio) document.documentElement.classList.add('desde-anuncio');
+
   let pixelesListos = false;
   let pendientes = [];
   const idEvento = (nombre) => nombre + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
@@ -89,6 +106,7 @@
     },
     activa() { try { return localStorage.getItem(CLAVE_NO) !== 'no'; } catch (_) { return true; } },
     consentimiento() { return consentimiento; },
+    desdeAnuncio() { return desdeAnuncio; },
     // Vuelve a enseñar el aviso para cambiar la decisión (cookies.html)
     preferencias() { mostrarAviso(true); },
     // Eventos de compra para el píxel. Sin consentimiento: nada.

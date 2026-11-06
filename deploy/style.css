@@ -4536,3 +4536,7 @@ body.v2 .checkout-wa strong{color:var(--deep); font-weight:600; text-decoration:
 .pago-rechazado-ayuda{margin-top:16px; font-size:14px;}
 .pago-cancelado .btn-wa{display:inline-block; margin-top:12px; margin-left:8px; background:transparent; color:var(--deep); border:1px solid var(--deep);}
 @media (max-width:520px){.pago-cancelado .btn-wa{margin-left:0;}}
+
+/* Visitas desde un anuncio (6/11): el banner del sorteo no se ve hasta que
+   script.js lo cambia por la oferta (clase oferta-anuncio) */
+html.desde-anuncio .coleccion-sorteo:not(.oferta-anuncio){visibility:hidden;}
