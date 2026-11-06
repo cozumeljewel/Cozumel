@@ -117,7 +117,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     });
   }
 
-  let body: { reserva_ids?: string[] };
+  let body: { reserva_ids?: string[]; origen?: string | null };
   try {
     body = await req.json();
   } catch {
@@ -279,6 +279,9 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // país de envío elegido, que es el que fija el precio. El webhook los
   // copia al pedido al pagar. Chile, Perú y Argentina: su documento para
   // la aduana, como campo propio.
+  // Quien llega desde un anuncio (lo dice la web, ver vieneDeAnuncio en
+  // script.js): sin el sorteo con Adri en la página de pago
+  const desdeAnuncio = body.origen === "meta";
   const DOCUMENTO: Record<string, string> = { CL: "RUT", PE: "DNI o RUC", AR: "CUIT o CUIL (11 dígitos)" };
   const email = (filas[0] as { email?: string }).email?.trim();
 
@@ -308,7 +311,8 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
         // 31/10: bajo el nombre, el gancho del sorteo
         product_data: {
           name: nombreProducto(l.producto),
-          description: "✦ Con esta pieza entras en el sorteo de 5 videollamadas con Adri ✦",
+          // 6/11: a quien llega desde un anuncio (no conoce a Adri), sin sorteo
+          ...(desdeAnuncio ? {} : { description: "✦ Con esta pieza entras en el sorteo de 5 videollamadas con Adri ✦" }),
         },
       },
       quantity: 1,
@@ -316,7 +320,9 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     // Junto al botón de pagar: el sorteo (mismo texto que en comprar.html)
     custom_text: {
       submit: {
-        message: "✦ Con esta compra entras en el sorteo de 5 videollamadas con Adri. Solo para las 100 primeras compras ✦",
+        message: desdeAnuncio
+          ? "✦ Envío gratis a todo el mundo ✦"
+          : "✦ Con esta compra entras en el sorteo de 5 videollamadas con Adri. Solo para las 100 primeras compras ✦",
       },
     },
     success_url: `${SITE_URL}/comprar.html?pago=exito&session_id={CHECKOUT_SESSION_ID}`,

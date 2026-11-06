@@ -4505,7 +4505,7 @@ if (reservaForm) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ reserva_ids: filasCreadas.map(f => f.id) }),
+        body: JSON.stringify({ reserva_ids: filasCreadas.map(f => f.id), origen: vieneDeAnuncio() ? 'meta' : null }),
       });
       const resultado = await resp.json();
 
@@ -4886,6 +4886,7 @@ zoomEnFotos(document.querySelector('.v2-charm-vista'));
    Ventana pequeña al entrar: "Con tu compra, entras en el sorteo de 5
    videollamadas con Adri". Una vez por visita (sessionStorage). */
 function avisoSorteo() {
+  if (vieneDeAnuncio()) return; // a quien llega del anuncio, sin sorteo (6/11)
   try { if (sessionStorage.getItem('cz_aviso_sorteo')) return; sessionStorage.setItem('cz_aviso_sorteo', '1'); } catch (_) {}
   const capa = document.createElement('div');
   capa.className = 'v2-sorteo-capa';
@@ -4929,4 +4930,28 @@ function avisoSorteo() {
       catch (_) { copiar.textContent = url; }
     });
   }
+})();
+
+
+/* ---------- Quien llega desde un anuncio (6/11/2026) ----------
+   No conoce a Adri: en vez del sorteo, la oferta de lanzamiento (solo en
+   la colección de hombre y mientras dure PROMO_HOMBRE) y el envío gratis.
+   El origen lo detecta analitica.js (?utm_source=meta o ?fbclid, 7 días),
+   que además oculta el banner del sorteo desde <head> (style.css). */
+function vieneDeAnuncio() {
+  return !!(window.COZUMEL_ANALITICA && COZUMEL_ANALITICA.desdeAnuncio && COZUMEL_ANALITICA.desdeAnuncio());
+}
+(function () {
+  if (!vieneDeAnuncio()) return;
+  const promoActiva = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE
+    && (!PROMO_HOMBRE.hasta || Date.now() < Date.parse(PROMO_HOMBRE.hasta));
+  const deMujer = CURRENT_PAGE === 'productos' && new URLSearchParams(location.search).get('c') === 'woman';
+  const carritoDeHombre = () => getCarrito().some(i => /^hombre_/.test(i.producto || ''));
+  const conPromo = promoActiva && !deMujer && (CURRENT_PAGE !== 'comprar' || !getCarrito().length || carritoDeHombre());
+  document.querySelectorAll('.coleccion-sorteo').forEach(p => {
+    p.textContent = conPromo
+      ? '✦ Semana de lanzamiento: −15 % · Envío gratis a todo el mundo ✦'
+      : '✦ Envío gratis a todo el mundo ✦';
+    p.classList.add('oferta-anuncio');
+  });
 })();
