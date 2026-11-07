@@ -15,3 +15,11 @@ create policy "anon inserta eventos" on public.eventos
     or (fuente = 'email' and evento = 'voto_email')
     or (fuente = 'instagram' and evento = 'voto_historia')
   );
+
+-- El nombre del evento de llegada tiene que estar en la lista permitida.
+alter table public.eventos drop constraint eventos_evento_check;
+alter table public.eventos add constraint eventos_evento_check check (evento = any (array[
+  'view', 'coleccion_vista', 'producto_visto', 'personalizacion_iniciada',
+  'reserva_iniciada', 'reserva_completada', 'compra_iniciada', 'compra_completada',
+  'voto_email', 'voto_historia', 'llegada_anuncio'
+]));
