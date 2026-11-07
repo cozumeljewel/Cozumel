@@ -425,7 +425,10 @@ if (typeof MERCADOS !== 'undefined') {
 /* ---------- Tracking del embudo ---------- */
 function trackEvent(evento, productoId) {
   if (!sb) return Promise.resolve();
-  const fila = { evento, session_id: getSessionId(), fuente: 'adri_story' };
+  // 7/11: las visitas que llegaron del anuncio de Meta (7 días en este
+  // navegador, ver analitica.js) se apuntan aparte, sin cookies: el píxel
+  // solo ve a quien acepta el aviso (supabase-migracion-v43.sql)
+  const fila = { evento, session_id: getSessionId(), fuente: vieneDeAnuncio() ? 'anuncio_meta' : 'adri_story' };
   // producto es opcional: en "view" todavía no hay pieza elegida
   const prod = productoId !== undefined ? productoId : (getProductoElegido() || {}).id;
   if (prod) fila.producto = prod;
@@ -434,6 +437,16 @@ function trackEvent(evento, productoId) {
     .then(({ error }) => { if (error) console.warn('trackEvent', evento, error); })
     .catch(err => console.warn('trackEvent', evento, err));
 }
+
+// Llegada desde un clic del anuncio (el enlace lleva utm_source=meta y Meta
+// añade fbclid): una vez por sesión, con la pieza de la ficha a la que lleva.
+try {
+  const q = new URLSearchParams(location.search);
+  if ((q.get('utm_source') === 'meta' || q.has('fbclid')) && sessionStorage.getItem('anuncioTracked') !== '1') {
+    sessionStorage.setItem('anuncioTracked', '1');
+    trackEvent('llegada_anuncio', q.get('id') || null);
+  }
+} catch (_) {}
 
 // "view" = llegada a la landing (primer paso del embudo), solo en Inicio.
 if (CURRENT_PAGE === 'inicio' && sessionStorage.getItem('viewTracked') !== '1') {
