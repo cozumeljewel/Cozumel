@@ -4,6 +4,7 @@
    abierto → profundidad. Acentos en oro y plata.
    ========================================================= */
 :root{
+  color-scheme: light only;
   /* aguas claras */
   --foam:#F2F8F8;        /* espuma — fondo base */
   --shallow:#E3EFF1;     /* bajío — secciones alternas */

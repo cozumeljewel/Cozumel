@@ -1952,3 +1952,16 @@ en: ✦ Launch week: −15% · Free worldwide shipping ✦
 
 es: ✦ Envío gratis a todo el mundo ✦
 en: ✦ Free worldwide shipping ✦
+
+# ---------- Black Friday (10/11/2026) ----------
+es: · Black Friday · 10 % de descuento ·
+en: · Black Friday · 10% off ·
+
+es: Black Friday · 10 % de descuento
+en: Black Friday · 10% off
+
+es: ✦ Black Friday: −10 % · Envío gratis a todo el mundo ✦
+en: ✦ Black Friday: −10% · Free worldwide shipping ✦
+
+es: Descuento Black Friday
+en: Black Friday discount

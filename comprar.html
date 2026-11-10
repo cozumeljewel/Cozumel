@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<meta name="darkreader-lock">
 <title>Compra · Cozumel Jewelry</title>
 <meta name="description" content="Pago seguro con tarjeta, a través de Stripe. Envío e impuestos incluidos">
 <meta name="theme-color" content="#14454A">
@@ -89,11 +91,11 @@
        los de siempre: script.js no cambia. -->
   <section class="reserva checkout">
     <div class="reserva-content checkout-grid" id="reserva-content">
-      <aside class="checkout-resumen" id="checkout-resumen" aria-label="Resumen del pedido">
+      <aside class="checkout-resumen abierto" id="checkout-resumen" aria-label="Resumen del pedido">
         <!-- Móvil (1/11/2026): el resumen va plegado en una línea con el
              total, para que el formulario se vea nada más llegar. -->
-        <button type="button" class="checkout-plegar" id="checkout-plegar" aria-expanded="false" aria-controls="checkout-resumen">
-          <span class="checkout-plegar-txt">Ver resumen del pedido</span>
+        <button type="button" class="checkout-plegar" id="checkout-plegar" aria-expanded="true" aria-controls="checkout-resumen">
+          <span class="checkout-plegar-txt">Ocultar resumen del pedido</span>
           <strong id="checkout-plegar-total"></strong>
         </button>
         <h2 class="checkout-resumen-titulo">Tu pedido</h2>
@@ -104,7 +106,7 @@
         <p class="reserva-config-warning" id="sin-pieza" hidden>
           Todavía no has añadido ninguna pieza. Entra en <a href="productos.html">la colección</a> y elige la tuya
         </p>
-        <p class="coleccion-sorteo compra-sorteo">✦ Tu compra entra en el <strong>sorteo de 5 videollamadas con Adri</strong>. Solo para las 100 primeras compras: aún estás a tiempo ✦</p>
+        <p class="coleccion-sorteo compra-sorteo">✦ Envío gratis a todo el mundo ✦</p>
       </aside>
 
       <div class="checkout-form">

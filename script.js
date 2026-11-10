@@ -438,11 +438,11 @@ function trackEvent(evento, productoId) {
     .catch(err => console.warn('trackEvent', evento, err));
 }
 
-// Llegada desde un clic del anuncio (el enlace lleva utm_source=meta y Meta
-// añade fbclid): una vez por sesión, con la pieza de la ficha a la que lleva.
+// Llegada desde un clic del anuncio (solo utm_source=meta, que lleva el
+// enlace del anuncio): una vez por sesión, con la pieza de la ficha.
 try {
   const q = new URLSearchParams(location.search);
-  if ((q.get('utm_source') === 'meta' || q.has('fbclid')) && sessionStorage.getItem('anuncioTracked') !== '1') {
+  if (q.get('utm_source') === 'meta' && sessionStorage.getItem('anuncioTracked') !== '1') {
     sessionStorage.setItem('anuncioTracked', '1');
     trackEvent('llegada_anuncio', q.get('id') || null);
   }
@@ -1828,7 +1828,7 @@ function urlPiezaHombre(prod, clave) {
   // MEN: las piezas de hombre (hombre.js), con circulitos de acabado y,
   // encima, el tipo de pieza (?t=colgantes por defecto).
   if (coleccion === 'men' && typeof COLECCION_HOMBRE !== 'undefined') {
-    avisoSorteo();
+    // 10/11: ya no se enseña la ventana del sorteo (avisoSorteo) al entrar.
     // ?t=brazaletes (enlaces antiguos) lleva a Pulseras, que los incluye
     const pedido = new URLSearchParams(location.search).get('t');
     const tabPedida = TIPOS_HOMBRE.find(t => t.clave === pedido || (t.incluye || []).includes(pedido));
@@ -2831,7 +2831,7 @@ if (!campos && document.querySelector('[data-bind="resumen"]')) {
   cierre.className = 'popup-cierre';
   cierre.textContent = 'Joyería para mujer personalizable.';
 
-  caja.append(cerrar, olas, eyebrow, titulo, p1, edicion, badge, cta, cierre);
+  caja.append(cerrar, olas, eyebrow, titulo, edicion, cta, cierre); // 10/11: sin Adri ni sorteo
   capa.appendChild(caja);
 
   const antesDelPopup = document.activeElement;
@@ -4292,7 +4292,7 @@ if (reservaForm) {
       if (totalRegalos > 0) fila('Colgante de regalo', '−' + formatearImporte(totalRegalos, moneda), 'carrito-total-descuento');
       const ahorro = Math.round((totalSinPromo - total) * 100) / 100;
       const promoTxt = (() => { const p = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE; return p && p.descuento ? ' (−' + p.descuento + ' %)' : ''; })();
-      if (ahorro > 0) fila('Descuento de lanzamiento' + promoTxt, '−' + formatearImporte(ahorro, moneda), 'carrito-total-descuento');
+      if (ahorro > 0) fila(((typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.nombre) ? 'Descuento ' + PROMO_HOMBRE.nombre : 'Descuento de lanzamiento') + promoTxt, '−' + formatearImporte(ahorro, moneda), 'carrito-total-descuento');
       fila('Envío', 'Incluido');
       const fin = fila('Total', '', 'carrito-total-final');
       fin.lastChild.innerHTML = '<small></small> <strong></strong>';
@@ -4949,13 +4949,13 @@ function avisoSorteo() {
 /* ---------- Quien llega desde un anuncio (6/11/2026) ----------
    No conoce a Adri: en vez del sorteo, la oferta de lanzamiento (solo en
    la colección de hombre y mientras dure PROMO_HOMBRE) y el envío gratis.
-   El origen lo detecta analitica.js (?utm_source=meta o ?fbclid, 7 días),
+   El origen lo detecta analitica.js (?utm_source=meta, 7 días),
    que además oculta el banner del sorteo desde <head> (style.css). */
 function vieneDeAnuncio() {
   return !!(window.COZUMEL_ANALITICA && COZUMEL_ANALITICA.desdeAnuncio && COZUMEL_ANALITICA.desdeAnuncio());
 }
 (function () {
-  if (!vieneDeAnuncio()) return;
+  // 10/11: ya no hay sorteo con Adri en la web: esta franja es para todos.
   const promoActiva = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE
     && (!PROMO_HOMBRE.hasta || Date.now() < Date.parse(PROMO_HOMBRE.hasta));
   const deMujer = CURRENT_PAGE === 'productos' && new URLSearchParams(location.search).get('c') === 'woman';
@@ -4963,7 +4963,7 @@ function vieneDeAnuncio() {
   const conPromo = promoActiva && !deMujer && (CURRENT_PAGE !== 'comprar' || !getCarrito().length || carritoDeHombre());
   document.querySelectorAll('.coleccion-sorteo').forEach(p => {
     p.textContent = conPromo
-      ? '✦ Semana de lanzamiento: −15 % · Envío gratis a todo el mundo ✦'
+      ? '✦ ' + (PROMO_HOMBRE.nombre || 'Oferta') + ': −' + PROMO_HOMBRE.descuento + ' % · Envío gratis a todo el mundo ✦'
       : '✦ Envío gratis a todo el mundo ✦';
     p.classList.add('oferta-anuncio');
   });

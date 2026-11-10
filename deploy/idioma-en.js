@@ -631,7 +631,11 @@ COZUMEL_EN_CARGADO({
  "Puedes aceptar o rechazar las cookies de analítica y publicidad cuando quieras: <button type=\"button\" class=\"link-analitica\" onclick=\"COZUMEL_ANALITICA.preferencias()\">Cambiar mis preferencias de cookies</button>. Si las retiras, dejamos de usarlas en ese momento y borramos las cookies de Meta.": "You can accept or reject analytics and advertising cookies whenever you like: <button type=\"button\" class=\"link-analitica\" onclick=\"COZUMEL_ANALITICA.preferencias()\">Change my cookie preferences</button>. If you withdraw them, we stop using them straight away and delete the Meta cookies.",
  "Para mejorar la web usamos una herramienta de analítica que mide de forma anónima cómo se navega y, solo si aceptas las cookies, el píxel de Meta para medir nuestros anuncios en Facebook e Instagram (los detalles y cómo cambiar tu decisión, en la <a href=\"cookies.html\">política de cookies</a>). A Meta no le enviamos tu nombre, email, teléfono ni dirección, y no vendemos tus datos a nadie.": "To improve the site we use an analytics tool that anonymously measures how people browse and, only if you accept cookies, the Meta pixel to measure our ads on Facebook and Instagram (details and how to change your choice in the <a href=\"cookies.html\">cookie policy</a>). We don't send Meta your name, email, phone number or address, and we don't sell your data to anyone.",
  "✦ Semana de lanzamiento: −15 % · Envío gratis a todo el mundo ✦": "✦ Launch week: −15% · Free worldwide shipping ✦",
- "✦ Envío gratis a todo el mundo ✦": "✦ Free worldwide shipping ✦"
+ "✦ Envío gratis a todo el mundo ✦": "✦ Free worldwide shipping ✦",
+ "· Black Friday · 10 % de descuento ·": "· Black Friday · 10% off ·",
+ "Black Friday · 10 % de descuento": "Black Friday · 10% off",
+ "✦ Black Friday: −10 % · Envío gratis a todo el mundo ✦": "✦ Black Friday: −10% · Free worldwide shipping ✦",
+ "Descuento Black Friday": "Black Friday discount"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

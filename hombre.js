@@ -203,9 +203,10 @@ COLECCION_HOMBRE.forEach(p => { if (ESCALON_HOMBRE[p.id]) p.precios = ESCALONES_
 const ORO_14K_HOMBRE = ['hombre_pulsera_7', 'hombre_pulsera_8', 'hombre_anillo_7', 'hombre_anillo_10', 'hombre_anillo_13'];
 // Promoción de lanzamiento (descuento REAL sobre los precios de arriba:
 // el tachado es el precio de siempre). null = sin promoción.
-// Semana de lanzamiento: del 1 al 8 de noviembre (21:00 de México).
+// Semana de lanzamiento: del 1 al 8 de noviembre (21:00 de México), −15 %.
+// Black Friday (10/11/2026): −10 % hasta el 30/11 a las 23:59 de México.
 // hasta: se apaga sola al pasar esa fecha.
-const PROMO_HOMBRE = { descuento: 15, hasta: '2026-11-08T21:00:00-06:00', texto: '· Semana de lanzamiento · 15 % de descuento ·' };
+const PROMO_HOMBRE = { descuento: 10, hasta: '2026-11-30T23:59:59-06:00', nombre: 'Black Friday', texto: '· Black Friday · 10 % de descuento ·' };
 
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 

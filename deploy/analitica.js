@@ -78,8 +78,9 @@
   try { equipo = localStorage.getItem('cozumel_acceso_web') === '1'; } catch (_) {}
 
   // ---------- Visitas que llegan desde un anuncio (6/11/2026) ----------
-  // ?utm_source=meta (lo lleva el enlace del anuncio) o ?fbclid (lo añade
-  // Meta al hacer clic). Se recuerda 7 días en este navegador. A esas
+  // ?utm_source=meta: solo lo lleva el enlace del anuncio (9/11: ya no
+  // fbclid, que Instagram añade también a la bio y a otros enlaces).
+  // Se recuerda 7 días en este navegador. A esas
   // visitas no se les enseña el sorteo con Adri (no la conocen): en su
   // lugar, la oferta de lanzamiento y el envío gratis (script.js). La clase
   // en <html> va ya aquí, en <head>, para que el banner del sorteo no
@@ -88,7 +89,7 @@
   let desdeAnuncio = false;
   try {
     const q = new URLSearchParams(location.search);
-    if (q.get('utm_source') === 'meta' || q.has('fbclid')) localStorage.setItem(CLAVE_ORIGEN, String(Date.now()));
+    if (q.get('utm_source') === 'meta') localStorage.setItem(CLAVE_ORIGEN, String(Date.now()));
     const t = Number(localStorage.getItem(CLAVE_ORIGEN));
     desdeAnuncio = t > 0 && Date.now() - t < 7 * 24 * 3600 * 1000;
   } catch (_) {}

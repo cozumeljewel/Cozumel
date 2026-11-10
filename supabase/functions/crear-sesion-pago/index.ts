@@ -269,7 +269,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       currency: moneda.toLowerCase(),
       duration: "once",
       max_redemptions: 1,
-      name: `Semana de lanzamiento −${PROMO_HOMBRE?.descuento ?? 15} %`,
+      name: `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`,
     });
     descuentos = [{ coupon: cupon.id }];
   }

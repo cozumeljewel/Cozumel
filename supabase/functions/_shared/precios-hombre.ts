@@ -305,4 +305,4 @@ export const NOMBRES_HOMBRE: Record<string, string> = {
 
 // Promoción de lanzamiento (descuento REAL sobre los precios de arriba).
 // null = sin promoción. hasta = fecha en que se apaga sola.
-export const PROMO_HOMBRE: { descuento: number; hasta?: string } | null = {"descuento":15,"hasta":"2026-11-08T21:00:00-06:00"};
+export const PROMO_HOMBRE: { descuento: number; hasta?: string; nombre?: string } | null = {"descuento":10,"hasta":"2026-11-30T23:59:59-06:00","nombre":"Black Friday"};
