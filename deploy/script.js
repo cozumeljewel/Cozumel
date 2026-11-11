@@ -92,6 +92,13 @@ function esPiezaHombre(prod) { return !!prod && String(prod.id).startsWith('homb
    redondeo que pintarPrecioPromo y que crear-sesion-pago). */
 function precioCobro(prod, codigoMercado) {
   const p = typeof precioDe === 'function' ? precioDe(prod, codigoMercado) : null;
+  // 11/11: con código personal, su % sobre el precio de siempre en TODAS
+  // las piezas, en lugar de la promoción (igual que crear-sesion-pago)
+  const cp = p && typeof codigoPersonal === 'function' ? codigoPersonal() : null;
+  if (cp) {
+    const x = p.importe * (1 - cp.descuento / 100);
+    return { ...p, importe: (SIN_DECIMALES.includes(p.moneda) || p.moneda === 'MXN') ? Math.round(x) : Math.round(x * 100) / 100 };
+  }
   if (!p || !esPiezaHombre(prod) || typeof PROMO_HOMBRE === 'undefined') return p;
   const promo = PROMO_HOMBRE;
   if (!(promo && promo.descuento && (!promo.hasta || Date.now() <= Date.parse(promo.hasta)))) return p;
@@ -4307,11 +4314,12 @@ if (reservaForm) {
       fila('Subtotal', formatearImporte(totalSinPromo + totalRegalos, moneda) || '—');
       if (totalRegalos > 0) fila('Colgante de regalo', '−' + formatearImporte(totalRegalos, moneda), 'carrito-total-descuento');
       const ahorro = Math.round((totalSinPromo - total) * 100) / 100;
-      const promoTxt = (() => { const p = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE; return p && p.descuento ? ' (−' + p.descuento + ' %)' : ''; })();
-      if (ahorro > 0) fila(((typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.nombre) ? 'Descuento ' + PROMO_HOMBRE.nombre : 'Descuento de lanzamiento') + promoTxt, '−' + formatearImporte(ahorro, moneda), 'carrito-total-descuento');
-      fila('Envío', 'Incluido');
       const cp = codigoPersonal();
-      if (cp) fila('Oferta especial Black Friday (−' + cp.descuento + ' %)', 'Se aplica al pagar', 'carrito-total-descuento');
+      const promoTxt = (() => { const p = cp || (typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE); return p && p.descuento ? ' (−' + p.descuento + ' %)' : ''; })();
+      const nombreDesc = cp ? 'Oferta especial Black Friday'
+        : ((typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.nombre) ? 'Descuento ' + PROMO_HOMBRE.nombre : 'Descuento de lanzamiento');
+      if (ahorro > 0) fila(nombreDesc + promoTxt, '−' + formatearImporte(ahorro, moneda), 'carrito-total-descuento');
+      fila('Envío', 'Incluido');
       const fin = fila('Total', '', 'carrito-total-final');
       fin.lastChild.innerHTML = '<small></small> <strong></strong>';
       fin.querySelector('small').textContent = moneda || '';
@@ -4980,7 +4988,10 @@ function vieneDeAnuncio() {
   const carritoDeHombre = () => getCarrito().some(i => /^hombre_/.test(i.producto || ''));
   const conPromo = promoActiva && !deMujer && (CURRENT_PAGE !== 'comprar' || !getCarrito().length || carritoDeHombre());
   document.querySelectorAll('.coleccion-sorteo').forEach(p => {
-    p.textContent = conPromo
+    const cp = codigoPersonal();
+    p.textContent = cp
+      ? '✦ Tu oferta especial Black Friday: −' + cp.descuento + ' % · Envío gratis a todo el mundo ✦'
+      : conPromo
       ? '✦ ' + (PROMO_HOMBRE.nombre || 'Oferta') + ': −' + PROMO_HOMBRE.descuento + ' % · Envío gratis a todo el mundo ✦'
       : '✦ Envío gratis a todo el mundo ✦';
     p.classList.add('oferta-anuncio');

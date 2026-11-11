@@ -1968,3 +1968,6 @@ en: Black Friday discount
 
 es: Se aplica al pagar
 en: Applied at checkout
+
+es: Oferta especial Black Friday
+en: Black Friday special offer
