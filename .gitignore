@@ -12,3 +12,4 @@ supabase/.temp/
 # versiones ya procesadas (img/nombre.jpg, sin carpeta) van al repo.
 img/*/
 backups/
+supabase/functions/_shared/codigos-personales.ts

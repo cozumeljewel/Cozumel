@@ -1965,3 +1965,6 @@ en: ✦ Black Friday: −10% · Free worldwide shipping ✦
 
 es: Descuento Black Friday
 en: Black Friday discount
+
+es: Se aplica al pagar
+en: Applied at checkout

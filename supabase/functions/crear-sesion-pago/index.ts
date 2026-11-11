@@ -27,8 +27,9 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@17";
-import { PRODUCTOS_VALIDOS, precioDe, precioSinPromo, mercadoValido, importeStripe, NOMBRES_HOMBRE } from "../_shared/precios.ts";
+import { PRODUCTOS_VALIDOS, precioDe, precioSinPromo, mercadoValido, importeStripe, NOMBRES_HOMBRE, SIN_DECIMALES } from "../_shared/precios.ts";
 import { PROMO_HOMBRE } from "../_shared/precios-hombre.ts";
+import { codigoValido } from "../_shared/codigos-personales.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -117,7 +118,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     });
   }
 
-  let body: { reserva_ids?: string[]; origen?: string | null };
+  let body: { reserva_ids?: string[]; origen?: string | null; codigo?: string | null };
   try {
     body = await req.json();
   } catch {
@@ -233,11 +234,21 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // Precio real de cada pieza, SIEMPRE recalculado aquí a partir del
   // producto y el mercado — nunca del precio que mandó el navegador. Si
   // alguien edita el precio desde DevTools, esto lo ignora.
+  // 11/11/2026: código personal (_shared/codigos-personales.ts). Si es
+  // válido, TODAS las piezas van a su precio de siempre menos ese %, en
+  // lugar de la promoción general (no se suman).
+  const personal = codigoValido(body.codigo);
+  const conCodigo = (p: { importe: number; moneda: string; mercado: string } | null) => {
+    if (!p || !personal) return p;
+    const x = p.importe * (1 - personal.descuento / 100);
+    const importe = (SIN_DECIMALES.includes(p.moneda) || p.moneda === "MXN") ? Math.round(x) : Math.round(x * 100) / 100;
+    return { ...p, importe };
+  };
   const lineas = filas.map((f) => ({
     id: f.id,
     producto: f.producto,
     pais: f.pais,
-    precio: precioDe(f.producto, mercado),
+    precio: personal ? conCodigo(precioSinPromo(f.producto, mercado)) : precioDe(f.producto, mercado),
   }));
 
   const lineaSinPrecio = lineas.find((l) => !l.precio);
@@ -269,7 +280,9 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       currency: moneda.toLowerCase(),
       duration: "once",
       max_redemptions: 1,
-      name: `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`,
+      name: personal
+        ? `Black Friday · oferta especial −${personal.descuento} %`
+        : `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`,
     });
     descuentos = [{ coupon: cupon.id }];
   }
@@ -279,9 +292,6 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // país de envío elegido, que es el que fija el precio. El webhook los
   // copia al pedido al pagar. Chile, Perú y Argentina: su documento para
   // la aduana, como campo propio.
-  // Quien llega desde un anuncio (lo dice la web, ver vieneDeAnuncio en
-  // script.js): sin el sorteo con Adri en la página de pago
-  const desdeAnuncio = body.origen === "meta";
   const DOCUMENTO: Record<string, string> = { CL: "RUT", PE: "DNI o RUC", AR: "CUIT o CUIL (11 dígitos)" };
   const email = (filas[0] as { email?: string }).email?.trim();
 
@@ -308,22 +318,16 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
         // Las monedas sin decimales (COP, CLP, ARS) van en unidades, no
         // en céntimos: si no, Stripe cobraría cien veces de más.
         unit_amount: importeStripe((precioSinPromo(l.producto, mercado) ?? l.precio!).importe, moneda),
-        // 31/10: bajo el nombre, el gancho del sorteo
+        // 10/11: ya sin el sorteo con Adri
         product_data: {
           name: nombreProducto(l.producto),
-          // 6/11: a quien llega desde un anuncio (no conoce a Adri), sin sorteo
-          ...(desdeAnuncio ? {} : { description: "✦ Con esta pieza entras en el sorteo de 5 videollamadas con Adri ✦" }),
         },
       },
       quantity: 1,
     })),
-    // Junto al botón de pagar: el sorteo (mismo texto que en comprar.html)
+    // Junto al botón de pagar (mismo texto que en comprar.html)
     custom_text: {
-      submit: {
-        message: desdeAnuncio
-          ? "✦ Envío gratis a todo el mundo ✦"
-          : "✦ Con esta compra entras en el sorteo de 5 videollamadas con Adri. Solo para las 100 primeras compras ✦",
-      },
+      submit: { message: "✦ Envío gratis a todo el mundo ✦" },
     },
     success_url: `${SITE_URL}/comprar.html?pago=exito&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${SITE_URL}/comprar.html?pago=cancelado`,

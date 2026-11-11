@@ -635,7 +635,8 @@ COZUMEL_EN_CARGADO({
  "· Black Friday · 10 % de descuento ·": "· Black Friday · 10% off ·",
  "Black Friday · 10 % de descuento": "Black Friday · 10% off",
  "✦ Black Friday: −10 % · Envío gratis a todo el mundo ✦": "✦ Black Friday: −10% · Free worldwide shipping ✦",
- "Descuento Black Friday": "Black Friday discount"
+ "Descuento Black Friday": "Black Friday discount",
+ "Se aplica al pagar": "Applied at checkout"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

@@ -422,6 +422,22 @@ if (typeof MERCADOS !== 'undefined') {
   }).catch(() => {});
 }
 
+/* ---------- Código de descuento personal (11/11/2026) ----------
+   Llega en el enlace de WhatsApp (?codigo=CZ20-XXXXX) y se guarda en este
+   navegador. Quien decide si vale y cuánto es el servidor
+   (crear-sesion-pago, _shared/codigos-personales.ts); aquí solo se manda
+   y se avisa. El "20" va en el propio código (CZ20-). */
+function codigoPersonal() {
+  try {
+    const q = new URLSearchParams(location.search).get('codigo');
+    if (q && /^CZ\d{2}-[A-Z0-9]{5}$/i.test(q.trim())) localStorage.setItem('cozumel_codigo', JSON.stringify({ c: q.trim().toUpperCase(), t: Date.now() }));
+    const g = JSON.parse(localStorage.getItem('cozumel_codigo') || 'null');
+    if (!g || Date.now() - g.t > 14 * 24 * 3600 * 1000) return null;
+    return { codigo: g.c, descuento: Number(g.c.slice(2, 4)) };
+  } catch (_) { return null; }
+}
+codigoPersonal();
+
 /* ---------- Tracking del embudo ---------- */
 function trackEvent(evento, productoId) {
   if (!sb) return Promise.resolve();
@@ -4294,6 +4310,8 @@ if (reservaForm) {
       const promoTxt = (() => { const p = typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE; return p && p.descuento ? ' (−' + p.descuento + ' %)' : ''; })();
       if (ahorro > 0) fila(((typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.nombre) ? 'Descuento ' + PROMO_HOMBRE.nombre : 'Descuento de lanzamiento') + promoTxt, '−' + formatearImporte(ahorro, moneda), 'carrito-total-descuento');
       fila('Envío', 'Incluido');
+      const cp = codigoPersonal();
+      if (cp) fila('Oferta especial Black Friday (−' + cp.descuento + ' %)', 'Se aplica al pagar', 'carrito-total-descuento');
       const fin = fila('Total', '', 'carrito-total-final');
       fin.lastChild.innerHTML = '<small></small> <strong></strong>';
       fin.querySelector('small').textContent = moneda || '';
@@ -4518,7 +4536,7 @@ if (reservaForm) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ reserva_ids: filasCreadas.map(f => f.id), origen: vieneDeAnuncio() ? 'meta' : null }),
+        body: JSON.stringify({ reserva_ids: filasCreadas.map(f => f.id), origen: vieneDeAnuncio() ? 'meta' : null, codigo: (codigoPersonal() || {}).codigo || null }),
       });
       const resultado = await resp.json();
 
