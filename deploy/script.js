@@ -412,8 +412,12 @@ function sincronizarSelectorMercado() {
 }
 
 if (typeof MERCADOS !== 'undefined') {
+  // 13/11: el mercado en <html data-mercado> (p.ej. para no enseñar la
+  // bandera de México del pie a quien ve la web con precios de EE. UU.)
+  const marcarMercado = () => { document.documentElement.dataset.mercado = getMercado(); };
+  marcarMercado();
   pintarSelectorMercado();
-  alCambiarMercado(() => { sincronizarSelectorMercado(); repreciarCarrito(); });
+  alCambiarMercado(() => { sincronizarSelectorMercado(); repreciarCarrito(); marcarMercado(); });
 
   /* Detección por IP: una sola vez cada 30 días, nunca por página, y sin
      pedir permiso de ubicación. Si el resultado cambia el mercado que ya

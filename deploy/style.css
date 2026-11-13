@@ -3771,6 +3771,8 @@ body.v2 .footer-marca::after{
   background:linear-gradient(to right, #006847 0 33.33%, #FFFFFF 33.33% 66.66%, #CE1126 66.66% 100%);
   box-shadow:0 0 0 1px var(--c-linea);
 }
+/* 13/11: sin la bandera para quien ve la web con precios de EE. UU. */
+html[data-mercado="US"] body.v2 .footer-marca::after{display:none;}
 
 /* ---------- Ficha: charm de regalo (cadenas sin colgante) ----------
    Desplegable tras Envío. Círculos como los de color; "—" = sin charm. */
