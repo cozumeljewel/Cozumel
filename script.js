@@ -461,7 +461,9 @@ function trackEvent(evento, productoId) {
   // 7/11: las visitas que llegaron del anuncio de Meta (7 días en este
   // navegador, ver analitica.js) se apuntan aparte, sin cookies: el píxel
   // solo ve a quien acepta el aviso (supabase-migracion-v43.sql)
-  const fila = { evento, session_id: getSessionId(), fuente: vieneDeAnuncio() ? 'anuncio_meta' : 'adri_story' };
+  // 13/11: y las que llegan desde TikTok (?utm_source=tiktok), con fuente
+  // 'tiktok' (supabase-migracion-v44.sql)
+  const fila = { evento, session_id: getSessionId(), fuente: vieneDeAnuncio() ? 'anuncio_meta' : vieneDeTiktok() ? 'tiktok' : 'adri_story' };
   // producto es opcional: en "view" todavía no hay pieza elegida
   const prod = productoId !== undefined ? productoId : (getProductoElegido() || {}).id;
   if (prod) fila.producto = prod;
@@ -4115,10 +4117,32 @@ if (reservaForm) {
     });
 
     // Selección inicial: el valor por defecto del input oculto (+52).
-    const inicial = PAISES_TELEFONO.find(p => p.codigo === prefijoSelect.value) || PAISES_TELEFONO[0];
+    let inicial = PAISES_TELEFONO.find(p => p.codigo === prefijoSelect.value) || PAISES_TELEFONO[0];
+    // 13/11: si se sabe de qué país entra (detección por IP), su prefijo.
+    // Antes salía siempre +52 y a alguien de EE. UU. le tocaba cambiarlo.
+    const porIso = iso => iso && PAISES_TELEFONO.find(p => p.iso === String(iso).toLowerCase());
+    try {
+      const geo = JSON.parse(localStorage.getItem('cozumel_mercado_geo'));
+      const propio = porIso(geo && geo.pais);
+      if (propio) { inicial = propio; prefijoSelect.value = propio.codigo; }
+    } catch (_) {}
     bandera.src = banderaUrl(inicial.iso);
     bandera.alt = inicial.pais;
     codigoTxt.textContent = inicial.codigo;
+
+    // Y si cambia el país de envío antes de escribir el número, el prefijo le sigue.
+    const selPaisEnvio = document.querySelector('select[name="pais"]');
+    const telInput = document.querySelector('input[name="whatsapp"]');
+    if (selPaisEnvio) selPaisEnvio.addEventListener('change', () => {
+      if (telInput && telInput.value.trim()) return;
+      const op = selPaisEnvio.options[selPaisEnvio.selectedIndex];
+      const p = porIso(op && op.dataset.codigo);
+      if (!p) return;
+      prefijoSelect.value = p.codigo;
+      bandera.src = banderaUrl(p.iso);
+      bandera.alt = p.pais;
+      codigoTxt.textContent = p.codigo;
+    });
   }
 
   const reservaSubmitBtn = document.getElementById('reserva-submit');
@@ -4996,6 +5020,9 @@ function avisoSorteo() {
    que además oculta el banner del sorteo desde <head> (style.css). */
 function vieneDeAnuncio() {
   return !!(window.COZUMEL_ANALITICA && COZUMEL_ANALITICA.desdeAnuncio && COZUMEL_ANALITICA.desdeAnuncio());
+}
+function vieneDeTiktok() {
+  return !!(window.COZUMEL_ANALITICA && COZUMEL_ANALITICA.desdeTiktok && COZUMEL_ANALITICA.desdeTiktok());
 }
 (function () {
   // 10/11: ya no hay sorteo con Adri en la web: esta franja es para todos.

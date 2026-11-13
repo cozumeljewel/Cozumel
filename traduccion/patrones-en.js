@@ -15,4 +15,19 @@
     (m, p1, m1, p2, m2, ah, su) => `${T(p1)} in ${m1 === 'oro' ? 'gold' : 'silver'} + ${T(p2)} in ${m2 === 'oro' ? 'gold' : 'silver'}`
       + (ah ? ` · You save ${ah} compared with buying them separately (${su})` : '')],
   [/^Ir a pagar · (.+)$/, 'Checkout · $1'],
+  // 13/11/2026: ficha de hombre y carrito
+  [/^Ver foto (\d+)$/, 'View photo $1'],
+  [/^Detalles de (.+)$/, (m, p) => `${T(p)} details`],
+  [/^Material: (.+)$/, (m, x) => `Material: ${T(x)}`],
+  [/^Largo (\d+) cm$/, 'Length $1 cm'],
+  [/^Grosor (.+)$/, 'Thickness $1'],
+  [/^Antes ([^a-z]*\d[^a-z]*)$/, 'Was $1'],  // solo precios, no frases
+  [/^Ahora (.+), (\d+) % de descuento$/, 'Now $1, $2% off'],
+  [/^Descuento Black Friday \(−(\d+) %\)$/, 'Black Friday discount (−$1%)'],
+  [/^Oferta especial Black Friday \(−(\d+) %\)$/, 'Black Friday special offer (−$1%)'],
+  [/^Letra (.)$/, (m, l) => `Letter ${l.toUpperCase()}`],
+  [/^Número (\d+)$/, 'Number $1'],
+  [/^Ver de cerca (.+) en (oro blanco|oro|plata|negro)$/, (m, p, a) => `Close-up of ${T(p)} in ${({ 'oro blanco': 'white gold', oro: 'gold', plata: 'silver', negro: 'black' })[a]}`],
+  [/^(.+) en (oro blanco|oro|plata|negro)$/, (m, p, a) => `${T(p)} in ${({ 'oro blanco': 'white gold', oro: 'gold', plata: 'silver', negro: 'black' })[a]}`],
+  [/^(.+) puesto$/, (m, p) => `${T(p)} worn`],
 ]

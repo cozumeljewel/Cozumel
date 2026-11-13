@@ -95,6 +95,22 @@
   } catch (_) {}
   if (desdeAnuncio) document.documentElement.classList.add('desde-anuncio');
 
+  // ---------- Visitas que llegan desde TikTok (13/11/2026) ----------
+  // ?utm_source=tiktok en el enlace de la bio / los vídeos. Igual que el
+  // anuncio: 7 días en este navegador, sin cookies (los eventos se apuntan
+  // con fuente 'tiktok', supabase-migracion-v44.sql). Gana el último origen:
+  // si después llega desde el anuncio, cuenta como anuncio, y al revés.
+  const CLAVE_TIKTOK = 'cozumel_origen_tiktok';
+  let desdeTiktok = false;
+  try {
+    const q = new URLSearchParams(location.search);
+    const fuenteUrl = (q.get('utm_source') || '').toLowerCase();
+    if (fuenteUrl === 'tiktok') { localStorage.setItem(CLAVE_TIKTOK, String(Date.now())); localStorage.removeItem(CLAVE_ORIGEN); desdeAnuncio = false; }
+    if (fuenteUrl === 'meta') localStorage.removeItem(CLAVE_TIKTOK);
+    const t = Number(localStorage.getItem(CLAVE_TIKTOK));
+    desdeTiktok = !desdeAnuncio && t > 0 && Date.now() - t < 7 * 24 * 3600 * 1000;
+  } catch (_) {}
+
   let pixelesListos = false;
   let pendientes = [];
   const idEvento = (nombre) => nombre + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
@@ -108,6 +124,7 @@
     activa() { try { return localStorage.getItem(CLAVE_NO) !== 'no'; } catch (_) { return true; } },
     consentimiento() { return consentimiento; },
     desdeAnuncio() { return desdeAnuncio; },
+    desdeTiktok() { return desdeTiktok; },
     // Vuelve a enseñar el aviso para cambiar la decisión (cookies.html)
     preferencias() { mostrarAviso(true); },
     // Eventos de compra para el píxel. Sin consentimiento: nada.
@@ -223,7 +240,14 @@
           background:#FFFFFF; color:#14454A; border:1px solid #14454A;}
         .aviso-cookies button:hover{background:#14454A; color:#FFFFFF;}
         .aviso-cookies button:focus-visible{outline:2px solid #B08A45; outline-offset:2px;}
-        @media (max-width:520px){ .aviso-cookies{left:16px; right:16px; bottom:16px; width:auto;} }
+        @media (max-width:520px){
+          /* 13/11: en el móvil, arriba y compacto: abajo tapaba el botón de compra fijo */
+          .aviso-cookies{left:10px; right:10px; top:10px; bottom:auto; width:auto; padding:12px 14px; font-size:12.5px; line-height:1.45;}
+          .aviso-cookies p{margin:0 0 10px;}
+          .aviso-cookies strong{display:inline; margin:0 6px 0 0; font-size:11px; letter-spacing:1.5px;}
+          .aviso-cookies-botones{gap:8px;}
+          .aviso-cookies button{height:36px; font-size:13px;}
+        }
       `;
       document.head.appendChild(estilo);
       aviso = document.createElement('div');

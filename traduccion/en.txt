@@ -1971,3 +1971,131 @@ en: Applied at checkout
 
 es: Oferta especial Black Friday
 en: Black Friday special offer
+
+# ---------- Ficha de hombre y carrito: lo que faltaba (13/11/2026) ----------
+es: Grosor
+en: Thickness
+
+es: Elige grosor
+en: Choose thickness
+
+es: Añade tu colgante
+en: Add your pendant
+
+es: Anteriores
+en: Previous
+
+es: Siguientes
+en: Next
+
+es: Cruces
+en: Crosses
+
+es: Circonitas
+en: Zirconias
+
+es: Placas
+en: Plates
+
+es: Negro
+en: Black
+
+es: Pieza
+en: Piece
+
+es: Más piezas
+en: More pieces
+
+es: Packaging Cozumel
+en: Cozumel packaging
+
+es: Cozumel, inicio
+en: Cozumel, home
+
+es: Cadena cubana
+en: Cuban chain
+
+es: Para conservar el brillo del baño durante más tiempo:
+en: To keep the plating shiny for longer:
+
+es: Guárdala en un lugar seco, mejor en su caja, cuando no la lleves.
+en: Store it somewhere dry, ideally in its box, when you're not wearing it.
+
+es: Para limpiarla, usa un paño suave y seco, sin productos abrasivos ni químicos.
+en: To clean it, use a soft, dry cloth, with no abrasive products or chemicals.
+
+es: El baño es un acabado delicado que puede presentar desgaste natural con el uso y el paso del tiempo.
+en: Plating is a delicate finish that may show natural wear with use and over time.
+
+es: Consulta las condiciones en <a href="faq.html#devoluciones">FAQ</a>.
+en: See the conditions in our <a href="faq.html#devoluciones">FAQ</a>.
+
+es: Resumen del pedido
+en: Order summary
+
+es: <strong>Enviamos a todo el mundo</strong><br>Envío incluido en el precio
+en: <strong>We ship worldwide</strong><br>Shipping included in the price
+
+es: ¿Dudas antes de comprar? <strong>Escríbenos por WhatsApp</strong>
+en: Questions before buying? <strong>Message us on WhatsApp</strong>
+
+es: <strong>¿Tu banco rechazó la tarjeta?</strong><br>Pasa a veces con pagos internacionales. Prueba con otra tarjeta o con PayPal, o escríbenos y te ayudamos a terminar tu compra
+en: <strong>Did your bank decline the card?</strong><br>It sometimes happens with international payments. Try another card or PayPal, or message us and we'll help you finish your order
+
+# Colgantes de regalo (charms)
+es: Cruz con circonitas
+en: Zirconia cross
+
+es: Cruz grande
+en: Large cross
+
+es: Cruz de perlas
+en: Pearl cross
+
+es: Cruz lisa
+en: Plain cross
+
+es: Hamsa
+en: Hamsa
+
+es: Mano
+en: Hand
+
+es: Ojo
+en: Eye
+
+es: Medalla con ojo
+en: Eye medallion
+
+es: Sol con ojo
+en: Sun with eye
+
+es: Triángulo con ojo
+en: Triangle with eye
+
+es: Circonita cuadrada
+en: Square zirconia
+
+es: Circonita gota
+en: Teardrop zirconia
+
+es: Circonita marquesa
+en: Marquise zirconia
+
+es: Circonita ovalada
+en: Oval zirconia
+
+es: Circonita rectangular
+en: Rectangular zirconia
+
+es: Circonita redonda
+en: Round zirconia
+
+es: Placa cuadrada
+en: Square plate
+
+es: Placa ovalada
+en: Oval plate
+
+es: Placa rectangular
+en: Rectangular plate
