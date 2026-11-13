@@ -424,7 +424,10 @@ if (typeof MERCADOS !== 'undefined') {
     sincronizarSelectorMercado();
     if (mercadoFinal !== mercadoAlCargar) {
       repreciarCarrito();
-      window.location.reload();
+      // 13/11: antes de recargar, se deja terminar el envío de los eventos
+      // (sobre todo llegada_anuncio): la recarga lo cortaba y la visita del
+      // anuncio no se apuntaba. Como mucho 1,5 s.
+      esperarTracking(1500).then(() => window.location.reload());
     }
   }).catch(() => {});
 }
@@ -446,8 +449,15 @@ function codigoPersonal() {
 codigoPersonal();
 
 /* ---------- Tracking del embudo ---------- */
+// Envíos de eventos todavía en camino (para no cortarlos al recargar).
+const trackingPendiente = new Set();
+function esperarTracking(maxMs) {
+  return Promise.race([Promise.all([...trackingPendiente]), new Promise(r => setTimeout(r, maxMs))]);
+}
+
+// Devuelve una promesa con true si el evento se guardó y false si no.
 function trackEvent(evento, productoId) {
-  if (!sb) return Promise.resolve();
+  if (!sb) return Promise.resolve(false);
   // 7/11: las visitas que llegaron del anuncio de Meta (7 días en este
   // navegador, ver analitica.js) se apuntan aparte, sin cookies: el píxel
   // solo ve a quien acepta el aviso (supabase-migracion-v43.sql)
@@ -456,9 +466,12 @@ function trackEvent(evento, productoId) {
   const prod = productoId !== undefined ? productoId : (getProductoElegido() || {}).id;
   if (prod) fila.producto = prod;
 
-  return sb.from('eventos').insert(fila)
-    .then(({ error }) => { if (error) console.warn('trackEvent', evento, error); })
-    .catch(err => console.warn('trackEvent', evento, err));
+  const envio = sb.from('eventos').insert(fila)
+    .then(({ error }) => { if (error) { console.warn('trackEvent', evento, error); return false; } return true; })
+    .catch(err => { console.warn('trackEvent', evento, err); return false; });
+  trackingPendiente.add(envio);
+  envio.then(() => trackingPendiente.delete(envio));
+  return envio;
 }
 
 // Llegada desde un clic del anuncio (solo utm_source=meta, que lleva el
@@ -466,8 +479,12 @@ function trackEvent(evento, productoId) {
 try {
   const q = new URLSearchParams(location.search);
   if (q.get('utm_source') === 'meta' && sessionStorage.getItem('anuncioTracked') !== '1') {
-    sessionStorage.setItem('anuncioTracked', '1');
-    trackEvent('llegada_anuncio', q.get('id') || null);
+    // 13/11: la marca de "ya contada" va DESPUÉS de guardarse. Antes se ponía
+    // primero, y si el envío se cortaba (recarga por la moneda en la primera
+    // visita de fuera de México) la visita no se contaba nunca.
+    trackEvent('llegada_anuncio', q.get('id') || null).then(ok => {
+      if (ok) try { sessionStorage.setItem('anuncioTracked', '1'); } catch (_) {}
+    });
   }
 } catch (_) {}
 
