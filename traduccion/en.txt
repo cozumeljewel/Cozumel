@@ -2106,3 +2106,40 @@ en: Visits from Mexico
 
 es: Si nos visitas desde México, no te mostramos el aviso de cookies: usamos la analítica de Microsoft Clarity con sus cookies y el píxel de Meta desde tu primera visita, para medir y mejorar la web y nuestros anuncios. Puedes oponerte en cualquier momento con el botón de abajo, y dejaremos de usarlas.
 en: If you visit us from Mexico, we don't show you the cookie notice: we use Microsoft Clarity analytics with its cookies and the Meta pixel from your first visit, to measure and improve the website and our ads. You can object at any time with the button below, and we'll stop using them.
+
+# ---------- Black Friday 3x2 en hombre (14/11/2026) ----------
+es: · Black Friday · 3x2 en hombre: llévate 3 y paga 2 ·
+en: · Black Friday · 3 for 2 on men's pieces: get 3, pay for 2 ·
+
+es: Black Friday · 3x2 en hombre: llévate 3 y paga 2
+en: Black Friday · 3 for 2 on men's pieces: get 3, pay for 2
+
+es: 3x2 Black Friday
+en: Black Friday 3 for 2
+
+es: Black Friday 3x2 · la pieza más barata, gratis
+en: Black Friday 3 for 2 · cheapest piece free
+
+es: Black Friday 3x2: añade 1 pieza más de hombre y la más barata te sale gratis
+en: Black Friday 3 for 2: add 1 more men's piece and the cheapest one is free
+
+es: Black Friday 3x2: añade 2 piezas más de hombre y la más barata te sale gratis
+en: Black Friday 3 for 2: add 2 more men's pieces and the cheapest one is free
+
+es: ✦ Black Friday: llévate 3 piezas de hombre y paga solo 2 · Envío gratis ✦
+en: ✦ Black Friday: get 3 men's pieces and pay for just 2 · Free shipping ✦
+
+es: Llévate 3, paga 2
+en: Get 3, pay for 2
+
+es: En toda la colección de hombre: añade 3 piezas al carrito y la más barata te sale gratis.
+en: Across the whole men's collection: add 3 pieces to your cart and the cheapest one is free.
+
+es: Hasta el 30 de noviembre · Envío gratis
+en: Until November 30 · Free shipping
+
+es: Seguir viendo
+en: Keep browsing
+
+es: Ver la colección de hombre
+en: Shop the men's collection

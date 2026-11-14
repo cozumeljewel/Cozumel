@@ -681,7 +681,19 @@ COZUMEL_EN_CARGADO({
  "Placa ovalada": "Oval plate",
  "Placa rectangular": "Rectangular plate",
  "Visitas desde México": "Visits from Mexico",
- "Si nos visitas desde México, no te mostramos el aviso de cookies: usamos la analítica de Microsoft Clarity con sus cookies y el píxel de Meta desde tu primera visita, para medir y mejorar la web y nuestros anuncios. Puedes oponerte en cualquier momento con el botón de abajo, y dejaremos de usarlas.": "If you visit us from Mexico, we don't show you the cookie notice: we use Microsoft Clarity analytics with its cookies and the Meta pixel from your first visit, to measure and improve the website and our ads. You can object at any time with the button below, and we'll stop using them."
+ "Si nos visitas desde México, no te mostramos el aviso de cookies: usamos la analítica de Microsoft Clarity con sus cookies y el píxel de Meta desde tu primera visita, para medir y mejorar la web y nuestros anuncios. Puedes oponerte en cualquier momento con el botón de abajo, y dejaremos de usarlas.": "If you visit us from Mexico, we don't show you the cookie notice: we use Microsoft Clarity analytics with its cookies and the Meta pixel from your first visit, to measure and improve the website and our ads. You can object at any time with the button below, and we'll stop using them.",
+ "· Black Friday · 3x2 en hombre: llévate 3 y paga 2 ·": "· Black Friday · 3 for 2 on men's pieces: get 3, pay for 2 ·",
+ "Black Friday · 3x2 en hombre: llévate 3 y paga 2": "Black Friday · 3 for 2 on men's pieces: get 3, pay for 2",
+ "3x2 Black Friday": "Black Friday 3 for 2",
+ "Black Friday 3x2 · la pieza más barata, gratis": "Black Friday 3 for 2 · cheapest piece free",
+ "Black Friday 3x2: añade 1 pieza más de hombre y la más barata te sale gratis": "Black Friday 3 for 2: add 1 more men's piece and the cheapest one is free",
+ "Black Friday 3x2: añade 2 piezas más de hombre y la más barata te sale gratis": "Black Friday 3 for 2: add 2 more men's pieces and the cheapest one is free",
+ "✦ Black Friday: llévate 3 piezas de hombre y paga solo 2 · Envío gratis ✦": "✦ Black Friday: get 3 men's pieces and pay for just 2 · Free shipping ✦",
+ "Llévate 3, paga 2": "Get 3, pay for 2",
+ "En toda la colección de hombre: añade 3 piezas al carrito y la más barata te sale gratis.": "Across the whole men's collection: add 3 pieces to your cart and the cheapest one is free.",
+ "Hasta el 30 de noviembre · Envío gratis": "Until November 30 · Free shipping",
+ "Seguir viendo": "Keep browsing",
+ "Ver la colección de hombre": "Shop the men's collection"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

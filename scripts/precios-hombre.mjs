@@ -35,7 +35,7 @@ export const NOMBRES_HOMBRE: Record<string, string> = ${JSON.stringify(nombres, 
 
 // Promoción de lanzamiento (descuento REAL sobre los precios de arriba).
 // null = sin promoción. hasta = fecha en que se apaga sola.
-export const PROMO_HOMBRE: { descuento: number; hasta?: string; nombre?: string } | null = ${JSON.stringify(PROMO_HOMBRE ? { descuento: PROMO_HOMBRE.descuento, hasta: PROMO_HOMBRE.hasta, nombre: PROMO_HOMBRE.nombre } : null)};
+export const PROMO_HOMBRE: { descuento: number; tipo?: string; hasta?: string; nombre?: string } | null = ${JSON.stringify(PROMO_HOMBRE ? { descuento: PROMO_HOMBRE.descuento, tipo: PROMO_HOMBRE.tipo, hasta: PROMO_HOMBRE.hasta, nombre: PROMO_HOMBRE.nombre } : null)};
 `;
 fs.writeFileSync('supabase/functions/_shared/precios-hombre.ts', ts);
 console.log(Object.keys(precios).length, 'piezas de hombre ->', 'supabase/functions/_shared/precios-hombre.ts');

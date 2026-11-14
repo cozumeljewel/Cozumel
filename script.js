@@ -976,6 +976,24 @@ function llevaCharmHombre(prod) {
 function promoActiva(promo) {
   return !!(promo && promo.descuento && (!promo.hasta || Date.now() <= Date.parse(promo.hasta)));
 }
+// En vigor aunque no rebaje cada pieza (p. ej. el 3x2, descuento 0)
+function promoVigente(promo) {
+  return !!(promo && (!promo.hasta || Date.now() <= Date.parse(promo.hasta)));
+}
+/* 14/11/2026: Black Friday 3x2 en hombre (PROMO_HOMBRE.tipo '3x2'). Por
+   cada 3 piezas de hombre del pedido, la más barata gratis. Mismo cálculo
+   que crear-sesion-pago. Con código personal no hay 3x2. */
+function promo3x2Activa() {
+  return typeof PROMO_HOMBRE !== 'undefined' && !!PROMO_HOMBRE && PROMO_HOMBRE.tipo === '3x2'
+    && promoVigente(PROMO_HOMBRE) && !(typeof codigoPersonal === 'function' && codigoPersonal());
+}
+// importes: precios de las piezas de HOMBRE del pedido. Devuelve lo regalado.
+function ahorro3x2(importes) {
+  if (!promo3x2Activa()) return 0;
+  const orden = importes.slice().sort((a, b) => a - b);
+  const gratis = Math.floor(orden.length / 3);
+  return Math.round(orden.slice(0, gratis).reduce((t, x) => t + x, 0) * 100) / 100;
+}
 function promoDe(prod) {
   if (prod && String(prod.id).startsWith('hombre_')) return typeof PROMO_HOMBRE !== 'undefined' ? PROMO_HOMBRE : null;
   return typeof PROMO_MUJER !== 'undefined' ? PROMO_MUJER : null;
@@ -1031,7 +1049,7 @@ function pintarPrecioHombre(el, prod) { pintarPrecioPromo(el, prod); }
 
 /* Banner de la promoción (hombre o mujer). */
 function bannerPromo(promo) {
-  if (!promoActiva(promo)) return null;
+  if (!promoVigente(promo) || !promo.texto) return null;
   const b = document.createElement('p');
   b.className = 'v2-promo';
   // 28/10: el texto pasa en bucle (dos mitades iguales que se desplazan)
@@ -1647,6 +1665,8 @@ function urlPiezaHombre(prod, clave) {
     const mat = crear('span', 'v2-pieza-etiqueta', ETIQUETA_MATERIAL[clave] || ETIQUETA_MATERIAL.plata);
     const env = crear('span', 'v2-pieza-etiqueta', 'Envío gratis');
     condiciones.append(mat, env);
+    // 14/11: Black Friday 3x2, también junto al precio
+    if (promo3x2Activa()) condiciones.append(crear('span', 'v2-pieza-etiqueta v2-pieza-etiqueta--promo', '3x2 Black Friday'));
   };
 
   claves.forEach(c => {
@@ -4244,6 +4264,7 @@ if (reservaForm) {
 
     let total = 0, totalSinPromo = 0, totalRegalos = 0;
     let huboPiezaSinPrecio = false;
+    const importesHombre = []; // 14/11: para el 3x2
 
     items.forEach((item, indice) => {
       const prod = productoPorId(item.producto);
@@ -4257,6 +4278,7 @@ if (reservaForm) {
         total += precioItem.importe;
         const normal = typeof precioDe === 'function' ? precioDe(prod) : null;
         totalSinPromo += normal ? normal.importe : precioItem.importe;
+        if (esPiezaHombre(prod)) importesHombre.push(precioItem.importe);
       }
 
       const tarjeta = document.createElement('div');
@@ -4376,6 +4398,12 @@ if (reservaForm) {
       const nombreDesc = cp ? 'Oferta especial Black Friday'
         : ((typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.nombre) ? 'Descuento ' + PROMO_HOMBRE.nombre : 'Descuento de lanzamiento');
       if (ahorro > 0) fila(nombreDesc + promoTxt, '−' + formatearImporte(ahorro, moneda), 'carrito-total-descuento');
+      // 14/11: Black Friday 3x2 (la pieza de hombre más barata de cada 3, gratis)
+      const regalo3x2 = ahorro3x2(importesHombre);
+      if (regalo3x2 > 0) {
+        total = Math.round((total - regalo3x2) * 100) / 100;
+        fila('Black Friday 3x2 · la pieza más barata, gratis', '−' + formatearImporte(regalo3x2, moneda), 'carrito-total-descuento');
+      }
       fila('Envío', 'Incluido');
       const fin = fila('Total', '', 'carrito-total-final');
       fin.lastChild.innerHTML = '<small></small> <strong></strong>';
@@ -4385,6 +4413,16 @@ if (reservaForm) {
       imp.className = 'carrito-total-nota';
       imp.textContent = 'Impuestos incluidos';
       totalEl.appendChild(imp);
+      // 14/11: cuántas piezas de hombre faltan para que la siguiente salga gratis
+      if (promo3x2Activa() && importesHombre.length % 3 !== 0) {
+        const faltan = 3 - (importesHombre.length % 3);
+        const aviso = document.createElement('p');
+        aviso.className = 'carrito-total-nota carrito-3x2';
+        aviso.textContent = faltan === 1
+          ? 'Black Friday 3x2: añade 1 pieza más de hombre y la más barata te sale gratis'
+          : 'Black Friday 3x2: añade 2 piezas más de hombre y la más barata te sale gratis';
+        totalEl.appendChild(aviso);
+      }
       carritoLista.insertAdjacentElement('afterend', totalEl);
     }
 
@@ -5051,9 +5089,74 @@ function vieneDeTiktok() {
     const cp = codigoPersonal();
     p.textContent = cp
       ? '✦ Tu oferta especial Black Friday: −' + cp.descuento + ' % · Envío gratis a todo el mundo ✦'
-      : conPromo
+      : conPromo && PROMO_HOMBRE.tipo === '3x2'
+      ? '✦ Black Friday: llévate 3 piezas de hombre y paga solo 2 · Envío gratis ✦'
+      : conPromo && PROMO_HOMBRE.descuento
       ? '✦ ' + (PROMO_HOMBRE.nombre || 'Oferta') + ': −' + PROMO_HOMBRE.descuento + ' % · Envío gratis a todo el mundo ✦'
       : '✦ Envío gratis a todo el mundo ✦';
     p.classList.add('oferta-anuncio');
   });
+})();
+
+/* =========================================================
+   VENTANA BLACK FRIDAY 3x2 (14/11/2026)
+   Al entrar, una vez por sesión, mientras dure el 3x2 de hombre. No sale
+   en el carrito, en la parte de mujer, en las páginas legales ni a quien
+   tiene código personal (promo3x2Activa ya lo descarta).
+   ========================================================= */
+(function () {
+  if (typeof promo3x2Activa !== 'function' || !promo3x2Activa()) return;
+  const SIN_VENTANA = ['comprar', 'arma-kit', 'personalizar', 'aviso-legal', 'cookies', 'privacidad', 'terminos', 'votar', 'voto', '404'];
+  if (SIN_VENTANA.includes(CURRENT_PAGE)) return;
+  const params = new URLSearchParams(location.search);
+  if (CURRENT_PAGE === 'productos' && params.get('c') === 'woman') return;
+  if (document.documentElement.classList.contains('web-cerrada')) return;
+  const CLAVE = 'ventana3x2Vista';
+  try { if (sessionStorage.getItem(CLAVE) === '1') return; sessionStorage.setItem(CLAVE, '1'); } catch (_) { return; }
+
+  const enHombre = CURRENT_PAGE === 'hombre' || (CURRENT_PAGE === 'productos' && params.get('c') === 'men');
+  const el = (tag, clase, texto) => { const e = document.createElement(tag); if (clase) e.className = clase; if (texto) e.textContent = texto; return e; };
+
+  const capa = el('div', 'promo3x2-capa');
+  capa.setAttribute('role', 'dialog');
+  capa.setAttribute('aria-modal', 'true');
+  capa.setAttribute('aria-labelledby', 'promo3x2-titulo');
+  const caja = el('div', 'promo3x2-caja');
+  const cerrar = el('button', 'promo3x2-cerrar', '×');
+  cerrar.type = 'button';
+  cerrar.setAttribute('aria-label', 'Cerrar');
+  const titulo = el('h2', 'promo3x2-titulo', 'Llévate 3, paga 2');
+  titulo.id = 'promo3x2-titulo';
+  const cta = enHombre ? el('button', 'promo3x2-cta', 'Seguir viendo') : el('a', 'promo3x2-cta', 'Ver la colección de hombre');
+  if (enHombre) cta.type = 'button'; else cta.href = 'productos.html?c=men';
+  caja.append(
+    cerrar,
+    el('p', 'promo3x2-eyebrow', 'Black Friday'),
+    titulo,
+    el('p', 'promo3x2-texto', 'En toda la colección de hombre: añade 3 piezas al carrito y la más barata te sale gratis.'),
+    el('p', 'promo3x2-nota', 'Hasta el 30 de noviembre · Envío gratis'),
+    cta,
+  );
+  capa.appendChild(caja);
+
+  const antes = document.activeElement;
+  function ocultar() {
+    capa.remove();
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', porTecla);
+    if (antes && antes.focus) antes.focus();
+  }
+  function porTecla(e) { if (e.key === 'Escape') ocultar(); }
+  cerrar.addEventListener('click', ocultar);
+  if (enHombre) cta.addEventListener('click', ocultar);
+  capa.addEventListener('click', e => { if (e.target === capa) ocultar(); });
+  document.addEventListener('keydown', porTecla);
+
+  setTimeout(() => {
+    document.body.appendChild(capa);
+    document.body.style.overflow = 'hidden';
+    void capa.offsetWidth; // ver el pop-up de preventa: rAF no corre en segundo plano
+    capa.classList.add('visible');
+    cerrar.focus();
+  }, 1200);
 })();

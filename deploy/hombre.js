@@ -205,8 +205,13 @@ const ORO_14K_HOMBRE = ['hombre_pulsera_7', 'hombre_pulsera_8', 'hombre_anillo_7
 // el tachado es el precio de siempre). null = sin promoción.
 // Semana de lanzamiento: del 1 al 8 de noviembre (21:00 de México), −15 %.
 // Black Friday (10/11/2026): −10 % hasta el 30/11 a las 23:59 de México.
+// 14/11/2026: el −10 % pasa a un 3x2 (tipo '3x2', descuento 0): por cada 3
+// piezas de hombre del pedido, la más barata gratis. Cada pieza a su precio
+// de siempre; el regalo se descuenta en el carrito y en Stripe
+// (crear-sesion-pago calcula lo mismo). Con código personal (CZ20-) manda el
+// código y no hay 3x2.
 // hasta: se apaga sola al pasar esa fecha.
-const PROMO_HOMBRE = { descuento: 10, hasta: '2026-11-30T23:59:59-06:00', nombre: 'Black Friday', texto: '· Black Friday · 10 % de descuento ·' };
+const PROMO_HOMBRE = { descuento: 0, tipo: '3x2', hasta: '2026-11-30T23:59:59-06:00', nombre: 'Black Friday', texto: '· Black Friday · 3x2 en hombre: llévate 3 y paga 2 ·' };
 
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 

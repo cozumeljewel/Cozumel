@@ -259,6 +259,22 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     );
   }
 
+  // 14/11/2026: Black Friday 3x2 en hombre. Por cada 3 piezas de hombre del
+  // pedido, la más barata gratis (precio 0 en su fila, así lo pagado por
+  // pieza cuadra). En Stripe cada pieza sale a su precio de siempre y lo
+  // regalado va en el cupón de abajo. Mismo cálculo que el carrito
+  // (ahorro3x2 en script.js). Con código personal no hay 3x2.
+  const tresPorDos = !personal && PROMO_HOMBRE?.tipo === "3x2"
+    && (!PROMO_HOMBRE.hasta || Date.now() <= Date.parse(PROMO_HOMBRE.hasta));
+  let gratis3x2 = 0;
+  if (tresPorDos) {
+    const deHombre = lineas
+      .filter((l) => String(l.producto).startsWith("hombre_"))
+      .sort((a, b) => a.precio!.importe - b.precio!.importe);
+    gratis3x2 = Math.floor(deHombre.length / 3);
+    deHombre.slice(0, gratis3x2).forEach((l) => { l.precio = { ...l.precio!, importe: 0 }; });
+  }
+
   // Una sesión de Stripe = una moneda; aquí ya está garantizado que todas
   // las líneas comparten mercado, así que basta con la de la primera.
   const moneda = lineas[0].precio!.moneda;
@@ -282,6 +298,8 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       max_redemptions: 1,
       name: personal
         ? `Black Friday · oferta especial −${personal.descuento} %`
+        : gratis3x2 > 0
+        ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} 3x2 · la pieza más barata, gratis`
         : `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`,
     });
     descuentos = [{ coupon: cupon.id }];
