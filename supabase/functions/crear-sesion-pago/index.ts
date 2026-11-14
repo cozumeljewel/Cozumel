@@ -289,16 +289,19 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   const ahorro = centimosNormal - centimosCobro;
   let descuentos: { coupon: string }[] | undefined;
   if (ahorro > 0) {
+    // 14/11: Stripe no admite nombres de cupón de más de 40 caracteres (el
+    // del 3x2 tenía 43 y la sesión no se creaba): se recorta siempre.
+    const nombreCupon = personal
+      ? `Black Friday · oferta especial −${personal.descuento} %`
+      : gratis3x2 > 0
+      ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} 3x2 · la tercera, gratis`
+      : `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`;
     const cupon = await stripe.coupons.create({
       amount_off: ahorro,
       currency: moneda.toLowerCase(),
       duration: "once",
       max_redemptions: 1,
-      name: personal
-        ? `Black Friday · oferta especial −${personal.descuento} %`
-        : gratis3x2 > 0
-        ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} 3x2 · la tercera pieza, gratis`
-        : `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`,
+      name: [...nombreCupon].slice(0, 40).join(""),
     });
     descuentos = [{ coupon: cupon.id }];
   }
