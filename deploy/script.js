@@ -494,33 +494,38 @@ try {
   }
 } catch (_) {}
 
-// "view" = llegada a la landing (primer paso del embudo), solo en Inicio.
-if (CURRENT_PAGE === 'inicio' && sessionStorage.getItem('viewTracked') !== '1') {
-  sessionStorage.setItem('viewTracked', '1');
-  trackEvent('view', null);
+// 14/11: un paso del embudo se marca como "ya contado" en esta sesión solo
+// DESPUÉS de guardarse. Antes la marca iba primero y, si el envío se
+// cortaba (p. ej. la recarga de la moneda en la primera visita), ese paso
+// no se contaba nunca. trackEnCurso evita duplicarlo mientras va en camino.
+const trackEnCurso = new Set();
+function trackUnaVez(clave, evento, producto) {
+  let hecho = false;
+  try { hecho = sessionStorage.getItem(clave) === '1'; } catch (_) {}
+  if (hecho || trackEnCurso.has(clave)) return Promise.resolve(false);
+  trackEnCurso.add(clave);
+  return trackEvent(evento, producto).then(ok => {
+    trackEnCurso.delete(clave);
+    if (ok) try { sessionStorage.setItem(clave, '1'); } catch (_) {}
+    return ok;
+  });
 }
+
+// "view" = llegada a la landing (primer paso del embudo), solo en Inicio.
+if (CURRENT_PAGE === 'inicio') trackUnaVez('viewTracked', 'view', null);
 
 // Pasos intermedios (03/10): llegada a la colección y a la ficha de una
 // pieza. Sin ellos no se sabía si la gente se iba en la portada, en la
 // colección o al ver la pieza. Una vez por sesión (la colección) o una vez
 // por pieza (las fichas), como el resto del embudo.
-if (CURRENT_PAGE === 'productos' && sessionStorage.getItem('coleccionTracked') !== '1') {
-  sessionStorage.setItem('coleccionTracked', '1');
-  trackEvent('coleccion_vista', null);
-}
-if (CURRENT_PAGE === 'arma-kit' && sessionStorage.getItem('pv:kit_personalizado') !== '1') {
-  sessionStorage.setItem('pv:kit_personalizado', '1');
-  trackEvent('producto_visto', 'kit_personalizado');
-}
+if (CURRENT_PAGE === 'productos') trackUnaVez('coleccionTracked', 'coleccion_vista', null);
+if (CURRENT_PAGE === 'arma-kit') trackUnaVez('pv:kit_personalizado', 'producto_visto', 'kit_personalizado');
 
 // Los pasos siguientes se cuentan una vez por producto, no una vez por sesión:
 // si alguien mira dos piezas, queremos verlo en los dos embudos.
 function trackOncePorProducto(prefijo, evento) {
   const prod = (getProductoElegido() || {}).id || 'sin_producto';
-  const clave = prefijo + ':' + prod;
-  if (sessionStorage.getItem(clave) === '1') return Promise.resolve();
-  sessionStorage.setItem(clave, '1');
-  return trackEvent(evento);
+  return trackUnaVez(prefijo + ':' + prod, evento);
 }
 const trackPersonalizacionIniciada = () => trackOncePorProducto('pz', 'personalizacion_iniciada');
 const trackReservaIniciada = () => trackOncePorProducto('ri', 'reserva_iniciada');
@@ -1302,6 +1307,9 @@ function urlPiezaHombre(prod, clave) {
   const params = new URLSearchParams(location.search);
   const prod = COLECCION_HOMBRE.find(p => p.id === params.get('id'));
   if (!prod) { location.replace('productos.html?c=men'); return; }
+  // 14/11: las fichas de hombre no apuntaban "producto_visto" (solo las de
+  // mujer): no se sabía si la gente abría la pieza o se iba de la colección.
+  trackUnaVez('pv:' + prod.id, 'producto_visto', prod.id);
   const claves = Object.keys(prod.acabados);
   let clave = claves.includes(params.get('a')) ? params.get('a') : claves[0];
   document.title = prod.nombre + ' · Cozumel Jewelry';
@@ -1771,7 +1779,11 @@ function urlPiezaHombre(prod, clave) {
     if (window.COZUMEL_ANALITICA) COZUMEL_ANALITICA.evento('AddToCart', { value: precio.importe, currency: precio.moneda, content_ids: [prod.id] });
     boton.disabled = true;
     boton.textContent = 'Añadido · yendo al carrito…';
-    setTimeout(() => { location.href = 'comprar.html'; }, 350);
+    // 14/11: antes saltaba al carrito a los 0,35 s pasara lo que pasara y
+    // podía cortar el envío de "reserva_iniciada". Ahora espera a que se
+    // guarde (mín. 0,35 s para ver el mensaje, máx. 1 s).
+    Promise.all([esperarTracking(1000), new Promise(r => setTimeout(r, 350))])
+      .then(() => { location.href = 'comprar.html'; });
   });
   const fotos = crear('div', 'v2-pieza-fotos');
   const lupa = crear('span', 'v2-pieza-lupa');
