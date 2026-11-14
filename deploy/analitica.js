@@ -2,6 +2,9 @@
    COZUMEL · ANALÍTICA Y COOKIES (Microsoft Clarity + Meta Pixel)
    Aviso de cookies desde el 5/11/2026.
 
+   · 14/11/2026: EXCEPTO MÉXICO, donde no hay aviso y se mide desde el
+     principio (ver "México: sin aviso", al final). Lo de abajo vale para
+     el resto de países.
    · Aviso de cookies (todas las visitas, de cualquier país): "Aceptar" y
      "Rechazar" con el mismo peso, sin casillas marcadas. La decisión se
      guarda en este navegador (cozumel_cookies) y se puede cambiar cuando
@@ -269,6 +272,39 @@
     aviso.hidden = false;
   }
 
+  // ---------- México: sin aviso (14/11/2026) ----------
+  // Decisión del negocio: a las visitas desde México no se les enseña el
+  // aviso y se mide desde el principio (Clarity con cookies y píxel de
+  // Meta). La ley mexicana pide aviso de privacidad y poder oponerse, no
+  // permiso previo; la tienda es española, así que es una zona gris
+  // asumida. No se guarda como "aceptado": se decide en cada visita por el
+  // país (detección por IP, la misma de los precios). Quien rechace desde
+  // cookies.html queda rechazado (eso sí se guarda). Lo explica cookies.html.
+  const PAISES_SIN_AVISO = ['MX'];
+  function paisGuardado() {
+    try { const g = JSON.parse(localStorage.getItem('cozumel_mercado_geo')); return g && g.pais ? String(g.pais).toUpperCase() : null; }
+    catch (_) { return null; }
+  }
+  function medirSinAviso() {
+    consentimiento = true;
+    if (typeof window.clarity === 'function') {
+      window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' });
+      window.clarity('set', 'cookies', 'sin_aviso_mexico');
+    }
+    cargarPixel();
+  }
+  function decidirPorPais(pais) {
+    if (pais && PAISES_SIN_AVISO.includes(pais)) medirSinAviso();
+    else mostrarAviso(false);
+  }
+
   // Quien desactivó toda medición en cookies.html no ve el aviso: ya decidió
-  if (puedeMedir) mostrarAviso(false);
+  if (puedeMedir && consentimiento === null) {
+    const pais = paisGuardado();
+    if (pais) decidirPorPais(pais);
+    else fetch('/api/geo', { headers: { Accept: 'application/json' } })
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => decidirPorPais(d && typeof d.country === 'string' ? d.country.toUpperCase() : null))
+      .catch(() => mostrarAviso(false));
+  }
 })();

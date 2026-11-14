@@ -679,7 +679,9 @@ COZUMEL_EN_CARGADO({
  "Circonita redonda": "Round zirconia",
  "Placa cuadrada": "Square plate",
  "Placa ovalada": "Oval plate",
- "Placa rectangular": "Rectangular plate"
+ "Placa rectangular": "Rectangular plate",
+ "Visitas desde México": "Visits from Mexico",
+ "Si nos visitas desde México, no te mostramos el aviso de cookies: usamos la analítica de Microsoft Clarity con sus cookies y el píxel de Meta desde tu primera visita, para medir y mejorar la web y nuestros anuncios. Puedes oponerte en cualquier momento con el botón de abajo, y dejaremos de usarlas.": "If you visit us from Mexico, we don't show you the cookie notice: we use Microsoft Clarity analytics with its cookies and the Meta pixel from your first visit, to measure and improve the website and our ads. You can object at any time with the button below, and we'll stop using them."
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
