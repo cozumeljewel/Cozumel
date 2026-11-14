@@ -2117,14 +2117,14 @@ en: Black Friday · 3 for 2 on men's pieces: get 3, pay for 2
 es: 3x2 Black Friday
 en: Black Friday 3 for 2
 
-es: Black Friday 3x2 · la pieza más barata, gratis
-en: Black Friday 3 for 2 · cheapest piece free
+es: Black Friday 3x2 · la tercera pieza, gratis
+en: Black Friday 3 for 2 · third piece free
 
-es: Black Friday 3x2: añade 1 pieza más de hombre y la más barata te sale gratis
-en: Black Friday 3 for 2: add 1 more men's piece and the cheapest one is free
+es: Black Friday 3x2: añade 1 pieza más de hombre y la tercera te sale gratis
+en: Black Friday 3 for 2: add 1 more men's piece and the third one is free
 
-es: Black Friday 3x2: añade 2 piezas más de hombre y la más barata te sale gratis
-en: Black Friday 3 for 2: add 2 more men's pieces and the cheapest one is free
+es: Black Friday 3x2: añade 2 piezas más de hombre y la tercera te sale gratis
+en: Black Friday 3 for 2: add 2 more men's pieces and the third one is free
 
 es: ✦ Black Friday: llévate 3 piezas de hombre y paga solo 2 · Envío gratis ✦
 en: ✦ Black Friday: get 3 men's pieces and pay for just 2 · Free shipping ✦
@@ -2132,8 +2132,8 @@ en: ✦ Black Friday: get 3 men's pieces and pay for just 2 · Free shipping ✦
 es: Llévate 3, paga 2
 en: Get 3, pay for 2
 
-es: En toda la colección de hombre: añade 3 piezas al carrito y la más barata te sale gratis.
-en: Across the whole men's collection: add 3 pieces to your cart and the cheapest one is free.
+es: En toda la colección de hombre: añade 3 piezas al carrito y la tercera te sale gratis.
+en: Across the whole men's collection: add 3 pieces to your cart and the third one is free.
 
 es: Hasta el 30 de noviembre · Envío gratis
 en: Until November 30 · Free shipping
@@ -2143,3 +2143,74 @@ en: Keep browsing
 
 es: Ver la colección de hombre
 en: Shop the men's collection
+
+# ---------- Acabados con nombre (14/11/2026) ----------
+es: Dorado
+en: Gold-tone
+
+# ---------- Auditoría 14/11/2026: textos que faltaban ----------
+es: Misión
+en: Mission
+
+es: Suscríbete y entérate antes que nadie de nuestras ofertas y novedades.
+en: Subscribe and be the first to hear about our offers and new pieces.
+
+es: Tu correo electrónico
+en: Your email address
+
+es: Al suscribirte aceptas la <a href="privacidad.html">política de privacidad</a>.
+en: By subscribing you accept the <a href="privacidad.html">privacy policy</a>.
+
+es: Gracias. Te avisaremos de nuestras ofertas por email.
+en: Thank you. We'll email you our offers.
+
+es: Tipo de pieza
+en: Type of piece
+
+es: Elige tu collar y añade tu colgante gratis
+en: Choose your necklace and add your free pendant
+
+es: El acero inoxidable es resistente y está pensado para el uso diario. Para que mantenga su aspecto:
+en: Stainless steel is tough and made for everyday wear. To keep it looking its best:
+
+es: Si se moja, sécala con un paño suave.
+en: If it gets wet, dry it with a soft cloth.
+
+es: Evita el cloro y los productos de limpieza.
+en: Avoid chlorine and cleaning products.
+
+es: Guárdala en un lugar seco cuando no la lleves.
+en: Store it somewhere dry when you're not wearing it.
+
+es: Para recuperar el brillo, límpiala con un paño de microfibra.
+en: To bring back the shine, clean it with a microfiber cloth.
+
+es: Usamos Microsoft Clarity para ver, de forma anónima, cómo se navega por la web (en qué se hace clic, hasta dónde se baja, desde qué tipo de dispositivo) y así mejorarla. No guarda lo que escribes en los formularios. Mientras no aceptes las cookies, funciona
+en: We use Microsoft Clarity to see, anonymously, how people browse the website (what they click, how far they scroll, what type of device they use) so we can improve it. It doesn't store what you type in forms. Until you accept cookies, it works
+
+es: sin cookies
+en: without cookies
+
+es: y sin guardar nada en tu navegador; si las aceptas, usa sus cookies (_clck y _clsk) para reconocer tus visitas siguientes. Si prefieres que no midamos tu visita en absoluto, pulsa aquí:
+en: and without storing anything in your browser; if you accept them, it uses its cookies (_clck and _clsk) to recognise your next visits. If you'd rather we didn't measure your visit at all, click here:
+
+es: No quiero que se mida mi visita
+en: I don't want my visit to be measured
+
+es: Hecho: no mediremos tus visitas
+en: Done: we won't measure your visits
+
+es: Puedes aceptar o rechazar las cookies de analítica y publicidad cuando quieras:
+en: You can accept or reject analytics and advertising cookies whenever you like:
+
+es: Cambiar mis preferencias de cookies
+en: Change my cookie preferences
+
+es: . Si las retiras, dejamos de usarlas en ese momento y borramos las cookies de Meta.
+en: . If you withdraw them, we stop using them straight away and delete the Meta cookies.
+
+es: <span class="acabado-dot acabado-dot--oro" aria-hidden="true"></span>Dorado
+en: <span class="acabado-dot acabado-dot--oro" aria-hidden="true"></span>Gold-tone
+
+es: No todas las piezas son iguales, y no todas las historias se cuentan con las mismas piezas. Aquí eliges tú: combina lo que quieras, para quien tú quieras, como tú lo sientas.
+en: Not all pieces are the same, and not every story is told with the same pieces. Here you choose: combine whatever you like, for whoever you like, however you feel it.

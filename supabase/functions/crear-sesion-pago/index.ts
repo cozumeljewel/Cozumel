@@ -299,7 +299,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       name: personal
         ? `Black Friday · oferta especial −${personal.descuento} %`
         : gratis3x2 > 0
-        ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} 3x2 · la pieza más barata, gratis`
+        ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} 3x2 · la tercera pieza, gratis`
         : `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`,
     });
     descuentos = [{ coupon: cupon.id }];

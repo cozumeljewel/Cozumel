@@ -2730,8 +2730,9 @@ if (campos && typeof PRODUCTOS !== 'undefined') {
       datosIniciales[grupo.campo] = estadoAcabado.value;
 
       const defs = [
-        { valor: 'oro', clase: 'acabado-dot--oro' },
-        { valor: 'plata', clase: 'acabado-dot--plata' },
+        // 14/11: con texto (sin él salía "undefined"); color, no material
+        { valor: 'oro', clase: 'acabado-dot--oro', texto: 'Dorado' },
+        { valor: 'plata', clase: 'acabado-dot--plata', texto: 'Plateado' },
       ];
       const botones = defs.map(def => {
         const btn = document.createElement('button');
@@ -3541,8 +3542,9 @@ if (ctaReservar) {
       const tipo = grupo.dataset.tipo;
       const caja = document.getElementById('kit-opciones-' + tipo);
       const botones = [
-        { valor: 'oro', clase: 'acabado-dot--oro' },
-        { valor: 'plata', clase: 'acabado-dot--plata' },
+        // 14/11: con texto (sin él salía "undefined"); color, no material
+        { valor: 'oro', clase: 'acabado-dot--oro', texto: 'Dorado' },
+        { valor: 'plata', clase: 'acabado-dot--plata', texto: 'Plateado' },
       ].map(def => {
         const b = document.createElement('button');
         b.type = 'button';
@@ -4402,7 +4404,7 @@ if (reservaForm) {
       const regalo3x2 = ahorro3x2(importesHombre);
       if (regalo3x2 > 0) {
         total = Math.round((total - regalo3x2) * 100) / 100;
-        fila('Black Friday 3x2 · la pieza más barata, gratis', '−' + formatearImporte(regalo3x2, moneda), 'carrito-total-descuento');
+        fila('Black Friday 3x2 · la tercera pieza, gratis', '−' + formatearImporte(regalo3x2, moneda), 'carrito-total-descuento');
       }
       fila('Envío', 'Incluido');
       const fin = fila('Total', '', 'carrito-total-final');
@@ -4419,8 +4421,8 @@ if (reservaForm) {
         const aviso = document.createElement('p');
         aviso.className = 'carrito-total-nota carrito-3x2';
         aviso.textContent = faltan === 1
-          ? 'Black Friday 3x2: añade 1 pieza más de hombre y la más barata te sale gratis'
-          : 'Black Friday 3x2: añade 2 piezas más de hombre y la más barata te sale gratis';
+          ? 'Black Friday 3x2: añade 1 pieza más de hombre y la tercera te sale gratis'
+          : 'Black Friday 3x2: añade 2 piezas más de hombre y la tercera te sale gratis';
         totalEl.appendChild(aviso);
       }
       carritoLista.insertAdjacentElement('afterend', totalEl);
@@ -4891,7 +4893,7 @@ if (contactForm) {
       // 409 = ya estaba apuntado: para quien se apunta, es lo mismo.
       if (!resp.ok && resp.status !== 409) throw new Error('HTTP ' + resp.status);
       form.querySelector('.v2-news-campo').remove();
-      aviso.textContent = 'Gracias. Te enviaremos tu código por email.';
+      aviso.textContent = 'Gracias. Te avisaremos de nuestras ofertas por email.';
     } catch (err) {
       console.error('Newsletter:', err);
       aviso.textContent = 'No se ha podido guardar. Inténtalo de nuevo en un momento';
@@ -5133,7 +5135,7 @@ function vieneDeTiktok() {
     cerrar,
     el('p', 'promo3x2-eyebrow', 'Black Friday'),
     titulo,
-    el('p', 'promo3x2-texto', 'En toda la colección de hombre: añade 3 piezas al carrito y la más barata te sale gratis.'),
+    el('p', 'promo3x2-texto', 'En toda la colección de hombre: añade 3 piezas al carrito y la tercera te sale gratis.'),
     el('p', 'promo3x2-nota', 'Hasta el 30 de noviembre · Envío gratis'),
     cta,
   );
