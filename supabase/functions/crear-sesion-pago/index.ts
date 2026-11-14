@@ -259,8 +259,8 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     );
   }
 
-  // 14/11/2026: Black Friday 3x2 en hombre. Por cada 3 piezas de hombre del
-  // pedido, la más barata gratis (precio 0 en su fila, así lo pagado por
+  // 14/11/2026: Black Friday 3x2, desde la tarde del 14/11 en TODA la web
+  // (hombre y mujer). Por cada 3 piezas del pedido, la más barata gratis (precio 0 en su fila, así lo pagado por
   // pieza cuadra). En Stripe cada pieza sale a su precio de siempre y lo
   // regalado va en el cupón de abajo. Mismo cálculo que el carrito
   // (ahorro3x2 en script.js). Con código personal no hay 3x2.
@@ -268,11 +268,9 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     && (!PROMO_HOMBRE.hasta || Date.now() <= Date.parse(PROMO_HOMBRE.hasta));
   let gratis3x2 = 0;
   if (tresPorDos) {
-    const deHombre = lineas
-      .filter((l) => String(l.producto).startsWith("hombre_"))
-      .sort((a, b) => a.precio!.importe - b.precio!.importe);
-    gratis3x2 = Math.floor(deHombre.length / 3);
-    deHombre.slice(0, gratis3x2).forEach((l) => { l.precio = { ...l.precio!, importe: 0 }; });
+    const todas = lineas.slice().sort((a, b) => a.precio!.importe - b.precio!.importe);
+    gratis3x2 = Math.floor(todas.length / 3);
+    todas.slice(0, gratis3x2).forEach((l) => { l.precio = { ...l.precio!, importe: 0 }; });
   }
 
   // Una sesión de Stripe = una moneda; aquí ya está garantizado que todas

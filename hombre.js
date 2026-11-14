@@ -211,7 +211,7 @@ const ORO_14K_HOMBRE = ['hombre_pulsera_7', 'hombre_pulsera_8', 'hombre_anillo_7
 // (crear-sesion-pago calcula lo mismo). Con código personal (CZ20-) manda el
 // código y no hay 3x2.
 // hasta: se apaga sola al pasar esa fecha.
-const PROMO_HOMBRE = { descuento: 0, tipo: '3x2', hasta: '2026-11-30T23:59:59-06:00', nombre: 'Black Friday', texto: '· Black Friday · 3x2 en hombre: llévate 3 y paga 2 ·' };
+const PROMO_HOMBRE = { descuento: 0, tipo: '3x2', hasta: '2026-11-30T23:59:59-06:00', nombre: 'Black Friday', texto: '· Black Friday · 3x2 en toda la web: llévate 3 y paga 2 ·' };
 
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 

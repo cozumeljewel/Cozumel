@@ -2108,11 +2108,11 @@ es: Si nos visitas desde México, no te mostramos el aviso de cookies: usamos la
 en: If you visit us from Mexico, we don't show you the cookie notice: we use Microsoft Clarity analytics with its cookies and the Meta pixel from your first visit, to measure and improve the website and our ads. You can object at any time with the button below, and we'll stop using them.
 
 # ---------- Black Friday 3x2 en hombre (14/11/2026) ----------
-es: · Black Friday · 3x2 en hombre: llévate 3 y paga 2 ·
-en: · Black Friday · 3 for 2 on men's pieces: get 3, pay for 2 ·
+es: · Black Friday · 3x2 en toda la web: llévate 3 y paga 2 ·
+en: · Black Friday · 3 for 2 on everything: get 3, pay for 2 ·
 
-es: Black Friday · 3x2 en hombre: llévate 3 y paga 2
-en: Black Friday · 3 for 2 on men's pieces: get 3, pay for 2
+es: Black Friday · 3x2 en toda la web: llévate 3 y paga 2
+en: Black Friday · 3 for 2 on everything: get 3, pay for 2
 
 es: 3x2 Black Friday
 en: Black Friday 3 for 2
@@ -2120,20 +2120,20 @@ en: Black Friday 3 for 2
 es: Black Friday 3x2 · la tercera pieza, gratis
 en: Black Friday 3 for 2 · third piece free
 
-es: Black Friday 3x2: añade 1 pieza más de hombre y la tercera te sale gratis
-en: Black Friday 3 for 2: add 1 more men's piece and the third one is free
+es: Black Friday 3x2: añade 1 pieza más y la tercera te sale gratis
+en: Black Friday 3 for 2: add 1 more piece and the third one is free
 
-es: Black Friday 3x2: añade 2 piezas más de hombre y la tercera te sale gratis
-en: Black Friday 3 for 2: add 2 more men's pieces and the third one is free
+es: Black Friday 3x2: añade 2 piezas más y la tercera te sale gratis
+en: Black Friday 3 for 2: add 2 more pieces and the third one is free
 
-es: ✦ Black Friday: llévate 3 piezas de hombre y paga solo 2 · Envío gratis ✦
-en: ✦ Black Friday: get 3 men's pieces and pay for just 2 · Free shipping ✦
+es: ✦ Black Friday: llévate 3 piezas y paga solo 2 · Envío gratis ✦
+en: ✦ Black Friday: get 3 pieces and pay for just 2 · Free shipping ✦
 
 es: Llévate 3, paga 2
 en: Get 3, pay for 2
 
-es: En toda la colección de hombre: añade 3 piezas al carrito y la tercera te sale gratis.
-en: Across the whole men's collection: add 3 pieces to your cart and the third one is free.
+es: En toda la web: añade 3 piezas al carrito y la tercera te sale gratis.
+en: Across the whole store: add 3 pieces to your cart and the third one is free.
 
 es: Hasta el 30 de noviembre · Envío gratis
 en: Until November 30 · Free shipping

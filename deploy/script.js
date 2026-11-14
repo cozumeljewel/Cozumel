@@ -980,14 +980,15 @@ function promoActiva(promo) {
 function promoVigente(promo) {
   return !!(promo && (!promo.hasta || Date.now() <= Date.parse(promo.hasta)));
 }
-/* 14/11/2026: Black Friday 3x2 en hombre (PROMO_HOMBRE.tipo '3x2'). Por
-   cada 3 piezas de hombre del pedido, la más barata gratis. Mismo cálculo
-   que crear-sesion-pago. Con código personal no hay 3x2. */
+/* 14/11/2026: Black Friday 3x2 (PROMO_HOMBRE.tipo '3x2'), desde la tarde
+   del 14/11 en TODA la web (hombre y mujer). Por cada 3 piezas del pedido,
+   la más barata gratis (en los textos: "la tercera"). Mismo cálculo que
+   crear-sesion-pago. Con código personal no hay 3x2. */
 function promo3x2Activa() {
   return typeof PROMO_HOMBRE !== 'undefined' && !!PROMO_HOMBRE && PROMO_HOMBRE.tipo === '3x2'
     && promoVigente(PROMO_HOMBRE) && !(typeof codigoPersonal === 'function' && codigoPersonal());
 }
-// importes: precios de las piezas de HOMBRE del pedido. Devuelve lo regalado.
+// importes: precios de TODAS las piezas del pedido. Devuelve lo regalado.
 function ahorro3x2(importes) {
   if (!promo3x2Activa()) return 0;
   const orden = importes.slice().sort((a, b) => a - b);
@@ -1945,7 +1946,9 @@ function urlPiezaHombre(prod, clave) {
     }
     return;
   }
-  const bannerMujer = bannerPromo(typeof PROMO_MUJER !== 'undefined' ? PROMO_MUJER : null);
+  // 14/11: el 3x2 también vale en mujer: su franja si no hay PROMO_MUJER
+  const bannerMujer = bannerPromo(typeof PROMO_MUJER !== 'undefined' ? PROMO_MUJER : null)
+    || (promo3x2Activa() ? bannerPromoHombre() : null);
   if (bannerMujer) rejilla.before(bannerMujer);
   PRODUCTOS.forEach(prod => {
     const esKitLibre = prod.id === 'kit_personalizado';
@@ -4266,7 +4269,7 @@ if (reservaForm) {
 
     let total = 0, totalSinPromo = 0, totalRegalos = 0;
     let huboPiezaSinPrecio = false;
-    const importesHombre = []; // 14/11: para el 3x2
+    const importes3x2 = []; // 14/11: para el 3x2 (todas las piezas)
 
     items.forEach((item, indice) => {
       const prod = productoPorId(item.producto);
@@ -4280,7 +4283,7 @@ if (reservaForm) {
         total += precioItem.importe;
         const normal = typeof precioDe === 'function' ? precioDe(prod) : null;
         totalSinPromo += normal ? normal.importe : precioItem.importe;
-        if (esPiezaHombre(prod)) importesHombre.push(precioItem.importe);
+        importes3x2.push(precioItem.importe);
       }
 
       const tarjeta = document.createElement('div');
@@ -4400,8 +4403,8 @@ if (reservaForm) {
       const nombreDesc = cp ? 'Oferta especial Black Friday'
         : ((typeof PROMO_HOMBRE !== 'undefined' && PROMO_HOMBRE && PROMO_HOMBRE.nombre) ? 'Descuento ' + PROMO_HOMBRE.nombre : 'Descuento de lanzamiento');
       if (ahorro > 0) fila(nombreDesc + promoTxt, '−' + formatearImporte(ahorro, moneda), 'carrito-total-descuento');
-      // 14/11: Black Friday 3x2 (la pieza de hombre más barata de cada 3, gratis)
-      const regalo3x2 = ahorro3x2(importesHombre);
+      // 14/11: Black Friday 3x2 (la pieza más barata de cada 3, gratis)
+      const regalo3x2 = ahorro3x2(importes3x2);
       if (regalo3x2 > 0) {
         total = Math.round((total - regalo3x2) * 100) / 100;
         fila('Black Friday 3x2 · la tercera pieza, gratis', '−' + formatearImporte(regalo3x2, moneda), 'carrito-total-descuento');
@@ -4415,14 +4418,14 @@ if (reservaForm) {
       imp.className = 'carrito-total-nota';
       imp.textContent = 'Impuestos incluidos';
       totalEl.appendChild(imp);
-      // 14/11: cuántas piezas de hombre faltan para que la siguiente salga gratis
-      if (promo3x2Activa() && importesHombre.length % 3 !== 0) {
-        const faltan = 3 - (importesHombre.length % 3);
+      // 14/11: cuántas piezas faltan para que la siguiente salga gratis
+      if (promo3x2Activa() && importes3x2.length % 3 !== 0) {
+        const faltan = 3 - (importes3x2.length % 3);
         const aviso = document.createElement('p');
         aviso.className = 'carrito-total-nota carrito-3x2';
         aviso.textContent = faltan === 1
-          ? 'Black Friday 3x2: añade 1 pieza más de hombre y la tercera te sale gratis'
-          : 'Black Friday 3x2: añade 2 piezas más de hombre y la tercera te sale gratis';
+          ? 'Black Friday 3x2: añade 1 pieza más y la tercera te sale gratis'
+          : 'Black Friday 3x2: añade 2 piezas más y la tercera te sale gratis';
         totalEl.appendChild(aviso);
       }
       carritoLista.insertAdjacentElement('afterend', totalEl);
@@ -5086,13 +5089,15 @@ function vieneDeTiktok() {
     && (!PROMO_HOMBRE.hasta || Date.now() < Date.parse(PROMO_HOMBRE.hasta));
   const deMujer = CURRENT_PAGE === 'productos' && new URLSearchParams(location.search).get('c') === 'woman';
   const carritoDeHombre = () => getCarrito().some(i => /^hombre_/.test(i.producto || ''));
-  const conPromo = promoActiva && !deMujer && (CURRENT_PAGE !== 'comprar' || !getCarrito().length || carritoDeHombre());
+  // 14/11: el 3x2 vale en toda la web; el −% de antes era solo de hombre
+  const conPromo = promoActiva && (PROMO_HOMBRE.tipo === '3x2'
+    || (!deMujer && (CURRENT_PAGE !== 'comprar' || !getCarrito().length || carritoDeHombre())));
   document.querySelectorAll('.coleccion-sorteo').forEach(p => {
     const cp = codigoPersonal();
     p.textContent = cp
       ? '✦ Tu oferta especial Black Friday: −' + cp.descuento + ' % · Envío gratis a todo el mundo ✦'
       : conPromo && PROMO_HOMBRE.tipo === '3x2'
-      ? '✦ Black Friday: llévate 3 piezas de hombre y paga solo 2 · Envío gratis ✦'
+      ? '✦ Black Friday: llévate 3 piezas y paga solo 2 · Envío gratis ✦'
       : conPromo && PROMO_HOMBRE.descuento
       ? '✦ ' + (PROMO_HOMBRE.nombre || 'Oferta') + ': −' + PROMO_HOMBRE.descuento + ' % · Envío gratis a todo el mundo ✦'
       : '✦ Envío gratis a todo el mundo ✦';
@@ -5102,8 +5107,8 @@ function vieneDeTiktok() {
 
 /* =========================================================
    VENTANA BLACK FRIDAY 3x2 (14/11/2026)
-   Al entrar, una vez por sesión, mientras dure el 3x2 de hombre. No sale
-   en el carrito, en la parte de mujer, en las páginas legales ni a quien
+   Al entrar, una vez por sesión, mientras dure el 3x2 (toda la web desde
+   el 14/11 por la tarde). No sale en el carrito, en las páginas legales ni a quien
    tiene código personal (promo3x2Activa ya lo descarta).
    ========================================================= */
 (function () {
@@ -5111,12 +5116,12 @@ function vieneDeTiktok() {
   const SIN_VENTANA = ['comprar', 'arma-kit', 'personalizar', 'aviso-legal', 'cookies', 'privacidad', 'terminos', 'votar', 'voto', '404'];
   if (SIN_VENTANA.includes(CURRENT_PAGE)) return;
   const params = new URLSearchParams(location.search);
-  if (CURRENT_PAGE === 'productos' && params.get('c') === 'woman') return;
   if (document.documentElement.classList.contains('web-cerrada')) return;
   const CLAVE = 'ventana3x2Vista';
   try { if (sessionStorage.getItem(CLAVE) === '1') return; sessionStorage.setItem(CLAVE, '1'); } catch (_) { return; }
 
-  const enHombre = CURRENT_PAGE === 'hombre' || (CURRENT_PAGE === 'productos' && params.get('c') === 'men');
+  // En una colección o una ficha: "Seguir viendo"; en el resto, a la colección
+  const enHombre = CURRENT_PAGE === 'hombre' || CURRENT_PAGE === 'productos';
   const el = (tag, clase, texto) => { const e = document.createElement(tag); if (clase) e.className = clase; if (texto) e.textContent = texto; return e; };
 
   const capa = el('div', 'promo3x2-capa');
@@ -5129,13 +5134,13 @@ function vieneDeTiktok() {
   cerrar.setAttribute('aria-label', 'Cerrar');
   const titulo = el('h2', 'promo3x2-titulo', 'Llévate 3, paga 2');
   titulo.id = 'promo3x2-titulo';
-  const cta = enHombre ? el('button', 'promo3x2-cta', 'Seguir viendo') : el('a', 'promo3x2-cta', 'Ver la colección de hombre');
-  if (enHombre) cta.type = 'button'; else cta.href = 'productos.html?c=men';
+  const cta = enHombre ? el('button', 'promo3x2-cta', 'Seguir viendo') : el('a', 'promo3x2-cta', 'Ver la colección');
+  if (enHombre) cta.type = 'button'; else cta.href = 'productos.html';
   caja.append(
     cerrar,
     el('p', 'promo3x2-eyebrow', 'Black Friday'),
     titulo,
-    el('p', 'promo3x2-texto', 'En toda la colección de hombre: añade 3 piezas al carrito y la tercera te sale gratis.'),
+    el('p', 'promo3x2-texto', 'En toda la web: añade 3 piezas al carrito y la tercera te sale gratis.'),
     el('p', 'promo3x2-nota', 'Hasta el 30 de noviembre · Envío gratis'),
     cta,
   );
