@@ -449,6 +449,11 @@ function codigoPersonal() {
     if (q && /^no$/i.test(q.trim())) localStorage.removeItem('cozumel_codigo');
     const g = JSON.parse(localStorage.getItem('cozumel_codigo') || 'null');
     if (!g || Date.now() - g.t > 14 * 24 * 3600 * 1000) return null;
+    // 15/11: con 2 piezas o más manda la oferta escalonada (2ª al 50 %, 3ª
+    // gratis), que da más que el código; el código sigue valiendo con 1.
+    // Mismo criterio en crear-sesion-pago.
+    const piezas = getCarrito().reduce((t, i) => t + (i.cantidad || 1), 0);
+    if (piezas >= 2) return null;
     return { codigo: g.c, descuento: Number(g.c.slice(2, 4)) };
   } catch (_) { return null; }
 }

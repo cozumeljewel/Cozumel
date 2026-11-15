@@ -237,7 +237,10 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // 11/11/2026: código personal (_shared/codigos-personales.ts). Si es
   // válido, TODAS las piezas van a su precio de siempre menos ese %, en
   // lugar de la promoción general (no se suman).
-  const personal = codigoValido(body.codigo);
+  // 15/11: con 2 piezas o más se aplica la oferta escalonada en lugar del
+  // código (da más); el código vale solo para pedidos de 1 pieza. Igual en
+  // codigoPersonal (script.js).
+  const personal = filas.length < 2 ? codigoValido(body.codigo) : null;
   const conCodigo = (p: { importe: number; moneda: string; mercado: string } | null) => {
     if (!p || !personal) return p;
     const x = p.importe * (1 - personal.descuento / 100);
