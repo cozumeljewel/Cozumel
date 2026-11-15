@@ -38,6 +38,8 @@
 <script src="supabase-config.js" defer></script>
 <script src="mercados.js" defer></script>
 <script src="productos.js" defer></script>
+<!-- 15/11: la oferta de Black Friday (PROMO_HOMBRE) vale en toda la web -->
+<script src="hombre.js" defer></script>
 </head>
 <body data-page="personalizar" class="v2">
 
@@ -111,6 +113,8 @@
         <p class="edicion-badge">Edición de lanzamiento · unidades limitadas</p>
         <p class="eyebrow" id="producto-eyebrow">La colección</p>
         <h2 id="producto-titulo">Cargando…</h2>
+        <!-- 15/11: la oferta de Black Friday (la rellena script.js) -->
+        <p class="pz-promo" id="pz-promo" hidden></p>
       </section>
 
       <!-- ===== 4. DESCRIPCIÓN ===== -->
@@ -207,6 +211,7 @@
           <em id="resumen-precio-nota">pendiente de confirmar</em>
           <p class="compra-envio">Envío incluido</p>
         </div>
+        <p class="pz-promo pz-promo--cta" id="pz-promo-cta" hidden></p>
         <a class="btn btn-primary btn-lg" href="comprar.html" id="cta-reservar">
           <span class="cta-spinner" aria-hidden="true"></span>
           <span class="cta-texto">Añadir al carrito</span>

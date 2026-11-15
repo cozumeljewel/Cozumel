@@ -5198,3 +5198,15 @@ function vieneDeTiktok() {
     cerrar.focus();
   }, 1200);
 })();
+
+/* 15/11/2026: en la ficha de mujer (personalizar.html) el precio va oculto
+   y no se veía la oferta de Black Friday: aviso bajo el nombre y junto al
+   botón de compra. */
+(function () {
+  if (CURRENT_PAGE !== 'personalizar' || typeof promo3x2Activa !== 'function' || !promo3x2Activa()) return;
+  const texto = conSegundaMitad() ? 'Black Friday: la 2ª pieza al 50 % y la 3ª gratis' : 'Black Friday: llévate 3 y paga 2';
+  ['pz-promo', 'pz-promo-cta'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = texto; el.hidden = false; }
+  });
+})();

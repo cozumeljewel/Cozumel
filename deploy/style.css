@@ -4578,3 +4578,8 @@ html.desde-anuncio .coleccion-sorteo:not(.oferta-anuncio){visibility:hidden;}
 @media (prefers-reduced-motion:reduce){ .promo3x2-capa, .promo3x2-caja{transition:none;} }
 body.v2 .v2-pieza-etiqueta--promo{border-color:var(--c-oro, #C4A15A); color:var(--c-oro, #C4A15A); font-weight:600;}
 .carrito-3x2{color:var(--c-oro, #C4A15A); font-weight:600;}
+
+/* 15/11: oferta de Black Friday en la ficha de mujer (personalizar.html) */
+.pz-promo{display:inline-block; margin:12px auto 0; padding:5px 12px; border:1px solid #C4A15A; border-radius:2px; color:#9A7633; font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; line-height:1.4;}
+.pz-promo[hidden]{display:none;}
+.pz-promo--cta{display:block; width:fit-content; margin:0 auto 16px;}
