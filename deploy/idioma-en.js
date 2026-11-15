@@ -716,7 +716,17 @@ COZUMEL_EN_CARGADO({
  "Cambiar mis preferencias de cookies": "Change my cookie preferences",
  ". Si las retiras, dejamos de usarlas en ese momento y borramos las cookies de Meta.": ". If you withdraw them, we stop using them straight away and delete the Meta cookies.",
  "<span class=\"acabado-dot acabado-dot--oro\" aria-hidden=\"true\"></span>Dorado": "<span class=\"acabado-dot acabado-dot--oro\" aria-hidden=\"true\"></span>Gold-tone",
- "No todas las piezas son iguales, y no todas las historias se cuentan con las mismas piezas. Aquí eliges tú: combina lo que quieras, para quien tú quieras, como tú lo sientas.": "Not all pieces are the same, and not every story is told with the same pieces. Here you choose: combine whatever you like, for whoever you like, however you feel it."
+ "No todas las piezas son iguales, y no todas las historias se cuentan con las mismas piezas. Aquí eliges tú: combina lo que quieras, para quien tú quieras, como tú lo sientas.": "Not all pieces are the same, and not every story is told with the same pieces. Here you choose: combine whatever you like, for whoever you like, however you feel it.",
+ "· Black Friday · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis ·": "· Black Friday · Buy 2: second one 50% off · Buy 3: third one free ·",
+ "Black Friday · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis": "Black Friday · Buy 2: second one 50% off · Buy 3: third one free",
+ "Black Friday: 2ª −50 %, 3ª gratis": "Black Friday: 2nd 50% off, 3rd free",
+ "Black Friday · la tercera gratis y la segunda al 50 %": "Black Friday · third free and second 50% off",
+ "Black Friday · la segunda pieza al 50 %": "Black Friday · second piece 50% off",
+ "Black Friday: añade 1 pieza más y la tercera te sale gratis": "Black Friday: add 1 more piece and the third one is free",
+ "Black Friday: añade 1 pieza más y la segunda te sale al 50 %": "Black Friday: add 1 more piece and get the second one 50% off",
+ "✦ Black Friday: la 2ª pieza al 50 % y la 3ª gratis · Envío gratis ✦": "✦ Black Friday: 2nd piece 50% off and 3rd free · Free shipping ✦",
+ "La 2ª al 50 %, la 3ª gratis": "2nd 50% off, 3rd free",
+ "En toda la web: llévate 2 piezas y la segunda te sale a mitad de precio. Llévate 3 y la tercera es gratis.": "Across the whole store: buy 2 pieces and get the second one at half price. Buy 3 and the third one is free."
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

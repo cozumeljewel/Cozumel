@@ -106,6 +106,16 @@ def nombre_estado(pais, prov):
     p = (prov or '').strip()
     if PAISES.get(pais) == 'MX' and p.upper() in ('CDMX', 'CMX', 'DF', 'DIF'):
         return 'Ciudad de México'
+    # México: Stripe a veces da la abreviatura ("S.L.P."); Emanco, el nombre entero
+    if PAISES.get(pais) == 'MX':
+        abrev = {'SLP': 'San Luis Potosí', 'QR': 'Quintana Roo', 'QROO': 'Quintana Roo', 'BC': 'Baja California',
+                 'BCS': 'Baja California Sur', 'NL': 'Nuevo León', 'EDOMEX': 'Estado de México', 'EDOMÉX': 'Estado de México',
+                 'MEX': 'Estado de México', 'MÉX': 'Estado de México', 'QRO': 'Querétaro', 'GTO': 'Guanajuato',
+                 'JAL': 'Jalisco', 'PUE': 'Puebla', 'VER': 'Veracruz', 'CHIH': 'Chihuahua', 'COAH': 'Coahuila',
+                 'TAMPS': 'Tamaulipas', 'SIN': 'Sinaloa', 'SON': 'Sonora', 'MICH': 'Michoacán', 'AGS': 'Aguascalientes'}
+        clave = re.sub(r'[\s.]', '', p).upper()
+        if clave in abrev:
+            return abrev[clave]
     if PAISES.get(pais) == 'US' and len(p) == 2:
         for nombre, cod in ESTADOS_US.items():
             if cod == p.upper():

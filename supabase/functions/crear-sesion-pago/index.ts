@@ -266,11 +266,21 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   // (ahorro3x2 en script.js). Con código personal no hay 3x2.
   const tresPorDos = !personal && PROMO_HOMBRE?.tipo === "3x2"
     && (!PROMO_HOMBRE.hasta || Date.now() <= Date.parse(PROMO_HOMBRE.hasta));
-  let gratis3x2 = 0;
+  // 15/11: escalonada: si sobran 2 piezas, la más barata de las que quedan
+  // al PROMO_HOMBRE.segunda % (mismo redondeo que descuentoEscalonado).
+  let gratis3x2 = 0, medias = 0;
   if (tresPorDos) {
     const todas = lineas.slice().sort((a, b) => a.precio!.importe - b.precio!.importe);
     gratis3x2 = Math.floor(todas.length / 3);
     todas.slice(0, gratis3x2).forEach((l) => { l.precio = { ...l.precio!, importe: 0 }; });
+    const pct = Number(PROMO_HOMBRE?.segunda) || 0;
+    if (pct > 0 && todas.length % 3 === 2) {
+      const l = todas[gratis3x2];
+      const v = l.precio!.importe * (1 - pct / 100);
+      const importe = (SIN_DECIMALES.includes(l.precio!.moneda) || l.precio!.moneda === "MXN") ? Math.round(v) : Math.round(v * 100) / 100;
+      l.precio = { ...l.precio!, importe };
+      medias = 1;
+    }
   }
 
   // Una sesión de Stripe = una moneda; aquí ya está garantizado que todas
@@ -293,8 +303,12 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     // del 3x2 tenía 43 y la sesión no se creaba): se recorta siempre.
     const nombreCupon = personal
       ? `Black Friday · oferta especial −${personal.descuento} %`
+      : gratis3x2 > 0 && medias > 0
+      ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} · 3ª gratis y 2ª al 50 %`
       : gratis3x2 > 0
       ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} 3x2 · la tercera, gratis`
+      : medias > 0
+      ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} · la segunda al 50 %`
       : `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`;
     const cupon = await stripe.coupons.create({
       amount_off: ahorro,
