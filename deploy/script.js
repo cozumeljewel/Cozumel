@@ -4437,8 +4437,10 @@ if (reservaForm) {
       fila('Envío', 'Incluido');
       const fin = fila('Total', '', 'carrito-total-final');
       fin.lastChild.innerHTML = '<small></small> <strong></strong>';
-      fin.querySelector('small').textContent = moneda || '';
-      fin.querySelector('strong').textContent = formatearImporte(total, moneda) || '—';
+      // 17/11: en pesos el importe ya dice "MXN" ("$499 MXN"): sin repetirlo delante
+      const totalTexto = formatearImporte(total, moneda) || '—';
+      fin.querySelector('small').textContent = moneda && !totalTexto.includes(moneda) ? moneda : '';
+      fin.querySelector('strong').textContent = totalTexto;
       const imp = document.createElement('p');
       imp.className = 'carrito-total-nota';
       imp.textContent = 'Impuestos incluidos';
@@ -4468,11 +4470,14 @@ if (reservaForm) {
     if (sinPiezaAviso) sinPiezaAviso.hidden = !carritoVacio;
     if (sinPrecioAviso) sinPrecioAviso.hidden = !huboPiezaSinPrecio;
     reservaSubmitBtn.disabled = carritoVacio || huboPiezaSinPrecio || (!SUPA_READY || !sb);
+    // 17/11: piezas sugeridas dentro del carrito (al final de script.js)
+    if (typeof window.pintarSugerenciasCarrito === 'function') window.pintarSugerenciasCarrito();
 
     return items;
   }
 
   pintarCarrito();
+  window.cozumelPintarCarrito = pintarCarrito;
 
   /* Argentina tiene precios propios (envío de 14 $): al elegirla como país
      de envío, el carrito pasa a esos precios, que son los que va a cobrar
@@ -5399,5 +5404,115 @@ function vieneDeTiktok() {
   });
   if (movil.addEventListener) movil.addEventListener('change', pintar);
   if (plegarTotal) new MutationObserver(pintar).observe(plegarTotal, { childList: true, characterData: true, subtree: true });
+  pintar();
+})();
+
+/* =========================================================
+   PIEZAS SUGERIDAS EN EL CARRITO (17/11/2026)
+   "Añadir otra pieza" sacaba de la compra hacia la colección, y en el
+   móvil lento de México se quedaban por el camino. Ahora, dentro del
+   carrito, una fila de piezas que se añaden con un toque. Solo las que no
+   piden talla, largo ni grosor, con el acabado y el colgante de regalo con
+   los que se abre su ficha: mismo SKU que si se añadieran desde ella.
+   ========================================================= */
+(function () {
+  if (CURRENT_PAGE !== 'comprar' || typeof COLECCION_HOMBRE === 'undefined') return;
+  const enlace = document.querySelector('.carrito-anadir-mas');
+  if (!enlace) return;
+  // Primero las que más se venden y se miran
+  const ORDEN = ['hombre_collar_3', 'hombre_collar_6', 'hombre_colgante_2', 'hombre_collar_4', 'hombre_colgante_1',
+    'hombre_collar_8', 'hombre_collar_1', 'hombre_colgante_3', 'hombre_collar_2', 'hombre_brazalete_2',
+    'hombre_brazalete_3', 'hombre_brazalete_4'];
+  const crear = (tag, clase, texto) => {
+    const el = document.createElement(tag);
+    if (clase) el.className = clase;
+    if (texto) el.textContent = texto;
+    return el;
+  };
+  const caja = crear('section', 'carrito-sugeridas');
+  caja.hidden = true;
+  caja.setAttribute('aria-label', 'Piezas sugeridas');
+  const titulo = crear('p', 'carrito-sugeridas-titulo');
+  const fila = crear('div', 'carrito-sugeridas-fila');
+  caja.append(titulo, fila);
+  enlace.insertAdjacentElement('beforebegin', caja);
+
+  // La pieza tal y como la añadiría su ficha sin tocar nada
+  function lineaDe(prod) {
+    if ([].concat((typeof OPCIONES_HOMBRE !== 'undefined' && OPCIONES_HOMBRE[prod.id]) || []).length) return null;
+    const claves = Object.keys(prod.acabados || {});
+    const inicial = typeof ACABADO_INICIAL_HOMBRE !== 'undefined' && ACABADO_INICIAL_HOMBRE[prod.id];
+    const clave = inicial && claves.includes(inicial) ? inicial : claves[0];
+    if (!clave) return null;
+    const sku = skuHombre(prod, clave, {});
+    const precio = precioCobro(prod);
+    if (!sku || !precio) return null;
+    const pers = { acabado: clave, color: NOMBRE_ACABADO_HOMBRE[clave] };
+    let foto = (prod.acabados[clave] || [])[0];
+    if (llevaCharmHombre(prod)) {
+      const fijo = typeof PORTADA_CHARM_HOMBRE !== 'undefined' && PORTADA_CHARM_HOMBRE[prod.id] && PORTADA_CHARM_HOMBRE[prod.id][clave];
+      const fotos = fotosCharmHombre(prod, clave);
+      const charmId = fijo || (fotos[0] && fotos[0].charm) || null;
+      const ch = charmId && CHARMS_HOMBRE.find(c => c.id === charmId);
+      if (ch && ch.fotos[clave === 'oro' ? 'dorado' : 'plateado']) {
+        pers.colgante = ch.nombre + ' · ' + (clave === 'oro' ? 'oro' : 'oro blanco');
+        pers.charm = ch.id;
+        const skuCh = skuCharmHombre(ch.id, clave);
+        if (skuCh) pers.sku_colgante = skuCh;
+        const conCharm = fotos.find(x => x.charm === ch.id);
+        if (conCharm) foto = conCharm.foto;
+      }
+    }
+    pers.sku = sku;
+    if (!foto) return null;
+    return {
+      prod, clave, foto, precio,
+      item: normalizarItemCarrito({
+        producto: prod.id, cantidad: 1, personalizacion: pers,
+        variante: [clave, sku, pers.charm || ''].join('|'),
+        mercado: precio.mercado, moneda: precio.moneda, precio: precio.importe,
+      }),
+    };
+  }
+
+  function pintar() {
+    const items = getCarrito();
+    fila.textContent = '';
+    // 17/11: con un carrito solo de mujer, "Añadir otra pieza" iba a hombre
+    const hayHombre = items.some(i => String(i.producto).startsWith('hombre_'));
+    enlace.href = !items.length || hayHombre ? 'productos.html?c=men' : 'productos.html?c=woman';
+    const enCarrito = new Set(items.map(i => i.producto));
+    if (!items.length || !items.some(i => String(i.producto).startsWith('hombre_'))) { caja.hidden = true; return; }
+    const lineas = ORDEN.map(id => COLECCION_HOMBRE.find(p => p.id === id))
+      .filter(p => p && !enCarrito.has(p.id)).map(lineaDe).filter(Boolean).slice(0, 4);
+    if (!lineas.length) { caja.hidden = true; return; }
+    const n = items.reduce((t, i) => t + (i.cantidad || 1), 0);
+    titulo.textContent = typeof conSegundaMitad === 'function' && conSegundaMitad() && n % 3 === 1
+      ? 'Añade otra: la segunda te sale al 50 %'
+      : typeof promo3x2Activa === 'function' && promo3x2Activa() && n % 3 === 2
+      ? 'Añade una más: la tercera es gratis'
+      : 'Completa tu pedido';
+    lineas.forEach(l => {
+      const tarjeta = crear('div', 'carrito-sugerida');
+      const ver = crear('a', 'carrito-sugerida-foto');
+      ver.href = typeof urlPiezaHombre === 'function' ? urlPiezaHombre(l.prod, l.clave) : 'hombre.html?id=' + l.prod.id;
+      const img = crear('img');
+      img.src = imgPeq(l.foto, 300); img.alt = l.prod.nombre; img.loading = 'lazy'; img.decoding = 'async';
+      ver.append(img);
+      const boton = crear('button', 'carrito-sugerida-boton', 'Añadir');
+      boton.type = 'button';
+      boton.addEventListener('click', () => {
+        añadirAlCarrito(l.item);
+        if (typeof trackEvent === 'function') trackEvent('reserva_iniciada', l.prod.id);
+        if (window.COZUMEL_ANALITICA) COZUMEL_ANALITICA.evento('AddToCart', { value: l.precio.importe, currency: l.precio.moneda, content_ids: [l.prod.id] });
+        if (typeof window.cozumelPintarCarrito === 'function') window.cozumelPintarCarrito(); else pintar();
+      });
+      tarjeta.append(ver, crear('p', 'carrito-sugerida-nombre', l.prod.nombre),
+        crear('p', 'carrito-sugerida-precio', formatearImporte(l.precio.importe, l.precio.moneda)), boton);
+      fila.append(tarjeta);
+    });
+    caja.hidden = false;
+  }
+  window.pintarSugerenciasCarrito = pintar;
   pintar();
 })();

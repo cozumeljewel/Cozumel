@@ -2266,3 +2266,26 @@ en: In the next step, on Stripe's secure page, you enter your shipping address a
 # ---------- Botón fijo del carrito (17/11/2026) ----------
 es: Continuar
 en: Continue
+
+# ---------- Piezas sugeridas en el carrito (17/11/2026) ----------
+es: Añade otra: la segunda te sale al 50 %
+en: Add another: the second one is 50% off
+
+es: Añade una más: la tercera es gratis
+en: Add one more: the third one is free
+
+es: Completa tu pedido
+en: Complete your order
+
+es: Añadir
+en: Add
+
+es: Piezas sugeridas
+en: Suggested pieces
+
+# ---------- Auditoría del carrito (17/11/2026) ----------
+es: No hemos podido cargar el pago. Recarga la página o escríbenos por WhatsApp y te ayudamos.
+en: We couldn't load the payment. Reload the page or message us on WhatsApp and we'll help you.
+
+es: Puedes pagar aquí mismo con tarjeta. Si prefieres <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».
+en: You can pay right here by card. If you prefer <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”.

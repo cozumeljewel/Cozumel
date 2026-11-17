@@ -732,7 +732,14 @@ COZUMEL_EN_CARGADO({
  "¿Querías decir": "Did you mean",
  "Usamos estos datos para gestionar tu pedido y escribirte sobre él, también si no llegas a terminar la compra.": "We use this data to process your order and contact you about it, including if you don't finish your purchase.",
  "En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay o Google Pay.": "In the next step, on Stripe's secure page, you enter your shipping address and pay by card, Apple Pay or Google Pay.",
- "Continuar": "Continue"
+ "Continuar": "Continue",
+ "Añade otra: la segunda te sale al 50 %": "Add another: the second one is 50% off",
+ "Añade una más: la tercera es gratis": "Add one more: the third one is free",
+ "Completa tu pedido": "Complete your order",
+ "Añadir": "Add",
+ "Piezas sugeridas": "Suggested pieces",
+ "No hemos podido cargar el pago. Recarga la página o escríbenos por WhatsApp y te ayudamos.": "We couldn't load the payment. Reload the page or message us on WhatsApp and we'll help you.",
+ "Puedes pagar aquí mismo con tarjeta. Si prefieres <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».": "You can pay right here by card. If you prefer <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”."
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

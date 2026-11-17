@@ -4602,3 +4602,16 @@ body.v2 .v2-pieza-etiqueta--promo{border-color:var(--c-oro, #C4A15A); color:var(
 .barra-pago-total[hidden]{display:none;}
 body.con-barra-pago{padding-bottom:84px;}
 body.con-barra-pago .volver-arriba{bottom:calc(92px + env(safe-area-inset-bottom));}
+
+/* Piezas sugeridas dentro del carrito (17/11/2026) */
+.carrito-sugeridas{margin:18px 0 14px; text-align:left;}
+.carrito-sugeridas[hidden]{display:none;}
+.carrito-sugeridas-titulo{margin:0 0 10px; font-size:13.5px; font-weight:600; color:var(--c-texto, #12333A);}
+.carrito-sugeridas-fila{display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:6px; -webkit-overflow-scrolling:touch;}
+.carrito-sugerida{flex:0 0 132px; scroll-snap-align:start; display:flex; flex-direction:column; gap:3px; background:#FFFFFF; border:1px solid #E6E3DD; padding:8px;}
+.carrito-sugerida-foto{display:block;}
+.carrito-sugerida-foto img{display:block; width:100%; aspect-ratio:1; object-fit:cover; background:#F5F4F1;}
+.carrito-sugerida-nombre{margin:6px 0 0; font-size:13px; font-weight:600; color:var(--c-texto, #12333A);}
+.carrito-sugerida-precio{margin:0; font-size:12.5px; color:#5B6B6E;}
+.carrito-sugerida-boton{margin-top:6px; padding:9px 8px; border:0; cursor:pointer; font:inherit; font-size:13px; font-weight:600; background:#14454A; color:#FFFFFF;}
+.carrito-sugerida-boton:focus-visible{outline:2px solid #14454A; outline-offset:2px;}
