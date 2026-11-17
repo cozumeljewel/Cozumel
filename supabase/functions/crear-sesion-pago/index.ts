@@ -342,8 +342,9 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     ? "Paga con tarjeta, PayPal o en 4 plazos sin intereses con Klarna."
     : MONEDAS_PAYPAL.includes(moneda)
     ? "Si tu tarjeta no pasa, también puedes pagar con PayPal."
-    // México, Chile, Perú… (sin PayPal en su moneda): ayuda por WhatsApp
-    : "¿Algún problema con el pago? Escríbenos por WhatsApp al +34 604 094 868 y te ayudamos.";
+    // México, Chile, Perú… (sin PayPal en su moneda): ayuda por WhatsApp,
+    // con enlace (Stripe admite enlaces Markdown en este texto)
+    : "¿Algún problema con el pago? [Escríbenos por WhatsApp](https://wa.me/34604094868?text=Hola%2C%20tengo%20una%20duda%20con%20el%20pago%20en%20Cozumel) y te ayudamos.";
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
