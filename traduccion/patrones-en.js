@@ -23,6 +23,8 @@
   [/^Grosor (.+)$/, 'Thickness $1'],
   [/^Antes ([^a-z]*\d[^a-z]*)$/, 'Was $1'],  // solo precios, no frases
   [/^Ahora (.+), (\d+) % de descuento$/, 'Now $1, $2% off'],
+  // 17/11: total del pedido en las piezas sugeridas del carrito
+  [/^Las (\d+) por (.+)$/, (m, n, x) => n === '2' ? `Both for ${x}` : `All ${n} for ${x}`],
   [/^Descuento Black Friday \(−(\d+) %\)$/, 'Black Friday discount (−$1%)'],
   [/^Oferta especial Black Friday \(−(\d+) %\)$/, 'Black Friday special offer (−$1%)'],
   [/^Letra (.)$/, (m, l) => `Letter ${l.toUpperCase()}`],

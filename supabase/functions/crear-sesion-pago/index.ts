@@ -271,7 +271,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     && (!PROMO_HOMBRE.hasta || Date.now() <= Date.parse(PROMO_HOMBRE.hasta));
   // 15/11: escalonada: si sobran 2 piezas, la más barata de las que quedan
   // al PROMO_HOMBRE.segunda % (mismo redondeo que descuentoEscalonado).
-  let gratis3x2 = 0, medias = 0;
+  let gratis3x2 = 0, medias = 0, unaPieza = 0;
   if (tresPorDos) {
     const todas = lineas.slice().sort((a, b) => a.precio!.importe - b.precio!.importe);
     gratis3x2 = Math.floor(todas.length / 3);
@@ -283,6 +283,16 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       const importe = (SIN_DECIMALES.includes(l.precio!.moneda) || l.precio!.moneda === "MXN") ? Math.round(v) : Math.round(v * 100) / 100;
       l.precio = { ...l.precio!, importe };
       medias = 1;
+    }
+    // 17/11: si sobra 1 pieza (1, 4, 7...), esa al −PROMO_HOMBRE.una %
+    // (igual que descuentoEscalonado en script.js)
+    const pctUna = Number(PROMO_HOMBRE?.una) || 0;
+    if (pctUna > 0 && todas.length % 3 === 1) {
+      const l = todas[gratis3x2];
+      const v = l.precio!.importe * (1 - pctUna / 100);
+      const importe = (SIN_DECIMALES.includes(l.precio!.moneda) || l.precio!.moneda === "MXN") ? Math.round(v) : Math.round(v * 100) / 100;
+      l.precio = { ...l.precio!, importe };
+      unaPieza = 1;
     }
   }
 
@@ -308,10 +318,14 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       ? `Black Friday · oferta especial −${personal.descuento} %`
       : gratis3x2 > 0 && medias > 0
       ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} · 3ª gratis y 2ª al 50 %`
+      : gratis3x2 > 0 && unaPieza > 0
+      ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} · 3ª gratis y −${PROMO_HOMBRE?.una} %`
       : gratis3x2 > 0
       ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} 3x2 · la tercera, gratis`
       : medias > 0
       ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} · la segunda al 50 %`
+      : unaPieza > 0
+      ? `${PROMO_HOMBRE?.nombre ?? 'Black Friday'} · −${PROMO_HOMBRE?.una} % en tu pieza`
       : `${PROMO_HOMBRE?.nombre ?? 'Descuento'} −${PROMO_HOMBRE?.descuento ?? 10} %`;
     const cupon = await stripe.coupons.create({
       amount_off: ahorro,

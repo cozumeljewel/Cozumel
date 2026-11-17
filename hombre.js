@@ -212,7 +212,8 @@ const ORO_14K_HOMBRE = ['hombre_pulsera_7', 'hombre_pulsera_8', 'hombre_anillo_7
 // código y no hay 3x2.
 // hasta: se apaga sola al pasar esa fecha.
 // 15/11: escalonada: la 2ª pieza al 50 % (segunda) y la 3ª gratis (tipo '3x2')
-const PROMO_HOMBRE = { descuento: 0, tipo: '3x2', segunda: 50, hasta: '2026-11-30T23:59:59-06:00', nombre: 'Black Friday', texto: '· Black Friday · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis ·' };
+// 17/11: y con 1 sola pieza, −15 % (una)
+const PROMO_HOMBRE = { descuento: 0, tipo: '3x2', una: 15, segunda: 50, hasta: '2026-11-30T23:59:59-06:00', nombre: 'Black Friday', texto: '· Black Friday · 1 pieza: −15 % · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis ·' };
 
 const NOMBRE_ACABADO_HOMBRE = { oro: 'Oro', oro_blanco: 'Oro blanco', plata: 'Plata', negro: 'Negro' };
 

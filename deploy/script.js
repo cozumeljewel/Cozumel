@@ -1000,7 +1000,7 @@ function promo3x2Activa() {
    que quedan al segunda %. Mismo cálculo y redondeo que crear-sesion-pago.
    importes: precios de TODAS las piezas del pedido. */
 function descuentoEscalonado(importes, moneda) {
-  const r = { gratis: 0, medias: 0, ahorro: 0 };
+  const r = { gratis: 0, medias: 0, una: 0, ahorro: 0 };
   if (!promo3x2Activa()) return r;
   const orden = importes.slice().sort((a, b) => a - b);
   r.gratis = Math.floor(orden.length / 3);
@@ -1012,9 +1012,19 @@ function descuentoEscalonado(importes, moneda) {
     ahorro += x - paga;
     r.medias = 1;
   }
+  // 17/11: si sobra 1 (1 pieza, o 4, 7...), esa al −PROMO_HOMBRE.una %
+  const una = Number(PROMO_HOMBRE.una) || 0;
+  if (una > 0 && orden.length % 3 === 1) {
+    const x = orden[r.gratis], v = x * (1 - una / 100);
+    const paga = (SIN_DECIMALES.includes(moneda) || moneda === 'MXN') ? Math.round(v) : Math.round(v * 100) / 100;
+    ahorro += x - paga;
+    r.una = 1;
+  }
   r.ahorro = Math.round(ahorro * 100) / 100;
   return r;
 }
+/* 17/11: % de Black Friday con 1 sola pieza (0 si no hay oferta) */
+function pctUnaPieza() { return promo3x2Activa() ? (Number(PROMO_HOMBRE.una) || 0) : 0; }
 function ahorro3x2(importes, moneda) { return descuentoEscalonado(importes, moneda).ahorro; }
 function conSegundaMitad() { return promo3x2Activa() && Number(PROMO_HOMBRE.segunda) > 0; }
 function promoDe(prod) {
@@ -1044,14 +1054,18 @@ function pintarPrecioPromo(el, prod) {
   if (!p) { el.textContent = ''; return; }
   const promo = promoDe(prod);
   const normal = formatearImporte(p.importe, p.moneda);
-  if (!promoActiva(promo)) { el.textContent = normal; el.classList.remove('con-promo'); return; }
+  // 17/11: Black Friday con 1 pieza (−15 %) en toda la web; los kits ya
+  // llevan su propio tachado (el ahorro frente a las piezas sueltas)
+  const una = !promoActiva(promo) && !(prod.piezas && prod.piezas.length) ? pctUnaPieza() : 0;
+  if (!promoActiva(promo) && !una) { el.textContent = normal; el.classList.remove('con-promo'); return; }
+  const pct = una || promo.descuento;
   let antesImp, ahoraImp;
-  if (promo.modo === 'tachado') {
+  if (!una && promo.modo === 'tachado') {
     antesImp = tachadoRedondo(p.importe, p.moneda, promo.descuento);
     ahoraImp = p.importe;
   } else {
     antesImp = p.importe;
-    ahoraImp = p.importe * (1 - promo.descuento / 100);
+    ahoraImp = p.importe * (1 - pct / 100);
     ahoraImp = (SIN_DECIMALES.includes(p.moneda) || p.moneda === 'MXN') ? Math.round(ahoraImp) : Math.round(ahoraImp * 100) / 100;
   }
   const antes = formatearImporte(antesImp, p.moneda);
@@ -1064,7 +1078,7 @@ function pintarPrecioPromo(el, prod) {
   const r = document.createElement('span');
   r.className = 'v2-precio-rebajado';
   r.textContent = ahora;
-  r.setAttribute('aria-label', 'Ahora ' + ahora + ', ' + promo.descuento + ' % de descuento');
+  r.setAttribute('aria-label', 'Ahora ' + ahora + ', ' + pct + ' % de descuento');
   el.append(s, r);
   el.classList.add('con-promo');
 }
@@ -1689,7 +1703,7 @@ function urlPiezaHombre(prod, clave) {
     const env = crear('span', 'v2-pieza-etiqueta', 'Envío gratis');
     condiciones.append(mat, env);
     // 14/11: Black Friday 3x2, también junto al precio
-    if (promo3x2Activa()) condiciones.append(crear('span', 'v2-pieza-etiqueta v2-pieza-etiqueta--promo', conSegundaMitad() ? 'Black Friday: 2ª −50 %, 3ª gratis' : '3x2 Black Friday'));
+    if (promo3x2Activa()) condiciones.append(crear('span', 'v2-pieza-etiqueta v2-pieza-etiqueta--promo', pctUnaPieza() ? 'Black Friday: 1 pieza −' + pctUnaPieza() + ' %, 2ª −50 %, 3ª gratis' : conSegundaMitad() ? 'Black Friday: 2ª −50 %, 3ª gratis' : '3x2 Black Friday'));
   };
 
   claves.forEach(c => {
@@ -4430,7 +4444,9 @@ if (reservaForm) {
       if (esc.ahorro > 0) {
         total = Math.round((total - esc.ahorro) * 100) / 100;
         const etiqueta = esc.gratis && esc.medias ? 'Black Friday · la tercera gratis y la segunda al 50 %'
+          : esc.gratis && esc.una ? 'Black Friday · la tercera gratis y otra al −' + PROMO_HOMBRE.una + ' %'
           : esc.gratis ? 'Black Friday 3x2 · la tercera pieza, gratis'
+          : esc.una ? 'Black Friday · −' + PROMO_HOMBRE.una + ' % en tu pieza'
           : 'Black Friday · la segunda pieza al 50 %';
         fila(etiqueta, '−' + formatearImporte(esc.ahorro, moneda), 'carrito-total-descuento');
       }
@@ -5177,6 +5193,8 @@ function vieneDeTiktok() {
     const cp = codigoPersonal();
     p.textContent = cp
       ? '✦ Tu oferta especial Black Friday: −' + cp.descuento + ' % · Envío gratis a todo el mundo ✦'
+      : conPromo && PROMO_HOMBRE.tipo === '3x2' && Number(PROMO_HOMBRE.una) > 0
+      ? '✦ Black Friday: 1 pieza −' + PROMO_HOMBRE.una + ' % · la 2ª al 50 % · la 3ª gratis · Envío gratis ✦'
       : conPromo && PROMO_HOMBRE.tipo === '3x2' && Number(PROMO_HOMBRE.segunda) > 0
       ? '✦ Black Friday: la 2ª pieza al 50 % y la 3ª gratis · Envío gratis ✦'
       : conPromo && PROMO_HOMBRE.tipo === '3x2'
@@ -5262,7 +5280,8 @@ function vieneDeTiktok() {
    botón de compra. */
 (function () {
   if (CURRENT_PAGE !== 'personalizar' || typeof promo3x2Activa !== 'function' || !promo3x2Activa()) return;
-  const texto = conSegundaMitad() ? 'Black Friday: la 2ª pieza al 50 % y la 3ª gratis' : 'Black Friday: llévate 3 y paga 2';
+  const texto = pctUnaPieza() ? 'Black Friday: 1 pieza −' + pctUnaPieza() + ' %, la 2ª al 50 % y la 3ª gratis'
+    : conSegundaMitad() ? 'Black Friday: la 2ª pieza al 50 % y la 3ª gratis' : 'Black Friday: llévate 3 y paga 2';
   ['pz-promo', 'pz-promo-cta'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { el.textContent = texto; el.hidden = false; }
@@ -5492,8 +5511,9 @@ function vieneDeTiktok() {
       : typeof promo3x2Activa === 'function' && promo3x2Activa() && n % 3 === 2
       ? 'Añade una más: la tercera es gratis'
       : 'Completa tu pedido';
-    // 17/11: en cada tarjeta, lo que sube el total al añadirla con la oferta
-    // ya aplicada (39,90 € tachado y 19,95 € si pasa a ser la segunda al 50 %)
+    // 17/11: en cada tarjeta, el precio de la pieza dentro de la oferta
+    // (39,90 € tachado y 19,95 € si pasa a ser la segunda al 50 %) y, como
+    // la que ya tenías pierde su −15 %, el total del pedido con ella
     const base = items.map(i => { const p = productoPorId(i.producto); const c = p && precioCobro(p); return c ? c.importe : null; })
       .filter(x => x != null);
     const totalCon = (arr, m) => arr.reduce((t, x) => t + x, 0) -
@@ -5513,17 +5533,38 @@ function vieneDeTiktok() {
         if (window.COZUMEL_ANALITICA) COZUMEL_ANALITICA.evento('AddToCart', { value: l.precio.importe, currency: l.precio.moneda, content_ids: [l.prod.id] });
         if (typeof window.cozumelPintarCarrito === 'function') window.cozumelPintarCarrito(); else pintar();
       });
-      const m = l.precio.moneda;
+      const m = l.precio.moneda, p = l.precio.importe;
       const precioEl = crear('p', 'carrito-sugerida-precio');
-      const sube = Math.round((totalCon(base.concat(l.precio.importe), m) - totalCon(base, m)) * 100) / 100;
-      if (sube < l.precio.importe - 0.004) {
-        precioEl.append(crear('s', '', formatearImporte(l.precio.importe, m)), ' ',
-          crear('strong', '', sube > 0 ? formatearImporte(sube, m) : 'Gratis'));
-      } else precioEl.textContent = formatearImporte(l.precio.importe, m);
-      tarjeta.append(ver, crear('p', 'carrito-sugerida-nombre', l.prod.nombre), precioEl, boton);
+      const propio = precioEnOferta(base, p, m);
+      if (propio < p - 0.004) {
+        precioEl.append(crear('s', '', formatearImporte(p, m)), ' ',
+          crear('strong', '', propio > 0 ? formatearImporte(propio, m) : 'Gratis'));
+      } else precioEl.textContent = formatearImporte(p, m);
+      tarjeta.append(ver, crear('p', 'carrito-sugerida-nombre', l.prod.nombre), precioEl);
+      if (typeof promo3x2Activa === 'function' && promo3x2Activa()) {
+        const nuevo = Math.round(totalCon(base.concat(p), m) * 100) / 100;
+        tarjeta.append(crear('p', 'carrito-sugerida-total', 'Las ' + (base.length + 1) + ' por ' + formatearImporte(nuevo, m)));
+      }
+      tarjeta.append(boton);
       fila.append(tarjeta);
     });
     caja.hidden = false;
+  }
+  // Lo que paga la sugerida dentro de la oferta (mismo reparto que
+  // descuentoEscalonado: gratis las más baratas, el % a la siguiente). A
+  // igual precio, el regalo y el % se los lleva ella, salvo con 4, 7...
+  // piezas, donde la gratis sigue siendo una de las que ya tenías.
+  function precioEnOferta(base, p, m) {
+    if (typeof promo3x2Activa !== 'function' || !promo3x2Activa()) return p;
+    const n = base.length + 1, g = Math.floor(n / 3), delante = n % 3 === 0;
+    const arr = base.map(v => ({ v, s: 0 })).concat({ v: p, s: 1 });
+    arr.sort((a, b) => a.v - b.v || (delante ? b.s - a.s : a.s - b.s));
+    if (arr.slice(0, g).some(x => x.s)) return 0;
+    const pct = n % 3 === 2 ? Number(PROMO_HOMBRE.segunda) || 0 : n % 3 === 1 ? Number(PROMO_HOMBRE.una) || 0 : 0;
+    const resto = arr.slice(g).sort((a, b) => a.v - b.v || b.s - a.s);
+    if (!pct || !resto[0].s) return p;
+    const v = p * (1 - pct / 100);
+    return (SIN_DECIMALES.includes(m) || m === 'MXN') ? Math.round(v) : Math.round(v * 100) / 100;
   }
   window.pintarSugerenciasCarrito = pintar;
   pintar();

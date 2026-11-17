@@ -717,8 +717,8 @@ COZUMEL_EN_CARGADO({
  ". Si las retiras, dejamos de usarlas en ese momento y borramos las cookies de Meta.": ". If you withdraw them, we stop using them straight away and delete the Meta cookies.",
  "<span class=\"acabado-dot acabado-dot--oro\" aria-hidden=\"true\"></span>Dorado": "<span class=\"acabado-dot acabado-dot--oro\" aria-hidden=\"true\"></span>Gold-tone",
  "No todas las piezas son iguales, y no todas las historias se cuentan con las mismas piezas. Aquí eliges tú: combina lo que quieras, para quien tú quieras, como tú lo sientas.": "Not all pieces are the same, and not every story is told with the same pieces. Here you choose: combine whatever you like, for whoever you like, however you feel it.",
- "· Black Friday · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis ·": "· Black Friday · Buy 2: second one 50% off · Buy 3: third one free ·",
- "Black Friday · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis": "Black Friday · Buy 2: second one 50% off · Buy 3: third one free",
+ "· Black Friday · 1 pieza: −15 % · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis ·": "· Black Friday · 1 piece: 15% off · Buy 2: second one 50% off · Buy 3: third one free ·",
+ "Black Friday · 1 pieza: −15 % · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis": "Black Friday · 1 piece: 15% off · Buy 2: second one 50% off · Buy 3: third one free",
  "Black Friday: 2ª −50 %, 3ª gratis": "Black Friday: 2nd 50% off, 3rd free",
  "Black Friday · la tercera gratis y la segunda al 50 %": "Black Friday · third free and second 50% off",
  "Black Friday · la segunda pieza al 50 %": "Black Friday · second piece 50% off",
@@ -739,7 +739,12 @@ COZUMEL_EN_CARGADO({
  "Añadir": "Add",
  "Piezas sugeridas": "Suggested pieces",
  "No hemos podido cargar el pago. Recarga la página o escríbenos por WhatsApp y te ayudamos.": "We couldn't load the payment. Reload the page or message us on WhatsApp and we'll help you.",
- "Puedes pagar aquí mismo con tarjeta. Si prefieres <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».": "You can pay right here by card. If you prefer <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”."
+ "Puedes pagar aquí mismo con tarjeta. Si prefieres <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».": "You can pay right here by card. If you prefer <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”.",
+ "Black Friday: 1 pieza −15 %, 2ª −50 %, 3ª gratis": "Black Friday: 1 piece 15% off, 2nd 50% off, 3rd free",
+ "Black Friday · la tercera gratis y otra al −15 %": "Black Friday · third free and another 15% off",
+ "Black Friday · −15 % en tu pieza": "Black Friday · 15% off your piece",
+ "✦ Black Friday: 1 pieza −15 % · la 2ª al 50 % · la 3ª gratis · Envío gratis ✦": "✦ Black Friday: 1 piece 15% off · 2nd 50% off · 3rd free · Free shipping ✦",
+ "Black Friday: 1 pieza −15 %, la 2ª al 50 % y la 3ª gratis": "Black Friday: 1 piece 15% off, 2nd 50% off and 3rd free"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
@@ -762,6 +767,8 @@ COZUMEL_EN_CARGADO({
   [/^Grosor (.+)$/, 'Thickness $1'],
   [/^Antes ([^a-z]*\d[^a-z]*)$/, 'Was $1'],  // solo precios, no frases
   [/^Ahora (.+), (\d+) % de descuento$/, 'Now $1, $2% off'],
+  // 17/11: total del pedido en las piezas sugeridas del carrito
+  [/^Las (\d+) por (.+)$/, (m, n, x) => n === '2' ? `Both for ${x}` : `All ${n} for ${x}`],
   [/^Descuento Black Friday \(−(\d+) %\)$/, 'Black Friday discount (−$1%)'],
   [/^Oferta especial Black Friday \(−(\d+) %\)$/, 'Black Friday special offer (−$1%)'],
   [/^Letra (.)$/, (m, l) => `Letter ${l.toUpperCase()}`],

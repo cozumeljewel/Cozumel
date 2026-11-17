@@ -2216,11 +2216,11 @@ es: No todas las piezas son iguales, y no todas las historias se cuentan con las
 en: Not all pieces are the same, and not every story is told with the same pieces. Here you choose: combine whatever you like, for whoever you like, however you feel it.
 
 # ---------- Black Friday escalonada (15/11/2026) ----------
-es: · Black Friday · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis ·
-en: · Black Friday · Buy 2: second one 50% off · Buy 3: third one free ·
+es: · Black Friday · 1 pieza: −15 % · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis ·
+en: · Black Friday · 1 piece: 15% off · Buy 2: second one 50% off · Buy 3: third one free ·
 
-es: Black Friday · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis
-en: Black Friday · Buy 2: second one 50% off · Buy 3: third one free
+es: Black Friday · 1 pieza: −15 % · Llévate 2: la segunda al 50 % · Llévate 3: la tercera gratis
+en: Black Friday · 1 piece: 15% off · Buy 2: second one 50% off · Buy 3: third one free
 
 es: Black Friday: 2ª −50 %, 3ª gratis
 en: Black Friday: 2nd 50% off, 3rd free
@@ -2289,3 +2289,19 @@ en: We couldn't load the payment. Reload the page or message us on WhatsApp and 
 
 es: Puedes pagar aquí mismo con tarjeta. Si prefieres <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».
 en: You can pay right here by card. If you prefer <strong>Apple Pay or Google Pay</strong>, open the site in Safari or Chrome: tap <strong>···</strong> at the top right and “Open in browser”.
+
+# ---------- Black Friday: 1 pieza −15 % (17/11/2026) ----------
+es: Black Friday: 1 pieza −15 %, 2ª −50 %, 3ª gratis
+en: Black Friday: 1 piece 15% off, 2nd 50% off, 3rd free
+
+es: Black Friday · la tercera gratis y otra al −15 %
+en: Black Friday · third free and another 15% off
+
+es: Black Friday · −15 % en tu pieza
+en: Black Friday · 15% off your piece
+
+es: ✦ Black Friday: 1 pieza −15 % · la 2ª al 50 % · la 3ª gratis · Envío gratis ✦
+en: ✦ Black Friday: 1 piece 15% off · 2nd 50% off · 3rd free · Free shipping ✦
+
+es: Black Friday: 1 pieza −15 %, la 2ª al 50 % y la 3ª gratis
+en: Black Friday: 1 piece 15% off, 2nd 50% off and 3rd free
