@@ -301,7 +301,7 @@ COZUMEL_EN_CARGADO({
  "Último paso": "Last step",
  "Cómpratela": "Make it yours",
  "Pago seguro con tarjeta, a través de Stripe. Envío e impuestos incluidos": "Secure card payment through Stripe. Shipping and taxes included",
- "+ Añadir otra pieza": "+ Add another piece",
+ "+ Escoger otra pieza": "+ Choose another piece",
  "Todavía no has añadido ninguna pieza. Entra en <a href=\"productos.html\">la colección</a> y elige la tuya": "You haven't added any pieces yet. Visit <a href=\"productos.html\">the collection</a> and choose yours",
  "Tu nombre": "Your first name",
  "Apellidos": "Last name",

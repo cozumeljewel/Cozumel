@@ -5492,6 +5492,12 @@ function vieneDeTiktok() {
       : typeof promo3x2Activa === 'function' && promo3x2Activa() && n % 3 === 2
       ? 'Añade una más: la tercera es gratis'
       : 'Completa tu pedido';
+    // 17/11: en cada tarjeta, lo que sube el total al añadirla con la oferta
+    // ya aplicada (39,90 € tachado y 19,95 € si pasa a ser la segunda al 50 %)
+    const base = items.map(i => { const p = productoPorId(i.producto); const c = p && precioCobro(p); return c ? c.importe : null; })
+      .filter(x => x != null);
+    const totalCon = (arr, m) => arr.reduce((t, x) => t + x, 0) -
+      (typeof descuentoEscalonado === 'function' ? descuentoEscalonado(arr, m).ahorro : 0);
     lineas.forEach(l => {
       const tarjeta = crear('div', 'carrito-sugerida');
       const ver = crear('a', 'carrito-sugerida-foto');
@@ -5507,8 +5513,14 @@ function vieneDeTiktok() {
         if (window.COZUMEL_ANALITICA) COZUMEL_ANALITICA.evento('AddToCart', { value: l.precio.importe, currency: l.precio.moneda, content_ids: [l.prod.id] });
         if (typeof window.cozumelPintarCarrito === 'function') window.cozumelPintarCarrito(); else pintar();
       });
-      tarjeta.append(ver, crear('p', 'carrito-sugerida-nombre', l.prod.nombre),
-        crear('p', 'carrito-sugerida-precio', formatearImporte(l.precio.importe, l.precio.moneda)), boton);
+      const m = l.precio.moneda;
+      const precioEl = crear('p', 'carrito-sugerida-precio');
+      const sube = Math.round((totalCon(base.concat(l.precio.importe), m) - totalCon(base, m)) * 100) / 100;
+      if (sube < l.precio.importe - 0.004) {
+        precioEl.append(crear('s', '', formatearImporte(l.precio.importe, m)), ' ',
+          crear('strong', '', sube > 0 ? formatearImporte(sube, m) : 'Gratis'));
+      } else precioEl.textContent = formatearImporte(l.precio.importe, m);
+      tarjeta.append(ver, crear('p', 'carrito-sugerida-nombre', l.prod.nombre), precioEl, boton);
       fila.append(tarjeta);
     });
     caja.hidden = false;

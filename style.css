@@ -4613,5 +4613,7 @@ body.con-barra-pago .volver-arriba{bottom:calc(92px + env(safe-area-inset-bottom
 .carrito-sugerida-foto img{display:block; width:100%; aspect-ratio:1; object-fit:cover; background:#F5F4F1;}
 .carrito-sugerida-nombre{margin:6px 0 0; font-size:13px; font-weight:600; color:var(--c-texto, #12333A);}
 .carrito-sugerida-precio{margin:0; font-size:12.5px; color:#5B6B6E;}
+.carrito-sugerida-precio s{color:#8A9799; margin-right:2px;}
+.carrito-sugerida-precio strong{color:#9A2B1E; font-weight:700;}
 .carrito-sugerida-boton{margin-top:6px; padding:9px 8px; border:0; cursor:pointer; font:inherit; font-size:13px; font-weight:600; background:#14454A; color:#FFFFFF;}
 .carrito-sugerida-boton:focus-visible{outline:2px solid #14454A; outline-offset:2px;}

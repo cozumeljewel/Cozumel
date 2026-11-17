@@ -927,8 +927,8 @@ en: Make it yours
 es: Pago seguro con tarjeta, a través de Stripe. Envío e impuestos incluidos
 en: Secure card payment through Stripe. Shipping and taxes included
 
-es: + Añadir otra pieza
-en: + Add another piece
+es: + Escoger otra pieza
+en: + Choose another piece
 
 es: Todavía no has añadido ninguna pieza. Entra en <a href="productos.html">la colección</a> y elige la tuya
 en: You haven't added any pieces yet. Visit <a href="productos.html">the collection</a> and choose yours
