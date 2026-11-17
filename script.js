@@ -4684,6 +4684,10 @@ if (reservaForm) {
         // Importe y moneda del país de envío (los mismos que se mandan a cobrar)
         const tot = payloads.reduce((t, p) => t + (Number(p.precio_pagado) || 0), 0);
         COZUMEL_ANALITICA.evento('InitiateCheckout', { value: tot, currency: payloads[0].moneda || getMoneda(), content_ids: items.map(({ prod }) => prod.id), num_items: items.length });
+        // 17/11: medio segundo para que el píxel envíe el evento antes de
+        // saltar a Stripe (si no, la navegación lo cortaba y Meta no lo
+        // recibía: el inicio de pago del 16/11 no le llegó).
+        await new Promise(r => setTimeout(r, 500));
       }
       // El carrito NO se vacía aquí a propósito: si Stripe cancela y
       // vuelve a comprar.html, tiene que seguir viendo las mismas piezas
