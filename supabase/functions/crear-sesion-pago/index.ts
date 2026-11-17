@@ -331,6 +331,19 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
   const DOCUMENTO: Record<string, string> = { CL: "RUT", PE: "DNI o RUC", AR: "CUIT o CUIL (11 dígitos)" };
   const email = (filas[0] as { email?: string }).email?.trim();
 
+  // 17/11: junto al botón de pagar, los otros métodos que de verdad salen.
+  // Según la documentación de Stripe, PayPal no admite MXN, CLP, PEN ni COP,
+  // y Klarna solo atiende a clientes de España (3 plazos sin intereses) y
+  // de EE. UU. (4 plazos sin intereses) en nuestro caso.
+  const MONEDAS_PAYPAL = ["EUR", "USD", "GBP", "CHF", "CAD", "AUD"];
+  const mensajePago = codigoEnvio === "ES" && moneda === "EUR"
+    ? "Paga con tarjeta, PayPal o en 3 plazos sin intereses con Klarna."
+    : codigoEnvio === "US" && moneda === "USD"
+    ? "Paga con tarjeta, PayPal o en 4 plazos sin intereses con Klarna."
+    : MONEDAS_PAYPAL.includes(moneda)
+    ? "Si tu tarjeta no pasa, también puedes pagar con PayPal."
+    : "";
+
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     ...(email && email.includes("@") ? { customer_email: email } : {}),
@@ -363,7 +376,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     })),
     // Junto al botón de pagar (mismo texto que en comprar.html)
     custom_text: {
-      submit: { message: "✦ Envío gratis a todo el mundo ✦" },
+      submit: { message: "✦ Envío gratis a todo el mundo ✦" + (mensajePago ? " " + mensajePago : "") },
     },
     success_url: `${SITE_URL}/comprar.html?pago=exito&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${SITE_URL}/comprar.html?pago=cancelado`,
