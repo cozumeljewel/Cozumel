@@ -5141,8 +5141,12 @@ function vieneDeTiktok() {
    tiene código personal (promo3x2Activa ya lo descarta).
    ========================================================= */
 (function () {
+  // 17/11: ventana quitada en toda la web (tapaba la ficha al llegar del
+  // anuncio). La oferta sigue en la franja, las etiquetas y el carrito.
+  const VENTANA_ACTIVA = false;
+  if (!VENTANA_ACTIVA) return;
   if (typeof promo3x2Activa !== 'function' || !promo3x2Activa()) return;
-  const SIN_VENTANA = ['comprar', 'arma-kit', 'personalizar', 'aviso-legal', 'cookies', 'privacidad', 'terminos', 'votar', 'voto', '404'];
+  const SIN_VENTANA =['comprar', 'arma-kit', 'personalizar', 'aviso-legal', 'cookies', 'privacidad', 'terminos', 'votar', 'voto', '404'];
   if (SIN_VENTANA.includes(CURRENT_PAGE)) return;
   const params = new URLSearchParams(location.search);
   if (document.documentElement.classList.contains('web-cerrada')) return;
