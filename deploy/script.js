@@ -4526,6 +4526,51 @@ if (reservaForm) {
     return sesionActual;
   };
 
+  /* 17/11: contacto del carrito en cuanto se escribe, sin esperar a
+     "Continuar al pago": con un email o un WhatsApp válidos se guarda en
+     contactos_carrito (una fila por sesión anónima; por RLS solo la suya),
+     para poder escribir a quien se va sin pagar. Lo avisa la nota legal. */
+  let contactoGuardado = '';
+  const guardarContactoCarrito = async () => {
+    try {
+      const email = reservaForm.email.value.trim();
+      const tel = reservaForm.whatsapp.value.trim();
+      const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email);
+      const telOk = tel.replace(/\D/g, '').length >= 8;
+      const carrito = getCarrito().map(i => ({ producto: i.producto, personalizacion: i.personalizacion, precio: i.precio, moneda: i.moneda }));
+      if ((!emailOk && !telOk) || !carrito.length) return;
+      const fila = {
+        email: emailOk ? email : null,
+        whatsapp: telOk ? `${prefijoSelect.value} ${tel}`.trim() : null,
+        pais: reservaForm.pais.value.trim() || null,
+        carrito,
+        session_id: getSessionId(),
+        actualizado_en: new Date().toISOString(),
+      };
+      const huella = JSON.stringify([fila.email, fila.whatsapp, fila.pais, carrito.map(c => c.producto)]);
+      if (huella === contactoGuardado) return;
+      const sesion = await asegurarSesion();
+      const { error } = await sb.from('contactos_carrito').upsert({ user_id: sesion.user.id, ...fila }, { onConflict: 'user_id' });
+      if (!error) contactoGuardado = huella;
+    } catch (_) { /* si falla, el pedido sigue igual */ }
+  };
+  if (SUPA_READY && sb) {
+    ['email', 'whatsapp', 'pais'].forEach(n => reservaForm[n] && reservaForm[n].addEventListener('change', guardarContactoCarrito));
+  }
+
+  /* 17/11: en pesos, soles o pesos chilenos Stripe no ofrece PayPal: la nota
+     ya no lo promete en esas monedas. */
+  const notaPago = [...document.querySelectorAll('.checkout-nota')].find(p => /PayPal/.test(p.textContent));
+  const ajustarNotaPago = () => {
+    if (!notaPago) return;
+    const sinPaypal = ['MXN', 'CLP', 'PEN', 'COP'].includes(getMoneda());
+    notaPago.textContent = sinPaypal
+      ? 'En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay o Google Pay.'
+      : 'En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.';
+  };
+  ajustarNotaPago();
+  if (reservaForm.pais) reservaForm.pais.addEventListener('change', () => setTimeout(ajustarNotaPago));
+
   reservaForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     hideReservaError();

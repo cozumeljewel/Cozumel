@@ -2255,3 +2255,10 @@ en: Black Friday: get 3, pay for 2
 # ---------- Email mal escrito (17/11/2026) ----------
 es: ¿Querías decir
 en: Did you mean
+
+# ---------- Contacto del carrito y nota de pago (17/11/2026) ----------
+es: Usamos estos datos para gestionar tu pedido y escribirte sobre él, también si no llegas a terminar la compra.
+en: We use this data to process your order and contact you about it, including if you don't finish your purchase.
+
+es: En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay o Google Pay.
+en: In the next step, on Stripe's secure page, you enter your shipping address and pay by card, Apple Pay or Google Pay.
