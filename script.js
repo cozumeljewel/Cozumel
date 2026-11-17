@@ -5341,3 +5341,63 @@ function vieneDeTiktok() {
     }
   }, true);
 })();
+
+/* =========================================================
+   BOTÓN FIJO "CONTINUAR" EN EL CARRITO (17/11/2026)
+   En el móvil, abajo del todo, con el total, mientras el botón de pago
+   quede más abajo: en Clarity se veía gente que miraba el carrito arriba
+   y se iba sin bajar al formulario. Lleva al primer dato que falte.
+   ========================================================= */
+(function () {
+  if (CURRENT_PAGE !== 'comprar') return;
+  const form = document.getElementById('reserva-form');
+  const enviar = document.getElementById('reserva-submit');
+  const contenido = document.getElementById('reserva-content');
+  if (!form || !enviar || !contenido) return;
+  const barra = document.createElement('div');
+  barra.className = 'barra-pago';
+  barra.hidden = true;
+  const boton = document.createElement('button');
+  boton.type = 'button';
+  boton.className = 'btn btn-primary btn-lg barra-pago-boton';
+  const texto = document.createElement('span');
+  texto.textContent = 'Continuar';
+  const total = document.createElement('span');
+  total.className = 'barra-pago-total';
+  boton.append(texto, total);
+  barra.append(boton);
+  document.body.append(barra);
+  const movil = window.matchMedia('(max-width: 899px)');
+  const plegarTotal = document.getElementById('checkout-plegar-total');
+  function pintar() {
+    const t = plegarTotal ? plegarTotal.textContent.trim() : '';
+    total.textContent = t;
+    total.hidden = !t;
+    // Solo mientras el botón de pago quede por debajo de la pantalla, y
+    // nunca con el teclado abierto en un campo (taparía lo que se escribe)
+    const botonDebajo = enviar.getBoundingClientRect().top > window.innerHeight - 40;
+    const activo = document.activeElement;
+    const escribiendo = activo && form.contains(activo) && /^(INPUT|SELECT|TEXTAREA)$/.test(activo.tagName);
+    const ver = movil.matches && getCarrito().length > 0 && !contenido.hidden && !form.hidden && botonDebajo && !escribiendo;
+    barra.hidden = !ver;
+    document.body.classList.toggle('con-barra-pago', ver);
+  }
+  // pintar() es barato (una medida), así que va directo en cada scroll
+  window.addEventListener('scroll', pintar, { passive: true });
+  window.addEventListener('resize', pintar);
+  form.addEventListener('focusin', pintar);
+  form.addEventListener('focusout', () => setTimeout(pintar, 100));
+  boton.addEventListener('click', () => {
+    const falta = [form.email, form.whatsapp].find(c => c && !c.value.trim());
+    if (falta) {
+      falta.focus({ preventScroll: true }); // dentro del clic: en el iPhone abre el teclado
+      falta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      pintar();
+    } else {
+      enviar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+  if (movil.addEventListener) movil.addEventListener('change', pintar);
+  if (plegarTotal) new MutationObserver(pintar).observe(plegarTotal, { childList: true, characterData: true, subtree: true });
+  pintar();
+})();

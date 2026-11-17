@@ -38,6 +38,13 @@
 
   if (PREFIERE_MENOS_MOVIMIENTO) return;
 
+  // 17/11/2026: fundido QUITADO. Dejaba la página en blanco hasta que
+  // cargaba la siguiente: con el móvil lento de México eran 6 segundos de
+  // pantalla vacía (Clarity: pulsaban "Añadir otra pieza" y se iban).
+  // Sin él, la página actual sigue a la vista hasta que llega la nueva.
+  var FUNDIDO_ACTIVO = false;
+  if (!FUNDIDO_ACTIVO) return;
+
   var DURACION_MS = 90;
 
   document.addEventListener('click', function (evento) {

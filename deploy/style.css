@@ -4589,3 +4589,16 @@ body.v2 .v2-pieza-etiqueta--promo{border-color:var(--c-oro, #C4A15A); color:var(
   background:none; border:0; padding:0; font:inherit; color:inherit;
   font-weight:600; text-decoration:underline; cursor:pointer;
 }
+
+/* Botón fijo "Continuar" en el carrito, solo en el móvil (17/11/2026) */
+.barra-pago{
+  position:fixed; z-index:60; left:0; right:0; bottom:0;
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  background:#FFFFFF; border-top:1px solid #E6E3DD;
+}
+.barra-pago[hidden]{display:none;}
+.barra-pago-boton{width:100%; margin:0; display:flex; align-items:center; justify-content:center; gap:8px;}
+.barra-pago-total::before{content:'·'; margin-right:8px;}
+.barra-pago-total[hidden]{display:none;}
+body.con-barra-pago{padding-bottom:84px;}
+body.con-barra-pago .volver-arriba{bottom:calc(92px + env(safe-area-inset-bottom));}
