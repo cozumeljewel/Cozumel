@@ -5218,3 +5218,81 @@ function vieneDeTiktok() {
     if (el) { el.textContent = texto; el.hidden = false; }
   });
 })();
+
+/* =========================================================
+   EMAIL MAL ESCRITO EN EL PAGO (17/11/2026)
+   "edwin@510gmail.com" o "x@gmail.clm": el recordatorio de pago no
+   llegaba. Se sugiere el correcto bajo el campo y, la primera vez que se
+   envía con la errata, se para para que lo vea (la segunda pasa igual).
+   ========================================================= */
+(function () {
+  const input = document.getElementById('r-email');
+  if (!input || !input.form) return;
+  const DOMINIOS = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'yahoo.com.mx', 'hotmail.es', 'outlook.es',
+    'live.com', 'live.com.mx', 'icloud.com', 'me.com', 'mac.com', 'msn.com', 'aol.com', 'ymail.com', 'mail.com',
+    'email.com', 'prodigy.net.mx', 'yahoo.es', 'protonmail.com', 'proton.me', 'gmx.com', 'gmx.es'];
+  // Solo estos admiten "algo pegado delante" (510gmail.com); los cortos no
+  // (acme.com acaba en "me.com" y es un dominio de verdad).
+  const PEGADOS = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'icloud.com', 'hotmail.es', 'outlook.es'];
+  function distancia(a, b) {
+    const d = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+    for (let j = 1; j <= b.length; j++) d[0][j] = j;
+    for (let i = 1; i <= a.length; i++) {
+      for (let j = 1; j <= b.length; j++) {
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      }
+    }
+    return d[a.length][b.length];
+  }
+  function sugerencia(valor) {
+    const m = /^([^@\s]+)@([^@\s]+)$/.exec(String(valor || '').trim().toLowerCase());
+    if (!m) return null;
+    const local = m[1], dominio = m[2];
+    if (DOMINIOS.includes(dominio)) return null;
+    for (const d of PEGADOS) {
+      const resto = dominio.slice(0, -d.length);
+      if (dominio.endsWith(d) && resto && /^[a-z0-9_-]+$/.test(resto)) return local + resto + '@' + d;
+    }
+    // Hasta 2 letras de diferencia en dominios largos y 1 en los cortos
+    // (si no, "acme.com" proponía "me.com").
+    let mejor = null, minimo = 99, empate = false;
+    DOMINIOS.forEach(d => {
+      const x = distancia(dominio, d);
+      if (x > (Math.min(dominio.length, d.length) >= 8 ? 2 : 1)) return;
+      if (x < minimo) { minimo = x; mejor = d; empate = false; } else if (x === minimo) empate = true;
+    });
+    return mejor && !empate ? local + '@' + mejor : null;
+  }
+  const aviso = document.createElement('p');
+  aviso.className = 'campo-aviso campo-aviso--email';
+  aviso.hidden = true;
+  input.insertAdjacentElement('afterend', aviso);
+  let propuesta = null, avisado = '';
+  function revisar() {
+    propuesta = sugerencia(input.value);
+    aviso.textContent = '';
+    if (!propuesta) { aviso.hidden = true; return; }
+    const texto = document.createElement('span');
+    texto.textContent = '¿Querías decir';
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.textContent = propuesta;
+    boton.addEventListener('click', () => { input.value = propuesta; revisar(); input.focus(); });
+    aviso.append(texto, ' ', boton, '?');
+    aviso.hidden = false;
+  }
+  input.addEventListener('blur', revisar);
+  input.addEventListener('input', () => { if (!aviso.hidden) revisar(); });
+  // En captura y en document: va antes que el envío del pedido
+  document.addEventListener('submit', (e) => {
+    if (e.target !== input.form) return;
+    revisar();
+    const valor = input.value.trim().toLowerCase();
+    if (propuesta && avisado !== valor) {
+      avisado = valor;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, true);
+})();

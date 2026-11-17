@@ -728,7 +728,8 @@ COZUMEL_EN_CARGADO({
  "La 2ª al 50 %, la 3ª gratis": "2nd 50% off, 3rd free",
  "En toda la web: llévate 2 piezas y la segunda te sale a mitad de precio. Llévate 3 y la tercera es gratis.": "Across the whole store: buy 2 pieces and get the second one at half price. Buy 3 and the third one is free.",
  "Black Friday: la 2ª pieza al 50 % y la 3ª gratis": "Black Friday: 2nd piece 50% off and 3rd free",
- "Black Friday: llévate 3 y paga 2": "Black Friday: get 3, pay for 2"
+ "Black Friday: llévate 3 y paga 2": "Black Friday: get 3, pay for 2",
+ "¿Querías decir": "Did you mean"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
