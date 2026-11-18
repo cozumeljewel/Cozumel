@@ -10,3 +10,9 @@
 */
 const SUPABASE_URL = "https://qesyjtqxbouodgldvbtq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_lmFNgpMEy4Axi6dYQ9E1UA_b63xSwJ6";
+
+// 18/11/2026: clave PUBLICABLE de Stripe (pk_live_…). Es pública por
+// diseño, como la anon de arriba: solo sirve para mostrar el formulario de
+// pago integrado en comprar.html. La secreta (sk_live_…) vive solo en los
+// secretos de Supabase y nunca va en la web.
+const STRIPE_PUBLISHABLE_KEY = "pk_live_51U9q0kKIDW4aqU2WDqOmzcmzO6rPxYvUr5I9H8gyffIbyG70rpuZ04I87I7p9sAi556WM3DA0RjVBXEM75ZBwVYZ00DcTbS8PV";

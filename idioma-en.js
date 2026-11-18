@@ -744,7 +744,12 @@ COZUMEL_EN_CARGADO({
  "Black Friday · la tercera gratis y otra al −15 %": "Black Friday · third free and another 15% off",
  "Black Friday · −15 % en tu pieza": "Black Friday · 15% off your piece",
  "✦ Black Friday: 1 pieza −15 % · la 2ª al 50 % · la 3ª gratis · Envío gratis ✦": "✦ Black Friday: 1 piece 15% off · 2nd 50% off · 3rd free · Free shipping ✦",
- "Black Friday: 1 pieza −15 %, la 2ª al 50 % y la 3ª gratis": "Black Friday: 1 piece 15% off, 2nd 50% off and 3rd free"
+ "Black Friday: 1 pieza −15 %, la 2ª al 50 % y la 3ª gratis": "Black Friday: 1 piece 15% off, 2nd 50% off and 3rd free",
+ "En el siguiente paso, aquí mismo, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.": "In the next step, right here, you enter your shipping address and pay by card, Apple Pay, Google Pay or PayPal.",
+ "En el siguiente paso, aquí mismo, pones la dirección de envío y pagas en tu moneda con tarjeta de débito o crédito, Apple Pay o Google Pay.": "In the next step, right here, you enter your shipping address and pay in your currency by debit or credit card, Apple Pay or Google Pay.",
+ "← Cambiar mis datos": "← Change my details",
+ "Pago seguro con Stripe · no vemos los datos de tu tarjeta": "Secure payment with Stripe · we never see your card details",
+ "¿Algún problema con el pago?": "Any problem with the payment?"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

@@ -2305,3 +2305,19 @@ en: ✦ Black Friday: 1 piece 15% off · 2nd 50% off · 3rd free · Free shippin
 
 es: Black Friday: 1 pieza −15 %, la 2ª al 50 % y la 3ª gratis
 en: Black Friday: 1 piece 15% off, 2nd 50% off and 3rd free
+
+# ---------- Pago integrado (18/11/2026) ----------
+es: En el siguiente paso, aquí mismo, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.
+en: In the next step, right here, you enter your shipping address and pay by card, Apple Pay, Google Pay or PayPal.
+
+es: En el siguiente paso, aquí mismo, pones la dirección de envío y pagas en tu moneda con tarjeta de débito o crédito, Apple Pay o Google Pay.
+en: In the next step, right here, you enter your shipping address and pay in your currency by debit or credit card, Apple Pay or Google Pay.
+
+es: ← Cambiar mis datos
+en: ← Change my details
+
+es: Pago seguro con Stripe · no vemos los datos de tu tarjeta
+en: Secure payment with Stripe · we never see your card details
+
+es: ¿Algún problema con el pago?
+en: Any problem with the payment?

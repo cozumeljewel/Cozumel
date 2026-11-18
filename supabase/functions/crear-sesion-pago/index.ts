@@ -118,7 +118,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     });
   }
 
-  let body: { reserva_ids?: string[]; origen?: string | null; codigo?: string | null };
+  let body: { reserva_ids?: string[]; origen?: string | null; codigo?: string | null; embebido?: boolean };
   try {
     body = await req.json();
   } catch {
@@ -394,8 +394,19 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     custom_text: {
       submit: { message: "✦ Envío gratis a todo el mundo ✦" + (mensajePago ? " " + mensajePago : "") },
     },
-    success_url: `${SITE_URL}/comprar.html?pago=exito&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${SITE_URL}/comprar.html?pago=cancelado`,
+    // 18/11: pago integrado (embebido): el formulario de Stripe dentro de
+    // comprar.html, sin saltar a checkout.stripe.com. Al pagar vuelve a la
+    // misma dirección de éxito de siempre. Sin "embebido", la página de
+    // Stripe de antes (la web la usa si Stripe.js no llega a cargar).
+    ...(body.embebido === true
+      ? {
+        ui_mode: "embedded" as const,
+        return_url: `${SITE_URL}/comprar.html?pago=exito&session_id={CHECKOUT_SESSION_ID}`,
+      }
+      : {
+        success_url: `${SITE_URL}/comprar.html?pago=exito&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${SITE_URL}/comprar.html?pago=cancelado`,
+      }),
   });
 
   // Una fila puede tener un precio distinto de otra (piezas distintas), así
@@ -440,7 +451,7 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     }
   }
 
-  return new Response(JSON.stringify({ url: session.url }), {
+  return new Response(JSON.stringify(body.embebido === true ? { client_secret: session.client_secret } : { url: session.url }), {
     status: 200,
     headers: jsonHeaders,
   });

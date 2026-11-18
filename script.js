@@ -4585,12 +4585,46 @@ if (reservaForm) {
   const ajustarNotaPago = () => {
     if (!notaPago) return;
     const sinPaypal = ['MXN', 'CLP', 'PEN', 'COP'].includes(getMoneda());
+    // 18/11: el pago ya es aquí mismo (pago integrado), sin saltar a Stripe
     notaPago.textContent = sinPaypal
-      ? 'En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay o Google Pay.'
-      : 'En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.';
+      ? 'En el siguiente paso, aquí mismo, pones la dirección de envío y pagas en tu moneda con tarjeta de débito o crédito, Apple Pay o Google Pay.'
+      : 'En el siguiente paso, aquí mismo, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.';
   };
   ajustarNotaPago();
   if (reservaForm.pais) reservaForm.pais.addEventListener('change', () => setTimeout(ajustarNotaPago));
+
+  /* 18/11: PAGO INTEGRADO (Stripe Embedded Checkout). El formulario de
+     Stripe se monta dentro de esta página en lugar de saltar a
+     checkout.stripe.com (en México la mitad se iba de esa página sin
+     intentar pagar). Solo si Stripe.js cargó y hay clave publicable; si no,
+     la página de Stripe de siempre. Al pagar, Stripe vuelve a
+     comprar.html?pago=exito como antes. */
+  const cajaIntegrado = document.getElementById('pago-integrado');
+  const volverIntegrado = document.getElementById('pago-integrado-volver');
+  let checkoutIntegrado = null;
+  const stripeListo = (ms) => new Promise((res) => {
+    if (!cajaIntegrado || typeof STRIPE_PUBLISHABLE_KEY === 'undefined' || !STRIPE_PUBLISHABLE_KEY) return res(null);
+    const t0 = Date.now();
+    (function mirar() {
+      if (typeof window.Stripe === 'function') {
+        try { return res(window.cozumelStripe || (window.cozumelStripe = window.Stripe(STRIPE_PUBLISHABLE_KEY))); } catch (_) { return res(null); }
+      }
+      if (Date.now() - t0 > ms) return res(null);
+      setTimeout(mirar, 150);
+    })();
+  });
+  const cerrarIntegrado = () => {
+    if (checkoutIntegrado) { try { checkoutIntegrado.destroy(); } catch (_) {} checkoutIntegrado = null; }
+    if (cajaIntegrado) cajaIntegrado.hidden = true;
+    reservaForm.hidden = false;
+    document.body.classList.remove('pagando');
+  };
+  if (volverIntegrado) {
+    volverIntegrado.addEventListener('click', () => {
+      cerrarIntegrado();
+      reservaForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 
   reservaForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -4728,6 +4762,9 @@ if (reservaForm) {
     reservaSubmitBtn.textContent = 'Conectando con Stripe...';
 
     try {
+      // Se decide ANTES de crear el pago: una vez creado, las filas quedan
+      // enlazadas y ya no se puede pedir el otro tipo.
+      const stripeJs = await stripeListo(4000);
       const { data: sesion } = await sb.auth.getSession();
       const token = sesion.session ? sesion.session.access_token : '';
 
@@ -4737,12 +4774,25 @@ if (reservaForm) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ reserva_ids: filasCreadas.map(f => f.id), origen: vieneDeAnuncio() ? 'meta' : null, codigo: (codigoPersonal() || {}).codigo || null }),
+        body: JSON.stringify({ reserva_ids: filasCreadas.map(f => f.id), origen: vieneDeAnuncio() ? 'meta' : null, codigo: (codigoPersonal() || {}).codigo || null, embebido: !!stripeJs }),
       });
       const resultado = await resp.json();
 
-      if (!resp.ok || !resultado.url) {
+      if (!resp.ok || !(resultado.url || (stripeJs && resultado.client_secret))) {
         throw new Error(resultado.error || 'sin url de pago');
+      }
+
+      // Pago integrado: el formulario de Stripe aquí mismo
+      if (stripeJs && resultado.client_secret) {
+        cerrarIntegrado(); // Stripe solo admite uno a la vez
+        checkoutIntegrado = await stripeJs.initEmbeddedCheckout({ fetchClientSecret: () => Promise.resolve(resultado.client_secret) });
+        reservaForm.hidden = true;
+        cajaIntegrado.hidden = false;
+        document.body.classList.add('pagando');
+        checkoutIntegrado.mount('#pago-integrado-stripe');
+        reservaSubmitBtn.disabled = false;
+        reservaSubmitBtn.textContent = 'Continuar al pago';
+        cajaIntegrado.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       await Promise.all(items.map(({ prod }) => trackEvent('compra_iniciada', prod.id)));
@@ -4750,6 +4800,7 @@ if (reservaForm) {
         // Importe y moneda del país de envío (los mismos que se mandan a cobrar)
         const tot = payloads.reduce((t, p) => t + (Number(p.precio_pagado) || 0), 0);
         COZUMEL_ANALITICA.evento('InitiateCheckout', { value: tot, currency: payloads[0].moneda || getMoneda(), content_ids: items.map(({ prod }) => prod.id), num_items: items.length });
+        if (checkoutIntegrado) return; // sin salto de página: no hace falta esperar al píxel
         // 17/11: medio segundo para que el píxel envíe el evento antes de
         // saltar a Stripe (si no, la navegación lo cortaba y Meta no lo
         // recibía: el inicio de pago del 16/11 no le llegó).
@@ -4759,9 +4810,10 @@ if (reservaForm) {
       // vuelve a comprar.html, tiene que seguir viendo las mismas piezas
       // sin tener que volver a añadirlas. Se vacía solo cuando el pago se
       // confirma de verdad (ver el sondeo de más abajo).
-      window.location.href = resultado.url;
+      if (!checkoutIntegrado) window.location.href = resultado.url;
     } catch (err) {
       console.error(err);
+      cerrarIntegrado();
       reservaSubmitBtn.disabled = false;
       reservaSubmitBtn.textContent = 'Continuar al pago';
       showReservaError('No se pudo conectar con el pago. Inténtalo de nuevo');

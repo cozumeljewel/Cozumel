@@ -37,6 +37,8 @@
 <script src="cierre.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0" defer></script>
 <script src="supabase-config.js" defer></script>
+<!-- 18/11: Stripe.js para el pago integrado (sin bloquear la carga) -->
+<script src="https://js.stripe.com/v3/" async></script>
 <script src="mercados.js" defer></script>
 <script src="productos.js" defer></script>
 <script src="hombre.js" defer></script>
@@ -171,7 +173,7 @@
             <p>Puedes pagar aquí mismo con tarjeta. Si prefieres <strong>Apple Pay o Google Pay</strong>, abre la web en Safari o Chrome: toca <strong>···</strong> arriba a la derecha y «Abrir en el navegador».</p>
             <button type="button" id="checkout-app-copiar">Copiar enlace</button>
           </div>
-          <p class="checkout-nota">En el siguiente paso, en la página segura de Stripe, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.</p>
+          <p class="checkout-nota">En el siguiente paso, aquí mismo, pones la dirección de envío y pagas con tarjeta, Apple Pay, Google Pay o PayPal.</p>
           <!-- 3/11: sin casilla obligatoria (un paso menos antes de pagar); el
                aviso basta para escribirle sobre su pedido -->
           <p class="checkout-nota">Usamos estos datos para gestionar tu pedido y escribirte sobre él, también si no llegas a terminar la compra.</p>
@@ -186,6 +188,18 @@
             Precio pendiente de confirmar
           </p>
         </form>
+        <!-- 18/11: pago integrado. El formulario de Stripe se monta aquí, sin
+             salir de la web (script.js). Si Stripe.js no carga, se va a la
+             página de Stripe de siempre. -->
+        <div class="pago-integrado" id="pago-integrado" hidden>
+          <button type="button" class="pago-integrado-volver" id="pago-integrado-volver">← Cambiar mis datos</button>
+          <h2 class="checkout-seccion">Pago</h2>
+          <div class="pago-integrado-stripe" id="pago-integrado-stripe"></div>
+          <ul class="checkout-confianza">
+            <li>Pago seguro con Stripe · no vemos los datos de tu tarjeta</li>
+          </ul>
+          <a class="checkout-wa" href="https://wa.me/34604094868?text=Hola%2C%20tengo%20una%20duda%20con%20el%20pago%20en%20Cozumel" target="_blank" rel="noopener">¿Algún problema con el pago? <strong>Escríbenos por WhatsApp</strong></a>
+        </div>
         <p class="reserva-error" id="reserva-error" role="status" aria-live="polite" hidden></p>
       </div>
     </div>
