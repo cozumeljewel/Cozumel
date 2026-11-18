@@ -377,6 +377,11 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
       }],
     } : {}),
     ...(descuentos ? { discounts: descuentos } : {}),
+    // 19/11: el WhatsApp es opcional en la web; si no lo dejó (solo el
+    // prefijo), el teléfono lo pide Stripe y el webhook lo guarda
+    ...(/^\+?\d{0,4}$/.test(((filas[0] as { whatsapp?: string }).whatsapp ?? "").trim())
+      ? { phone_number_collection: { enabled: true } }
+      : {}),
     line_items: lineas.map((l) => ({
       price_data: {
         currency: moneda.toLowerCase(),

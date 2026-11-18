@@ -37,8 +37,6 @@
 <script src="cierre.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0" defer></script>
 <script src="supabase-config.js" defer></script>
-<!-- 18/11: Stripe.js para el pago integrado (sin bloquear la carga) -->
-<script src="https://js.stripe.com/v3/" async></script>
 <script src="mercados.js" defer></script>
 <script src="productos.js" defer></script>
 <script src="hombre.js" defer></script>
@@ -93,11 +91,11 @@
        los de siempre: script.js no cambia. -->
   <section class="reserva checkout">
     <div class="reserva-content checkout-grid" id="reserva-content">
-      <aside class="checkout-resumen abierto" id="checkout-resumen" aria-label="Resumen del pedido">
+      <aside class="checkout-resumen" id="checkout-resumen" aria-label="Resumen del pedido">
         <!-- Móvil (1/11/2026): el resumen va plegado en una línea con el
              total, para que el formulario se vea nada más llegar. -->
-        <button type="button" class="checkout-plegar" id="checkout-plegar" aria-expanded="true" aria-controls="checkout-resumen">
-          <span class="checkout-plegar-txt">Ocultar resumen del pedido</span>
+        <button type="button" class="checkout-plegar" id="checkout-plegar" aria-expanded="false" aria-controls="checkout-resumen">
+          <span class="checkout-plegar-txt">Ver resumen del pedido</span>
           <strong id="checkout-plegar-total"></strong>
         </button>
         <h2 class="checkout-resumen-titulo">Tu pedido</h2>
@@ -137,7 +135,7 @@
                webhook los guarda en el pedido. Aquí solo email, país y
                WhatsApp. -->
           <div class="field">
-            <label for="r-whatsapp">Teléfono (WhatsApp)</label>
+            <label for="r-whatsapp">WhatsApp (opcional)</label>
             <div class="field-tel">
               <!-- El botón, el panel y la lista los rellena script.js desde
                    PAISES_TELEFONO. -->
@@ -152,7 +150,7 @@
                 </div>
               </div>
               <input type="hidden" id="r-whatsapp-prefijo" value="+52">
-              <input id="r-whatsapp" name="whatsapp" type="tel" required placeholder="Teléfono" autocomplete="tel-national">
+              <input id="r-whatsapp" name="whatsapp" type="tel" placeholder="WhatsApp (opcional)" autocomplete="tel-national">
             </div>
           </div>
           <!-- Solo al elegir Argentina: sus condiciones de envío. -->

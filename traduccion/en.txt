@@ -2321,3 +2321,6 @@ en: Secure payment with Stripe · we never see your card details
 
 es: ¿Algún problema con el pago?
 en: Any problem with the payment?
+
+es: WhatsApp (opcional)
+en: WhatsApp (optional)

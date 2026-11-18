@@ -190,7 +190,10 @@ async function datosEnvio(id: string): Promise<Record<string, string | null>> {
     const etiqueta = ({ CL: "RUT", PE: "DNI/RUC", AR: "CUIT/CUIL" } as Record<string, string>)[dir.country ?? ""];
     const direccion = [dir.line1, dir.line2, dir.city, [estado, dir.postal_code].filter(Boolean).join(" ")]
       .filter(Boolean).join(", ");
+    // 19/11: sin WhatsApp en la web, el teléfono lo pidió Stripe
+    const tel = s.phone_number_collection?.enabled ? (s.customer_details?.phone ?? "").trim() : "";
     return {
+      ...(tel.length >= 3 ? { whatsapp: tel.slice(0, 30) } : {}),
       ...(nombre ? { nombre: nombre.slice(0, 80), apellidos: resto.join(" ") || null } : {}),
       direccion_envio: [direccion, doc && etiqueta ? `${etiqueta}: ${doc}` : ""].filter(Boolean).join(" · "),
       dir_calle: dir.line1,

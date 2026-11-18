@@ -749,7 +749,8 @@ COZUMEL_EN_CARGADO({
  "En el siguiente paso, aquí mismo, pones la dirección de envío y pagas en tu moneda con tarjeta de débito o crédito, Apple Pay o Google Pay.": "In the next step, right here, you enter your shipping address and pay in your currency by debit or credit card, Apple Pay or Google Pay.",
  "← Cambiar mis datos": "← Change my details",
  "Pago seguro con Stripe · no vemos los datos de tu tarjeta": "Secure payment with Stripe · we never see your card details",
- "¿Algún problema con el pago?": "Any problem with the payment?"
+ "¿Algún problema con el pago?": "Any problem with the payment?",
+ "WhatsApp (opcional)": "WhatsApp (optional)"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

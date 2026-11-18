@@ -4602,8 +4602,19 @@ if (reservaForm) {
   const cajaIntegrado = document.getElementById('pago-integrado');
   const volverIntegrado = document.getElementById('pago-integrado-volver');
   let checkoutIntegrado = null;
+  // 19/11: Stripe.js ya no se descarga al abrir el carrito (en Clarity el
+  // carrito tardaba 7,7 s en un móvil de México): solo cuando empiezan a
+  // rellenar el formulario o pulsan pagar.
+  const cargarStripeJs = () => {
+    if (window.Stripe || document.getElementById('stripe-js')) return;
+    const s = document.createElement('script');
+    s.id = 'stripe-js'; s.src = 'https://js.stripe.com/v3/'; s.async = true;
+    document.head.appendChild(s);
+  };
+  reservaForm.addEventListener('focusin', cargarStripeJs, { once: true });
   const stripeListo = (ms) => new Promise((res) => {
     if (!cajaIntegrado || typeof STRIPE_PUBLISHABLE_KEY === 'undefined' || !STRIPE_PUBLISHABLE_KEY) return res(null);
+    cargarStripeJs();
     const t0 = Date.now();
     (function mirar() {
       if (typeof window.Stripe === 'function') {
@@ -5464,7 +5475,7 @@ function vieneDeTiktok() {
   form.addEventListener('focusin', pintar);
   form.addEventListener('focusout', () => setTimeout(pintar, 100));
   boton.addEventListener('click', () => {
-    const falta = [form.email, form.whatsapp].find(c => c && !c.value.trim());
+    const falta = [form.email].find(c => c && !c.value.trim()); // 19/11: el WhatsApp es opcional
     if (falta) {
       falta.focus({ preventScroll: true }); // dentro del clic: en el iPhone abre el teclado
       falta.scrollIntoView({ behavior: 'smooth', block: 'center' });
