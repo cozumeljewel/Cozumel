@@ -4593,6 +4593,27 @@ if (reservaForm) {
   ajustarNotaPago();
   if (reservaForm.pais) reservaForm.pais.addEventListener('change', () => setTimeout(ajustarNotaPago));
 
+  /* 19/11: plazo de entrega (solo México: 7 días laborables) y, donde
+     Stripe no ofrece PayPal (MXN, CLP, PEN, COP), pagar por transferencia o
+     PayPal escribiendo por WhatsApp, con el pedido ya en el mensaje. */
+  const plazoEnvio = document.getElementById('plazo-envio');
+  const otroPago = document.getElementById('checkout-otro-pago');
+  const ajustarPlazoYPago = () => {
+    const pais = (reservaForm.pais && reservaForm.pais.value) || '';
+    if (plazoEnvio) plazoEnvio.hidden = pais !== 'México';
+    if (!otroPago) return;
+    const sinPaypal = ['MXN', 'CLP', 'PEN', 'COP'].includes(getMoneda());
+    otroPago.hidden = !sinPaypal || !getCarrito().length;
+    if (otroPago.hidden) return;
+    const piezas = getCarrito().map(i => (productoPorId(i.producto) || {}).nombre).filter(Boolean).join(', ');
+    const total = ((document.getElementById('checkout-plegar-total') || {}).textContent || '').trim();
+    const texto = 'Hola, quiero pagar mi pedido' + (piezas ? ' (' + piezas + (total ? ', ' + total : '') + ')' : '') + ' por transferencia o PayPal';
+    otroPago.href = 'https://wa.me/34604094868?text=' + encodeURIComponent(texto);
+  };
+  ajustarPlazoYPago();
+  if (reservaForm.pais) reservaForm.pais.addEventListener('change', () => setTimeout(ajustarPlazoYPago, 50));
+  window.addEventListener('load', ajustarPlazoYPago);
+
   /* 18/11: PAGO INTEGRADO (Stripe Embedded Checkout). El formulario de
      Stripe se monta dentro de esta página en lugar de saltar a
      checkout.stripe.com (en México la mitad se iba de esa página sin
@@ -4759,7 +4780,7 @@ if (reservaForm) {
     if (error || !filasCreadas || filasCreadas.length !== payloads.length) {
       console.error(error ?? `esperadas ${payloads.length} filas, llegaron ${filasCreadas?.length ?? 0}`);
       reservaSubmitBtn.disabled = false;
-      reservaSubmitBtn.textContent = 'Continuar al pago';
+      reservaSubmitBtn.textContent = 'Finalizar compra';
       showReservaError('No se pudo guardar tu pedido. Inténtalo de nuevo');
       return;
     }
@@ -4802,7 +4823,7 @@ if (reservaForm) {
         document.body.classList.add('pagando');
         checkoutIntegrado.mount('#pago-integrado-stripe');
         reservaSubmitBtn.disabled = false;
-        reservaSubmitBtn.textContent = 'Continuar al pago';
+        reservaSubmitBtn.textContent = 'Finalizar compra';
         cajaIntegrado.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
@@ -4826,7 +4847,7 @@ if (reservaForm) {
       console.error(err);
       cerrarIntegrado();
       reservaSubmitBtn.disabled = false;
-      reservaSubmitBtn.textContent = 'Continuar al pago';
+      reservaSubmitBtn.textContent = 'Finalizar compra';
       showReservaError('No se pudo conectar con el pago. Inténtalo de nuevo');
     }
   });
@@ -4854,7 +4875,7 @@ if (reservaForm) {
         return;
       }
 
-      if (intento >= 10) {
+      if (intento >= 60) { // 19/11: antes 10 s
         const spinnerEl = confirmando.querySelector('.spinner');
         if (spinnerEl) spinnerEl.hidden = true;
         const pagoLento = document.getElementById('pago-lento');
@@ -5448,7 +5469,7 @@ function vieneDeTiktok() {
   boton.type = 'button';
   boton.className = 'btn btn-primary btn-lg barra-pago-boton';
   const texto = document.createElement('span');
-  texto.textContent = 'Continuar';
+  texto.textContent = 'Finalizar compra'; // 19/11: mismo texto que el botón final
   const total = document.createElement('span');
   total.className = 'barra-pago-total';
   boton.append(texto, total);

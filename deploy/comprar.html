@@ -163,6 +163,7 @@
           <h2 class="checkout-seccion">Envío</h2>
           <div class="checkout-caja checkout-caja--envio">
             <span><strong>Enviamos a todo el mundo</strong><br>Envío incluido en el precio</span>
+            <span class="plazo-envio" id="plazo-envio" hidden>Llega en 7 días laborables</span>
           </div>
 
           <h2 class="checkout-seccion">Pago</h2>
@@ -175,12 +176,13 @@
           <!-- 3/11: sin casilla obligatoria (un paso menos antes de pagar); el
                aviso basta para escribirle sobre su pedido -->
           <p class="checkout-nota">Usamos estos datos para gestionar tu pedido y escribirte sobre él, también si no llegas a terminar la compra.</p>
-          <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Continuar al pago</button>
+          <button class="btn btn-primary btn-lg" type="submit" id="reserva-submit">Finalizar compra</button>
           <!-- 3/11: confianza y ayuda justo antes de pagar -->
           <ul class="checkout-confianza">
             <li>Pago seguro con Stripe</li>
             <li>Si algo no te convence, lo solucionamos contigo</li>
           </ul>
+          <a class="checkout-otro-pago" id="checkout-otro-pago" href="https://wa.me/34604094868" target="_blank" rel="noopener" hidden>¿Prefieres pagar por transferencia o PayPal? <strong>Escríbenos por WhatsApp</strong></a>
           <a class="checkout-wa" href="https://wa.me/34604094868?text=Hola%2C%20tengo%20una%20duda%20sobre%20mi%20pedido" target="_blank" rel="noopener">¿Dudas antes de comprar? <strong>Escríbenos por WhatsApp</strong></a>
           <p class="reserva-config-warning" id="sin-precio" hidden>
             Precio pendiente de confirmar
@@ -210,7 +212,7 @@
         </svg>
       </span>
       <h2>Listo</h2>
-      <p>Hemos recibido tu pago de la edición de lanzamiento</p>
+      <p>Hemos recibido tu pago</p>
       <p>Te avisaremos por email en cuanto se envíe</p>
     </div>
 

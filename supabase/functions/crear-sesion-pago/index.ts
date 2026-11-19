@@ -358,7 +358,8 @@ async function manejarPago(req: Request, jsonHeaders: Record<string, string>): P
     ? "Si tu tarjeta no pasa, también puedes pagar con PayPal."
     // México, Chile, Perú… (sin PayPal en su moneda): ayuda por WhatsApp,
     // con enlace (Stripe admite enlaces Markdown en este texto)
-    : "¿Algún problema con el pago? [Escríbenos por WhatsApp](https://wa.me/34604094868?text=Hola%2C%20tengo%20una%20duda%20con%20el%20pago%20en%20Cozumel) y te ayudamos.";
+    // 19/11: y la opción de pagar por transferencia o PayPal por WhatsApp
+    : "¿Prefieres pagar por transferencia o PayPal? [Escríbenos por WhatsApp](https://wa.me/34604094868?text=Hola%2C%20quiero%20pagar%20mi%20pedido%20por%20transferencia%20o%20PayPal) y te ayudamos.";
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",

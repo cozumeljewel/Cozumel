@@ -4619,6 +4619,12 @@ body.con-barra-pago .volver-arriba{bottom:calc(92px + env(safe-area-inset-bottom
 .carrito-sugerida-boton{margin-top:6px; padding:9px 8px; border:0; cursor:pointer; font:inherit; font-size:13px; font-weight:600; background:#14454A; color:#FFFFFF;}
 .carrito-sugerida-boton:focus-visible{outline:2px solid #14454A; outline-offset:2px;}
 
+/* Plazo de entrega y otra forma de pago (19/11/2026) */
+.plazo-envio{display:block; margin-top:6px; font-weight:600; color:#14454A;}
+.plazo-envio[hidden], .checkout-otro-pago[hidden]{display:none;}
+.checkout-otro-pago{display:block; margin:12px 0 0; font-size:13px; color:#707070; text-align:center; text-decoration:none;}
+.checkout-otro-pago strong{color:#14454A; text-decoration:underline; text-underline-offset:3px;}
+
 /* Pago integrado: el formulario de Stripe dentro del carrito (18/11/2026) */
 .pago-integrado[hidden]{display:none;}
 .pago-integrado-volver{display:inline-block; margin:0 0 6px; padding:6px 0; background:none; border:0; cursor:pointer; font:inherit; font-size:13.5px; color:#14454A; text-decoration:underline; text-underline-offset:3px;}

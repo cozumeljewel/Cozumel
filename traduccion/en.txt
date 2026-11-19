@@ -2324,3 +2324,16 @@ en: Any problem with the payment?
 
 es: WhatsApp (opcional)
 en: WhatsApp (optional)
+
+# ---------- Carrito (19/11/2026) ----------
+es: Llega en 7 días laborables
+en: Arrives in 7 business days
+
+es: Finalizar compra
+en: Complete purchase
+
+es: Hemos recibido tu pago
+en: We've received your payment
+
+es: ¿Prefieres pagar por transferencia o PayPal?
+en: Prefer to pay by bank transfer or PayPal?

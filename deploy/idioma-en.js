@@ -750,7 +750,11 @@ COZUMEL_EN_CARGADO({
  "← Cambiar mis datos": "← Change my details",
  "Pago seguro con Stripe · no vemos los datos de tu tarjeta": "Secure payment with Stripe · we never see your card details",
  "¿Algún problema con el pago?": "Any problem with the payment?",
- "WhatsApp (opcional)": "WhatsApp (optional)"
+ "WhatsApp (opcional)": "WhatsApp (optional)",
+ "Llega en 7 días laborables": "Arrives in 7 business days",
+ "Finalizar compra": "Complete purchase",
+ "Hemos recibido tu pago": "We've received your payment",
+ "¿Prefieres pagar por transferencia o PayPal?": "Prefer to pay by bank transfer or PayPal?"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],
