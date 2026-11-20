@@ -4619,6 +4619,20 @@ body.con-barra-pago .volver-arriba{bottom:calc(92px + env(safe-area-inset-bottom
 .carrito-sugerida-boton{margin-top:6px; padding:9px 8px; border:0; cursor:pointer; font:inherit; font-size:13px; font-weight:600; background:#14454A; color:#FFFFFF;}
 .carrito-sugerida-boton:focus-visible{outline:2px solid #14454A; outline-offset:2px;}
 
+/* Visor de fotos del carrito (20/11/2026) */
+button.carrito-item-foto{padding:0; cursor:zoom-in; font:inherit;}
+.visor-carrito{position:fixed; inset:0; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(16,24,26,.92); padding:56px 16px 24px;}
+.visor-carrito img{max-width:min(92vw, 640px); max-height:72vh; object-fit:contain; background:#fff; border-radius:8px;}
+.visor-carrito-cerrar{position:absolute; top:10px; right:12px; width:44px; height:44px; border:0; background:none; color:#fff; font-size:34px; line-height:1; cursor:pointer;}
+.visor-carrito-flecha{position:absolute; top:50%; transform:translateY(-50%); width:44px; height:64px; border:0; background:rgba(255,255,255,.12); color:#fff; font-size:36px; line-height:1; cursor:pointer; border-radius:6px;}
+.visor-carrito-ant{left:8px;} .visor-carrito-sig{right:8px;}
+.visor-carrito-flecha[hidden], .visor-carrito-puntos[hidden]{display:none;}
+.visor-carrito-puntos{display:flex; gap:10px; margin-top:16px;}
+.visor-carrito-puntos button{width:10px; height:10px; padding:0; border:0; border-radius:50%; background:rgba(255,255,255,.4); cursor:pointer;}
+.visor-carrito-puntos button.activo{background:#fff;}
+.visor-carrito-pie{margin:10px 0 0; color:#fff; font-size:14px;}
+body.visor-carrito-abierto{overflow:hidden;}
+
 /* Plazo de entrega y otra forma de pago (19/11/2026) */
 .plazo-envio{display:block; margin-top:6px; font-weight:600; color:#14454A;}
 .plazo-envio[hidden], .checkout-otro-pago[hidden]{display:none;}

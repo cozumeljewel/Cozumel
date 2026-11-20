@@ -2337,3 +2337,9 @@ en: We've received your payment
 
 es: ¿Prefieres pagar por transferencia o PayPal?
 en: Prefer to pay by bank transfer or PayPal?
+
+es: Foto anterior
+en: Previous photo
+
+es: Foto siguiente
+en: Next photo

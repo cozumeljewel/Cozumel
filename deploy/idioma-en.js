@@ -754,7 +754,9 @@ COZUMEL_EN_CARGADO({
  "Llega en 7 días laborables": "Arrives in 7 business days",
  "Finalizar compra": "Complete purchase",
  "Hemos recibido tu pago": "We've received your payment",
- "¿Prefieres pagar por transferencia o PayPal?": "Prefer to pay by bank transfer or PayPal?"
+ "¿Prefieres pagar por transferencia o PayPal?": "Prefer to pay by bank transfer or PayPal?",
+ "Foto anterior": "Previous photo",
+ "Foto siguiente": "Next photo"
 },
   patrones: (T) => [
   [/^Ampliar foto: (.+), imagen (\d+) de (\d+)$/, (m, p, a, b) => `Enlarge photo: ${T(p)}, image ${a} of ${b}`],

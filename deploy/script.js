@@ -4299,6 +4299,63 @@ if (reservaForm) {
      hace falta llamarla al añadir: añadir siempre navega aquí desde cero
      (ver el CTA de personalizar.html), así que la página ya carga con el
      carrito al día. */
+  /* 20/11: visor de fotos del carrito. Fotos a tamaño completo (las mismas
+     de la ficha); se pasa con el dedo, con las flechas o tocando los puntos. */
+  function abrirVisorCarrito(fotos, nombre) {
+    if (!fotos.length) return;
+    let i = 0;
+    const capa = document.createElement('div');
+    capa.className = 'visor-carrito';
+    capa.setAttribute('role', 'dialog');
+    capa.setAttribute('aria-modal', 'true');
+    capa.setAttribute('aria-label', nombre);
+    const img = document.createElement('img');
+    img.alt = nombre;
+    const cerrar = document.createElement('button');
+    cerrar.type = 'button'; cerrar.className = 'visor-carrito-cerrar'; cerrar.setAttribute('aria-label', 'Cerrar'); cerrar.textContent = '×';
+    const ant = document.createElement('button');
+    ant.type = 'button'; ant.className = 'visor-carrito-flecha visor-carrito-ant'; ant.setAttribute('aria-label', 'Foto anterior'); ant.textContent = '‹';
+    const sig = document.createElement('button');
+    sig.type = 'button'; sig.className = 'visor-carrito-flecha visor-carrito-sig'; sig.setAttribute('aria-label', 'Foto siguiente'); sig.textContent = '›';
+    const puntos = document.createElement('div');
+    puntos.className = 'visor-carrito-puntos';
+    const pie = document.createElement('p');
+    pie.className = 'visor-carrito-pie';
+    pie.textContent = nombre;
+    const ir = (n) => {
+      i = (n + fotos.length) % fotos.length;
+      img.src = fotoWeb(fotos[i], 'full');
+      [...puntos.children].forEach((p, k) => p.classList.toggle('activo', k === i));
+    };
+    fotos.forEach((_, k) => {
+      const p = document.createElement('button');
+      p.type = 'button'; p.setAttribute('aria-label', 'Foto ' + (k + 1));
+      p.addEventListener('click', (e) => { e.stopPropagation(); ir(k); });
+      puntos.appendChild(p);
+    });
+    const unaSola = fotos.length < 2;
+    ant.hidden = sig.hidden = puntos.hidden = unaSola;
+    const salir = () => { capa.remove(); document.body.classList.remove('visor-carrito-abierto'); document.removeEventListener('keydown', teclas); };
+    const teclas = (e) => { if (e.key === 'Escape') salir(); else if (e.key === 'ArrowRight') ir(i + 1); else if (e.key === 'ArrowLeft') ir(i - 1); };
+    cerrar.addEventListener('click', salir);
+    ant.addEventListener('click', (e) => { e.stopPropagation(); ir(i - 1); });
+    sig.addEventListener('click', (e) => { e.stopPropagation(); ir(i + 1); });
+    capa.addEventListener('click', (e) => { if (e.target === capa) salir(); });
+    let x0 = null;
+    capa.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    capa.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) ir(dx < 0 ? i + 1 : i - 1);
+    });
+    document.addEventListener('keydown', teclas);
+    capa.append(cerrar, ant, img, sig, puntos, pie);
+    document.body.appendChild(capa);
+    document.body.classList.add('visor-carrito-abierto');
+    ir(0);
+    cerrar.focus();
+  }
+
   function pintarCarrito() {
     const items = getCarrito();
     carritoLista.textContent = '';
@@ -4327,8 +4384,17 @@ if (reservaForm) {
 
       // Foto de la pieza (con su colgante, si lleva) y la cantidad encima
       const fotoSrc = fotoCarrito(prod, item.personalizacion || {});
+      // 20/11: al tocar la foto se ve en grande (en Clarity la tocaban sin
+      // que pasara nada): primero el colgante de regalo y luego la cadena con él
+      const datosVisor = item.personalizacion || {};
+      const chVisor = esPiezaHombre(prod) && datosVisor.charm && typeof CHARMS_HOMBRE !== 'undefined' && CHARMS_HOMBRE.find(c => c.id === datosVisor.charm);
+      const fotoChVisor = chVisor && (chVisor.fotos[datosVisor.acabado === 'oro' ? 'dorado' : 'plateado'] || Object.values(chVisor.fotos)[0]);
+      const fotosVisor = [fotoChVisor, fotoSrc].filter(Boolean);
       if (fotoSrc) {
-        const caja = document.createElement('span');
+        const caja = document.createElement('button');
+        caja.type = 'button';
+        caja.setAttribute('aria-label', 'Ver ' + prod.nombre + ' en grande');
+        caja.addEventListener('click', () => abrirVisorCarrito(fotosVisor, prod.nombre));
         caja.className = 'carrito-item-foto';
         const im = document.createElement('img');
         im.alt = ''; im.loading = 'lazy'; im.decoding = 'async';
@@ -4394,7 +4460,10 @@ if (reservaForm) {
         fila.className = 'carrito-item carrito-item--regalo';
         const fotoCh = ch.fotos[datos.acabado === 'oro' ? 'dorado' : 'plateado'] || Object.values(ch.fotos)[0];
         if (fotoCh) {
-          const caja = document.createElement('span');
+          const caja = document.createElement('button');
+          caja.type = 'button';
+          caja.setAttribute('aria-label', 'Ver ' + ch.nombre + ' en grande');
+          caja.addEventListener('click', () => abrirVisorCarrito([fotoCh, fotoCarrito(prod, datos)].filter(Boolean), ch.nombre));
           caja.className = 'carrito-item-foto';
           const im = document.createElement('img');
           im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.src = imgPeq(fotoCh, 300);
